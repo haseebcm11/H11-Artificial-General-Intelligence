@@ -1,0 +1,62 @@
+name: H11-AGI Continuous Integration & Deployment
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Conformance & Test Discovery Suite (137 Suites)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        cache: 'pip'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install fastapi uvicorn httpx pydantic aiohttp
+
+    - name: Validate 1,000 Specialist Agents
+      run: |
+        python -c "
+        from pathlib import Path
+        p = Path('.')
+        agents = list(p.glob('**/agent.py'))
+        print(f'Discovered {len(agents)} specialist agents.')
+        assert len(agents) == 1000, f'Expected 1000 agents, found {len(agents)}'
+        "
+
+    - name: Run Full Test Suite (137 Tests)
+      run: |
+        python -m unittest discover tests -v
+
+  build-and-package:
+    name: Build Production Docker Image
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: false
+        tags: haseebcm11/h11-agi:latest

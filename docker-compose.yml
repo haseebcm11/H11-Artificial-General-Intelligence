@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  h11-agi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: h11-agi-server
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+      - DOMAIN=h11.network
+      - ENVIRONMENT=production
+    volumes:
+      - h11_data:/app/h11_training_data
+      - h11_index:/app/h11_search_index
+      - h11_models:/app/h11_trained_models
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  h11_data:
+  h11_index:
+  h11_models:
