@@ -2,6 +2,8 @@
 
 <div align="center">
 
+<img src="assets/logo.jpg" alt="H11-AGI Sovereign Logo" width="280" style="border-radius: 24px; margin-bottom: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+
 [![System: H11-AGI](https://img.shields.io/badge/System-H11--AGI-0052CC?style=for-the-badge&logo=cpu&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Architecture: v4.0](https://img.shields.io/badge/Architecture-v4.0%20Live%20Cognitive%20Runtime-7928CA?style=for-the-badge&logo=diagram-next&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Clustering: 1,000 Agents Neural MoE](https://img.shields.io/badge/Clustering-1%2C000%20Agents%20Neural%20MoE-8A2BE2?style=for-the-badge&logo=hive-blockchain&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
