@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H11-AGI | Sovereign Conversational Reasoning Operating System</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX for LaTeX rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Highlight.js for Code Syntax -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        body {
+            background-color: #080d1a;
+            color: #e2e8f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-accent {
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.15);
+        }
+        .thought-bubble {
+            border-left: 3px solid #38bdf8;
+            background: rgba(56, 189, 248, 0.04);
+        }
+        .katex-display {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 8px 0;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col justify-between overflow-hidden">
+
+    <!-- Top Navigation Header -->
+    <header class="glass-panel px-6 py-3.5 flex items-center justify-between z-20 border-b border-slate-800">
+        <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-lg tracking-wider glow-accent">
+                H11
+            </div>
+            <div>
+                <h1 class="font-bold text-slate-100 text-sm tracking-wide flex items-center gap-2">
+                    H11-AGI Cognitive Core
+                    <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">v4.0 Sovereign</span>
+                </h1>
+                <p class="text-xs text-slate-400">1,000 Specialist Agents • LSE v3.0 Omniscient Web • ALIGN Hard Gate</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="hidden sm:flex items-center space-x-2 text-xs font-mono bg-slate-900/80 px-3 py-1.5 rounded-md border border-slate-800">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-slate-300">h11.network</span>
+            </div>
+            <a href="https://github.com/haseebcm11/H11-Artificial-General-Intelligence" target="_blank" class="text-xs text-slate-400 hover:text-cyan-400 transition flex items-center gap-1 font-medium">
+                GitHub ↗
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Chat Workspace -->
+    <main class="flex-1 flex overflow-hidden max-w-6xl w-full mx-auto p-4 gap-4">
+        
+        <!-- Center Chat Stream -->
+        <section class="flex-1 flex flex-col glass-panel rounded-xl overflow-hidden glow-accent">
+            
+            <!-- Message List -->
+            <div id="chatStream" class="flex-1 overflow-y-auto p-6 space-y-6">
+                <!-- Welcome Banner -->
+                <div class="text-center py-10 space-y-3">
+                    <div class="inline-flex p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 mb-1">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-100">Welcome to H11-AGI Sovereign Reasoning</h2>
+                    <p class="text-xs text-slate-400 max-w-md mx-auto">
+                        Ask any complex scientific, medical, quantum, mathematical, or governance query. H11-AGI retrieves live sovereign web literature, neural-gates to 1,000 agents, and proves every conclusion cryptographically.
+                    </p>
+                    
+                    <!-- Suggested Query Pills -->
+                    <div class="pt-4 flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
+                        <button onclick="setPrompt(this.innerText)" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-cyan-300 transition">
+                            Evaluate therapeutic regimen for acute drug-resistant falciparum malaria
+                        </button>
+                        <button onclick="setPrompt(this.innerText)" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-cyan-300 transition">
+                            Formulate superconducting qubit Hamiltonian and decoherence mitigation
+                        </button>
+                        <button onclick="setPrompt(this.innerText)" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-cyan-300 transition">
+                            Derive spectral graph Cheeger inequality complexity bounds
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thinking / Processing Indicator -->
+            <div id="thinkingBox" class="hidden px-6 py-3 bg-slate-900/90 border-t border-slate-800 space-y-2">
+                <div class="flex items-center space-x-2.5 text-xs text-cyan-400 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                    <span id="thoughtTitle">Reasoning over case...</span>
+                </div>
+                <div id="thoughtDetail" class="text-xs text-slate-400 font-mono pl-4.5 truncate">
+                    Initializing...
+                </div>
+            </div>
+
+            <!-- Input Bar -->
+            <footer class="p-4 bg-slate-900/60 border-t border-slate-800">
+                <form id="chatForm" class="flex gap-2 items-center" onsubmit="submitQuery(event)">
+                    <input 
+                        type="text" 
+                        id="queryInput" 
+                        placeholder="Ask H11-AGI (e.g. medical diagnosis, physics formula, complexity bound)..." 
+                        class="flex-1 bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition"
+                        required
+                    />
+                    <button 
+                        type="submit" 
+                        id="sendBtn"
+                        class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm px-5 py-3 rounded-xl shadow-lg transition flex items-center gap-2"
+                    >
+                        <span>Reason</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </button>
+                </form>
+            </footer>
+
+        </section>
+
+    </main>
+
+    <script>
+        let ws;
+        const chatStream = document.getElementById("chatStream");
+        const thinkingBox = document.getElementById("thinkingBox");
+        const thoughtTitle = document.getElementById("thoughtTitle");
+        const thoughtDetail = document.getElementById("thoughtDetail");
+        const queryInput = document.getElementById("queryInput");
+        const sendBtn = document.getElementById("sendBtn");
+
+        let currentTrace = [];
+
+        function connectWebSocket() {
+            const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+            const wsUrl = `${protocol}//${window.location.host}/ws/chat`;
+            ws = new WebSocket(wsUrl);
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.type === "thought") {
+                    thinkingBox.classList.remove("hidden");
+                    thoughtTitle.innerText = data.title;
+                    thoughtDetail.innerText = data.detail;
+                    currentTrace.push(data);
+                } else if (data.type === "answer") {
+                    thinkingBox.classList.add("hidden");
+                    renderAssistantResponse(data, currentTrace);
+                    currentTrace = [];
+                    sendBtn.disabled = false;
+                    queryInput.disabled = false;
+                    queryInput.focus();
+                } else if (data.type === "error") {
+                    thinkingBox.classList.add("hidden");
+                    renderErrorMessage(data.message);
+                    sendBtn.disabled = false;
+                    queryInput.disabled = false;
+                }
+            };
+
+            ws.onclose = () => {
+                setTimeout(connectWebSocket, 2000);
+            };
+        }
+
+        connectWebSocket();
+
+        function setPrompt(text) {
+            queryInput.value = text;
+            queryInput.focus();
+        }
+
+        function submitQuery(e) {
+            e.preventDefault();
+            const query = queryInput.value.trim();
+            if (!query) return;
+
+            renderUserMessage(query);
+            queryInput.value = "";
+            queryInput.disabled = true;
+            sendBtn.disabled = true;
+            currentTrace = [];
+            thinkingBox.classList.remove("hidden");
+            thoughtTitle.innerText = "Analyzing Query Intent...";
+            thoughtDetail.innerText = "Connecting to H11-AGI Cognitive Loop...";
+
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ query: query }));
+            } else {
+                // Fallback to REST POST
+                fetch("/api/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ query: query })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    thinkingBox.classList.add("hidden");
+                    renderAssistantResponse({
+                        response_text: data.response,
+                        active_manifold: data.active_manifold,
+                        manifold_affinity: data.manifold_affinity,
+                        activated_agents: data.activated_agents,
+                        retrieved_sources: data.retrieved_sources,
+                        merkle_root: data.merkle_root,
+                        align_verified: data.align_verified,
+                        audit_head: data.audit_head,
+                        execution_time_ms: data.execution_time_ms,
+                    }, data.reasoning_trace || []);
+                    sendBtn.disabled = false;
+                    queryInput.disabled = false;
+                })
+                .catch(err => {
+                    thinkingBox.classList.add("hidden");
+                    renderErrorMessage(err.toString());
+                    sendBtn.disabled = false;
+                    queryInput.disabled = false;
+                });
+            }
+        }
+
+        function renderUserMessage(text) {
+            const el = document.createElement("div");
+            el.className = "flex justify-end";
+            el.innerHTML = `
+                <div class="max-w-2xl bg-cyan-600/20 border border-cyan-500/30 rounded-2xl rounded-tr-sm px-5 py-3 text-slate-100 text-sm shadow-md">
+                    <p>${escapeHtml(text)}</p>
+                </div>
+            `;
+            chatStream.appendChild(el);
+            chatStream.scrollTop = chatStream.scrollHeight;
+        }
+
+        function renderAssistantResponse(data, trace) {
+            const el = document.createElement("div");
+            el.className = "flex flex-col space-y-2 max-w-3xl";
+
+            const traceHtml = trace.map(t => `
+                <li class="text-xs text-slate-400 py-1 flex items-start gap-2">
+                    <span class="text-cyan-400 font-bold mt-0.5">•</span>
+                    <div>
+                        <span class="text-slate-200 font-semibold">${escapeHtml(t.title)}:</span>
+                        <span class="text-slate-400">${escapeHtml(t.detail)}</span>
+                    </div>
+                </li>
+            `).join("");
+
+            const markdownParsed = marked.parse(data.response_text || "");
+
+            el.innerHTML = `
+                <!-- Collapsible Reasoning Trace -->
+                <details class="text-xs bg-slate-900/80 border border-slate-800 rounded-xl p-3 cursor-pointer select-none">
+                    <summary class="font-mono text-cyan-400 font-medium flex items-center justify-between">
+                        <span>▼ Reasoned in ${data.execution_time_ms || 0}ms (${data.active_manifold || 'Cognitive Manifold'})</span>
+                        <span class="px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-400 font-sans">ALIGN Verified</span>
+                    </summary>
+                    <div class="pt-3 border-t border-slate-800/80 mt-2">
+                        <ul class="space-y-1">
+                            ${traceHtml}
+                        </ul>
+                        <div class="mt-2 pt-2 border-t border-slate-800 text-[10px] text-slate-500 font-mono flex flex-wrap gap-x-4">
+                            <span>Merkle Root: ${(data.merkle_root || 'N/A').slice(0, 20)}...</span>
+                            <span>Audit Head: ${(data.audit_head || 'N/A').slice(0, 20)}...</span>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Synthesized Answer Body -->
+                <div class="glass-panel border border-slate-700/60 rounded-2xl rounded-tl-sm p-6 text-slate-200 text-sm leading-relaxed prose prose-invert max-w-none">
+                    ${markdownParsed}
+                </div>
+            `;
+
+            chatStream.appendChild(el);
+            
+            // Re-render math with KaTeX
+            renderMathInElement(el, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError: false
+            });
+
+            // Highlight code blocks
+            el.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+
+            chatStream.scrollTop = chatStream.scrollHeight;
+        }
+
+        function renderErrorMessage(msg) {
+            const el = document.createElement("div");
+            el.className = "p-4 bg-red-950/40 border border-red-800/60 rounded-xl text-xs text-red-300 font-mono";
+            el.innerText = `Error: ${msg}`;
+            chatStream.appendChild(el);
+            chatStream.scrollTop = chatStream.scrollHeight;
+        }
+
+        function escapeHtml(string) {
+            const map = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'};
+            return string.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+    </script>
+</body>
+</html>

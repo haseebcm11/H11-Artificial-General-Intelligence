@@ -8,7 +8,7 @@
 [![Knowledge: H11--LSE v3.0 Ultra--Omniscient](https://img.shields.io/badge/Knowledge-H11--LSE%20v3.0%20Ultra--Omniscient-00C7B7?style=for-the-badge&logo=duckduckgo&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Learning: Continuous H11--LEARN](https://img.shields.io/badge/Learning-H11--LEARN%20Continuous%20Pipeline-FF5722?style=for-the-badge&logo=pytorch&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Agents: 1,000 / 1,000](https://img.shields.io/badge/Agents-1%2C000%20%2F%201%2C000%20(100%25)-0070F3?style=for-the-badge&logo=probot&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
-[![Tests: 133/133 Passing](https://img.shields.io/badge/Tests-133%2F133%20Passing%20(100%25)-00C781?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Tests: 137/137 Passing](https://img.shields.io/badge/Tests-137%2F137%20Passing%20(100%25)-00C781?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Governance: Sovereign Zero--Trust](https://img.shields.io/badge/Governance-Zero--Trust%20Hard%20Gate-FF4154?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Evolution: HAEP v5.0](https://img.shields.io/badge/Evolution-HAEP%20v5.0%20Self--Optimizing-FF8A00?style=for-the-badge&logo=atom&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
@@ -86,6 +86,55 @@ The repository contains exactly **1,000 concrete, typed specialist agents** with
 | **Pillar 2** | **`H11I_INTELLIGENCE_UNIVERSE`** | **475** | **30 Intelligence Domains (D01–D30):** Deep domain intelligence spanning medicine, pharmacology, veterinary, life sciences, physics, astronomy, chemistry, mathematics, computer science, cybersecurity, engineering, law, finance, literature, music, and niche disciplines. |
 | **Pillar 3** | **`H11C_CONTROL_PLANE`** | **125** | **3 Control Families (C01–C03):** 40 Integrators (data & state binding), 45 Orchestrators (scheduling & deliberation), and 40 Securities (admission, non-bypassable ALIGN gate, action licensing, tamper-evident audit). |
 | **Total** | **Unified Cognitive System** | **1,000** | **100% Typed & Domain-Specific Implementations** |
+
+---
+
+### 2.1 Advanced Neural Clustering & Mixture-of-Experts (MoE) Gating
+
+To enable dynamic collective reasoning across all 1,000 agents without combinatorial explosion, **`h11_runtime/neural_clustering/`** maps every agent into 128-dimensional latent capability embeddings and partitions the 1,000 agents into **8 Cognitive Manifolds**:
+
+| Cognitive Manifold | Primary Domains | Functional Scope |
+|---|---|---|
+| **`CLUST_BIOMEDICAL_HEALTH`** | D01–D05, D23 | Clinical triage, parasitology, pharmacology, cellular physiology, and oncology. |
+| **`CLUST_PHYSICS_QUANTUM`** | L01–L04, D07–D09 | Quantum state evolution, Hamiltonian dynamics, relativistic kinematics, and thermodynamics. |
+| **`CLUST_NEURAL_COGNITION`** | L05–L15 | Attention context, memory architecture, Tree-of-Thought planning, and world models. |
+| **`CLUST_CYBER_GOVERNANCE`** | C01–C03, L17, L20, D12, D30 | ALIGN hard gate, cryptographic Merkle proofs, zero-trust admission, and action licensing. |
+| **`CLUST_FORMAL_MATHEMATICS`** | D10, D11, D13 | Graph theory, linear algebra, algorithmic complexity, and numerical proofs. |
+| **`CLUST_ENGINEERING_ENERGY`** | L23, D06, D14–D16, D24, D25 | Robotics kinematics, electrical grids, structural mechanics, and ecology. |
+| **`CLUST_SOCIO_LEGAL_FINANCE`** | D17, D18, D22 | Quantitative finance, statutory interpretation, sentencing guidelines, and game theory. |
+| **`CLUST_CREATIVE_LINGUISTIC`** | D19–D21, D26–D29 | Cross-lingual translation (12 languages), acoustic harmonics, and structural design. |
+
+**Dynamic MoE Softmax Gating Formulation:**
+$$P(\text{agent}_i \mid Q, E) = \frac{\exp\left(\frac{w_i \cdot [Q_{\text{emb}} \oplus E_{\text{emb}}]}{\tau}\right)}{\sum_{j} \exp\left(\frac{w_j \cdot [Q_{\text{emb}} \oplus E_{\text{emb}}]}{\tau}\right)}$$
+
+---
+
+### 2.2 Interactive Conversational Reasoning Chat Interface
+
+H11-AGI includes a **real-time conversational reasoning chat interface** (`h11_runtime/server/`) that streams step-by-step thinking traces and synthesizes deep, mathematically rigorous answers grounded in live sovereign web knowledge:
+
+```text
+====================================================================================================
+                       H11-AGI CONVERSATIONAL REASONING CHAT ARCHITECTURE                          
+====================================================================================================
+ ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+ │                      MODERN WEB CHAT UI (Desktop & Mobile Responsive)                          │
+ │  • Real-time token & thought streaming via WebSockets                                          │
+ │  • Live Collapsible Reasoning Trace (Active MoE Manifold + Activated Specialist Agents)        │
+ │  • Rich Markdown, Code Syntax Highlighting & KaTeX Math Rendering ($...$, $$...$$)             │
+ │  • Interactive Citations & Cryptographic Merkle Provenance Verification Badges                 │
+ │  • ALIGN Hard Gate Safety Indicator (Zero-Trust Verified)                                     │
+ └───────────────────────────────────────────────┬────────────────────────────────────────────────┘
+                                                 │ (WebSocket / REST Stream)
+                                                 ▼
+ ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+ │                 FASTAPI / ASGI ASYNC REASONING SERVER (`h11_runtime/server/`)                  │
+ │  • `GET  /`              ──► Serves standalone production Chat Single-Page App                 │
+ │  • `POST /api/chat`      ──► Synchronous / Streaming Case Reasoning Endpoint                  │
+ │  • `WS   /ws/chat`       ──► Full-duplex WebSocket with live thought progression updates       │
+ │  • `GET  /api/health`    ──► System telemetry (1,000 agents, LSE v3.0, clusters, audit head)   │
+ └────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -483,8 +532,16 @@ Syntax Compilation Errors:                           0
 ============================================================
 ```
 
-### 2. Run the Full Test Discovery Suite
-Executes all 133 test suites covering unit contracts, the six execution graphs, state progression, memory recall, governance gates, 1,000-agent Neural MoE clustering, H11-LSE v3.0 Ultra-Omniscient search engine (quantization, Graph-RAG, swarm crawler, Merkle provenance, stream bursts, cross-lingual), H11-LEARN continuous pipeline, and end-to-end live cognitive loops:
+### 2. Launch the Live Conversational Reasoning Chat Web UI
+Launches the full FastAPI and WebSocket streaming chat server with modern web interface, live reasoning trace, and KaTeX math rendering:
+
+```bash
+python -m h11_runtime.server
+```
+Navigate your browser to: **`http://localhost:8000`** (or deployed at **`https://h11.network`**).
+
+### 3. Run the Full Test Discovery Suite
+Executes all 137 test suites covering unit contracts, the six execution graphs, state progression, memory recall, governance gates, 1,000-agent Neural MoE clustering, H11-LSE v3.0 Ultra-Omniscient search engine (quantization, Graph-RAG, swarm crawler, Merkle provenance, stream bursts, cross-lingual), H11-LEARN continuous pipeline, conversational reasoning chat interface, and end-to-end live cognitive loops:
 
 ```bash
 python -m unittest discover tests
@@ -493,12 +550,12 @@ python -m unittest discover tests
 **Test Output:**
 ```text
 ----------------------------------------------------------------------
-Ran 133 tests in 33.037s
+Ran 137 tests in 49.517s
 
 OK
 ```
 
-### 3. Programmatic Execution Example
+### 4. Programmatic Execution Example
 ```python
 import asyncio
 from h11_runtime import H11AGI, CaseEnvelope, RiskClass
