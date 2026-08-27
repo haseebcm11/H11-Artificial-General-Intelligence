@@ -4,17 +4,18 @@
 
 [![System: H11-AGI](https://img.shields.io/badge/System-H11--AGI-0052CC?style=for-the-badge&logo=cpu&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Architecture: v4.0](https://img.shields.io/badge/Architecture-v4.0%20Live%20Cognitive%20Runtime-7928CA?style=for-the-badge&logo=diagram-next&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Clustering: 1,000 Agents Neural MoE](https://img.shields.io/badge/Clustering-1%2C000%20Agents%20Neural%20MoE-8A2BE2?style=for-the-badge&logo=hive-blockchain&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Knowledge: H11--LSE v3.0 Ultra--Omniscient](https://img.shields.io/badge/Knowledge-H11--LSE%20v3.0%20Ultra--Omniscient-00C7B7?style=for-the-badge&logo=duckduckgo&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Learning: Continuous H11--LEARN](https://img.shields.io/badge/Learning-H11--LEARN%20Continuous%20Pipeline-FF5722?style=for-the-badge&logo=pytorch&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Agents: 1,000 / 1,000](https://img.shields.io/badge/Agents-1%2C000%20%2F%201%2C000%20(100%25)-0070F3?style=for-the-badge&logo=probot&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
-[![Tests: 125/125 Passing](https://img.shields.io/badge/Tests-125%2F125%20Passing%20(100%25)-00C781?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Tests: 133/133 Passing](https://img.shields.io/badge/Tests-133%2F133%20Passing%20(100%25)-00C781?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Governance: Sovereign Zero--Trust](https://img.shields.io/badge/Governance-Zero--Trust%20Hard%20Gate-FF4154?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Evolution: HAEP v5.0](https://img.shields.io/badge/Evolution-HAEP%20v5.0%20Self--Optimizing-FF8A00?style=for-the-badge&logo=atom&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![License: View--Only Research](https://img.shields.io/badge/License-Source--Available%20View--Only-black?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence/blob/main/LICENSE)
 
 <p align="center">
-  <b>A Governed 1,000-Agent Cognitive Operating System Spanning 23 Substrate Layers, 30 Universal Intelligence Domains, and 3 Sovereign Control Families — Powered by the H11-LSE v3.0 Ultra-Omniscient Web Superintelligence and H11-LEARN Continuous Distillation Pipeline.</b>
+  <b>A Governed 1,000-Agent Cognitive Operating System Spanning 23 Substrate Layers, 30 Universal Intelligence Domains, and 3 Sovereign Control Families — Powered by 1,000-Agent Neural MoE Clustering, the H11-LSE v3.0 Ultra-Omniscient Web Superintelligence, and the H11-LEARN Continuous Distillation Pipeline.</b>
 </p>
 
 </div>
@@ -24,6 +25,7 @@
 ## Table of Contents
 1. [Executive Summary](#1-executive-summary)
 2. [The Three-Pillar System (1,000 Agents)](#2-the-three-pillar-system-1000-agents)
+   * 2.1 [Advanced Neural Clustering & MoE Gating](#21-advanced-neural-clustering--mixture-of-experts-moe-gating)
 3. [H11-LSE v3.0: Ultra-Omniscient Search Engine](#3-h11-lse-v30-ultra-omniscient-search-engine)
 4. [H11-LEARN: Continuous Distillation & Training Pipeline](#4-h11-learn-continuous-distillation--training-pipeline)
 5. [The Governing Operating Philosophy](#5-the-governing-operating-philosophy)
@@ -482,7 +484,7 @@ Syntax Compilation Errors:                           0
 ```
 
 ### 2. Run the Full Test Discovery Suite
-Executes all 125 test suites covering unit contracts, the six execution graphs, state progression, memory recall, governance gates, H11-LSE v3.0 Ultra-Omniscient search engine (quantization, Graph-RAG, swarm crawler, Merkle provenance, stream bursts, cross-lingual), H11-LEARN continuous pipeline, and end-to-end live cognitive loops:
+Executes all 133 test suites covering unit contracts, the six execution graphs, state progression, memory recall, governance gates, 1,000-agent Neural MoE clustering, H11-LSE v3.0 Ultra-Omniscient search engine (quantization, Graph-RAG, swarm crawler, Merkle provenance, stream bursts, cross-lingual), H11-LEARN continuous pipeline, and end-to-end live cognitive loops:
 
 ```bash
 python -m unittest discover tests
@@ -491,7 +493,7 @@ python -m unittest discover tests
 **Test Output:**
 ```text
 ----------------------------------------------------------------------
-Ran 125 tests in 13.786s
+Ran 133 tests in 33.037s
 
 OK
 ```

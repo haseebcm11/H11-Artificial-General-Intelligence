@@ -54,6 +54,12 @@ from .registry import AgentRegistry, CapabilityRegistry, DomainRegistry, SpineRe
 from .state import H11SystemState, ResourceBudget
 from .telemetry import EventBus, RuntimeEvent
 from .workers import CheckpointManager, InterruptHandler, JoinBarrier, WorkerPool, WorkerTask
+from .neural_clustering import (
+    AgentMetadata,
+    CognitiveManifoldCluster,
+    NeuralAgentClusterEngine,
+    NeuralRoutingDecision,
+)
 
 __all__ = [
     "Envelope",
