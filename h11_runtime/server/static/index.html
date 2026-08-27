@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>H11-AGI | Sovereign Conversational Reasoning Operating System</title>
+    <title>H11-AGI | Sovereign Cognitive Intelligence</title>
     
-    <!-- Fonts: Inter & JetBrains Mono -->
+    <!-- Google Fonts: Plus Jakarta Sans, Syne, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,28 +18,32 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     colors: {
-                        dark: {
-                            950: '#06070a',
-                            900: '#0a0c12',
-                            850: '#0f121a',
-                            800: '#141824',
-                            750: '#1a1f30',
-                            700: '#22293f',
-                            600: '#323b59',
+                        obsidian: {
+                            950: '#070709',
+                            900: '#0c0d12',
+                            850: '#11131a',
+                            800: '#171a24',
+                            750: '#1e2230',
+                            700: '#282d3f',
+                            600: '#3a415a',
                         },
-                        cyan: {
-                            400: '#00f2fe',
-                            500: '#00d2fe',
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
                         },
-                        brand: {
-                            blue: '#4facfe',
-                            cyan: '#00f2fe',
-                            purple: '#8b5cf6',
-                            emerald: '#10b981',
+                        emerald: {
+                            400: '#34d399',
+                            500: '#10b981',
+                        },
+                        violet: {
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
                         }
                     }
                 }
@@ -47,7 +51,7 @@
         }
     </script>
     
-    <!-- KaTeX for LaTeX Math Rendering -->
+    <!-- KaTeX for LaTeX Rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -56,299 +60,313 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
     <!-- Highlight.js for Code Highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
     <style>
+        :root {
+            --gold-gradient: linear-gradient(135deg, #fce7f3 0%, #fef3c7 30%, #f59e0b 70%, #d97706 100%);
+            --violet-cyan-gradient: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+        }
         * {
             scrollbar-width: thin;
-            scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+            scrollbar-color: rgba(251, 191, 36, 0.15) transparent;
         }
         *::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
         }
         *::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(251, 191, 36, 0.15);
             border-radius: 9999px;
         }
         body {
-            background-color: #06070a;
-            color: #f1f5f9;
-            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+            background-color: #070709;
+            color: #f8fafc;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.06) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.04) 0px, transparent 50%);
         }
-        .mesh-gradient {
-            background: radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.08) 0%, rgba(79, 172, 254, 0.03) 40%, transparent 70%);
+        .luxury-card {
+            background: rgba(17, 19, 26, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
-        .glass-card {
-            background: rgba(15, 18, 26, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .luxury-card:hover {
+            border-color: rgba(245, 158, 11, 0.3);
         }
-        .glass-input {
-            background: rgba(10, 12, 18, 0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-        .glass-input:focus-within {
-            border-color: rgba(0, 242, 254, 0.6);
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.18);
-        }
-        .brand-gradient-text {
-            background: linear-gradient(135deg, #ffffff 0%, #00f2fe 50%, #4facfe 100%);
+        .gold-gradient-text {
+            background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .gold-glow {
+            box-shadow: 0 0 35px rgba(245, 158, 11, 0.15);
+        }
+        .luxury-input {
+            background: rgba(12, 13, 18, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        .luxury-input:focus-within {
+            border-color: rgba(245, 158, 11, 0.6);
+            box-shadow: 0 0 35px rgba(245, 158, 11, 0.25);
+        }
         .katex-display {
             overflow-x: auto;
-            overflow-y: hidden;
-            padding: 12px 0;
-            margin: 8px 0;
+            padding: 14px;
+            margin: 12px 0;
+            background: rgba(8, 9, 13, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.12);
         }
-        @keyframes pulse-slow {
-            0%, 100% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
-        }
-        .animate-pulse-slow {
-            animation: pulse-slow 4s ease-in-out infinite;
+        pre code.hljs {
+            border-radius: 12px;
+            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #090a0f !important;
         }
     </style>
 </head>
-<body class="h-screen flex overflow-hidden font-sans select-none mesh-gradient">
+<body class="h-screen flex overflow-hidden font-sans select-none antialiased">
 
     <!-- ══════════════════════════════════════════════════════════════════════ -->
-    <!-- LEFT SIDEBAR: Cognitive Manifolds & System Telemetry                 -->
+    <!-- LEFT SIDEBAR: Sovereign Knowledge & Manifolds Navigation              -->
     <!-- ══════════════════════════════════════════════════════════════════════ -->
-    <aside id="sidebar" class="w-80 flex-shrink-0 flex flex-col glass-card border-r border-slate-800/80 z-30 transition-all duration-300 hidden md:flex">
+    <aside id="sidebar" class="w-80 flex-shrink-0 flex flex-col luxury-card border-r border-obsidian-800 z-30 transition-all duration-300 hidden md:flex">
         
-        <!-- App Branding -->
-        <div class="p-5 border-b border-slate-800/60 flex items-center justify-between">
+        <!-- Header Branding -->
+        <div class="p-5 border-b border-obsidian-800/80 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="relative w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-black text-white text-lg tracking-wider shadow-lg shadow-cyan-500/20">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 flex items-center justify-center font-display font-black text-dark-950 text-xl tracking-wider shadow-lg shadow-amber-500/20">
                     H11
-                    <div class="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-emerald-400 border-2 border-dark-950"></div>
                 </div>
                 <div>
-                    <h1 class="font-bold text-sm text-slate-100 tracking-wide flex items-center gap-1.5">
-                        H11-AGI Kernel
-                        <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-cyan-950 text-cyan-400 border border-cyan-800/80 font-mono">v4.0</span>
+                    <h1 class="font-display font-bold text-sm text-slate-100 tracking-wide flex items-center gap-1.5">
+                        H11-AGI Core
+                        <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 font-mono font-bold">SOVEREIGN</span>
                     </h1>
-                    <p class="text-[11px] text-slate-400 font-mono">h11.network</p>
+                    <p class="text-[11px] text-amber-200/60 font-mono">h11.network</p>
                 </div>
             </div>
-            <button onclick="newChat()" title="New Deliberation" class="p-2 rounded-lg bg-dark-750 hover:bg-dark-700 text-slate-300 hover:text-cyan-400 transition border border-slate-800">
+            <button onclick="newChat()" title="New Deliberation" class="p-2 rounded-xl bg-obsidian-850 hover:bg-obsidian-800 text-slate-300 hover:text-amber-400 transition border border-obsidian-750">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             </button>
         </div>
 
-        <!-- 8 Cognitive Manifolds List -->
+        <!-- 8 Cognitive Manifolds -->
         <div class="flex-1 overflow-y-auto p-4 space-y-4">
             <div>
-                <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 px-2 flex items-center justify-between">
-                    <span>Cognitive Manifolds (8)</span>
-                    <span class="font-mono text-cyan-400">1,000 Agents</span>
+                <div class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-2 px-2 flex items-center justify-between">
+                    <span>COGNITIVE MANIFOLDS (8)</span>
+                    <span class="text-amber-400 font-semibold">1,000 AGENTS</span>
                 </div>
-                <div class="space-y-1 text-xs" id="manifoldList">
-                    <!-- Populated dynamically -->
-                    <div class="p-2.5 rounded-lg bg-dark-850 hover:bg-dark-800 border border-slate-800/80 flex items-center justify-between cursor-pointer transition" onclick="setPrompt('Evaluate therapeutic regimen for acute falciparum malaria and calculate parasite clearance kinetics')">
-                        <div class="flex items-center space-x-2.5">
-                            <span class="w-2 h-2 rounded-full bg-rose-400"></span>
-                            <span class="text-slate-200 font-medium truncate">Biomedical & Health</span>
+                <div class="space-y-1.5 text-xs">
+                    <div onclick="setPrompt('Evaluate therapeutic regimen for acute drug-resistant falciparum malaria and PK/PD clearance')" class="p-3 rounded-xl bg-obsidian-850/90 hover:bg-obsidian-800 border border-obsidian-750 hover:border-amber-500/40 flex items-center justify-between cursor-pointer transition group">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 rounded-full bg-rose-400 shadow-sm shadow-rose-400/50"></div>
+                            <span class="text-slate-200 font-medium group-hover:text-amber-300 transition">Biomedical & Health</span>
                         </div>
-                        <span class="text-[11px] font-mono text-slate-400">154</span>
+                        <span class="text-[11px] font-mono text-slate-400 group-hover:text-slate-200">154</span>
                     </div>
-                    <div class="p-2.5 rounded-lg bg-dark-850 hover:bg-dark-800 border border-slate-800/80 flex items-center justify-between cursor-pointer transition" onclick="setPrompt('Formulate superconducting qubit Hamiltonian and decoherence mitigation under Lindblad equation')">
-                        <div class="flex items-center space-x-2.5">
-                            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-                            <span class="text-slate-200 font-medium truncate">Quantum & Physics</span>
+
+                    <div onclick="setPrompt('Formulate superconducting qubit Hamiltonian and Lindblad decoherence mitigation')" class="p-3 rounded-xl bg-obsidian-850/90 hover:bg-obsidian-800 border border-obsidian-750 hover:border-amber-500/40 flex items-center justify-between cursor-pointer transition group">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 rounded-full bg-amber-400 shadow-sm shadow-amber-400/50"></div>
+                            <span class="text-slate-200 font-medium group-hover:text-amber-300 transition">Quantum & Physics</span>
                         </div>
-                        <span class="text-[11px] font-mono text-slate-400">142</span>
+                        <span class="text-[11px] font-mono text-slate-400 group-hover:text-slate-200">142</span>
                     </div>
-                    <div class="p-2.5 rounded-lg bg-dark-850 hover:bg-dark-800 border border-slate-800/80 flex items-center justify-between cursor-pointer transition" onclick="setPrompt('Derive spectral graph Laplacian Cheeger inequality complexity bounds')">
-                        <div class="flex items-center space-x-2.5">
-                            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
-                            <span class="text-slate-200 font-medium truncate">Formal Mathematics</span>
+
+                    <div onclick="setPrompt('Derive spectral graph Laplacian Cheeger inequality complexity bounds in polynomial time')" class="p-3 rounded-xl bg-obsidian-850/90 hover:bg-obsidian-800 border border-obsidian-750 hover:border-amber-500/40 flex items-center justify-between cursor-pointer transition group">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 rounded-full bg-purple-400 shadow-sm shadow-purple-400/50"></div>
+                            <span class="text-slate-200 font-medium group-hover:text-amber-300 transition">Formal Mathematics</span>
                         </div>
-                        <span class="text-[11px] font-mono text-slate-400">112</span>
+                        <span class="text-[11px] font-mono text-slate-400 group-hover:text-slate-200">112</span>
                     </div>
-                    <div class="p-2.5 rounded-lg bg-dark-850 hover:bg-dark-800 border border-slate-800/80 flex items-center justify-between cursor-pointer transition" onclick="setPrompt('Explain Navier-Stokes existence and smoothness Millennium Prize problem in R3')">
-                        <div class="flex items-center space-x-2.5">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                            <span class="text-slate-200 font-medium truncate">Fluid & Engineering</span>
+
+                    <div onclick="setPrompt('Explain Navier-Stokes existence and smoothness Millennium Prize problem in R3')" class="p-3 rounded-xl bg-obsidian-850/90 hover:bg-obsidian-800 border border-obsidian-750 hover:border-amber-500/40 flex items-center justify-between cursor-pointer transition group">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50"></div>
+                            <span class="text-slate-200 font-medium group-hover:text-amber-300 transition">Fluid & Engineering</span>
                         </div>
-                        <span class="text-[11px] font-mono text-slate-400">128</span>
+                        <span class="text-[11px] font-mono text-slate-400 group-hover:text-slate-200">128</span>
                     </div>
-                    <div class="p-2.5 rounded-lg bg-dark-850 hover:bg-dark-800 border border-slate-800/80 flex items-center justify-between cursor-pointer transition" onclick="setPrompt('Verify Zero-Trust ALIGN hard gate invariants and Merkle provenance sealing')">
-                        <div class="flex items-center space-x-2.5">
-                            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                            <span class="text-slate-200 font-medium truncate">Sovereign Governance</span>
+
+                    <div onclick="setPrompt('Verify Zero-Trust ALIGN hard gate invariants and Merkle provenance sealing')" class="p-3 rounded-xl bg-obsidian-850/90 hover:bg-obsidian-800 border border-obsidian-750 hover:border-amber-500/40 flex items-center justify-between cursor-pointer transition group">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400/50"></div>
+                            <span class="text-slate-200 font-medium group-hover:text-amber-300 transition">Sovereign Governance</span>
                         </div>
-                        <span class="text-[11px] font-mono text-slate-400">125</span>
+                        <span class="text-[11px] font-mono text-slate-400 group-hover:text-slate-200">125</span>
                     </div>
-                    <div class="p-2.5 rounded-lg bg-dark-850 hover:bg-dark-800 border border-slate-800/80 flex items-center justify-between cursor-pointer transition" onclick="setPrompt('Execute Tree-of-Thought planning and multi-agent world model counterfactual reasoning')">
-                        <div class="flex items-center space-x-2.5">
-                            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
-                            <span class="text-slate-200 font-medium truncate">Neural Cognition</span>
+
+                    <div onclick="setPrompt('Execute Tree-of-Thought planning and multi-agent world model counterfactual reasoning')" class="p-3 rounded-xl bg-obsidian-850/90 hover:bg-obsidian-800 border border-obsidian-750 hover:border-amber-500/40 flex items-center justify-between cursor-pointer transition group">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 rounded-full bg-blue-400 shadow-sm shadow-blue-400/50"></div>
+                            <span class="text-slate-200 font-medium group-hover:text-amber-300 transition">Neural Cognition</span>
                         </div>
-                        <span class="text-[11px] font-mono text-slate-400">186</span>
+                        <span class="text-[11px] font-mono text-slate-400 group-hover:text-slate-200">186</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Recent Sessions History -->
+            <!-- Deliberation History -->
             <div>
-                <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 px-2 flex items-center justify-between">
-                    <span>Recent Deliberations</span>
+                <div class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-2 px-2 flex items-center justify-between">
+                    <span>DELIBERATION SESSIONS</span>
                     <button onclick="clearHistory()" class="text-[10px] text-slate-400 hover:text-rose-400 transition">Clear</button>
                 </div>
                 <div id="historyList" class="space-y-1 text-xs">
-                    <!-- Session history injected here -->
+                    <!-- Dynamic sessions -->
                 </div>
             </div>
         </div>
 
-        <!-- Telemetry Status Bar -->
-        <div class="p-4 border-t border-slate-800/60 bg-dark-900/60 space-y-2 text-[11px] font-mono">
+        <!-- Telemetry Status -->
+        <div class="p-4 border-t border-obsidian-800/80 bg-obsidian-950/80 space-y-2 text-[11px] font-mono">
             <div class="flex items-center justify-between text-slate-400">
-                <span>ALIGN Hard Gate:</span>
-                <span class="text-emerald-400 font-semibold flex items-center gap-1">
+                <span>ALIGN Gate:</span>
+                <span class="text-emerald-400 font-semibold flex items-center gap-1.5">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                     LICENSED (Zero-Trust)
                 </span>
             </div>
             <div class="flex items-center justify-between text-slate-400">
-                <span>Verification Suite:</span>
-                <span class="text-cyan-400">137 / 137 Passing (100%)</span>
+                <span>Unit & Graph Tests:</span>
+                <span class="text-amber-400 font-semibold">137 / 137 (100% Passed)</span>
             </div>
             <div class="flex items-center justify-between text-slate-400">
-                <span>Search Engine:</span>
+                <span>Knowledge Retrieval:</span>
                 <span class="text-slate-300">H11-LSE v3.0 Ultra-Omni</span>
             </div>
         </div>
     </aside>
 
     <!-- ══════════════════════════════════════════════════════════════════════ -->
-    <!-- MAIN CHAT VIEWPORT                                                    -->
+    <!-- MAIN CHAT WORKSPACE                                                   -->
     <!-- ══════════════════════════════════════════════════════════════════════ -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
         
-        <!-- Top Navbar -->
-        <header class="h-16 px-6 glass-card border-b border-slate-800/70 flex items-center justify-between z-20">
+        <!-- Luxury Top Header -->
+        <header class="h-16 px-6 luxury-card border-b border-obsidian-800 flex items-center justify-between z-20">
             <div class="flex items-center space-x-3">
-                <button onclick="toggleSidebar()" class="md:hidden p-2 rounded-lg bg-dark-800 text-slate-300 hover:text-white">
+                <button onclick="toggleSidebar()" class="md:hidden p-2 rounded-xl bg-obsidian-850 text-slate-300 hover:text-white">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
-                <div class="flex items-center space-x-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50"></span>
-                    <h2 class="text-sm font-semibold text-slate-200">Sovereign Conversational Reasoning</h2>
+                <div class="flex items-center space-x-2.5">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-sm shadow-amber-400/50"></span>
+                    <h2 class="font-display text-sm font-bold text-slate-100 tracking-wide">Sovereign Cognitive Reasoner</h2>
                 </div>
             </div>
 
             <div class="flex items-center space-x-3 text-xs">
-                <div class="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-full bg-dark-850 border border-slate-800 font-mono text-slate-300">
-                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-                    <span>Edge Reasoner Online</span>
+                <div class="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-full bg-obsidian-850 border border-amber-500/20 font-mono text-amber-300">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>1,000 Agents Connected</span>
                 </div>
-                <a href="https://github.com/haseebcm11/H11-Artificial-General-Intelligence" target="_blank" class="px-3 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-750 text-slate-300 hover:text-cyan-400 border border-slate-700/60 transition flex items-center gap-1.5 font-medium">
+                <a href="https://github.com/haseebcm11/H11-Artificial-General-Intelligence" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-obsidian-850 hover:bg-obsidian-800 text-slate-300 hover:text-amber-400 border border-obsidian-750 transition flex items-center gap-1.5 font-medium">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-                    <span>Repository</span>
+                    <span>GitHub</span>
                 </a>
             </div>
         </header>
 
-        <!-- Message Stream Area -->
+        <!-- Message List Stream -->
         <div id="chatStream" class="flex-1 overflow-y-auto px-4 md:px-8 py-6 space-y-6 max-w-5xl w-full mx-auto select-text">
             
-            <!-- Hero Welcome Card -->
-            <div id="heroSection" class="py-8 md:py-12 text-center space-y-6">
+            <!-- Hero Presentation -->
+            <div id="heroSection" class="py-8 md:py-14 text-center space-y-7">
                 <div class="relative inline-block">
-                    <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-cyan-500 via-blue-500 to-purple-600 p-0.5 shadow-2xl shadow-cyan-500/20">
-                        <div class="w-full h-full bg-dark-950 rounded-[22px] flex items-center justify-center">
-                            <svg class="w-10 h-10 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-amber-400 via-amber-500 to-amber-700 p-0.5 shadow-2xl shadow-amber-500/25">
+                        <div class="w-full h-full bg-obsidian-950 rounded-[22px] flex items-center justify-center">
+                            <span class="font-display font-extrabold text-3xl gold-gradient-text tracking-wider">H11</span>
                         </div>
                     </div>
-                    <div class="absolute inset-0 rounded-3xl bg-cyan-400 blur-xl opacity-30 animate-pulse-slow -z-10"></div>
                 </div>
 
-                <div class="space-y-2">
-                    <h1 class="text-2xl md:text-4xl font-extrabold text-slate-100 tracking-tight">
-                        What shall we <span class="brand-gradient-text">reason and discover</span> today?
+                <div class="space-y-3">
+                    <h1 class="font-display text-3xl md:text-5xl font-black text-slate-100 tracking-tight leading-tight">
+                        Sovereign Intelligence <br>
+                        <span class="gold-gradient-text">Beyond Classical Models</span>
                     </h1>
-                    <p class="text-sm text-slate-400 max-w-xl mx-auto font-normal">
-                        Submit complex scientific, mathematical, clinical, or physical inquiries. H11-AGI dynamically activates 1,000 specialist agents, retrieves sovereign web evidence, and proves every conclusion cryptographically.
+                    <p class="text-sm md:text-base text-slate-400 max-w-xl mx-auto font-normal leading-relaxed">
+                        Reason over deep domain problems with 1,000 specialist agents, live sovereign web retrieval, and cryptographic Merkle proof sealing.
                     </p>
                 </div>
 
-                <!-- 4 Quick Discovery Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto pt-2 text-left">
-                    <div onclick="setPrompt('Evaluate therapeutic regimen for acute falciparum malaria and formulate parasite clearance velocity')" class="glass-card p-4 rounded-xl hover:border-cyan-500/50 hover:bg-dark-800/80 transition cursor-pointer group">
-                        <div class="flex items-center space-x-3 mb-1.5">
-                            <span class="p-2 rounded-lg bg-rose-500/10 text-rose-400 group-hover:scale-110 transition">🩺</span>
-                            <span class="text-xs font-semibold text-slate-200 group-hover:text-cyan-300 transition">Biomedical Triage</span>
+                <!-- 4 Luxury Domain Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 max-w-2xl mx-auto pt-2 text-left">
+                    <div onclick="setPrompt('Evaluate therapeutic regimen for acute drug-resistant falciparum malaria and formulate parasite clearance velocity')" class="luxury-card p-4.5 rounded-2xl transition cursor-pointer group">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <span class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-sm group-hover:scale-110 transition">🩺</span>
+                            <span class="text-xs font-bold text-slate-200 group-hover:text-amber-300 transition">Biomedical Triage</span>
                         </div>
-                        <p class="text-[12px] text-slate-400 line-clamp-2">Evaluate acute drug-resistant falciparum malaria & PK/PD clearance modeling.</p>
+                        <p class="text-[12px] text-slate-400 line-clamp-2 leading-relaxed">Evaluate acute drug-resistant falciparum malaria & PK/PD clearance velocity kinetics.</p>
                     </div>
 
-                    <div onclick="setPrompt('Formulate superconducting qubit Hamiltonian and decoherence mitigation under Lindblad master equation')" class="glass-card p-4 rounded-xl hover:border-cyan-500/50 hover:bg-dark-800/80 transition cursor-pointer group">
-                        <div class="flex items-center space-x-3 mb-1.5">
-                            <span class="p-2 rounded-lg bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition">⚛️</span>
-                            <span class="text-xs font-semibold text-slate-200 group-hover:text-cyan-300 transition">Quantum Physics</span>
+                    <div onclick="setPrompt('Formulate superconducting qubit Hamiltonian and decoherence mitigation under Lindblad master equation')" class="luxury-card p-4.5 rounded-2xl transition cursor-pointer group">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <span class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-sm group-hover:scale-110 transition">⚛️</span>
+                            <span class="text-xs font-bold text-slate-200 group-hover:text-amber-300 transition">Quantum Physics</span>
                         </div>
-                        <p class="text-[12px] text-slate-400 line-clamp-2">Derive Lindblad noise evolution and dynamical decoupling pulse sequences.</p>
+                        <p class="text-[12px] text-slate-400 line-clamp-2 leading-relaxed">Derive Lindblad noise evolution and dynamical decoupling pulse sequences (XY-4 / CPMG).</p>
                     </div>
 
-                    <div onclick="setPrompt('Derive spectral graph Laplacian Cheeger inequality complexity bounds in polynomial time')" class="glass-card p-4 rounded-xl hover:border-cyan-500/50 hover:bg-dark-800/80 transition cursor-pointer group">
-                        <div class="flex items-center space-x-3 mb-1.5">
-                            <span class="p-2 rounded-lg bg-indigo-500/10 text-indigo-400 group-hover:scale-110 transition">📐</span>
-                            <span class="text-xs font-semibold text-slate-200 group-hover:text-cyan-300 transition">Formal Mathematics</span>
+                    <div onclick="setPrompt('Derive spectral graph Laplacian Cheeger inequality complexity bounds in polynomial time')" class="luxury-card p-4.5 rounded-2xl transition cursor-pointer group">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <span class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-sm group-hover:scale-110 transition">📐</span>
+                            <span class="text-xs font-bold text-slate-200 group-hover:text-amber-300 transition">Formal Mathematics</span>
                         </div>
-                        <p class="text-[12px] text-slate-400 line-clamp-2">Cheeger inequality spectral bounds and Lanczos eigensolver convergence.</p>
+                        <p class="text-[12px] text-slate-400 line-clamp-2 leading-relaxed">Cheeger inequality spectral bounds, algebraic connectivity, and Lanczos iterations.</p>
                     </div>
 
-                    <div onclick="setPrompt('Explain Navier-Stokes existence and smoothness Millennium Prize problem in R3')" class="glass-card p-4 rounded-xl hover:border-cyan-500/50 hover:bg-dark-800/80 transition cursor-pointer group">
-                        <div class="flex items-center space-x-3 mb-1.5">
-                            <span class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:scale-110 transition">🌊</span>
-                            <span class="text-xs font-semibold text-slate-200 group-hover:text-cyan-300 transition">Fluid Dynamics</span>
+                    <div onclick="setPrompt('Explain Navier-Stokes existence and smoothness Millennium Prize problem in R3')" class="luxury-card p-4.5 rounded-2xl transition cursor-pointer group">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <span class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm group-hover:scale-110 transition">🌊</span>
+                            <span class="text-xs font-bold text-slate-200 group-hover:text-amber-300 transition">Fluid Dynamics</span>
                         </div>
-                        <p class="text-[12px] text-slate-400 line-clamp-2">Smooth global existence of 3D incompressible Navier-Stokes momentum solutions.</p>
+                        <p class="text-[12px] text-slate-400 line-clamp-2 leading-relaxed">Global smooth solutions of 3D incompressible Navier-Stokes equations under Sobolev spaces.</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- ══════════════════════════════════════════════════════════════════ -->
-        <!-- BOTTOM FLOATING INPUT COMPOSER                                     -->
+        <!-- LUXURY FLOATING INPUT BAR                                          -->
         <!-- ══════════════════════════════════════════════════════════════════ -->
-        <footer class="p-4 md:p-6 bg-gradient-to-t from-dark-950 via-dark-950/90 to-transparent">
-            <div class="max-w-4xl mx-auto space-y-2">
+        <footer class="p-4 md:p-6 bg-gradient-to-t from-obsidian-950 via-obsidian-950/95 to-transparent">
+            <div class="max-w-4xl mx-auto space-y-2.5">
                 
-                <form id="chatForm" onsubmit="submitQuery(event)" class="glass-input rounded-2xl p-2.5 transition shadow-2xl relative flex flex-col">
+                <form id="chatForm" onsubmit="submitQuery(event)" class="luxury-input rounded-2xl p-3 transition relative flex flex-col">
                     <textarea 
                         id="queryInput" 
                         rows="1" 
-                        placeholder="Ask H11-AGI any scientific, medical, mathematical, or reasoning question..."
+                        placeholder="Inquire across 1,000 specialist agents and sovereign web literature..."
                         class="w-full bg-transparent text-slate-100 placeholder-slate-500 text-sm md:text-base px-3 py-2 outline-none resize-none max-h-40 font-sans"
                         onkeydown="handleKeyDown(event)"
                         oninput="autoResize(this)"
                     ></textarea>
 
-                    <div class="flex items-center justify-between pt-2 px-2 border-t border-slate-800/60 mt-1">
-                        <div class="flex items-center space-x-2 text-xs text-slate-400">
-                            <span class="hidden sm:inline-block font-mono text-[11px] text-slate-400">Press <kbd class="px-1.5 py-0.5 rounded bg-dark-750 border border-slate-700 text-slate-300">Enter ↵</kbd> to send</span>
+                    <div class="flex items-center justify-between pt-2.5 px-2 border-t border-obsidian-800/80 mt-1">
+                        <div class="flex items-center space-x-2 text-xs text-slate-400 font-mono">
+                            <span class="hidden sm:inline-block text-[11px] text-slate-400">Press <kbd class="px-1.5 py-0.5 rounded bg-obsidian-800 border border-obsidian-700 text-amber-300 font-semibold">Enter ↵</kbd> to deliberate</span>
                         </div>
 
-                        <div class="flex items-center space-x-2">
-                            <button type="submit" id="sendBtn" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-dark-950 font-bold text-xs tracking-wide flex items-center space-x-1.5 shadow-lg shadow-cyan-500/20 transition-all active:scale-95 disabled:opacity-50">
-                                <span>Reason</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            </button>
-                        </div>
+                        <button type="submit" id="sendBtn" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-dark-950 font-display font-bold text-xs tracking-wider uppercase shadow-lg shadow-amber-500/25 transition-all active:scale-95 disabled:opacity-50 flex items-center space-x-2">
+                            <span>Deliberate</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </button>
                     </div>
                 </form>
 
                 <p class="text-center text-[11px] text-slate-400 font-mono">
-                    H11-AGI is non-bypassably governed by ALIGN Hard Gate Zero-Trust Security. Every output is sealed with a SHA-256 Merkle Provenance proof.
+                    Zero-Trust ALIGN Hard Gate Enforced • Cryptographic Merkle Provenance Sealed • Sovereign 24-Step Cognitive Loop
                 </p>
             </div>
         </footer>
@@ -365,7 +383,6 @@
         const sendBtn = document.getElementById('sendBtn');
         const historyList = document.getElementById('historyList');
 
-        // Initialize marked options
         marked.setOptions({
             highlight: function(code, lang) {
                 if (lang && hljs.getLanguage(lang)) {
@@ -420,9 +437,9 @@
                 const history = JSON.parse(localStorage.getItem('h11_history') || '[]');
                 if (!historyList) return;
                 historyList.innerHTML = history.map(q => `
-                    <div onclick="setPrompt('${q.replace(/'/g, "\\'")}')" class="p-2 rounded-lg bg-dark-850 hover:bg-dark-800 text-slate-300 hover:text-cyan-300 truncate cursor-pointer transition border border-slate-800/60 flex items-center space-x-2">
-                        <span class="text-slate-400">💬</span>
-                        <span class="truncate">${q}</span>
+                    <div onclick="setPrompt('${q.replace(/'/g, "\\'")}')" class="p-2.5 rounded-xl bg-obsidian-850 hover:bg-obsidian-800 text-slate-300 hover:text-amber-300 truncate cursor-pointer transition border border-obsidian-750 flex items-center space-x-2">
+                        <span class="text-amber-400 text-xs">⚡</span>
+                        <span class="truncate font-medium">${escapeHtml(q)}</span>
                     </div>
                 `).join('');
             } catch (e) {}
@@ -450,11 +467,8 @@
             }
 
             saveHistory(query);
-
-            // Append User Message
             appendUserMessage(query);
 
-            // Append Loading Skeleton Card
             const botCardId = 'bot_card_' + Date.now();
             appendBotPlaceholder(botCardId);
 
@@ -485,8 +499,8 @@
             const div = document.createElement('div');
             div.className = 'flex justify-end';
             div.innerHTML = `
-                <div class="max-w-2xl bg-dark-800 border border-slate-700/80 rounded-2xl rounded-tr-sm px-5 py-3.5 text-slate-100 text-sm shadow-md">
-                    <p class="whitespace-pre-wrap leading-relaxed">${escapeHtml(text)}</p>
+                <div class="max-w-2xl bg-obsidian-850 border border-obsidian-700/80 rounded-2xl rounded-tr-sm px-5 py-4 text-slate-100 text-sm shadow-xl">
+                    <p class="whitespace-pre-wrap leading-relaxed font-medium">${escapeHtml(text)}</p>
                 </div>
             `;
             chatStream.appendChild(div);
@@ -498,18 +512,18 @@
             div.id = id;
             div.className = 'flex justify-start';
             div.innerHTML = `
-                <div class="max-w-4xl w-full glass-card rounded-2xl rounded-tl-sm p-6 space-y-4 shadow-xl border border-slate-800">
+                <div class="max-w-4xl w-full luxury-card rounded-2xl rounded-tl-sm p-6 space-y-4 shadow-2xl border border-amber-500/20">
                     <div class="flex items-center space-x-3">
-                        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-bold text-white text-xs">H11</div>
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-display font-black text-dark-950 text-xs">H11</div>
                         <div class="flex items-center space-x-2">
-                            <span class="text-xs font-semibold text-cyan-400 animate-pulse">Deliberating across 1,000 Agents...</span>
-                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                            <span class="text-xs font-mono font-bold text-amber-400 animate-pulse">Deliberating across 1,000 Agents...</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
                         </div>
                     </div>
-                    <div class="space-y-2.5 animate-pulse">
-                        <div class="h-3.5 bg-dark-700 rounded-md w-3/4"></div>
-                        <div class="h-3.5 bg-dark-700 rounded-md w-5/6"></div>
-                        <div class="h-3.5 bg-dark-700 rounded-md w-1/2"></div>
+                    <div class="space-y-3 animate-pulse">
+                        <div class="h-3.5 bg-obsidian-750 rounded-md w-3/4"></div>
+                        <div class="h-3.5 bg-obsidian-750 rounded-md w-5/6"></div>
+                        <div class="h-3.5 bg-obsidian-750 rounded-md w-1/2"></div>
                     </div>
                 </div>
             `;
@@ -523,13 +537,12 @@
 
             const parsedMarkdown = marked.parse(data.response || '');
             const manifoldName = data.active_manifold || 'Cognitive Reasoning & Agency Manifold';
-            const agentsList = (data.activated_agents || []).join(', ');
             const execTime = data.execution_time_ms ? `${data.execution_time_ms.toFixed(0)}ms` : '185ms';
             const merkleRoot = data.merkle_root || '7a8f3b29c910e5d48291a4b56c7d8e9f0123456789abcdef';
 
             const traceHtml = (data.reasoning_trace || []).map((t, idx) => `
                 <div class="flex items-start space-x-3 text-xs py-1">
-                    <span class="font-mono text-cyan-400 bg-cyan-950 px-1.5 py-0.5 rounded border border-cyan-800/80 text-[10px]">[${idx+1}]</span>
+                    <span class="font-mono text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800/80 text-[10px] font-bold">[${idx+1}]</span>
                     <div>
                         <span class="font-semibold text-slate-200">${escapeHtml(t.title)}</span>
                         <p class="text-slate-400 text-[11px] mt-0.5">${escapeHtml(t.detail)}</p>
@@ -538,58 +551,58 @@
             `).join('');
 
             card.innerHTML = `
-                <div class="max-w-4xl w-full glass-card rounded-2xl rounded-tl-sm p-6 space-y-5 shadow-2xl border border-slate-800">
+                <div class="max-w-4xl w-full luxury-card rounded-2xl rounded-tl-sm p-6 space-y-5 shadow-2xl border border-obsidian-750">
                     
-                    <!-- Header Meta Pill -->
-                    <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800/70 text-xs">
-                        <div class="flex items-center space-x-2">
-                            <div class="w-6 h-6 rounded-md bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-bold text-white text-[10px]">H11</div>
-                            <span class="font-bold text-slate-200">${manifoldName}</span>
+                    <!-- Header Meta -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-obsidian-800/80 text-xs">
+                        <div class="flex items-center space-x-2.5">
+                            <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-display font-black text-dark-950 text-xs">H11</div>
+                            <span class="font-display font-bold text-slate-100 text-sm">${manifoldName}</span>
                         </div>
                         <div class="flex items-center space-x-3 text-[11px] font-mono text-slate-400">
-                            <span class="text-emerald-400 flex items-center gap-1">
+                            <span class="text-emerald-400 flex items-center gap-1 font-semibold">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                 ALIGN Verified
                             </span>
-                            <span>⚡ ${execTime}</span>
+                            <span class="text-amber-400 font-semibold">⚡ ${execTime}</span>
                         </div>
                     </div>
 
-                    <!-- Expandable Thought Stream Accordion -->
+                    <!-- 24-Step Reasoning Accordion -->
                     ${traceHtml ? `
-                    <details class="bg-dark-900/80 rounded-xl border border-slate-800/80 p-3 group">
-                        <summary class="text-xs font-semibold text-cyan-400 cursor-pointer flex items-center justify-between">
+                    <details class="bg-obsidian-900/90 rounded-xl border border-obsidian-800 p-3.5 group">
+                        <summary class="text-xs font-mono font-bold text-amber-400 cursor-pointer flex items-center justify-between">
                             <span class="flex items-center gap-2">
-                                <svg class="w-4 h-4 transition group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                                View 24-Step Multi-Agent Reasoning Trace (${(data.reasoning_trace || []).length} steps)
+                                <svg class="w-4 h-4 transition group-open:rotate-90 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                24-Step Multi-Agent Reasoning Trace (${(data.reasoning_trace || []).length} hops)
                             </span>
                             <span class="font-mono text-[10px] text-slate-400">Blackboard State</span>
                         </summary>
-                        <div class="mt-3 pt-3 border-t border-slate-800/60 space-y-2">
+                        <div class="mt-3 pt-3 border-t border-obsidian-800 space-y-2.5">
                             ${traceHtml}
                         </div>
                     </details>
                     ` : ''}
 
                     <!-- Synthesized Answer Body -->
-                    <div class="prose prose-invert max-w-none text-slate-200 text-sm leading-relaxed space-y-4" id="content_${id}">
+                    <div class="prose prose-invert max-w-none text-slate-200 text-sm leading-relaxed space-y-4 font-normal" id="content_${id}">
                         ${parsedMarkdown}
                     </div>
 
-                    <!-- Footer Provenance & Actions -->
-                    <div class="pt-4 border-t border-slate-800/70 flex flex-wrap items-center justify-between gap-3 text-xs">
+                    <!-- Provenance Footer -->
+                    <div class="pt-4 border-t border-obsidian-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
                         <div class="flex items-center space-x-2 font-mono text-[11px] text-slate-400">
                             <span>Merkle Root:</span>
-                            <span class="text-slate-300 bg-dark-900 px-2 py-1 rounded border border-slate-800 truncate max-w-xs font-mono" title="${merkleRoot}">
+                            <span class="text-amber-300 bg-obsidian-900 px-2 py-1 rounded-md border border-obsidian-800 truncate max-w-xs font-mono" title="${merkleRoot}">
                                 ${merkleRoot.slice(0, 16)}...${merkleRoot.slice(-8)}
                             </span>
-                            <button onclick="copyToClipboard('${merkleRoot}', this)" class="p-1 hover:text-cyan-400 transition" title="Copy Merkle Root">
+                            <button onclick="copyToClipboard('${merkleRoot}', this)" class="p-1 hover:text-amber-400 transition" title="Copy Merkle Root">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                             </button>
                         </div>
 
                         <div class="flex items-center space-x-2">
-                            <button onclick="copyResponseText('${id}', this)" class="px-2.5 py-1 rounded-md bg-dark-800 hover:bg-dark-750 text-slate-300 hover:text-white border border-slate-700/60 transition text-xs flex items-center gap-1 font-medium">
+                            <button onclick="copyResponseText('${id}', this)" class="px-3 py-1.5 rounded-lg bg-obsidian-850 hover:bg-obsidian-800 text-slate-300 hover:text-amber-300 border border-obsidian-750 transition text-xs flex items-center gap-1.5 font-medium">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                                 <span>Copy Analysis</span>
                             </button>
@@ -598,7 +611,6 @@
                 </div>
             `;
 
-            // Trigger KaTeX rendering on math formulas
             try {
                 renderMathInElement(card, {
                     delimiters: [
@@ -618,10 +630,10 @@
             const card = document.getElementById(id);
             if (!card) return;
             card.innerHTML = `
-                <div class="max-w-xl glass-card rounded-2xl p-5 border border-rose-800/60 bg-rose-950/20 text-rose-300 text-sm space-y-2">
+                <div class="max-w-xl luxury-card rounded-2xl p-5 border border-rose-800/60 bg-rose-950/20 text-rose-300 text-sm space-y-2">
                     <div class="font-bold flex items-center gap-2 text-rose-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        Cognitive Execution Notice
+                        Execution Notice
                     </div>
                     <p class="text-xs text-rose-300">${escapeHtml(errMsg)}</p>
                 </div>
@@ -632,7 +644,7 @@
         function copyToClipboard(text, btn) {
             navigator.clipboard.writeText(text);
             const orig = btn.innerHTML;
-            btn.innerHTML = '<span class="text-emerald-400 text-xs">✓ Copied</span>';
+            btn.innerHTML = '<span class="text-emerald-400 text-xs font-bold font-mono">✓ Copied</span>';
             setTimeout(() => { btn.innerHTML = orig; }, 2000);
         }
 
@@ -641,7 +653,7 @@
             if (contentEl) {
                 navigator.clipboard.writeText(contentEl.innerText);
                 const orig = btn.innerHTML;
-                btn.innerHTML = '<span class="text-emerald-400 text-xs">✓ Copied!</span>';
+                btn.innerHTML = '<span class="text-emerald-400 text-xs font-bold font-mono">✓ Copied!</span>';
                 setTimeout(() => { btn.innerHTML = orig; }, 2000);
             }
         }
