@@ -22,6 +22,10 @@ metadata = {
     "main_module": "index.js",
     "compatibility_date": "2026-08-01",
     "compatibility_flags": ["nodejs_compat"],
+    "bindings": [
+        {"type": "ai", "name": "AI"},
+        {"type": "plain_text", "name": "CF_AI_TOKEN", "text": CF_TOKEN},
+    ],
 }
 
 body_parts = [
