@@ -1,10 +1,16 @@
-"""AGI kernel: admit → bind → compose → run spine → align-enforce → remember → seal.
+"""AGI kernel: admit → bind → compose → RETRIEVE → run spine → align-enforce → learn → remember → seal.
 
 This is the control plane sitting on the specialist roster. It does not skip
 ALIGN. Unadmitted cases never reach PIPELINE-RUNNER.
+
+v4.0 — Now with H11-SEARCH (Sovereign Knowledge Engine) and H11-LEARN
+(Continuous Learning Pipeline). Every case can optionally retrieve live
+internet evidence before domain reasoning, and completed cases feed the
+continuous learning cycle.
 """
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
@@ -14,6 +20,25 @@ from .control_kernel import ControlAgent, ControlError, KernelState, make_agent
 from .envelope import new_id
 from .haep import HAEPRuntime
 from .spine import HostInfectionSpine, SpineResult, assert_crossed
+
+logger = logging.getLogger(__name__)
+
+# ── Lazy imports for search & learn (optional dependencies) ─────────────────
+_search_available = False
+_learn_available = False
+
+try:
+    from .search.api import SearchConfig, SearchQuery, SearchService
+    from .search.rar import RetrievalAugmentedReasoner, RetrievedDocument
+    _search_available = True
+except ImportError:
+    logger.info("H11-SEARCH not available — running without internet knowledge retrieval")
+
+try:
+    from .learn.collector import CollectionConfig, DataCollector
+    _learn_available = True
+except ImportError:
+    logger.info("H11-LEARN not available — running without continuous learning")
 
 
 @dataclass
@@ -33,12 +58,14 @@ class AGIResult:
     spine: Optional[SpineResult] = None
     events: List[str] = field(default_factory=list)
     error: Optional[str] = None
+    retrieved_evidence: List[Dict[str, Any]] = field(default_factory=list)
+    learning_recorded: bool = False
 
 
 class H11AGI:
     """One gated cognitive system over the specialist spines."""
 
-    def __init__(self) -> None:
+    def __init__(self, enable_search: bool = True, enable_learning: bool = True) -> None:
         self.state = KernelState()
         self.longterm = LongtermAdapter()
         self.reason = ReasonAdapter()
@@ -51,6 +78,20 @@ class H11AGI:
         )
         self.haep = HAEPRuntime()
         self._ready = False
+
+        # ── H11-SEARCH: Sovereign Knowledge Engine ──────────────────────────
+        self.search: Optional[Any] = None
+        self.rar: Optional[Any] = None
+        if enable_search and _search_available:
+            self.search = SearchService()
+            self.rar = RetrievalAugmentedReasoner(self.search)
+            logger.info("H11-SEARCH initialized — internet knowledge retrieval enabled")
+
+        # ── H11-LEARN: Continuous Learning Pipeline ─────────────────────────
+        self.collector: Optional[Any] = None
+        if enable_learning and _learn_available:
+            self.collector = DataCollector()
+            logger.info("H11-LEARN initialized — continuous learning enabled")
 
     def agent(self, agent_id: str) -> ControlAgent:
         return make_agent(agent_id, state=self.state)
@@ -203,6 +244,38 @@ class H11AGI:
         self.state.phase = "PERCEIVE"
         self.agent("H11C-COGNITIVE-LOOP").process({"align_allowed": False})
 
+        # ── Step 9.5: KNOWLEDGE RETRIEVAL (H11-SEARCH) ──────────────────────
+        # Retrieve live internet evidence to augment domain reasoning.
+        # This runs BEFORE spine execution so agents have grounded knowledge.
+        retrieved_evidence: List[Dict[str, Any]] = []
+        if self.rar is not None:
+            query_text = " ".join(filter(None, [
+                str(case.get("query") or ""),
+                str(case.get("goal") or ""),
+                " ".join(map(str, case.get("symptoms") or [])),
+            ])).strip()
+            if query_text:
+                try:
+                    docs = await self.rar.retrieve_for_agent(
+                        agent_id=f"H11C-{pipeline_id.upper()}",
+                        query=query_text,
+                        domain_filter=domain,
+                        max_results=10,
+                    )
+                    retrieved_evidence = [
+                        {"url": d.url, "title": d.title, "snippet": d.snippet,
+                         "relevance": d.relevance_score, "source": d.source_type}
+                        for d in docs
+                    ]
+                    # Inject evidence into case payload for downstream agents
+                    case["retrieved_evidence"] = retrieved_evidence
+                    events.append(f"retrieved_{len(docs)}_documents")
+                    logger.info("H11-SEARCH: Retrieved %d documents for case %s",
+                                len(docs), case["case_id"])
+                except Exception as exc:
+                    logger.warning("H11-SEARCH retrieval failed: %s", exc)
+                    events.append("retrieval_failed")
+
         spine_result: Optional[SpineResult] = None
         hops = list(hooked["pipeline"])
         allowed = False
@@ -271,6 +344,26 @@ class H11AGI:
             except ControlError:
                 pass
 
+        # ── H11-LEARN: Record case for continuous learning ──────────────────
+        learning_recorded = False
+        if self.collector is not None and allowed:
+            try:
+                query_text = str(case.get("query") or case.get("goal") or "")
+                self.collector.record(
+                    agent_id=f"H11C-{pipeline_id.upper()}",
+                    case_id=case["case_id"],
+                    query=query_text,
+                    retrieved_docs=retrieved_evidence,
+                    output={"action": action, "domain": domain, "allowed": allowed},
+                    domain=domain,
+                    feedback_score=float(conf) if conf else None,
+                )
+                learning_recorded = True
+                events.append("learning_recorded")
+                logger.info("H11-LEARN: Case %s recorded for training", case["case_id"])
+            except Exception as exc:
+                logger.warning("H11-LEARN recording failed: %s", exc)
+
         return AGIResult(
             case_id=case["case_id"],
             admitted=True,
@@ -286,4 +379,6 @@ class H11AGI:
             action=action,
             spine=spine_result,
             events=events,
+            retrieved_evidence=retrieved_evidence,
+            learning_recorded=learning_recorded,
         )

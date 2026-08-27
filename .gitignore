@@ -52,3 +52,6 @@ Thumbs.db
 # Scratch & Logs
 *.log
 scratch/
+h11_training_data/
+h11_search_index/
+h11_trained_models/

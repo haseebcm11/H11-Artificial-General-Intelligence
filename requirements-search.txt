@@ -1,0 +1,32 @@
+# H11-SEARCH & H11-LEARN Dependencies
+# ====================================
+# Core requirements for the H11-AGI Sovereign Knowledge Engine
+# and Continuous Learning Pipeline.
+#
+# Install: pip install -r requirements-search.txt
+
+# ── Core Search Engine ──────────────────────────────────────────────────────
+aiohttp>=3.9                  # Async HTTP for web crawling
+beautifulsoup4>=4.12          # Enhanced HTML parsing (optional fallback)
+trafilatura>=1.6              # Clean text extraction from web pages
+lxml>=5.0                     # Fast XML/HTML processing
+
+# ── Embeddings & Vector Search ──────────────────────────────────────────────
+sentence-transformers>=3.0    # Dense embedding models (requires torch)
+faiss-cpu>=1.7                # Approximate nearest neighbor search (CPU)
+# faiss-gpu>=1.7              # Uncomment for GPU-accelerated ANN
+
+# ── Knowledge Graph ─────────────────────────────────────────────────────────
+# spacy>=3.7                  # NER and relation extraction (optional)
+
+# ── LLM Reasoning Substrate ────────────────────────────────────────────────
+transformers>=4.40            # HuggingFace model loading
+torch>=2.2                    # PyTorch backend
+# bitsandbytes>=0.43          # QLoRA 4-bit quantization (Linux only)
+
+# ── Training Pipeline ──────────────────────────────────────────────────────
+peft>=0.10                    # LoRA/QLoRA fine-tuning adapters
+datasets>=2.18                # HuggingFace datasets library
+
+# ── Utilities ───────────────────────────────────────────────────────────────
+tldextract>=5.0               # Domain extraction from URLs

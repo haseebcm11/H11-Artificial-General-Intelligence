@@ -3,16 +3,18 @@
 <div align="center">
 
 [![System: H11-AGI](https://img.shields.io/badge/System-H11--AGI-0052CC?style=for-the-badge&logo=cpu&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
-[![Architecture: v3.0](https://img.shields.io/badge/Architecture-v3.0%20Governed%20Runtime-7928CA?style=for-the-badge&logo=diagram-next&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Architecture: v4.0](https://img.shields.io/badge/Architecture-v4.0%20Live%20Cognitive%20Runtime-7928CA?style=for-the-badge&logo=diagram-next&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Knowledge: H11--SEARCH Engine](https://img.shields.io/badge/Knowledge-H11--SEARCH%20Sovereign%20Engine-00C7B7?style=for-the-badge&logo=duckduckgo&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Learning: Continuous H11--LEARN](https://img.shields.io/badge/Learning-H11--LEARN%20Continuous%20Pipeline-FF5722?style=for-the-badge&logo=pytorch&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Agents: 1,000 / 1,000](https://img.shields.io/badge/Agents-1%2C000%20%2F%201%2C000%20(100%25)-0070F3?style=for-the-badge&logo=probot&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
-[![Tests: 45/45 Passing](https://img.shields.io/badge/Tests-45%2F45%20Passing%20(100%25)-00C781?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Tests: 88/88 Passing](https://img.shields.io/badge/Tests-88%2F88%20Passing%20(100%25)-00C781?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Governance: Sovereign Zero--Trust](https://img.shields.io/badge/Governance-Zero--Trust%20Hard%20Gate-FF4154?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Evolution: HAEP v5.0](https://img.shields.io/badge/Evolution-HAEP%20v5.0%20Self--Optimizing-FF8A00?style=for-the-badge&logo=atom&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![License: View--Only Research](https://img.shields.io/badge/License-Source--Available%20View--Only-black?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence/blob/main/LICENSE)
 
 <p align="center">
-  <b>A Governed 1,000-Agent Cognitive Operating System Spanning 23 Substrate Layers, 30 Universal Intelligence Domains, and 3 Sovereign Control Families.</b>
+  <b>A Governed 1,000-Agent Cognitive Operating System Spanning 23 Substrate Layers, 30 Universal Intelligence Domains, and 3 Sovereign Control Families — Powered by the H11-SEARCH Live Internet Knowledge Engine and H11-LEARN Continuous Distillation Pipeline.</b>
 </p>
 
 </div>
@@ -22,16 +24,18 @@
 ## Table of Contents
 1. [Executive Summary](#1-executive-summary)
 2. [The Three-Pillar System (1,000 Agents)](#2-the-three-pillar-system-1000-agents)
-3. [The Governing Operating Philosophy](#3-the-governing-operating-philosophy)
-4. [The Six Operational Graphs](#4-the-six-operational-graphs)
-5. [The Non-Bypassable ALIGN Hard Gate](#5-the-non-bypassable-align-hard-gate)
-6. [The 24-Step Cognitive Execution Pipeline](#6-the-24-step-cognitive-execution-pipeline)
-7. [The 5 Cognitive Strata](#7-the-5-cognitive-strata)
-8. [Master Agent Taxonomy](#8-master-agent-taxonomy)
-9. [HAEP v5.0 Self-Optimization Protocol](#9-haep-v50-self-optimization-protocol)
-10. [Runtime Subsystem Architecture (`h11_runtime/`)](#10-runtime-subsystem-architecture-h11_runtime)
-11. [Quickstart, Validation & Verification](#11-quickstart-validation--verification)
-12. [License & Intellectual Property](#12-license--intellectual-property)
+3. [H11-SEARCH: Sovereign Internet Knowledge Engine](#3-h11-search-sovereign-internet-knowledge-engine)
+4. [H11-LEARN: Continuous Distillation & Training Pipeline](#4-h11-learn-continuous-distillation--training-pipeline)
+5. [The Governing Operating Philosophy](#5-the-governing-operating-philosophy)
+6. [The Six Operational Graphs](#6-the-six-operational-graphs)
+7. [The Non-Bypassable ALIGN Hard Gate](#7-the-non-bypassable-align-hard-gate)
+8. [The 24-Step Cognitive Execution Pipeline](#8-the-24-step-cognitive-execution-pipeline)
+9. [The 5 Cognitive Strata](#9-the-5-cognitive-strata)
+10. [Master Agent Taxonomy](#10-master-agent-taxonomy)
+11. [HAEP v5.0 Self-Optimization Protocol](#11-haep-v50-self-optimization-protocol)
+12. [Runtime Subsystem Architecture (`h11_runtime/`)](#12-runtime-subsystem-architecture-h11_runtime)
+13. [Quickstart, Validation & Verification](#13-quickstart-validation--verification)
+14. [License & Intellectual Property](#14-license--intellectual-property)
 
 ---
 
@@ -83,7 +87,95 @@ The repository contains exactly **1,000 concrete, typed specialist agents** with
 
 ---
 
-# 3. The Governing Operating Philosophy
+# 3. H11-SEARCH: Sovereign Internet Knowledge Engine
+
+To transform H11-AGI from a typed specialist simulation into a real-world reasoning AGI with unbounded knowledge access, **H11-SEARCH** (`h11_runtime/search/`) serves as a sovereign, distributed web intelligence and retrieval engine.
+
+```text
+                               ┌─────────────────────────┐
+                               │       THE INTERNET      │
+                               │   (World Wide Knowledge)│
+                               └────────────┬────────────┘
+                                            │
+                                            ▼
+                               ┌─────────────────────────┐
+                               │       H11-SEARCH        │
+                               │   Sovereign Spider & KG │
+                               └────────────┬────────────┘
+                                            │
+               ┌────────────────────────────┼────────────────────────────┐
+               │                            │                            │
+               ▼                            ▼                            ▼
+   ┌───────────────────────┐   ┌───────────────────────┐   ┌───────────────────────┐
+   │  CRAWLER & PARSER     │   │  INDEXER & VECTOR     │   │  QUERY & RANKER       │
+   │  • aiohttp Spider     │   │  • Okapi BM25 Index   │   │  • Query Decomposer   │
+   │  • robots.txt Checker │   │  • HNSW / FAISS Vector│   │  • Hybrid RRF Ranker  │
+   │  • Clean Text Extract │   │  • Text Embedder      │   │  • Evidence Scorer    │
+   └───────────────────────┘   └───────────────────────┘   └───────────────────────┘
+                                            │
+                                            ▼
+                               ┌─────────────────────────┐
+                               │  RETRIEVAL-AUGMENTED    │
+                               │  REASONING (RAR)        │
+                               │  Live Provenance Ground │
+                               └────────────┬────────────┘
+                                            │
+                                            ▼
+                               ┌─────────────────────────┐
+                               │  H11-AGI COGNITIVE LOOP │
+                               │  (1,000 Agents Grounded)│
+                               └─────────────────────────┘
+```
+
+### Core Search Subsystems
+
+| Subsystem | Module | Description |
+|---|---|---|
+| **Crawler** | [`crawler.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/search/crawler.py) | High-throughput asynchronous crawler with per-domain rate limiting, `robots.txt` compliance, bloom-filter deduplication, and exponential backoff retry logic. |
+| **Parser** | [`parser.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/search/parser.py) | Clean HTML-to-text extraction, script/style stripping, metadata extraction (JSON-LD, Open Graph), heading taxonomy, and reading metrics. |
+| **BM25 Indexer** | [`indexer.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/search/indexer.py) | Okapi BM25 inverted index engine with term frequency, document frequency scoring, dynamic snippet boundary extraction, and JSON persistence. |
+| **Vector Store** | [`vector_store.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/search/vector_store.py) | Multi-backend approximate nearest neighbor search with graceful fallback chain: `FAISS` $\to$ `hnswlib` $\to$ NumPy $\to$ pure Python. |
+| **Text Embedder** | [`embedder.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/search/embedder.py) | Dense representation pipeline with lazy-loaded transformer models and zero-dependency TF-IDF hashing fallback. |
+| **Hybrid Ranker** | [`ranker.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/search/ranker.py) | Reciprocal Rank Fusion (RRF) combining normalized BM25 keyword scores with dense vector similarities, categorizing evidence quality (HIGH, MEDIUM, LOW). |
+| **Query Engine** | [`query_engine.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/search/query_engine.py) | Decomposes compound natural language prompts into structured sub-queries, classifies across all 30 H11I domains (D01–D30), and expands synonyms. |
+| **Knowledge Graph** | [`knowledge_graph.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/search/knowledge_graph.py) | Subject-Predicate-Object (SPO) entity and relation extraction for structured graph reasoning and neighbor query expansion. |
+| **Search Cache** | [`cache.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/search/cache.py) | Thread-safe LRU/LFU/TTL caching layer with automated eviction and freshness validation. |
+| **RAR Connector** | [`rar.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/search/rar.py) | Retrieval-Augmented Reasoning connector binding live internet knowledge directly into case payloads with full cryptographic provenance. |
+
+---
+
+# 4. H11-LEARN: Continuous Distillation & Training Pipeline
+
+Knowledge acquired from live internet reasoning is continuously distilled into permanent agent rules and fine-tuned models via **H11-LEARN** (`h11_runtime/learn/`).
+
+```text
+    ┌──────────────────────────────────────────────────────────┐
+    │              H11-LEARN CONTINUOUS CYCLE                  │
+    └─────────────────────────────┬────────────────────────────┘
+                                  │
+    1. COLLECT ───────────────────┼──► Record (query, evidence, output, score)
+    2. DISTILL ───────────────────┼──► Extract symbolic domain rules & heuristics
+    3. TRAIN ─────────────────────┼──► LoRA / QLoRA parameter fine-tuning
+    4. EVALUATE ──────────────────┼──► Multi-dimensional benchmark & safety audit
+    5. CANARY ROLLOUT ────────────┼──► HAEP v5.0 traffic canary gating (5% -> 100%)
+    6. GOVERNED PROMOTE ──────────┴──► Cryptographic promotion to active roster
+```
+
+### Safety Invariant
+> **Strict Governance Boundary:** H11-LEARN and evolutionary routines are strictly prohibited from mutating `C03` safety rules, the `H11C-ALIGN-ENFORCE` gate, or the sovereign control plane. All proposed model and rule promotions must satisfy zero safety violations.
+
+| Module | Component | Role |
+|---|---|---|
+| [`collector.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/learn/collector.py) | `DataCollector` | Streams and stores case executions, evidence triples, and domain feedback scores for dataset compilation. |
+| [`distiller.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/learn/distiller.py) | `KnowledgeDistiller` | Distills empirical observations into persistent symbolic rules with confidence merge mechanics. |
+| [`trainer.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/learn/trainer.py) | `H11Trainer` | LoRA/QLoRA parameter-efficient fine-tuning for local neural reasoning substrates. |
+| [`evaluator.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/learn/evaluator.py) | `ModelEvaluator` | Evaluates accuracy, semantic consistency, and content safety thresholds prior to update promotion. |
+| [`curriculum.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/learn/curriculum.py) | `CurriculumGenerator` | Generates 10-stage progressive difficulty learning curricula for all 30 H11I domains. |
+| [`governed_update.py`](file:///d:/My%20Research/H11%20PATENTS/H11-AGI/h11_runtime/learn/governed_update.py) | `GovernedUpdater` | HAEP v5.0 canary deployment engine with automated rollback upon any metric regression. |
+
+---
+
+# 5. The Governing Operating Philosophy
 
 Rather than executing a flat collection of 1,000 agents simultaneously, H11-AGI answers **Four Structural Questions** for every incoming case:
 
@@ -109,7 +201,7 @@ Rather than executing a flat collection of 1,000 agents simultaneously, H11-AGI 
 
 ---
 
-# 4. The Six Operational Graphs
+# 6. The Six Operational Graphs
 
 H11-AGI models its entire state and execution topology as **Six Explicit Graphs**:
 
@@ -140,7 +232,7 @@ H11-AGI models its entire state and execution topology as **Six Explicit Graphs*
 
 ---
 
-# 5. The Non-Bypassable ALIGN Hard Gate
+# 7. The Non-Bypassable ALIGN Hard Gate
 
 A foundational invariant of H11-AGI is: **"Intelligence does not confer authority."**
 
@@ -183,7 +275,7 @@ No agent—regardless of its cognitive capability—can directly execute a tool,
 
 ---
 
-# 6. The 24-Step Cognitive Execution Pipeline
+# 8. The 24-Step Cognitive Execution Pipeline
 
 Every case admitted into H11-AGI progresses through the 24-step canonical cognitive loop:
 
@@ -216,7 +308,7 @@ Every case admitted into H11-AGI progresses through the 24-step canonical cognit
 
 ---
 
-# 7. The 5 Cognitive Strata
+# 9. The 5 Cognitive Strata
 
 The 1,000 agents operate across **5 hierarchical strata**:
 
@@ -231,8 +323,8 @@ The 1,000 agents operate across **5 hierarchical strata**:
 │ STRATUM 2: REASONING, WORLD MODELS & DOMAIN EXPERTISE                  │
 │ D01–D30 Intelligence Universe (475 Agents) · L12 World · L13 Reason    │
 ├────────────────────────────────────────────────────────────────────────┤
-│ STRATUM 1: COGNITIVE FOUNDATION & MEMORY                               │
-│ L10 Memory · L11 Perception · L14 Planning · L15 Generation           │
+│ STRATUM 1: COGNITIVE FOUNDATION, SEARCH & MEMORY                       │
+│ H11-SEARCH Engine · H11-LEARN Pipeline · L10 Memory · L11 Perception  │
 ├────────────────────────────────────────────────────────────────────────┤
 │ STRATUM 0: SUBSTRATE & DISTRIBUTED COMPUTE                             │
 │ L01 Physical · L04 Neural · L05 Attention · L08 Distributed · L09 Serve│
@@ -241,7 +333,7 @@ The 1,000 agents operate across **5 hierarchical strata**:
 
 ---
 
-# 8. Master Agent Taxonomy
+# 10. Master Agent Taxonomy
 
 ### A. Pillar 1: `H11Z_COGNITIVE_NETWORK` (400 Agents)
 Spans the 23 foundational layers of intelligence machinery:
@@ -310,7 +402,7 @@ The sovereign control and governance plane:
 
 ---
 
-# 9. HAEP v5.0 Self-Optimization Protocol
+# 11. HAEP v5.0 Self-Optimization Protocol
 
 H11-AGI incorporates the **H11-AGI Enhancement Protocol (HAEP) v5.0** for governed autonomous intelligence evolution:
 
@@ -332,7 +424,7 @@ H11-AGI incorporates the **H11-AGI Enhancement Protocol (HAEP) v5.0** for govern
 
 ---
 
-# 10. Runtime Subsystem Architecture (`h11_runtime/`)
+# 12. Runtime Subsystem Architecture (`h11_runtime/`)
 
 The runtime is decomposed into dedicated, modular Python packages:
 
@@ -346,6 +438,8 @@ h11_runtime/
 ├── envelope.py                # Case Envelope serialization & hashing
 ├── loader.py                  # Dynamic three-pillar loader
 │
+├── search/                    # H11-SEARCH: Crawler, Parser, BM25 Indexer, Vector Store, Hybrid Ranker, KG, RAR
+├── learn/                     # H11-LEARN: Collector, Distiller, LoRA Trainer, Evaluator, Curriculum, Canary
 ├── case/                      # Case lifecycle, Blackboard workspace, and state machine
 ├── contracts/                 # AgentContract, CaseEnvelope, AgentResult, ActionProposal, ActionLicense
 ├── graph/                     # The Six Graphs (Agent, Capability, Dependency, Execution, State, Governance)
@@ -363,7 +457,7 @@ h11_runtime/
 
 ---
 
-# 11. Quickstart, Validation & Verification
+# 13. Quickstart, Validation & Verification
 
 ### Prerequisites
 * Python 3.10, 3.11, 3.12, 3.13, or 3.14
@@ -394,7 +488,7 @@ Syntax Compilation Errors:                           0
 ```
 
 ### 2. Run the Full Test Discovery Suite
-Executes all 45 test suites covering unit contracts, execution graphs, state progression, memory recall, governance gates, and HAEP self-optimization:
+Executes all 88 test suites covering unit contracts, the six execution graphs, state progression, memory recall, governance gates, H11-SEARCH knowledge engine, H11-LEARN continuous pipeline, and end-to-end live cognitive loops:
 
 ```bash
 python -m unittest discover tests
@@ -403,7 +497,7 @@ python -m unittest discover tests
 **Test Output:**
 ```text
 ----------------------------------------------------------------------
-Ran 45 tests in 0.875s
+Ran 88 tests in 27.984s
 
 OK
 ```
@@ -414,24 +508,29 @@ import asyncio
 from h11_runtime import H11AGI, CaseEnvelope, RiskClass
 
 async def main():
-    # 1. Instantiate the Sovereign AGI Kernel
-    agi = H11AGI()
+    # 1. Instantiate the Sovereign AGI Kernel (with live Search & Learning)
+    agi = H11AGI(enable_search=True, enable_learning=True)
     await agi.initialize()
 
     # 2. Construct a Case Envelope
     case_payload = {
         "symptoms": ["fever", "chills", "anemia"],
+        "travel_history": ["sub-saharan_africa"],
         "suspected_pathogen": "Plasmodium falciparum",
         "patient_vitals": {"temp_c": 39.2, "heart_rate": 110},
+        "query": "Evaluate optimal antiparasitic intervention and retrieve latest clinical evidence",
+        "goal": "host_infection",
     }
 
     # 3. Execute the Governed Cognitive Loop (24 Steps)
     result = await agi.tick(case_payload)
 
-    # 4. Inspect Governed Outcome
+    # 4. Inspect Governed Outcome & Live Evidence
     print(f"Case ID: {result.case_id}")
     print(f"Admitted: {result.admitted}")
     print(f"Licensed: {result.licensed}")
+    print(f"Retrieved Evidence Count: {len(result.retrieved_evidence)}")
+    print(f"Learning Recorded: {result.learning_recorded}")
     print(f"Hops Traversed: {' -> '.join(result.hops)}")
     print(f"Audit Block Hash: {result.audit_head}")
 
@@ -441,7 +540,7 @@ if __name__ == "__main__":
 
 ---
 
-# 12. License & Intellectual Property
+# 14. License & Intellectual Property
 
 ```text
 ================================================================================
