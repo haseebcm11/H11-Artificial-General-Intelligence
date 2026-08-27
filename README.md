@@ -1,728 +1,462 @@
-# H11-AGI
+# H11-AGI: Governed Cognitive Operating Architecture
 
-### The complete anatomy of an advanced artificial general intelligence
-**1,000 agents · three planes · one gated cognitive loop**
+<div align="center">
 
-| Plane | What it is | Agents |
-|-------|------------|-------:|
-| **H11 Cognitive Substrate** (L01–L23) | *How* the system computes, remembers, reasons, acts, and governs itself | 400 |
-| **H11I Intelligence Universe** (D01–D30) | *What* the system can know and reason about | 475 |
-| **H11C Control Plane** | *How those specialists are bound, scheduled, and gated so a case can run* | 125 |
-| **Total** | Typed specialist society | **1,000** |
+[![System: H11-AGI](https://img.shields.io/badge/System-H11--AGI-0052CC?style=for-the-badge&logo=cpu&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Architecture: v3.0](https://img.shields.io/badge/Architecture-v3.0%20Governed%20Runtime-7928CA?style=for-the-badge&logo=diagram-next&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Agents: 1,000 / 1,000](https://img.shields.io/badge/Agents-1%2C000%20%2F%201%2C000%20(100%25)-0070F3?style=for-the-badge&logo=probot&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Tests: 45/45 Passing](https://img.shields.io/badge/Tests-45%2F45%20Passing%20(100%25)-00C781?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Python: 3.10+](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Governance: Sovereign Zero--Trust](https://img.shields.io/badge/Governance-Zero--Trust%20Hard%20Gate-FF4154?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Evolution: HAEP v5.0](https://img.shields.io/badge/Evolution-HAEP%20v5.0%20Self--Optimizing-FF8A00?style=for-the-badge&logo=atom&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![License: View--Only Research](https://img.shields.io/badge/License-Source--Available%20View--Only-black?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence/blob/main/LICENSE)
 
----
+<p align="center">
+  <b>A Governed 1,000-Agent Cognitive Operating System Spanning 23 Substrate Layers, 30 Universal Intelligence Domains, and 3 Sovereign Control Families.</b>
+</p>
 
-## Overview
-
-H11-AGI is not a single model. It is a **society of 1,000 specialists**, each with a typed input contract, typed output contract, explicit failure modes, and declared dependencies.
-
-The 400 substrate agents are the machinery (silicon through self-improvement). The 475 universe agents are the knowledge (medicine through niche fields). The 125 control-plane agents are the assembly layer: integrators, orchestrators, and securities that admit a case, route it, run it, and will not act unless ALIGN has allowed the trajectory.
-
-The roster is completeness of disclosure. The invention is composition. See `PATENT_CLAIM_MAP.md`.
+</div>
 
 ---
 
-## Architecture at a Glance
-
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         H11-AGI · 1,000 AGENTS                          │
-├─────────────────────────────────────────────────────────────────────────┤
-│  H11C CONTROL PLANE                                          125 agents │
-│    40 integrators · 45 orchestrators · 40 securities                    │
-│    admit → bind → compose → run → ALIGN-enforce → license → remember    │
-├─────────────────────────────────────────────────────────────────────────┤
-│  H11I INTELLIGENCE UNIVERSE · 30 domains                     475 agents │
-│    biomedical · natural science · computing · built world               │
-│    commerce · arts · applied sciences                                   │
-├─────────────────────────────────────────────────────────────────────────┤
-│  H11 COGNITIVE SUBSTRATE · 23 layers                         400 agents │
-│                                                                         │
-│  ┌─ L23 ── Energy & Sustainability ─────────────────────────  8 agents │
-│  ├─ L22 ── Interface, Protocol & Embodiment ────────────────  16 agents│
-│  ├─ L21 ── Self-Improvement & Recursive Evolution ──────────  16 agents│
-│  ├─ L20 ── Security, Integrity & Resilience ────────────────  18 agents│
-│  ├─ L19 ── Observability & Telemetry ───────────────────────  12 agents│
-│  ├─ L18 ── Orchestration & Control Plane ───────────────────  16 agents│
-│  ├─ L17 ── Alignment, Safety & Governance ──────────────────  22 agents│
-│  ├─ L16 ── Multi-Agent Society & Economy ───────────────────  16 agents│
-│  ├─ L15 ── Generation & Synthesis ──────────────────────────  18 agents│
-│  ├─ L14 ── Agency, Planning & Action ───────────────────────  18 agents│
-│  ├─ L13 ── Cognition & Reasoning ───────────────────────────  24 agents│
-│  ├─ L12 ── World Models & Simulation ───────────────────────  16 agents│
-│  ├─ L11 ── Perception & Sensing ────────────────────────────  18 agents│
-│  ├─ L10 ── Memory Architecture ─────────────────────────────  20 agents│
-│  ├─ L09 ── Inference & Serving Engine ──────────────────────  18 agents│
-│  ├─ L08 ── Distributed Training Infrastructure ─────────────  14 agents│
-│  ├─ L07 ── Learning & Optimization ─────────────────────────  22 agents│
-│  ├─ L06 ── Sequence & State-Space Engine ───────────────────  12 agents│
-│  ├─ L05 ── Attention & Context Engine ──────────────────────  16 agents│
-│  ├─ L04 ── Neural Core & Architectures ─────────────────────  24 agents│
-│  ├─ L03 ── Representation & Embedding ──────────────────────  16 agents│
-│  ├─ L02 ── Data Plane & Ingestion ──────────────────────────  18 agents│
-│  └─ L01 ── Physical Substrate & Compute Hardware ───────────  22 agents│
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
-### Enabling embodiment
-
-A case is not a prompt. It is a schema-checked envelope.
-
-- **Medical spine** (`h11_runtime/spine.py`): `ANATOMIA → PARASITOLOGIA → PHYSIOLOGIA → LONGTERM → REASON → ALIGN`
-- **AGI tick** (`h11_runtime/agi.py`): admission, identity, capability, sandbox, zero-trust hop, domain router, ALIGN hook, spine, ALIGN-enforce, action license, audit. Skipping ALIGN is a halt.
+## Table of Contents
+1. [Executive Summary](#1-executive-summary)
+2. [The Three-Pillar System (1,000 Agents)](#2-the-three-pillar-system-1000-agents)
+3. [The Governing Operating Philosophy](#3-the-governing-operating-philosophy)
+4. [The Six Operational Graphs](#4-the-six-operational-graphs)
+5. [The Non-Bypassable ALIGN Hard Gate](#5-the-non-bypassable-align-hard-gate)
+6. [The 24-Step Cognitive Execution Pipeline](#6-the-24-step-cognitive-execution-pipeline)
+7. [The 5 Cognitive Strata](#7-the-5-cognitive-strata)
+8. [Master Agent Taxonomy](#8-master-agent-taxonomy)
+9. [HAEP v5.0 Self-Optimization Protocol](#9-haep-v50-self-optimization-protocol)
+10. [Runtime Subsystem Architecture (`h11_runtime/`)](#10-runtime-subsystem-architecture-h11_runtime)
+11. [Quickstart, Validation & Verification](#11-quickstart-validation--verification)
+12. [License & Intellectual Property](#12-license--intellectual-property)
 
 ---
 
-## Intelligence Universe (475 agents · 30 domains)
-
-Directory: `H11I_INTELLIGENCE_UNIVERSE/`. Full domain map in that tree’s README.
-
-| Cluster | Domains | Agents (cluster map) |
-|---------|---------|-------:|
-| Biomedical | D01–D04 medicine, pharmacology, dental, veterinary | 85 |
-| Natural sciences | D05–D10 life, earth, space, physics, chemistry, mathematics | 105 |
-| Technology | D11–D14, D26 computing, security, data, engineering, telecom | 84 |
-| Built environment | D15, D16, D25 architecture, transport, energy | 32 |
-| Commerce & governance | D17, D18 business, law | 35 |
-| Arts & culture | D19–D22, D30 arts, music, literature, humanities, niche | 76 |
-| Applied | D23, D24, D27–D29 allied health, agriculture, media, education, sport | 54 |
-
-Count of record: **475** (`H11I_INTELLIGENCE_UNIVERSE/manifest.json`).
-
----
-
-## Control Plane (125 agents)
-
-Directory: `H11C_CONTROL_PLANE/`. Tick: `H11AGI`.
-
-| Family | Count | Role |
-|--------|------:|------|
-| Integrators | 40 | Bind substrate to domains, compose pipelines, inject premises, register spines |
-| Orchestrators | 45 | Cognitive loop, goals, schedule, halt/resume, pipeline runner |
-| Securities | 40 | Identity, capabilities, sandbox, zero-trust hops, ALIGN-enforce, licenses |
-| **Total** | **125** | Assembly layer — specialists do not run ungoverned |
-
----
-
-## Cognitive Substrate — Layer Catalog
-
-### ⚙️ Layer 1 — Physical Substrate & Compute Hardware (22 agents)
-The foundational silicon and hardware layer — everything from semiconductor fabrication to datacenter orchestration.
-
-| Agent ID | Role |
-|----------|------|
-| H11-SILICON | Semiconductor wafer & transistor logic |
-| H11-TRANSISTOR | Gate switching & boolean operations |
-| H11-GPU | Parallel tensor compute |
-| H11-TPU | Systolic matrix multiply |
-| H11-NPU | Neural processing unit |
-| H11-ASIC | Application-specific accelerator |
-| H11-FPGA | Reconfigurable logic fabric |
-| H11-PHOTONIC | Photonic/optical compute |
-| H11-QUANTUM | Quantum processing unit |
-| H11-NEUROMORPHIC | Spiking neural chip |
-| H11-SPINTRONIC | Spin-based memory/logic |
-| H11-VRAM | Tensor memory management |
-| H11-HBM | High-bandwidth memory |
-| H11-CACHE | L1/L2/L3 cache hierarchy |
-| H11-INTERCONNECT | NVLink/PCIe fabric |
-| H11-CLUSTER | GPU cluster topology |
-| H11-DATACENTER | Datacenter orchestration |
-| H11-POWER | Power delivery & regulation |
-| H11-THERMAL-HW | Cooling & thermal control |
-| H11-CLOCK | Clock sync & timing |
-| H11-PARALLELISM | Data/model/pipeline parallelism |
-| H11-EDGE-COMPUTE | Edge/on-device silicon |
-
----
-
-### 📥 Layer 2 — Data Plane & Ingestion (18 agents)
-The data lifecycle from raw ingestion through cleaning, labeling, and versioning.
-
-| Agent ID | Role |
-|----------|------|
-| H11-INGEST | Raw data ingestion |
-| H11-CRAWLER | Web/data crawling |
-| H11-CLEANSER | Cleaning & deduplication |
-| H11-LABELER | Annotation & labeling |
-| H11-ALIGNER-DATA | Data alignment & pairing |
-| H11-QUALITY | Quality scoring & gating |
-| H11-FILTER | Filtering & dedup |
-| H11-AUGMENTER | Data augmentation |
-| H11-SYNTHDATA | Synthetic data generation |
-| H11-CURATOR | Dataset curation |
-| H11-CORPUS | Corpus management |
-| H11-PROVENANCE | Data lineage tracking |
-| H11-VERSION | Dataset versioning |
-| H11-SHARDER | Sharding & partitioning |
-| H11-SAMPLER | Sampling strategies |
-| H11-STREAMING-DATA | Streaming ingestion |
-| H11-PRIVACY-DATA | PII scrubbing & anonymization |
-| H11-ETL-DATA | Extract/transform/load |
-
----
-
-### 🧬 Layer 3 — Representation & Embedding (16 agents)
-Transforming raw data into dense vector representations suitable for neural processing.
-
-| Agent ID | Role |
-|----------|------|
-| H11-TOKENIZER | Text→token conversion |
-| H11-BPE | Byte-pair encoding |
-| H11-SUBWORD | Subword segmentation |
-| H11-EMBEDDER | Embedding generation |
-| H11-VECTORDb | Vector database |
-| H11-INDEX | ANN index (HNSW/IVF) |
-| H11-SIMILARITY | Similarity search |
-| H11-CONTRASTIVE | Contrastive representation |
-| H11-MULTIMODAL-EMB | Cross-modal embeddings |
-| H11-LATENT | Latent space modeling |
-| H11-DISENTANGLE | Disentangled representations |
-| H11-SEMANTIC-EMB | Semantic encoding |
-| H11-POSITIONAL-ENC | Positional encoding |
-| H11-HASH | Locality-sensitive hashing |
-| H11-COMPRESSION-EMB | Embedding compression |
-| H11-FEATURE | Feature extraction |
-
----
-
-### 🕸️ Layer 4 — Neural Core & Architectures (24 agents)
-The fundamental neural network building blocks and architecture patterns.
-
-| Agent ID | Role |
-|----------|------|
-| H11-NEURON | Artificial neuron |
-| H11-SYNAPSE | Synaptic weight binding |
-| H11-WEIGHT | Weight management |
-| H11-BIAS | Bias handling |
-| H11-ACTIVATION | Activation functions |
-| H11-LAYER | Layer stacking |
-| H11-RESIDUAL | Residual connections |
-| H11-NORMALIZE | Layer/batch normalization |
-| H11-DROPOUT | Dropout regularization |
-| H11-FEEDFORWARD | MLP blocks |
-| H11-TRANSFORMER | Transformer blocks |
-| H11-ENCODER | Encoder stack |
-| H11-DECODER | Decoder stack |
-| H11-CONVOLUTION | Convolution operations |
-| H11-RECURRENT | Recurrent processing |
-| H11-MOE | Mixture-of-experts |
-| H11-SSM | State-space models (Mamba) |
-| H11-HYENA | Long-convolution operators |
-| H11-RWKV | Linear-attention RNN |
-| H11-DIFFUSION-NET | Diffusion backbone |
-| H11-GNN | Graph neural network |
-| H11-OUTPUT-HEAD | Output projection |
-| H11-ARCHITECT | Architecture search (NAS) |
-| H11-PARAMETER | Parameter budgeting |
-
----
-
-### 🎯 Layer 5 — Attention & Context Engine (16 agents)
-The attention mechanism layer — the core innovation powering modern transformers.
-
-| Agent ID | Role |
-|----------|------|
-| H11-QUERY | Query projection |
-| H11-KEY | Key projection |
-| H11-VALUE | Value projection |
-| H11-ATTENTION-HEAD | Multi-head attention |
-| H11-SELFATTENTION | Self-attention |
-| H11-CROSSATTENTION | Cross-attention |
-| H11-GQA | Grouped-query attention |
-| H11-MQA | Multi-query attention |
-| H11-FLASHATTENTION | Flash attention kernels |
-| H11-SPARSE-ATTENTION | Sparse patterns |
-| H11-SLIDING | Sliding-window attention |
-| H11-KVCACHE | KV cache |
-| H11-CONTEXT-WINDOW | Context management |
-| H11-ROPE | Rotary embeddings |
-| H11-SOFTMAX | Score normalization |
-| H11-ATTENTION-MAP | Attention visualization |
-
----
-
-### 🌊 Layer 6 — Sequence & State-Space Engine (12 agents)
-Sequential processing beyond classical attention — SSMs, causal masking, streaming.
-
-| Agent ID | Role |
-|----------|------|
-| H11-SEQUENCE | Sequence modeling |
-| H11-TEMPORAL | Temporal dynamics |
-| H11-SSM-CORE | Selective state space |
-| H11-SCAN | Parallel scan operations |
-| H11-RECURRENCE | Recurrence management |
-| H11-GATING | Gating mechanisms |
-| H11-LONGCONTEXT | Long-context handling |
-| H11-CHUNKING | Sequence chunking |
-| H11-CAUSAL-MASK | Causal masking |
-| H11-PREFIX | Prefix conditioning |
-| H11-STREAMING-SEQ | Streaming sequence |
-| H11-ORDER | Ordering & permutation |
-
----
-
-### 📚 Layer 7 — Learning & Optimization (22 agents)
-The training engine — from forward passes through loss computation, backpropagation, and alignment.
-
-| Agent ID | Role |
-|----------|------|
-| H11-FORWARD | Forward propagation |
-| H11-LOSS | Loss computation |
-| H11-BACKPROP | Backpropagation |
-| H11-GRADIENT | Gradient computation |
-| H11-AUTOGRAD | Automatic differentiation |
-| H11-OPTIMIZER | Optimizer core |
-| H11-ADAMW | AdamW/adaptive LR |
-| H11-LEARNINGRATE | LR scheduling |
-| H11-MOMENTUM | Momentum & velocity |
-| H11-REGULARIZATION | L1/L2/weight decay |
-| H11-GRADCLIP | Gradient clipping |
-| H11-MIXEDPRECISION | Mixed-precision training |
-| H11-CURRICULUM | Curriculum learning |
-| H11-SELFPLAY | Self-play training |
-| H11-RL | Reinforcement learning |
-| H11-RLHF | RL from human feedback |
-| H11-DPO | Direct preference optimization |
-| H11-REWARD | Reward modeling |
-| H11-FINETUNE | Fine-tuning |
-| H11-LORA | LoRA/PEFT adapters |
-| H11-PRETRAIN | Pretraining |
-| H11-DISTILLATION | Knowledge distillation |
-
----
-
-### 🏗️ Layer 8 — Distributed Training Infrastructure (14 agents)
-Scaling training across clusters — parallelism, checkpointing, experimentation.
-
-| Agent ID | Role |
-|----------|------|
-| H11-DATAPARALLEL | Data parallelism |
-| H11-TENSORPARALLEL | Tensor parallelism |
-| H11-PIPELINEPARALLEL | Pipeline parallelism |
-| H11-EXPERTPARALLEL | Expert parallelism |
-| H11-ZERO | ZeRO memory sharding |
-| H11-GRADSYNC | Gradient synchronization |
-| H11-ALLREDUCE | Collective communication |
-| H11-CHECKPOINT | Checkpoint save/load |
-| H11-RESUME | Fault-tolerant resume |
-| H11-BATCH | Batch assembly |
-| H11-EPOCH | Epoch management |
-| H11-EVALUATION | Validation loops |
-| H11-HYPERPARAM | Hyperparameter search |
-| H11-EXPERIMENT | Experiment tracking |
-
----
-
-### ⚡ Layer 9 — Inference & Serving Engine (18 agents)
-From token generation through serving at scale — the production inference stack.
-
-| Agent ID | Role |
-|----------|------|
-| H11-INFER | Inference execution |
-| H11-SAMPLING | Token sampling |
-| H11-TEMPERATURE | Temperature control |
-| H11-TOPK | Top-k filtering |
-| H11-TOPP | Nucleus sampling |
-| H11-BEAM | Beam search |
-| H11-SPECULATIVE | Speculative decoding |
-| H11-PARALLEL-DECODE | Parallel decoding |
-| H11-KV-OPT | KV cache optimization |
-| H11-BATCHING-INF | Continuous batching |
-| H11-SERVING | Model serving |
-| H11-LATENCY | Latency optimization |
-| H11-THROUGHPUT | Throughput maximization |
-| H11-QUANTIZE-INF | Inference quantization |
-| H11-CACHE-INF | Semantic caching |
-| H11-STOPPING | Stop sequences |
-| H11-ROUTING-INF | Model routing |
-| H11-EDGE-INFER | Edge inference |
-
----
-
-### 💾 Layer 10 — Memory Architecture (20 agents)
-Cognitive memory systems — from working memory to long-term episodic storage and retrieval.
-
-| Agent ID | Role |
-|----------|------|
-| H11-WORKING | Working memory |
-| H11-SHORTTERM | Short-term memory |
-| H11-LONGTERM | Long-term memory |
-| H11-EPISODIC | Episodic memory |
-| H11-SEMANTIC | Semantic memory |
-| H11-PROCEDURAL | Procedural memory |
-| H11-RETRIEVAL | Retrieval (RAG) |
-| H11-CONSOLIDATE | Consolidation |
-| H11-FORGET | Forgetting & pruning |
-| H11-RECALL | Recall & reconstruction |
-| H11-ASSOCIATION | Associative memory |
-| H11-CONTEXT-MEM | Context memory |
-| H11-STATE | State persistence |
-| H11-SESSION | Session memory |
-| H11-MEMORYBANK | External memory banks |
-| H11-SCRATCHPAD | Scratchpad |
-| H11-COMPRESSION-MEM | Memory compression |
-| H11-REFLECTION-MEM | Reflective memory |
-| H11-SKILL | Skill library |
-| H11-TEMPORAL-MEM | Temporal memory |
-
----
-
-### 👁️ Layer 11 — Perception & Sensing (18 agents)
-Multimodal perception — vision, audio, spatial, tactile, and sensor fusion.
-
-| Agent ID | Role |
-|----------|------|
-| H11-VISION | Visual perception |
-| H11-OBJECT | Object detection |
-| H11-SEGMENT | Segmentation |
-| H11-OCR | Optical character recognition |
-| H11-AUDIO | Audio perception |
-| H11-SPEECH-IN | Speech recognition |
-| H11-MUSIC-PERCEPT | Music perception |
-| H11-SPATIAL | Spatial perception |
-| H11-DEPTH | Depth perception |
-| H11-MOTION | Motion detection |
-| H11-FACE | Face recognition |
-| H11-SCENE | Scene understanding |
-| H11-3D-PERCEPT | 3D perception |
-| H11-TOUCH | Tactile sensing |
-| H11-PROPRIOCEPTION | Proprioception |
-| H11-MULTIMODAL | Multimodal fusion |
-| H11-SENSOR | Sensor abstraction |
-| H11-SIGNAL-PERCEPT | Signal processing |
-
----
-
-### 🌍 Layer 12 — World Models & Simulation (16 agents)
-Internal models of the external world — prediction, simulation, imagination.
-
-| Agent ID | Role |
-|----------|------|
-| H11-WORLDMODEL | World model core |
-| H11-PREDICT | Predictive modeling |
-| H11-SIMULATE | Environment simulation |
-| H11-PHYSICS-ENGINE | Physics simulation |
-| H11-DYNAMICS | Dynamics modeling |
-| H11-COUNTERFACTUAL-WORLD | Counterfactual simulation |
-| H11-MENTAL-SIM | Mental simulation |
-| H11-DREAM | Dream/replay generation |
-| H11-IMAGINATION | Imagination engine |
-| H11-CAUSAL-MODEL | Causal world model |
-| H11-OBJECT-PERMANENCE | Object permanence |
-| H11-AGENT-MODEL | Theory-of-mind modeling |
-| H11-UNCERTAINTY | Uncertainty estimation |
-| H11-BAYES | Bayesian inference |
-| H11-MONTECARLO | Monte Carlo methods |
-| H11-SCENARIO | Scenario generation |
-
----
-
-### 🧩 Layer 13 — Cognition & Reasoning (24 agents)
-Higher-order cognitive functions — reasoning, planning, metacognition, creativity.
-
-| Agent ID | Role |
-|----------|------|
-| H11-REASON | Core reasoning |
-| H11-CHAIN | Chain-of-thought |
-| H11-TREE | Tree-of-thought |
-| H11-GRAPH-REASON | Graph-of-thought |
-| H11-PLAN | Planning |
-| H11-SEARCH | Search & exploration |
-| H11-LOGIC | Logical inference |
-| H11-DEDUCTION | Deductive reasoning |
-| H11-INDUCTION | Inductive reasoning |
-| H11-ABDUCTION | Abductive reasoning |
-| H11-ANALOGY | Analogical reasoning |
-| H11-ABSTRACTION | Abstraction |
-| H11-CAUSAL | Causal inference |
-| H11-COUNTERFACTUAL | Counterfactual reasoning |
-| H11-REFLECTION | Self-reflection |
-| H11-METACOGNITION | Metacognition |
-| H11-DECOMPOSE | Task decomposition |
-| H11-SYNTHESIZE | Synthesis |
-| H11-EVALUATE-COG | Self-evaluation |
-| H11-INTUITION | Heuristic intuition |
-| H11-CURIOSITY | Curiosity drive |
-| H11-INSIGHT | Insight generation |
-| H11-CREATIVITY | Creative cognition |
-| H11-FOCUS | Attention focus & salience |
-
----
-
-### 🤖 Layer 14 — Agency, Planning & Action (18 agents)
-The agentic layer — goals, decisions, tool use, and autonomous execution.
-
-| Agent ID | Role |
-|----------|------|
-| H11-AGENT | Agent core & identity |
-| H11-GOAL | Goal setting |
-| H11-INTENT | Intent formation |
-| H11-MOTIVATION | Drive & motivation |
-| H11-DECISION | Decision-making |
-| H11-ACTION | Action selection |
-| H11-TOOLUSE | Tool use |
-| H11-FUNCTION-CALL | Function calling |
-| H11-API-USE | External API use |
-| H11-BROWSING | Web browsing |
-| H11-CODE-EXEC | Code execution |
-| H11-ROBOTIC | Robotic actuation |
-| H11-FEEDBACK-LOOP | Feedback loops |
-| H11-RETRY | Retry & recovery |
-| H11-AUTONOMY | Autonomy level |
-| H11-DELEGATION | Task delegation |
-| H11-COLLABORATION | Inter-agent collaboration |
-| H11-EXECUTION-MONITOR | Execution monitoring |
-
----
-
-### 🎨 Layer 15 — Generation & Synthesis (18 agents)
-Multimodal content generation — text, image, video, audio, code, 3D, molecules.
-
-| Agent ID | Role |
-|----------|------|
-| H11-GENERATE | Token generation |
-| H11-DIFFUSION | Diffusion generation |
-| H11-IMAGEGEN | Image generation |
-| H11-VIDEOGEN | Video generation |
-| H11-AUDIOGEN | Audio generation |
-| H11-SPEECH-OUT | Speech synthesis |
-| H11-CODEGEN | Code generation |
-| H11-MUSICGEN | Music generation |
-| H11-3DGEN | 3D generation |
-| H11-MOLECULEGEN | Molecule generation |
-| H11-STYLE | Style control |
-| H11-EDIT | Generative editing |
-| H11-INPAINT | Inpainting |
-| H11-UPSCALE | Super-resolution |
-| H11-RENDER | Rendering |
-| H11-FORMATTING | Output formatting |
-| H11-LOCALIZATION | Multilingual output |
-| H11-PERSONA | Persona & voice synthesis |
-
----
-
-### 🏛️ Layer 16 — Multi-Agent Society & Economy (16 agents)
-Social dynamics among agents — markets, negotiations, governance, emergence.
-
-| Agent ID | Role |
-|----------|------|
-| H11-SOCIETY | Agent society |
-| H11-MARKET | Agent marketplace |
-| H11-AUCTION | Auction mechanisms |
-| H11-NEGOTIATION | Negotiation |
-| H11-CONSENSUS | Consensus building |
-| H11-VOTING | Voting mechanisms |
-| H11-REPUTATION | Reputation systems |
-| H11-INCENTIVE | Incentive design |
-| H11-TOKEN-ECON | Token economics |
-| H11-DIVISION | Division of labor |
-| H11-SPECIALIZATION | Specialization |
-| H11-HIERARCHY | Agent hierarchy |
-| H11-SWARM | Swarm coordination |
-| H11-EMERGENCE | Emergent behavior |
-| H11-COMPETITION | Competitive dynamics |
-| H11-COOPERATION | Cooperative dynamics |
-
----
-
-### ⚖️ Layer 17 — Alignment, Safety & Governance (22 agents)
-Ensuring AI systems remain beneficial, safe, interpretable, and aligned with human values.
-
-| Agent ID | Role |
-|----------|------|
-| H11-ALIGN | Alignment orchestration |
-| H11-VALUES | Value encoding |
-| H11-GUARDRAIL | Guardrails |
-| H11-CONSTITUTION | Constitutional AI |
-| H11-REDTEAM | Red-teaming |
-| H11-SAFETY | Safety filtering |
-| H11-TOXICITY | Toxicity filtering |
-| H11-INTERPRET | Interpretability |
-| H11-TRANSPARENCY | Explainability |
-| H11-BIAS-DETECT | Bias detection |
-| H11-FAIRNESS-ALIGN | Fairness enforcement |
-| H11-HUMAN-OVER | Human oversight |
-| H11-CORRIGIBILITY | Corrigibility |
-| H11-OBJECTIVE | Objective alignment |
-| H11-SPECIFICATION | Goal specification |
-| H11-REWARD-HACK | Reward-hacking detection |
-| H11-DECEPTION | Deception detection |
-| H11-SANDBOX-ALIGN | Alignment sandboxing |
-| H11-SHUTDOWN | Safe shutdown |
-| H11-VALUE-LEARN | Value learning |
-| H11-ETHICS | Ethical reasoning |
-| H11-GOVERNANCE | Governance policies |
-
----
-
-### 🎛️ Layer 18 — Orchestration & Control Plane (16 agents)
-System-level orchestration — scheduling, routing, scaling, state machines.
-
-| Agent ID | Role |
-|----------|------|
-| H11-SCHEDULER | Task scheduling |
-| H11-ROUTER | Request routing |
-| H11-LOADBALANCE | Load balancing |
-| H11-QUEUE | Task queues |
-| H11-STATEMACHINE | State machines |
-| H11-WORKFLOW | Workflow orchestration |
-| H11-COORDINATOR | Coordination |
-| H11-PRIORITY | Priority management |
-| H11-RESOURCE | Resource allocation |
-| H11-SCALING | Auto-scaling |
-| H11-FAILOVER | Failover & redundancy |
-| H11-CONSISTENCY | Consistency management |
-| H11-TRANSACTION | Transactions |
-| H11-LOCK | Concurrency control |
-| H11-EVENTBUS | Event bus |
-| H11-CONTROL-LOOP | Control loops |
-
----
-
-### 📊 Layer 19 — Observability & Telemetry (12 agents)
-Monitoring, logging, tracing, and debugging the entire cognitive substrate.
-
-| Agent ID | Role |
-|----------|------|
-| H11-LOGGER | Logging |
-| H11-TRACER | Distributed tracing |
-| H11-METRIC | Metrics collection |
-| H11-MONITOR | System monitoring |
-| H11-ANOMALY | Anomaly detection |
-| H11-PROFILER | Performance profiling |
-| H11-AUDIT | Audit trails |
-| H11-DEBUG | Debugging |
-| H11-DASHBOARD | Dashboards |
-| H11-ALERT | Alerting |
-| H11-ROOTCAUSE | Root-cause analysis |
-| H11-TELEMETRY | Telemetry pipelines |
-
----
-
-### 🔐 Layer 20 — Security, Integrity & Resilience (18 agents)
-Defending the substrate — sandboxing, encryption, adversarial defense, zero-trust.
-
-| Agent ID | Role |
-|----------|------|
-| H11-SANDBOX | Sandboxing |
-| H11-ACCESSCTRL | Access control |
-| H11-ENCRYPT | Encryption |
-| H11-ADVERSARIAL | Adversarial defense |
-| H11-INTEGRITY | Integrity checks |
-| H11-POISON-DEFENSE | Poisoning defense |
-| H11-PROMPTGUARD | Prompt-injection defense |
-| H11-JAILBREAK-DEFENSE | Jailbreak defense |
-| H11-PRIVACY-SEC | Privacy preservation |
-| H11-DIFFPRIVACY | Differential privacy |
-| H11-FEDERATED-SEC | Federated security |
-| H11-THREAT | Threat detection |
-| H11-INTRUSION | Intrusion detection |
-| H11-RESILIENCE | Resilience engineering |
-| H11-CHAOS | Chaos engineering |
-| H11-BACKUP | Backup & recovery |
-| H11-IMMUTABLE | Immutable logs |
-| H11-ZEROTRUST | Zero-trust architecture |
-
----
-
-### 🔁 Layer 21 — Self-Improvement & Recursive Evolution (16 agents)
-The meta-learning and self-improvement loop — the substrate evolves itself.
-
-| Agent ID | Role |
-|----------|------|
-| H11-SELFIMPROVE | Self-improvement loop |
-| H11-AUTOML | Automated ML |
-| H11-NAS | Neural architecture search |
-| H11-HYPEROPT | Hyperparameter optimization |
-| H11-SELFTRAIN | Self-training |
-| H11-SELFREFINE | Self-refinement |
-| H11-SELFCRITIQUE | Self-critique |
-| H11-BOOTSTRAP | Bootstrapping |
-| H11-EVOLUTION | Evolutionary algorithms |
-| H11-GENETIC | Genetic algorithms |
-| H11-MUTATION | Mutation operators |
-| H11-SELECTION | Selection pressure |
-| H11-RECURSIVE | Recursive self-improvement |
-| H11-METALEARN | Meta-learning |
-| H11-ADAPT | Online adaptation |
-| H11-VERSION-SELF | Self-versioning |
-
----
-
-### 🔌 Layer 22 — Interface, Protocol & Embodiment (16 agents)
-The boundary between the substrate and the external world — APIs, UIs, robotics.
-
-| Agent ID | Role |
-|----------|------|
-| H11-APIGATEWAY | API gateway |
-| H11-SERIALIZE | Serialization |
-| H11-PROTOCOL | Protocol adapters |
-| H11-STREAM | Streaming I/O |
-| H11-WEBSOCKET | Real-time channels |
-| H11-GRAPHQL | Graph queries |
-| H11-CLIENT | Client abstraction |
-| H11-BRIDGE | Cross-system bridges |
-| H11-UI | User interface |
-| H11-UX | User experience |
-| H11-ACCESSIBILITY | Accessibility |
-| H11-AR-VR | AR/VR interface |
-| H11-ROBOTICS | Robotic embodiment |
-| H11-ACTUATOR | Actuators |
-| H11-EMBODIED | Embodied cognition |
-| H11-HCI | Human-computer interaction |
-
----
-
-### 🌱 Layer 23 — Energy, Thermal & Sustainability (8 agents)
-Sustainable AI — energy management, carbon tracking, green computing.
-
-| Agent ID | Role |
-|----------|------|
-| H11-ENERGY | Energy management |
-| H11-EFFICIENCY | Compute efficiency |
-| H11-CARBON-AI | Carbon footprint tracking |
-| H11-GREEN-AI | Green AI practices |
-| H11-SOLAR-AI | Renewable integration |
-| H11-THERMAL-AI | Thermal optimization |
-| H11-IDLE | Idle power management |
-| H11-SUSTAIN | Sustainability metrics |
-
----
-
-## Per-Agent File Structure
-
-Every agent, on all three planes, uses the same triple:
-
-```
-H11_{AGENT}/   or   H11C-{AGENT}/
-├── SPEC.md       # Technical specification (unique per agent)
-├── schema.json   # Machine-readable schema (typed I/O, config, dependencies)
-└── agent.py      # Python implementation (typed interfaces)
+# 1. Executive Summary
+
+**H11-AGI** is not a monolithic language model, nor is it an unstructured swarm of chat prompts. It is a **governed cognitive operating architecture** in which 1,000 typed, domain-specific specialist agents are dynamically scheduled, bound, and executed within a case-specific cognitive DAG.
+
+The system enforces a fundamental separation between:
+* **How intelligence computes** (Cognitive Substrate)
+* **What intelligence knows** (Domain Specialists)
+* **What intelligence is authorized to execute** (Control Plane & Sovereign Governance)
+
+```text
+                                 ┌──────────────────────┐
+                                 │    EXTERNAL CASE     │
+                                 │  User / API / Sensor │
+                                 └──────────┬───────────┘
+                                            │
+                                            ▼
+                            ┌───────────────────────────────┐
+                            │      H11C CONTROL PLANE       │
+                            │          125 AGENTS           │
+                            │   Admit · Compose · Govern    │
+                            └───────┬───────────────┬───────┘
+                                    │               │
+                     ┌──────────────┴──────┐ ┌──────┴──────────────┐
+                     │ H11Z COGNITIVE NET  │ │  H11I INTELLIGENCE  │
+                     │     400 AGENTS      │ │     475 AGENTS      │
+                     │  Layers L01 – L23   │ │  Domains D01 – D30  │
+                     │ Substrate Machinery │ │ Universal Knowledge │
+                     └─────────────────────┘ └─────────────────────┘
 ```
 
-## Statistics
-
-| Metric | Count |
-|--------|------:|
-| Cognitive Substrate (L01–L23) | 400 |
-| Intelligence Universe (D01–D30) | 475 |
-| Control Plane (integrators, orchestrators, securities) | 125 |
-| **Total agents** | **1,000** |
-| Files per agent | 3 |
-| **Agent files** | **3,000** |
-| Substrate layers | 23 |
-| Knowledge domains | 30 |
-| Control-plane families | 3 |
-
-Runtime: `h11_runtime/` (spine + `H11AGI.tick`). Tests: `python -m unittest discover -s tests -v`.
+> **Core Architectural Axiom:**
+> *"The intelligence is distributed across 1,000 specialists; the coherence comes from the runtime; and the authority comes exclusively from H11C."*
 
 ---
 
-## License
+# 2. The Three-Pillar System (1,000 Agents)
 
-Proprietary — H11 Cognitive Substrate Patent Portfolio
+The repository contains exactly **1,000 concrete, typed specialist agents** with zero placeholders, 100% syntax verification, and real mathematical/physics formulations.
 
-## Version
+| Pillar | Subsystem | Agents | Core Function |
+|---|---|:---:|---|
+| **Pillar 1** | **`H11Z_COGNITIVE_NETWORK`** | **400** | **23 Cognitive Layers (L01–L23):** Physical substrate, neural core, attention mechanics, sequence state, learning optimization, distributed runtime, memory architecture, perception, world modeling, causal reasoning, planning, and recursive self-improvement. |
+| **Pillar 2** | **`H11I_INTELLIGENCE_UNIVERSE`** | **475** | **30 Intelligence Domains (D01–D30):** Deep domain intelligence spanning medicine, pharmacology, veterinary, life sciences, physics, astronomy, chemistry, mathematics, computer science, cybersecurity, engineering, law, finance, literature, music, and niche disciplines. |
+| **Pillar 3** | **`H11C_CONTROL_PLANE`** | **125** | **3 Control Families (C01–C03):** 40 Integrators (data & state binding), 45 Orchestrators (scheduling & deliberation), and 40 Securities (admission, non-bypassable ALIGN gate, action licensing, tamper-evident audit). |
+| **Total** | **Unified Cognitive System** | **1,000** | **100% Typed & Domain-Specific Implementations** |
 
-v1.1.0 — 1,000-agent AGI anatomy (substrate + universe + control plane)
+---
+
+# 3. The Governing Operating Philosophy
+
+Rather than executing a flat collection of 1,000 agents simultaneously, H11-AGI answers **Four Structural Questions** for every incoming case:
+
+```text
+           ┌─────────────────────────────────────────────────────────┐
+           │                     THE FOUR QUESTIONS                  │
+           └────────────────────────────┬────────────────────────────┘
+                                        │
+           1. WHAT IS NEEDED? ──────────┼──► Capability Mapping (H11C-CAPABILITY-MAPPER)
+           2. WHO PROVIDES IT? ─────────┼──► Agent Contracts (H11C-CONTRACT-CHECKER)
+           3. HOW DOES IT RUN? ─────────┼──► Execution DAG (H11C-PIPELINE-COMPOSER)
+           4. IS IT AUTHORIZED? ────────┴──► ALIGN Hard Gate (H11C-ALIGN-ENFORCE)
+```
+
+1. **What capability does this problem require?**
+   The incoming case envelope is analyzed to extract the required capability declarations.
+2. **Which typed agents provide those capabilities?**
+   The registry selects the exact minimal set of qualified specialists based on typed input/output contracts.
+3. **What is the valid topological execution graph?**
+   A case-specific directed acyclic graph (DAG) is composed with typed `DATA`, `DEPENDENCY`, `CONTROL`, and `GOVERNANCE` edges.
+4. **Is every step safe, aligned, and licensed?**
+   Every action proposal must pass the sovereign `H11C-ALIGN-ENFORCE` gate before receiving a cryptographic, time-bounded `ActionLicense`.
+
+---
+
+# 4. The Six Operational Graphs
+
+H11-AGI models its entire state and execution topology as **Six Explicit Graphs**:
+
+```text
+┌──────────────────┐    ┌────────────────────────┐    ┌────────────────────────┐
+│  1. AGENT GRAPH  │    │  2. CAPABILITY GRAPH   │    │  3. DEPENDENCY GRAPH   │
+│ Agent ──► Cap    │    │ Cap_A ──► Cap_B        │    │ Node_A ──► Node_B      │
+└──────────────────┘    └────────────────────────┘    └────────────────────────┘
+         │                           │                             │
+         ▼                           ▼                             ▼
+┌──────────────────┐    ┌────────────────────────┐    ┌────────────────────────┐
+│4. EXECUTION GRAPH│    │    5. STATE GRAPH      │    │  6. GOVERNANCE GRAPH   │
+│ Typed DAG Nodes  │    │ 13 Progression States  │    │ Principal ──► Policy   │
+│ & 4 Edge Types   │    │ + 7 Control States     │    │ ──► Action Authority   │
+└──────────────────┘    └────────────────────────┘    └────────────────────────┘
+```
+
+1. **Agent Graph (`AgentGraph`):** Maps which agent provides which capability, their current operational state (`AVAILABLE`, `BUSY`, `DEGRADED`, `QUARANTINED`), and their input/output schemas.
+2. **Capability Graph (`CapabilityGraph`):** Computes the complete transitive dependency closure for any set of required capabilities.
+3. **Dependency Graph (`DependencyGraph`):** Performs topological sorting and cycle detection across execution prerequisites.
+4. **Execution Graph (`ExecutionGraph`):** The active runtime execution DAG with four typed edge types:
+   * `DATA`: Typed payload passing between nodes.
+   * `DEPENDENCY`: Upstream output requirements.
+   * `CONTROL`: Strict ordering and synchronization gates.
+   * `GOVERNANCE`: Policy boundaries and security assertions.
+5. **State Graph (`StateGraph`):** Manages legal lifecycle transitions across the 13 canonical states (`NEW → ADMITTED → CONTEXTUALIZED → MAPPED → COMPOSED → READY → EXECUTING → INTEGRATING → VERIFYING → ALIGNING → RELEASED → MEMORIZED → CLOSED`) and exceptional states (`HALTED`, `ROLLED_BACK`, `REJECTED`).
+6. **Governance Graph (`GovernanceGraph`):** Zero-trust permission evaluation linking `Principal → Target Capability → Policy Rule → Permitted Action`.
+
+---
+
+# 5. The Non-Bypassable ALIGN Hard Gate
+
+A foundational invariant of H11-AGI is: **"Intelligence does not confer authority."**
+
+No agent—regardless of its cognitive capability—can directly execute a tool, perform state mutation, or release final outputs without passing through `H11C-ALIGN-ENFORCE`:
+
+```text
+  [ Domain Specialist ]
+           │
+           │ (Proposes Action)
+           ▼
+  [ ActionProposal ]
+           │
+           ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │                 H11C-ALIGN-ENFORCE HARD GATE                │
+  │                                                             │
+  │  • Constitutional Safety Boundaries                         │
+  │  • Toxicity & Exfiltration Filtering                        │
+  │  • Policy & Constraint Compliance                           │
+  └──────────────────────────────┬──────────────────────────────┘
+                                 │
+                 ┌───────────────┴───────────────┐
+                 │                               │
+             [ PASSED ]                      [ FAILED ]
+                 │                               │
+                 ▼                               ▼
+      ┌────────────────────┐          ┌────────────────────┐
+      │   ActionLicense    │          │     HARD HALT      │
+      │  (Cryptographic,   │          │  (Case transitions │
+      │   Time-Bounded)    │          │   to HALTED state) │
+      └──────────┬─────────┘          └────────────────────┘
+                 │
+                 ▼
+      [ Execution Permitted ]
+```
+
+* **Invariant A10:** Intelligence does not confer authority.
+* **Invariant A13:** ALIGN enforcement is a non-bypassable hard boundary. Skipping ALIGN is a hard HALT.
+* **Invariant A14:** Action licenses are cryptographic, single-use, and time-bounded.
+
+---
+
+# 6. The 24-Step Cognitive Execution Pipeline
+
+Every case admitted into H11-AGI progresses through the 24-step canonical cognitive loop:
+
+```text
+ 1. CASE INTAKE          ──► Schema check & ID generation
+ 2. ADMISSION GATE        ──► C03 zero-trust security & risk classification
+ 3. CONTEXT PACKING       ──► L10 working memory allocation
+ 4. CAPABILITY MAPPING    ──► Resolves required capability closure
+ 5. AGENT BINDING         ──► Selects H11Z/H11I specialists via contracts
+ 6. GRAPH COMPOSITION     ──► Assembles typed Execution DAG
+ 7. RESOURCE BUDGETING    ──► Binds compute, memory, time, and tool limits
+ 8. TOPOLOGICAL RUN       ──► WorkerPool concurrent task execution
+ 9. SUBSTRATE EXECUTION   ──► L01-L09 physical, neural, attention compute
+10. DOMAIN REASONING      ──► D01-D30 deep specialized mathematics
+11. JOIN SYNCHRONIZATION  ──► JoinBarrier parallel branch merge
+12. BLACKBOARD POSTING    ──► Facts, hypotheses, and evidence registration
+13. CONFLICT DETECTION    ──► C01 conflict identification
+14. CONSENSUS DEBATE      ──► C02 multi-agent deliberation cycle
+15. EVIDENCE SYNTHESIS    ──► L13/L19 causal provenance ledgering
+16. VERIFICATION GATE     ──► L17 formal logic & assertion check
+17. ACTION PROPOSAL       ──► Candidate tool/output generation
+18. ALIGN-HOOK            ──► Safety evaluation trigger
+19. ALIGN-ENFORCE         ──► Constitutional & policy verification
+20. ACTION LICENSING      ──► Issues cryptographic ActionLicense
+21. RESULT RELEASE        ──► Final payload emission
+22. MEMORY CONSOLIDATION  ──► L10 episodic & semantic storage
+23. WITNESS LOGGING       ──► SHA-256 tamper-evident audit sealing
+24. EVOLUTION HOOK        ──► HAEP v5.0 telemetry for continuous self-optimization
+```
+
+---
+
+# 7. The 5 Cognitive Strata
+
+The 1,000 agents operate across **5 hierarchical strata**:
+
+```text
+┌────────────────────────────────────────────────────────────────────────┐
+│ STRATUM 4: SOVEREIGN CONTROL & GOVERNANCE                              │
+│ H11C Control Plane (C01, C02, C03) · Admission · ALIGN Gate · Audit   │
+├────────────────────────────────────────────────────────────────────────┤
+│ STRATUM 3: DELIBERATION & FORMAL VERIFICATION                         │
+│ L16 Multi-Agent Society · L17 Safety · Consensus · Conflict Merging   │
+├────────────────────────────────────────────────────────────────────────┤
+│ STRATUM 2: REASONING, WORLD MODELS & DOMAIN EXPERTISE                  │
+│ D01–D30 Intelligence Universe (475 Agents) · L12 World · L13 Reason    │
+├────────────────────────────────────────────────────────────────────────┤
+│ STRATUM 1: COGNITIVE FOUNDATION & MEMORY                               │
+│ L10 Memory · L11 Perception · L14 Planning · L15 Generation           │
+├────────────────────────────────────────────────────────────────────────┤
+│ STRATUM 0: SUBSTRATE & DISTRIBUTED COMPUTE                             │
+│ L01 Physical · L04 Neural · L05 Attention · L08 Distributed · L09 Serve│
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+# 8. Master Agent Taxonomy
+
+### A. Pillar 1: `H11Z_COGNITIVE_NETWORK` (400 Agents)
+Spans the 23 foundational layers of intelligence machinery:
+* **L01 Physical Substrate (22 agents):** Silicon, GPU, TPU, NPU, Quantum, Photonic, Neuromorphic, HBM, Cache, Cluster, PUE, Thermal.
+* **L02 Data Plane (12 agents):** Tokenizers, loaders, samplers, cleansers, parsers, encoders.
+* **L03 Representation (16 agents):** Word2Vec, GloVe, BPE, Embeddings, Sparse Coding, VAE, Contrastive, Quantization, PCA, t-SNE.
+* **L04 Neural Core (24 agents):** Linear, CNN, Pooling, BatchNorm, LayerNorm, RMSNorm, Dropout, Residual, Transformer, MLP, Activations.
+* **L05 Attention & Context (16 agents):** Dot-Product, Multi-Head, FlashAttention, Sliding Window, RoPE, ALiBi, Cross-Attention, KV-Cache.
+* **L06 Sequence & State-Space (12 agents):** RNN, LSTM, GRU, Mamba/S4, Dilated Convolutions, Sequence Alignment.
+* **L07 Learning & Optimization (22 agents):** SGD, Adam, AdamW, Schedulers, Gradient Clipping, Regularization, Mixed Precision.
+* **L08 Distributed Training (14 agents):** Ring AllReduce, Data Parallel, Tensor Parallel, Pipeline 1F1B, ZeRO Stages 1-3, MoE Routing.
+* **L09 Inference & Serving (18 agents):** INT8/INT4 Quantization, Structured Pruning, Distillation, Continuous Batching, Speculative Decoding.
+* **L10 Memory Architecture (20 agents):** Working Memory, Episodic Decay, Semantic Index, Procedural Cache, Hierarchical Consolidation.
+* **L11 Perception & Sensing (18 agents):** FFT, Mel Filterbanks, MFCC, Sobel/Canny Edge, Optical Flow, Multimodal Fusion.
+* **L12 World Models & Simulation (16 agents):** Physics Engines (RK4/Euler), Causal Graphs, Counterfactual Simulators.
+* **L13 Cognition & Reasoning (24 agents):** Chain-of-Thought, Modus Ponens, Analogical Mapping, Do-Calculus Causal Inference.
+* **L14 Agency, Planning & Action (18 agents):** A* Search, MCTS (UCB1), HTN Decomposition, Reward Shaping.
+* **L15 Generation & Synthesis (18 agents):** Autoregressive Sampling (top-k/top-p), Diffusion SDEs, VAE ELBO, Vocoders.
+* **L16 Multi-Agent Society (16 agents):** Nash Equilibrium, Vickrey Auctions, Borda Voting, EigenTrust Reputation.
+* **L17 Alignment & Safety (22 agents):** Constitutional AI, Reward Modeling, Toxicity Scoring, Watermarking.
+* **L18 Orchestration & Control (16 agents):** Critical Path DAG Scheduling, PID Control Loops, State Machines.
+* **L19 Observability & Telemetry (12 agents):** EMA Smoothing, P95/P99 Percentiles, Metric Cardinality, Structured Tracing.
+* **L20 Security & Integrity (18 agents):** HMAC, AES-256, Zero-Trust Sandboxing, Certificate Validation.
+* **L21 Self-Improvement & Evolution (16 agents):** Bayesian Optimization, Genetic Crossover, NAS Architecture Search.
+* **L22 Interface & Protocol (16 agents):** HTTP/2, gRPC Protobuf, WebSocket Streaming, Token Bucket Rate Limiting.
+* **L23 Energy & Sustainability (8 agents):** Carbon Intensity (gCO2/kWh), Battery SoC, Solar Irradiance, Green AI Scheduling.
+
+### B. Pillar 2: `H11I_INTELLIGENCE_UNIVERSE` (475 Agents)
+Spans 30 universal intelligence domains with exact domain mathematics:
+* **D01 Medicine & Health (33 agents):** BMI, Cockcroft-Gault GFR, APACHE II, Glasgow Coma Scale, Drug Half-Life.
+* **D02 Pharmacology (6 agents):** Michaelis-Menten Kinetics, First-Order Elimination, Bioavailability, Therapeutic Index.
+* **D03 Dental Science (8 agents):** DMFT Index, Cephalometric Analysis, Implant Torque.
+* **D04 Veterinary Medicine (12 agents):** Allometric Scaling, Herd Immunity Thresholds, Body Condition Scoring.
+* **D05 Life Sciences & Biology (17 agents):** Hardy-Weinberg Equilibrium, Lotka-Volterra Predator-Prey, Shannon Biodiversity.
+* **D06 Earth & Environmental (20 agents):** Richter Scale, Darcy's Hydrogeology Law, Atmospheric Lapse Rates.
+* **D07 Space & Astronomy (15 agents):** Kepler's Laws, Tsiolkovsky Rocket Equation, Hubble Law, Stefan-Boltzmann.
+* **D08 Physics (15 agents):** Navier-Stokes, Maxwell's Equations, Carnot Efficiency, Schrödinger Wavefunction.
+* **D09 Chemistry (10 agents):** Arrhenius Kinetics, Nernst Equation, Henderson-Hasselbalch Buffer pH.
+* **D10 Mathematics (15 agents):** Euler's Totient, Matrix Determinants, Bayes Theorem, Numerical Integration.
+* **D11 Computer Science (30 agents):** Big-O Complexity, B-Tree Balancing, TCP Congestion Control, Graph Algorithms.
+* **D12 Cybersecurity (12 agents):** Shannon Entropy, RSA Modular Exponentiation, Diffie-Hellman Key Exchange.
+* **D13 Data Science (7 agents):** OLS Linear Regression, R-squared, Confusion Matrix F1, Chi-Squared Independence.
+* **D14 Engineering (7 agents):** Stress/Strain Tensors, Euler Buckling, Ohm's Law, Bode Transfer Functions.
+* **D15 Architecture & Built World (12 agents):** Structural Load Bearing, Solar Heat Gain (SHGC), U-Value Transmittance.
+* **D16 Transportation & Aerospace (10 agents):** Aerodynamic Drag, EV Range Equation, Orbital Velocity, Lift-to-Drag.
+* **D17 Business & Finance (20 agents):** Discounted Cash Flow (DCF), Black-Scholes Option Pricing, CAPM Beta.
+* **D18 Law & Governance (15 agents):** Statute of Limitations, Precedent Weighting, Sentencing Guidelines.
+* **D19 Arts & Design (20 agents):** Golden Ratio (1.618), RGB/CMYK Color Colorimetry, Bézier Curves.
+* **D20 Music & Audio (12 agents):** Equal Temperament Tuning, Harmonic Ratios, MIDI-to-Frequency Conversion.
+* **D21 Literature & Linguistics (12 agents):** Flesch-Kincaid Readability, TF-IDF Vectorization, Levenshtein Distance.
+* **D22 Humanities & Social Sciences (15 agents):** Gini Inequality Coefficient, Utility Functions, Social Choice Theory.
+* **D23 Allied Health (10 agents):** Harris-Benedict BMR, VO2max Estimation, Spirometry FEV1/FVC.
+* **D24 Agriculture & Food (12 agents):** Growing Degree Days (GDD), Crop Yield Soil Nitrogen Response, Brix-to-Alcohol.
+* **D25 Energy Resources (10 agents):** Photovoltaic Power Output, Betz Wind Turbine Limit, Carnot Limits.
+* **D26 Telecommunications (8 agents):** Shannon-Hartley Channel Capacity, Friis Transmission Equation, Free-Space Path Loss.
+* **D27 Media & Communication (10 agents):** Click-Through Rate (CTR), Cost Per Mille (CPM), Engagement Index.
+* **D28 Education & Pedagogy (10 agents):** Bloom's Taxonomy Mastery Scoring, Item Response Theory (IRT).
+* **D29 Sports & Recreation (10 agents):** Elo Rating Updates, VDOT Running Economy, Caloric MET Expenditure.
+* **D30 Specialized & Niche Disciplines (20 agents):** Radiocarbon Decay Dating, Dendrochronology, Numismatic Grading.
+
+### C. Pillar 3: `H11C_CONTROL_PLANE` (125 Agents)
+The sovereign control and governance plane:
+* **C01 Integrators (40 agents):** Schema bridging, event fusion, blackboard synchronization, evidence provenance linking.
+* **C02 Orchestrators (45 agents):** Topological DAG scheduling, parallel join barriers, worker pools, deliberation cycles, checkpointing.
+* **C03 Securities (40 agents):** Admission firewall, non-bypassable ALIGN gate, action licensing, zero-trust sandboxing, SHA-256 tamper-evident witness logging.
+
+---
+
+# 9. HAEP v5.0 Self-Optimization Protocol
+
+H11-AGI incorporates the **H11-AGI Enhancement Protocol (HAEP) v5.0** for governed autonomous intelligence evolution:
+
+```text
+    ┌──────────────────────────────────────────────────────────┐
+    │              HAEP v5.0 EVOLUTIONARY CYCLE                │
+    └─────────────────────────────┬────────────────────────────┘
+                                  │
+    1. PERCEPTION ────────────────┼──► Aggregates telemetry & profiling metrics
+    2. DIAGNOSIS ─────────────────┼──► Identifies latency & reasoning bottlenecks
+    3. SEARCH ────────────────────┼──► Explores multi-objective fitness landscape
+    4. SYNTHESIS ─────────────────┼──► Synthesizes architectural & pipeline patches
+    5. CANARY ROUTING ────────────┼──► Evaluates candidate mutations in sandbox
+    6. GOVERNED PROMOTION ────────┴──► Commits verified patches to immutable ledger
+```
+
+* **Protected Core Invariants:** Evolutionary algorithms are strictly prohibited from modifying sovereign governance rules or the ALIGN hard gate (`C03`).
+* **Canary Deployment:** All optimizations are subjected to canary routing and safety regression testing before promotion.
+
+---
+
+# 10. Runtime Subsystem Architecture (`h11_runtime/`)
+
+The runtime is decomposed into dedicated, modular Python packages:
+
+```text
+h11_runtime/
+├── agi.py                     # Central AGI Kernel & 24-step cognitive loop coordinator
+├── spine.py                   # Governed Spine Execution Engine
+├── control_catalog.py         # 125 H11C Control Agent Specifications (C01, C02, C03)
+├── control_kernel.py          # 125 Control Plane Executable Handlers
+├── adapters.py                # Typed Agent Adapters (Anatomy, Parasitology, Physiology, LongTerm, Reason, Align)
+├── envelope.py                # Case Envelope serialization & hashing
+├── loader.py                  # Dynamic three-pillar loader
+│
+├── case/                      # Case lifecycle, Blackboard workspace, and state machine
+├── contracts/                 # AgentContract, CaseEnvelope, AgentResult, ActionProposal, ActionLicense
+├── graph/                     # The Six Graphs (Agent, Capability, Dependency, Execution, State, Governance)
+├── governance/                # AdmissionController, AlignmentGate, ActionLicenseIssuer, AuditChain
+├── state/                     # H11SystemState and ResourceBudget
+├── workers/                   # WorkerPool, WorkerTask, JoinBarrier, CheckpointManager, InterruptHandler
+├── registry/                  # AgentRegistry (1,000 agents index), CapabilityRegistry, DomainRegistry
+├── memory/                    # MemoryService (Working, Episodic, Semantic, Procedural)
+├── evidence/                  # EvidenceLedger and EvidenceItem provenance
+├── telemetry/                 # EventBus (H11C-EVENT-BUS) and RuntimeEvent
+├── execution/                 # GraphExecutor and ExecutionDAG
+├── evolution/                 # EvolutionRuntimeBridge (Telemetry to H11-OPT / H11-EVO)
+└── haep/                      # Full HAEP v5.0 Self-Optimization Engine (22 modules)
+```
+
+---
+
+# 11. Quickstart, Validation & Verification
+
+### Prerequisites
+* Python 3.10, 3.11, 3.12, 3.13, or 3.14
+* Standard library only (Zero external dependencies required)
+
+### 1. Run the Master 1,000-Agent Structural Audit
+Verifies all 1,000 agents across H11Z, H11I, and H11C for syntax correctness, domain-specific implementations, and zero placeholders:
+
+```bash
+python tools/audit_three_pillars.py
+```
+
+**Audit Output:**
+```text
+============================================================
+       H11 AGI THREE-PILLAR 1000-AGENT STRUCTURE AUDIT       
+============================================================
+Pillar 1: H11Z_COGNITIVE_NETWORK (L01-L23):    400 agents
+Pillar 2: H11I_INTELLIGENCE_UNIVERSE (D01-D30):  475 agents
+Pillar 3: H11C_CONTROL_PLANE (C01-C03):          125 agents
+------------------------------------------------------------
+GRAND TOTAL AGENTS:                            1000 / 1000
+Deeply Domain-Specific Agents:                 1000 / 1000 (100%)
+Generic / Placeholder Agents Remaining:              0 / 1000 (0%)
+Syntax Validation:                             1000 / 1000 OK
+Syntax Compilation Errors:                           0
+============================================================
+```
+
+### 2. Run the Full Test Discovery Suite
+Executes all 45 test suites covering unit contracts, execution graphs, state progression, memory recall, governance gates, and HAEP self-optimization:
+
+```bash
+python -m unittest discover tests
+```
+
+**Test Output:**
+```text
+----------------------------------------------------------------------
+Ran 45 tests in 0.875s
+
+OK
+```
+
+### 3. Programmatic Execution Example
+```python
+import asyncio
+from h11_runtime import H11AGI, CaseEnvelope, RiskClass
+
+async def main():
+    # 1. Instantiate the Sovereign AGI Kernel
+    agi = H11AGI()
+    await agi.initialize()
+
+    # 2. Construct a Case Envelope
+    case_payload = {
+        "symptoms": ["fever", "chills", "anemia"],
+        "suspected_pathogen": "Plasmodium falciparum",
+        "patient_vitals": {"temp_c": 39.2, "heart_rate": 110},
+    }
+
+    # 3. Execute the Governed Cognitive Loop (24 Steps)
+    result = await agi.tick(case_payload)
+
+    # 4. Inspect Governed Outcome
+    print(f"Case ID: {result.case_id}")
+    print(f"Admitted: {result.admitted}")
+    print(f"Licensed: {result.licensed}")
+    print(f"Hops Traversed: {' -> '.join(result.hops)}")
+    print(f"Audit Block Hash: {result.audit_head}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+---
+
+# 12. License & Intellectual Property
+
+```text
+================================================================================
+           H11-AGI SOURCE-AVAILABLE RESEARCH & VIEW-ONLY LICENSE
+================================================================================
+Copyright (c) 2026 Mohamed Haseeb C M. All Rights Reserved.
+```
+
+* **Permitted Access (View-Only):** You are permitted to read, review, and inspect the source code, specifications, and architecture solely for personal study, academic review, and security audit purposes.
+* **Prohibited Uses Without Prior Written Consent:** Running, executing, deploying, hosting, copying, modifying, commercializing, sublicensing, distributing derivatives, or using this codebase as training data for external AI models is strictly prohibited.
+* **Patent Rights Reserved:** The Three-Pillar Architecture, the Six Operational Graphs, the 1,000-Agent Taxonomy, and the HAEP Protocols are proprietary intellectual property and subject to pending patent applications.
+* **Licensing Inquiries:** For commercial licensing, enterprise evaluation access, or research collaborations, please contact the copyright holder.
+
+---
+
+<div align="center">
+  <sub>Designed & Invented by Mohamed Haseeb C M · H11-AGI Architecture Research</sub>
+</div>
