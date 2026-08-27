@@ -7,7 +7,14 @@ from pathlib import Path
 import sys
 from types import ModuleType
 
-ROOT = Path(__file__).resolve().parents[1]
+def _get_repo_root() -> Path:
+    p = Path(__file__).resolve()
+    for cand in [p.parent, p.parents[1] if len(p.parents) > 1 else p.parent, p.parents[2] if len(p.parents) > 2 else p.parent]:
+        if (cand / "H11Z_COGNITIVE_NETWORK").exists():
+            return cand
+    return p.parent
+
+ROOT = _get_repo_root()
 
 
 def _find_file(base_path: Path, rel_parts: list[str]) -> Path | None:

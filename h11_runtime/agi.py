@@ -177,7 +177,12 @@ class H11AGI:
         if not self._ready:
             await self.initialize()
         events: List[str] = []
-        case = dict(case)
+        if hasattr(case, "input_data") and isinstance(case.input_data, dict):
+            case = dict(case.input_data)
+        elif hasattr(case, "__dict__") and not isinstance(case, dict):
+            case = dict(case.__dict__)
+        else:
+            case = dict(case)
         case.setdefault("case_id", new_id("case"))
         case.setdefault(
             "schema_id",
