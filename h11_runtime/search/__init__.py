@@ -1,56 +1,94 @@
-"""H11-SEARCH: Sovereign Internet Knowledge Acquisition Engine.
+"""H11-LSE v2.0: Superintelligent Large Search Engine System.
 
-Provides live internet crawling, indexing, semantic search, hybrid ranking,
-knowledge graph construction, and retrieval-augmented reasoning for the
-H11-AGI 1,000-agent cognitive architecture.
-
-Subsystems
-----------
-- **Crawler**        : Async web spider with robots.txt compliance
-- **Parser**         : HTML → clean text extraction
-- **Indexer**        : BM25 inverted index engine
-- **Embedder**       : Dense vector embedding pipeline
-- **VectorStore**    : HNSW approximate nearest-neighbour search
-- **Ranker**         : Hybrid BM25 + semantic reranking
-- **QueryEngine**    : Natural-language query decomposition
-- **KnowledgeGraph** : Entity / relation triple store
-- **Cache**          : Result caching & freshness management
-- **SearchService**  : Unified API surface for all agents
-- **RAR**            : Retrieval-Augmented Reasoning connector
+Provides an enterprise-grade, distributed web intelligence and retrieval engine:
+- Multi-Source Academic & Deep Web Federation (arXiv, PubMed, Wikipedia, Crossref, DuckDuckGo)
+- Semantic Extraction for LaTeX Math, Tables, Code Snippets, DOIs/PMIDs, and Freshness
+- 64-bit SimHash Hamming Distance & MinHash LSH Deduplication Filter
+- Sharded Inverted Index with BM25F Field Weighting & Block-Max WAND Pruning
+- Topic-Sensitive PageRank (D01-D30), Domain Authority & TrustRank Spam Suppression
+- ColBERT Token-Level Late Interaction (MaxSim Reranking) & Cross-Encoder Verification
+- Neuro-Symbolic Knowledge Graph Entity Linking & Multi-Hop Path Reasoning
+- Multi-Document Evidence Synthesis & Claim Verification Matrix
 """
 from __future__ import annotations
 
-# ── Crawler ─────────────────────────────────────────────────────────────────
+# ── Crawler & Parsers ───────────────────────────────────────────────────────
 from .crawler import CrawlConfig, CrawlResult, RobotsChecker, URLFrontier, WebCrawler
-
-# ── Parser ──────────────────────────────────────────────────────────────────
 from .parser import HTMLParser, ParsedDocument
+from .semantic_parser import (
+    AcademicCitation,
+    CodeSnippet,
+    MathEquation,
+    SemanticDocument,
+    SemanticParser,
+    StructuredTable,
+)
 
-# ── Indexer ─────────────────────────────────────────────────────────────────
-from .indexer import IndexConfig, InvertedIndex, SearchHit, DocumentEntry
+# ── Deduplication & LSH ────────────────────────────────────────────────────
+from .dedup import MinHash, SimHash, SimHashIndex, canonicalize_url
 
-# ── Embedder ────────────────────────────────────────────────────────────────
+# ── Sharded & BM25F Indexing ────────────────────────────────────────────────
+from .indexer import DocumentEntry, IndexConfig, InvertedIndex, SearchHit
+from .sharded_index import (
+    DocumentFields,
+    FieldWeights,
+    Posting,
+    PostingBlock,
+    ShardedIndex,
+    varbyte_decode,
+    varbyte_encode,
+)
+
+# ── Embedder & Vector Store ─────────────────────────────────────────────────
 from .embedder import EmbeddingConfig, EmbeddingResult, TextEmbedder
+from .vector_store import SearchResult, VectorRecord, VectorStore, VectorStoreConfig
 
-# ── Vector Store ────────────────────────────────────────────────────────────
-from .vector_store import VectorStore, VectorStoreConfig, VectorRecord, SearchResult
+# ── PageRank & Authority Graph ──────────────────────────────────────────────
+from .pagerank import (
+    TOPIC_AUTHORITY_SEEDS,
+    PageRankEngine,
+    WebGraph,
+    extract_domain,
+)
 
-# ── Ranker ──────────────────────────────────────────────────────────────────
-from .ranker import HybridRanker, RankConfig, RankedResult
+# ── Late Interaction & Cross-Encoder ────────────────────────────────────────
+from .late_interaction import (
+    CrossEncoderVerifier,
+    LateInteractionEngine,
+    LateInteractionScore,
+    TokenEmbeddingMatrix,
+)
 
-# ── Query Engine ────────────────────────────────────────────────────────────
+# ── Query Engine & Knowledge Graph ──────────────────────────────────────────
 from .query_engine import QueryDecomposer, QueryPlan, QueryType, SubQuery
-
-# ── Knowledge Graph ─────────────────────────────────────────────────────────
 from .knowledge_graph import Entity, KnowledgeGraph, Relation, Triple
+from .entity_linker import EntityMention, KnowledgePath, NeuroSymbolicEntityLinker
 
-# ── Cache ───────────────────────────────────────────────────────────────────
+# ── Federation & Multi-Source Connectors ────────────────────────────────────
+from .federation import (
+    ArxivConnector,
+    BaseConnector,
+    CrossrefConnector,
+    DuckDuckGoConnector,
+    FederatedResult,
+    FederatedSearchEngine,
+    WikipediaConnector,
+)
+
+# ── Evidence Synthesis & Verification Matrix ────────────────────────────────
+from .synthesizer import (
+    EvidenceBriefing,
+    EvidenceSynthesizer,
+    SourceAssessment,
+    SynthesizedClaim,
+    VerificationStatus,
+)
+
+# ── Multi-Tier Cache & Service Facade ───────────────────────────────────────
 from .cache import CacheConfig, SearchCache
-
-# ── Unified API ─────────────────────────────────────────────────────────────
 from .api import SearchConfig, SearchQuery, SearchResponse, SearchService
 
-# ── Retrieval-Augmented Reasoning ───────────────────────────────────────────
+# ── Multi-Hop Retrieval-Augmented Reasoning (RAR) ───────────────────────────
 from .rar import (
     EvidenceGrounding,
     ReasoningContext,
@@ -59,27 +97,35 @@ from .rar import (
 )
 
 __all__ = [
-    # Crawler
+    # Crawler & Semantic Parsers
     "CrawlConfig", "CrawlResult", "RobotsChecker", "URLFrontier", "WebCrawler",
-    # Parser
-    "HTMLParser", "ParsedDocument",
-    # Indexer
+    "HTMLParser", "ParsedDocument", "SemanticParser", "SemanticDocument",
+    "MathEquation", "StructuredTable", "CodeSnippet", "AcademicCitation",
+    # Deduplication
+    "SimHash", "SimHashIndex", "MinHash", "canonicalize_url",
+    # Sharded Index & BM25F
     "IndexConfig", "InvertedIndex", "SearchHit", "DocumentEntry",
-    # Embedder
+    "ShardedIndex", "DocumentFields", "FieldWeights", "Posting", "PostingBlock",
+    "varbyte_encode", "varbyte_decode",
+    # Embeddings & Vectors
     "EmbeddingConfig", "EmbeddingResult", "TextEmbedder",
-    # Vector Store
     "VectorStore", "VectorStoreConfig", "VectorRecord", "SearchResult",
-    # Ranker
-    "HybridRanker", "RankConfig", "RankedResult",
-    # Query Engine
+    # PageRank & Authority
+    "PageRankEngine", "WebGraph", "TOPIC_AUTHORITY_SEEDS", "extract_domain",
+    # Late Interaction
+    "LateInteractionEngine", "LateInteractionScore", "TokenEmbeddingMatrix", "CrossEncoderVerifier",
+    # Query Engine & KG
     "QueryDecomposer", "QueryPlan", "QueryType", "SubQuery",
-    # Knowledge Graph
     "Entity", "KnowledgeGraph", "Relation", "Triple",
-    # Cache
+    "NeuroSymbolicEntityLinker", "EntityMention", "KnowledgePath",
+    # Federation
+    "FederatedSearchEngine", "FederatedResult", "BaseConnector",
+    "ArxivConnector", "WikipediaConnector", "CrossrefConnector", "DuckDuckGoConnector",
+    # Synthesis & Matrix
+    "EvidenceSynthesizer", "EvidenceBriefing", "SynthesizedClaim", "SourceAssessment", "VerificationStatus",
+    # Cache & API
     "CacheConfig", "SearchCache",
-    # API
     "SearchConfig", "SearchQuery", "SearchResponse", "SearchService",
     # RAR
-    "EvidenceGrounding", "ReasoningContext", "RetrievalAugmentedReasoner",
-    "RetrievedDocument",
+    "EvidenceGrounding", "ReasoningContext", "RetrievalAugmentedReasoner", "RetrievedDocument",
 ]
