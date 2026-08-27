@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CONTEXT-MEM",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Multi-turn context tracking and ambient topic switching.",
+  "category": "Context Management",
+  "inputs": [
+    {"name": "turn_utterance", "type": "string", "description": "Latest dialogue turn", "required": true},
+    {"name": "extracted_entities", "type": "array", "items": {"type": "string"}, "description": "Entities in turn", "required": true},
+    {"name": "force_switch", "type": "boolean", "description": "Hard reset trigger", "required": false}
+  ],
+  "outputs": [
+    {"name": "active_context_summary", "type": "string", "description": "Condensed active context"},
+    {"name": "resolved_anaphora", "type": "object", "additionalProperties": {"type": "string"}, "description": "Pronoun mapping"},
+    {"name": "switch_occurred", "type": "boolean", "description": "Did the context switch?"}
+  ],
+  "config": {
+    "window_size": {"type": "integer", "default": 10, "description": "Number of turns in active buffer"},
+    "switch_threshold": {"type": "number", "default": 0.75, "description": "Divergence threshold for context switch"},
+    "max_ambient_topics": {"type": "integer", "default": 50, "description": "Capacity of ambient pool"}
+  },
+  "state_schema": {
+    "active_buffer": {"type": "array", "description": "Recent utterances"},
+    "ambient_pool": {"type": "object", "description": "Compressed dormant contexts"},
+    "entity_graph": {"type": "object", "description": "Active entity relationships"}
+  },
+  "dependencies": {
+    "upstream": ["H11-NER", "H11-EMBEDDING-ENGINE"],
+    "downstream": ["H11-GENERATOR", "H11-SESSION"]
+  },
+  "events": {
+    "emits": ["context_switched", "context_condensed"],
+    "consumes": ["turn_completed"]
+  },
+  "metrics": [
+    {"name": "context_switches_per_session", "type": "counter", "description": "Frequency of topic shifts"},
+    {"name": "anaphora_resolution_confidence", "type": "histogram", "description": "Confidence of pronoun resolution"}
+  ],
+  "capabilities": ["multi_turn_tracking", "topic_switching", "anaphora_resolution"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

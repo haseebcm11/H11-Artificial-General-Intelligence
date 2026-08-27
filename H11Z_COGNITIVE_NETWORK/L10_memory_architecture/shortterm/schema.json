@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SHORTTERM",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Transient, sliding-window storage with Ebbinghaus decay.",
+  "category": "Transient Store",
+  "inputs": [
+    {"name": "sequence_id", "type": "string", "description": "UUID of sequence", "required": true},
+    {"name": "items", "type": "array", "description": "Items to store", "required": true},
+    {"name": "affect_valence", "type": "number", "description": "Importance weighting", "required": false}
+  ],
+  "outputs": [
+    {"name": "consolidable_traces", "type": "array", "description": "Items ready for LTM"},
+    {"name": "retrieved_items", "type": "array", "description": "Query results"},
+    {"name": "decay_events", "type": "integer", "description": "Count of forgotten items"}
+  ],
+  "config": {
+    "base_strength": {"type": "number", "default": 10.0, "description": "Initial S parameter for Ebbinghaus"},
+    "retention_threshold": {"type": "number", "default": 0.1, "description": "Minimum R before forgetting"},
+    "consolidation_threshold": {"type": "number", "default": 5.0, "description": "Required strength for LTM"}
+  },
+  "state_schema": {
+    "trace_graph": {"type": "object", "description": "Nodes and temporal edges"},
+    "window_start": {"type": "number", "description": "Timestamp of oldest retained item"}
+  },
+  "dependencies": {
+    "upstream": ["H11-WORKING"],
+    "downstream": ["H11-LONGTERM", "H11-EPISODIC"]
+  },
+  "events": {
+    "emits": ["items_consolidated", "trace_decayed"],
+    "consumes": ["working_eviction", "explicit_recall"]
+  },
+  "metrics": [
+    {"name": "graph_node_count", "type": "gauge", "description": "Total active traces"},
+    {"name": "primacy_retention_rate", "type": "gauge", "description": "Survival rate of first-in-sequence items"}
+  ],
+  "capabilities": ["decay-modeling", "sequence-preservation", "sliding-window"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

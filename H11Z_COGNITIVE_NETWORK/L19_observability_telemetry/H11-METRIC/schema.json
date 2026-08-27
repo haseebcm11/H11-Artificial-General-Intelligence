@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-METRIC",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Observability & Telemetry",
+  "description": "Prometheus-compatible metrics, percentiles (p50/p95/p99), and high-cardinality management.",
+  "category": "observability",
+  "inputs": [
+    {
+      "name": "input_data",
+      "type": "object",
+      "description": "Agent input data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output_data",
+      "type": "object",
+      "description": "Agent output data"
+    }
+  ],
+  "config": {
+    "max_buffer_size": {
+      "type": "integer",
+      "default": 1024,
+      "description": "Max elements in memory"
+    }
+  },
+  "state_schema": {
+    "active_elements": {
+      "type": "integer",
+      "description": "Number of elements in processing"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-NODE"
+    ],
+    "downstream": [
+      "H11-DASHBOARD"
+    ]
+  },
+  "events": {
+    "emits": [
+      "metric_processed"
+    ],
+    "consumes": [
+      "metric_incoming"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "metric_throughput",
+      "type": "histogram",
+      "description": "Processing speed"
+    }
+  ],
+  "capabilities": [
+    "telemetry_processing"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

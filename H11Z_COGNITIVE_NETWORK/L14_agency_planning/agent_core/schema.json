@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Agent Core Configuration",
+  "type": "object",
+  "properties": {
+    "persona": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "system_prompt": { "type": "string" },
+        "traits": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["name", "description"]
+    },
+    "memory_config": {
+      "type": "object",
+      "properties": {
+        "max_items": { "type": "integer", "default": 1000 },
+        "vector_retrieval_enabled": { "type": "boolean", "default": false }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "input_schema": { "type": "object" },
+          "output_schema": { "type": "object" }
+        },
+        "required": ["name", "input_schema"]
+      }
+    }
+  },
+  "required": ["persona"]
+}

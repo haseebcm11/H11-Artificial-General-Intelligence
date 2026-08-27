@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ROBUSTA",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Machine Learning",
+  "description": "Defends against adversarial attacks and certifies model robustness.",
+  "category": "AI Safety & Security",
+  "inputs": [
+    {
+      "name": "target_model",
+      "type": "string",
+      "description": "URI to the model being evaluated",
+      "required": true
+    },
+    {
+      "name": "threat_model",
+      "type": "string",
+      "description": "Threat model (e.g., L_INF, DATA_POISON)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "adversarial_examples",
+      "type": "array",
+      "description": "Synthesized attack vectors"
+    },
+    {
+      "name": "robustness_score",
+      "type": "number",
+      "description": "Certified accuracy under attack"
+    }
+  ],
+  "config": {
+    "pgd_steps": {
+      "type": "integer",
+      "default": 40,
+      "description": "Iterations for Projected Gradient Descent"
+    },
+    "randomized_smoothing_samples": {
+      "type": "integer",
+      "default": 10000,
+      "description": "Monte carlo samples for certification"
+    }
+  },
+  "state_schema": {
+    "vulnerability_surface": {
+      "type": "object",
+      "description": "Map of susceptible models"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DEEPLEARNING", "H11-FEDERATED"],
+    "downstream": ["H11-SRE", "H11-MACHINA-DISCENS"]
+  },
+  "events": {
+    "emits": ["model_hardened", "attack_detected"],
+    "consumes": ["model_deployed"]
+  },
+  "metrics": [
+    {
+      "name": "certified_accuracy",
+      "type": "gauge",
+      "description": "Accuracy guaranteed within epsilon bound"
+    }
+  ],
+  "capabilities": ["adversarial_training", "randomized_smoothing", "gradient_mask_detection"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

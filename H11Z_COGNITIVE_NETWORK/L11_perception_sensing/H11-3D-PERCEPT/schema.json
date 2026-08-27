@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-3D-PERCEPT",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "domain": "3D Spatial Understanding",
+  "capabilities": [
+    "point_cloud_segmentation",
+    "3d_object_detection",
+    "neural_rendering",
+    "gaussian_splatting"
+  ],
+  "inputs": {
+    "point_clouds": "tensor_n_3",
+    "rgbd_streams": "video_stream"
+  },
+  "outputs": {
+    "bounding_boxes": "list_of_dict",
+    "mesh": "obj_data"
+  }
+}

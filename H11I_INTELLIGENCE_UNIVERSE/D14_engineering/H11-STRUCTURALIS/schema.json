@@ -1,0 +1,12 @@
+{
+  "agent_id": "H11-STRUCTURALIS",
+  "name": "StructuralisAgent",
+  "description": "Structural engineering and analysis agent.",
+  "version": "1.0.0",
+  "capabilities": [
+    "finite_element_analysis",
+    "load_calculation",
+    "member_sizing"
+  ],
+  "dependencies": []
+}

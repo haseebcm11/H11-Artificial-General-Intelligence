@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-KV-OPT",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "PagedAttention, KV quantization, and prefix caching.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "kv_tensors",
+      "type": "Any",
+      "desc": "Raw KV state"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "paged_blocks",
+      "type": "List[int]",
+      "desc": "Paged cache blocks indices"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "free_blocks": {
+      "type": "int",
+      "description": "Available KV cache blocks"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

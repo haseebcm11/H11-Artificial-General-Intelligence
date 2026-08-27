@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-TRANSISTOR Model Configuration",
+  "type": "object",
+  "properties": {
+    "temperature_kelvin": {
+      "type": "number",
+      "default": 300,
+      "minimum": 0
+    },
+    "vdd_volts": {
+      "type": "number",
+      "minimum": 0.3,
+      "maximum": 5.0
+    },
+    "threshold_voltage_volts": {
+      "type": "number"
+    },
+    "tox_nm": {
+      "type": "number",
+      "description": "Gate oxide thickness in nanometers"
+    },
+    "mobility_cm2_vs": {
+      "type": "number"
+    },
+    "gate_type": {
+      "type": "string",
+      "enum": ["INV", "NAND2", "NOR2", "XOR2"]
+    },
+    "fan_out": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "required": ["vdd_volts", "threshold_voltage_volts", "tox_nm"]
+}

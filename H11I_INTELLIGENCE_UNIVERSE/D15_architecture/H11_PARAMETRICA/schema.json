@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PARAMETRICA",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Architecture & Construction",
+  "description": "Parametric and generative design.",
+  "category": "Computational",
+  "inputs": [],
+  "outputs": [],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": [], "downstream": []},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": true, "gpu_required": true, "memory_class": "high"}
+}

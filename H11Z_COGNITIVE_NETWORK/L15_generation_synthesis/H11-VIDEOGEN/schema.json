@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-VIDEOGEN",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Synthesizes temporally coherent video sequences from text or image prompts.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "prompt", "type": "str"}, {"name": "num_frames", "type": "int"}, {"name": "fps", "type": "int"}
+  ],
+  "outputs": [
+    {"name": "video_data", "type": "bytes"}, {"name": "temporal_consistency_score", "type": "float"}
+  ]
+}

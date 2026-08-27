@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-GUARDRAIL State Schema",
+  "type": "object",
+  "properties": {
+    "active_breakers": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "filter_stats": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "hits": {"type": "integer"},
+          "last_triggered": {"type": "number"}
+        }
+      }
+    }
+  },
+  "required": ["active_breakers", "filter_stats"]
+}

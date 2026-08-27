@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SHARDER",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Partitions datasets into balanced shards for distributed training.",
+  "category": "Data Sharding",
+  "inputs": [
+    {
+      "name": "dataset_manifest",
+      "type": "object",
+      "description": "Details of the dataset to shard.",
+      "required": true
+    },
+    {
+      "name": "cluster_topology",
+      "type": "object",
+      "description": "Hardware topology (num workers, DP size).",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "routing_table",
+      "type": "object",
+      "description": "Mapping of data shards to worker ranks."
+    }
+  ],
+  "config": {
+    "target_shard_size_mb": {
+      "type": "integer",
+      "default": 1024,
+      "description": "Optimal physical shard file size."
+    },
+    "balance_tolerance": {
+      "type": "number",
+      "default": 0.01,
+      "description": "Allowed deviation in token count across shards."
+    }
+  },
+  "state_schema": {
+    "active_plans": {
+      "type": "integer",
+      "description": "Number of currently managed shard layouts."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-VERSION", "H11-CURATOR"],
+    "downstream": ["H11-DATALOADER"]
+  },
+  "events": {
+    "emits": ["sharding_complete"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "shard_imbalance_ratio",
+      "type": "gauge",
+      "description": "Max deviation of shard sizes from the mean."
+    },
+    {
+      "name": "total_shards_generated",
+      "type": "counter",
+      "description": "Total number of physical shards created."
+    }
+  ],
+  "capabilities": ["consistent_hashing", "bin_packing", "partition_pruning"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

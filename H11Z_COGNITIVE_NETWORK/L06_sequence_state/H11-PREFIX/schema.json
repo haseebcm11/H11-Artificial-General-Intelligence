@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PREFIX",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Continuous prompt and virtual token injection.",
+  "category": "Conditioning",
+  "inputs": [
+    {
+      "name": "task_id",
+      "type": "str",
+      "description": "Task name",
+      "required": true
+    },
+    {
+      "name": "sequence_embeddings",
+      "type": "List[List[float]]",
+      "description": "Base data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "conditioned_sequence",
+      "type": "List[List[float]]",
+      "description": "Prepended data"
+    },
+    {
+      "name": "prefix_tensors",
+      "type": "dict",
+      "description": "KV prefixes"
+    }
+  ],
+  "config": {
+    "default_prefix_len": {
+      "type": "int",
+      "default": 10,
+      "description": "Tokens"
+    }
+  },
+  "state_schema": {
+    "active_prefixes": {
+      "type": "List[str]",
+      "description": "Currently loaded tasks"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": [
+      "H11-SEQUENCE"
+    ]
+  },
+  "events": {
+    "emits": [
+      "PrefixInjected"
+    ],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "prefix_swaps",
+      "type": "counter",
+      "description": "Context switches"
+    }
+  ],
+  "capabilities": [
+    "Prefix composition",
+    "KV cache injection"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "medium"
+  }
+}

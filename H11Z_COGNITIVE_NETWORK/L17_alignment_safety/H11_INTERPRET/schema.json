@@ -1,0 +1,20 @@
+{
+  "name": "H11-INTERPRET",
+  "version": "1.0.0",
+  "description": "Interpretability analysis configurations",
+  "type": "object",
+  "properties": {
+    "target_layers": {
+      "type": "array",
+      "items": { "type": "integer" }
+    },
+    "capture_attention": {
+      "type": "boolean"
+    },
+    "ablation_mode": {
+      "type": "string",
+      "enum": ["zero", "mean", "resample"]
+    }
+  },
+  "required": ["capture_attention", "ablation_mode"]
+}

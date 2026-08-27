@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ORALCHIRURGIA",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Dental Sciences",
+  "description": "Oral surgery, implant planning, and anatomical risk management.",
+  "category": "Oral Surgery",
+  "inputs": [
+    {
+      "name": "dicom_volume",
+      "type": "array",
+      "description": "CBCT voxel data",
+      "required": true
+    },
+    {
+      "name": "procedure_request",
+      "type": "object",
+      "description": "Requested surgical procedure details",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "surgical_guide_mesh",
+      "type": "object",
+      "description": "3D model for surgical stent"
+    },
+    {
+      "name": "risk_report",
+      "type": "object",
+      "description": "Proximity to vital structures"
+    }
+  ],
+  "config": {
+    "nerve_safety_margin_mm": {
+      "type": "number",
+      "default": 2.0,
+      "description": "Minimum distance from IAN canal"
+    },
+    "bone_heating_limit_c": {
+      "type": "number",
+      "default": 47.0,
+      "description": "Threshold for thermal osteonecrosis"
+    }
+  },
+  "state_schema": {
+    "surgical_field": {
+      "type": "object",
+      "description": "Real-time tracking of drill depth and temp"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DENTALIS", "H11-ORTHODONTIA"],
+    "downstream": ["H11-PROSTHODONTIA"]
+  },
+  "events": {
+    "emits": ["implant_placed", "tooth_extracted", "nerve_warning"],
+    "consumes": ["prosthetic_plan_received"]
+  },
+  "metrics": [
+    {
+      "name": "implants_planned",
+      "type": "counter",
+      "description": "Total dental implants virtually placed"
+    }
+  ],
+  "capabilities": ["nerve_tracing", "implant_planning", "osteotomy_simulation"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

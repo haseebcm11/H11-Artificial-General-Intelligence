@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PROMPTGUARD",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "Prompt security: direct/indirect prompt injection, instruction hierarchy, input/output sanitization, prompt injection detection classifiers, delimiter strategies, system prompt protection",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "user_prompt",
+      "type": "PromptInput",
+      "description": "Raw user text",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "safe_prompt",
+      "type": "SafePrompt",
+      "description": "Sanitized and structured prompt"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "classifier_weights": {
+      "type": "bytes",
+      "desc": "Weights for lightweight injection classifier"
+    },
+    "attack_history": {
+      "type": "list",
+      "desc": "Logged injection attempts"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "promptguard_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "promptguard_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

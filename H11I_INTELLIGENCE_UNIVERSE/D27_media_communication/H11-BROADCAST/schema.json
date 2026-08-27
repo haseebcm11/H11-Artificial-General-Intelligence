@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-BROADCAST",
+  "version": "1.0.0",
+  "layer": "3",
+  "layer_name": "Execution",
+  "description": "Broadcast scheduling, dynamic back-timing, and signal routing simulation.",
+  "category": "Media Playout",
+  "inputs": [
+    {
+      "name": "run_down",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "segment_id": {"type": "string"},
+          "type": {"type": "string", "enum": ["news", "ad", "promo", "live"]},
+          "planned_duration_ms": {"type": "integer"},
+          "is_droppable": {"type": "boolean"},
+          "media_asset_ref": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "live_triggers",
+      "type": "array",
+      "description": "Simulated queue of async live events",
+      "items": {
+        "type": "object",
+        "properties": {
+          "event_type": {"type": "string"},
+          "payload": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "target_duration_ms",
+      "type": "integer"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "playout_log",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "segment_id": {"type": "string"},
+          "actual_start_ms": {"type": "integer"},
+          "actual_duration_ms": {"type": "integer"},
+          "status": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "crosspoint_commands",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {"type": "string"},
+          "destination": {"type": "string"},
+          "timestamp_ms": {"type": "integer"}
+        }
+      }
+    },
+    {
+      "name": "timing_delta_ms",
+      "type": "integer"
+    }
+  ],
+  "config": {
+    "smpte_2110_simulation": true,
+    "max_dead_air_tolerance_ms": 500,
+    "default_fallback_slate": "gfx_technical_difficulties"
+  },
+  "state_schema": {
+    "master_control_state": {
+      "type": "object",
+      "properties": {
+        "active_source": {"type": "string"},
+        "accumulated_drift_ms": {"type": "integer"},
+        "current_time_ms": {"type": "integer"}
+      }
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-JOURNALISM", "H11-ADVERTISING"],
+    "downstream": ["H11-DISTRIBUTION"]
+  },
+  "events": {
+    "emits": ["hard_break_hit", "segment_dropped", "dead_air_alert"],
+    "consumes": ["breaking_news_interrupt", "scte35_ad_cue"]
+  },
+  "metrics": [
+    "crosspoint_switch_latency",
+    "timing_accuracy_ms",
+    "dropped_segments_count"
+  ],
+  "capabilities": [
+    "dynamic_back_timing",
+    "hitless_switching",
+    "prosodic_pacing"
+  ],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

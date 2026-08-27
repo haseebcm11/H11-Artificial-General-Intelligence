@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OCCUPATIONAL",
+  "version": "1.0.0",
+  "layer": 23,
+  "layer_name": "Allied Health",
+  "description": "Occupational Therapy and Functional Adaptation",
+  "category": "Occupational Therapy",
+  "inputs": [
+    {
+      "name": "functional_envelope",
+      "type": "object",
+      "description": "Patient reach and mobility metrics",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "adaptation_plan",
+      "type": "object",
+      "description": "Equipment and routine modifications"
+    }
+  ],
+  "config": {
+    "peo_strictness": {
+      "type": "float",
+      "default": 0.8,
+      "description": "Threshold for acceptable person-environment fit"
+    }
+  },
+  "state_schema": {
+    "active_prescriptions": {
+      "type": "array",
+      "description": "Currently recommended equipment"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PHYSIOTHERAPIA"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["AdaptationGenerated"],
+    "consumes": ["EnvironmentScanned"]
+  },
+  "metrics": [
+    {
+      "name": "barrier_detection_rate",
+      "type": "counter",
+      "description": "Number of environmental barriers identified"
+    }
+  ],
+  "capabilities": ["environmental_modification", "adl_analysis"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

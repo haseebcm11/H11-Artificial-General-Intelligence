@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-NORMALIZE Schema",
+  "type": "object",
+  "properties": {
+    "norm_type": {
+      "type": "string",
+      "enum": ["batch", "layer", "rms", "instance", "group", "qk", "ada_in"]
+    },
+    "eps": {
+      "type": "number",
+      "default": 1e-5
+    },
+    "affine": {
+      "type": "boolean",
+      "default": true
+    },
+    "track_running_stats": {
+      "type": "boolean",
+      "default": false
+    },
+    "momentum": {
+      "type": "number",
+      "default": 0.1
+    }
+  },
+  "required": ["norm_type", "eps"]
+}

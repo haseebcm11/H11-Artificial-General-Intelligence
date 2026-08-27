@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PROCEDURAL",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Manages skill acquisition, motor programs, and habit formation.",
+  "category": "Procedural Memory",
+  "inputs": [
+    {"name": "sequence", "type": "array", "description": "Action sequence", "required": true},
+    {"name": "success_rate", "type": "number", "description": "Reward rate", "required": true}
+  ],
+  "outputs": [
+    {"name": "compiled_macro", "type": "string", "description": "Chunked action sequence"}
+  ],
+  "config": {
+    "learning_rate": {"type": "number", "default": "0.1", "description": "Habit learning rate"},
+    "chunk_threshold": {"type": "integer", "default": "5", "description": "Executions before chunking"}
+  },
+  "state_schema": {
+    "skill_trie": {"type": "object", "description": "Hierarchical action sequences"},
+    "habits": {"type": "object", "description": "Context to macro mappings"}
+  },
+  "dependencies": {"upstream": ["H11-EPISODIC"], "downstream": ["H11-ACTION"]},
+  "events": {"emits": ["skill_compiled"], "consumes": ["action_success"]},
+  "metrics": [{"name": "automaticity_score", "type": "gauge", "description": "Average habit strength"}],
+  "capabilities": ["skill_compilation", "habit_triggering"],
+  "scaling": {"horizontal": false, "gpu_required": false, "memory_class": "low"}
+}

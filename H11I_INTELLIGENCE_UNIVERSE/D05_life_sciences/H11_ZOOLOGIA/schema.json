@@ -1,0 +1,26 @@
+{
+  "name": "H11-ZOOLOGIA",
+  "version": "1.0.0",
+  "config": {
+    "simulation_resolution": "medium",
+    "enable_stochastic_events": true,
+    "max_species_capacity": 10000
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "ecosystems": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "biome_id": {"type": "string"},
+            "carrying_capacity": {"type": "number"},
+            "interaction_matrix": {"type": "array"}
+          }
+        }
+      }
+    }
+  },
+  "capabilities": ["population_modeling", "trait_analysis", "food_web_generation"]
+}

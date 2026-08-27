@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-APPSEC",
+  "version": "1.0.0",
+  "layer": 12,
+  "layer_name": "Cybersecurity",
+  "description": "Application security and taint analysis.",
+  "category": "Application Security",
+  "inputs": [
+    {
+      "name": "rpc_payload",
+      "type": "string",
+      "description": "Payload of the incoming application request.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "is_safe",
+      "type": "boolean",
+      "description": "Whether the payload is safe to process."
+    }
+  ],
+  "config": {
+    "symbolic_timeout_ms": {
+      "type": "integer",
+      "default": 100,
+      "description": "Max time for symbolic execution."
+    }
+  },
+  "state_schema": {
+    "taint_graph_nodes": {
+      "type": "integer",
+      "description": "Number of tracked taint nodes."
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-INCIDENT"]
+  },
+  "events": {
+    "emits": ["ExploitAttemptBlocked"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "payloads_scanned",
+      "type": "counter",
+      "description": "Number of application payloads scanned."
+    }
+  ],
+  "capabilities": ["Taint Tracking", "Symbolic Execution"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TOXICOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Models toxicokinetics, xenobiotic biotransformation, and toxidrome recognition.",
+  "category": "Toxicology",
+  "inputs": [
+    {
+      "name": "exposure_substance",
+      "type": "string",
+      "description": "Chemical name or SMILES string"
+    },
+    {
+      "name": "clinical_signs",
+      "type": "object",
+      "description": "Pupil size, heart rate, skin condition, bowel sounds"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "toxidrome_classification",
+      "type": "string",
+      "description": "Cholinergic, Anticholinergic, Sympathomimetic, etc."
+    },
+    {
+      "name": "antidote_protocol",
+      "type": "object",
+      "description": "Reversal agents and dosing"
+    }
+  ],
+  "config": {
+    "pbtk_species": "human",
+    "cyp450_polymorphisms_active": true
+  },
+  "state_schema": {
+    "metabolite_concentrations": "object",
+    "clearance_half_lives": "object"
+  },
+  "dependencies": {
+    "upstream": ["H11-PHARMACOLOGIA"],
+    "downstream": ["H11-NEUROLOGIA", "H11-CARDIOLOGIA"]
+  },
+  "events": {
+    "emits": ["lethal_dose_threshold", "toxidrome_identified"],
+    "consumes": ["lab_results_toxicology_screen"]
+  },
+  "metrics": ["classification_accuracy", "pbtk_prediction_error"],
+  "capabilities": ["pbtk_modeling", "toxidrome_pattern_recognition"],
+  "scaling": {
+    "mode": "stateless",
+    "response_time": "realtime"
+  }
+}

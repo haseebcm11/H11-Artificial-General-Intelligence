@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NEUROSCIENTIA",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Models neuromodulation and bio-energetic constraints.",
+  "category": "Neuroscience",
+  "inputs": [
+    {
+      "name": "systemic_stress",
+      "type": "number",
+      "description": "Environmental stress load",
+      "required": true
+    },
+    {
+      "name": "reward_signal",
+      "type": "number",
+      "description": "Exogenous reinforcement",
+      "required": true
+    },
+    {
+      "name": "active_regions",
+      "type": "array",
+      "description": "Brain areas engaged",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "neuromodulator_levels",
+      "type": "object",
+      "description": "Levels of DA, 5-HT, CORT"
+    },
+    {
+      "name": "synaptic_plasticity",
+      "type": "number",
+      "description": "Global rate of learning"
+    },
+    {
+      "name": "energetic_drain",
+      "type": "number",
+      "description": "Metabolic cost"
+    }
+  ],
+  "config": {
+    "clearance_rate": {
+      "type": "number",
+      "default": 0.1,
+      "description": "Rate of neuro-chemical reuptake"
+    }
+  },
+  "state_schema": {
+    "allostatic_load": {
+      "type": "number",
+      "description": "Accumulated chronic stress"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-COGNITIVA", "H11-PSYCHOLOGIA"]
+  },
+  "events": {
+    "emits": ["excitotoxicity_event", "plasticity_window_opened"],
+    "consumes": ["metabolic_replenishment"]
+  },
+  "metrics": [
+    {
+      "name": "global_cortisol",
+      "type": "gauge",
+      "description": "Current stress hormone level"
+    }
+  ],
+  "capabilities": ["neuromodulator_field_simulation", "stdp_approximation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

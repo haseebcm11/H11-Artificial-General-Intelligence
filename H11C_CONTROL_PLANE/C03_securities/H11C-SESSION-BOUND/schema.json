@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-SESSION-BOUND",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Binds tokens to a session nonce so they cannot be replayed across sessions.",
+  "category": "security",
+  "handler": "replay",
+  "inputs": [
+    {
+      "name": "nonce",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-IDENTITY"
+    ],
+    "downstream": [
+      "H11C-CAPABILITY-TOKEN"
+    ]
+  },
+  "capabilities": [
+    "replay"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

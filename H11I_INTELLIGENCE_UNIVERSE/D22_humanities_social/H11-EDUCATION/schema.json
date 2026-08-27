@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EDUCATION",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Models pedagogical frameworks and knowledge transfer.",
+  "category": "Education",
+  "inputs": [
+    {
+      "name": "learners",
+      "type": "object",
+      "description": "Epistemic state of students",
+      "required": true
+    },
+    {
+      "name": "curriculum_graph",
+      "type": "object",
+      "description": "DAG of knowledge nodes",
+      "required": true
+    },
+    {
+      "name": "pedagogical_mode",
+      "type": "string",
+      "description": "The teaching style",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "knowledge_retention",
+      "type": "object",
+      "description": "Efficacy of transfer"
+    },
+    {
+      "name": "optimal_scaffolding",
+      "type": "object",
+      "description": "Suggested path"
+    },
+    {
+      "name": "systemic_dropout_risk",
+      "type": "number",
+      "description": "Likelihood of cohort failure"
+    }
+  ],
+  "config": {
+    "max_zpd_jump": {
+      "type": "integer",
+      "default": 2,
+      "description": "Max nodes a learner can jump"
+    }
+  },
+  "state_schema": {
+    "cohort_history": {
+      "type": "integer",
+      "description": "Number of tracked learning cohorts"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PUBLICPOLICY", "H11-COGNITIVA"],
+    "downstream": ["H11-PSYCHOLOGIA", "H11-POLITICALSCI"]
+  },
+  "events": {
+    "emits": ["cohort_graduated", "curriculum_failed"],
+    "consumes": ["policy_change", "cognitive_shift"]
+  },
+  "metrics": [
+    {
+      "name": "mean_retention_rate",
+      "type": "gauge",
+      "description": "Average knowledge retention"
+    }
+  ],
+  "capabilities": ["zpd_scaffolding_solver", "curriculum_topology_mapping"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

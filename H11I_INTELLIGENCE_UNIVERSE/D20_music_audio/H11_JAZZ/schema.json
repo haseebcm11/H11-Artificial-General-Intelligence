@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-JAZZ",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Jazz theory and improvisation algorithms.",
+  "category": "GenreSpecific",
+  "inputs": [
+    {
+      "name": "chord_changes",
+      "type": "array",
+      "description": "Base harmonic progression",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "solo_line",
+      "type": "array",
+      "description": "Improvised melody"
+    }
+  ],
+  "config": {
+    "chromaticism": {
+      "type": "number",
+      "default": 0.5,
+      "description": "Likelihood of outside notes"
+    }
+  },
+  "state_schema": {
+    "tension_level": {
+      "type": "number",
+      "description": "Current phrasing intensity"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-HARMONIA"],
+    "downstream": ["H11-RHYTHMUS"]
+  },
+  "events": {
+    "emits": ["solo_generated"],
+    "consumes": ["request_improvisation"]
+  },
+  "metrics": [
+    {
+      "name": "target_note_accuracy",
+      "type": "gauge",
+      "description": "Frequency of hitting 3rds/7ths on downbeats"
+    }
+  ],
+  "capabilities": ["improvisation", "reharmonization", "chord_scale_mapping"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

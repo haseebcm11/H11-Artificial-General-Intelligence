@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-PIPELINE-RUNNER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Runs a registered spine hop-by-hop under zero-trust and ALIGN-enforce.",
+  "category": "orchestrator",
+  "handler": "run_pipeline",
+  "inputs": [
+    {
+      "name": "pipeline_id",
+      "type": "Any"
+    },
+    {
+      "name": "payload",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-SPINE-REGISTRAR",
+      "H11C-ZERO-TRUST-HOP"
+    ],
+    "downstream": [
+      "H11C-ALIGN-ENFORCE"
+    ]
+  },
+  "capabilities": [
+    "run_pipeline"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

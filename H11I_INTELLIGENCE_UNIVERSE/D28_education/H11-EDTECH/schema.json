@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EDTECH",
+  "version": "1.0.0",
+  "layer": "28",
+  "layer_name": "Education & Learning",
+  "description": "Adaptive learning system using Bayesian Knowledge Tracing.",
+  "category": "Digital Delivery",
+  "inputs": [
+    {
+      "name": "interaction_telemetry",
+      "type": "array"
+    },
+    {
+      "name": "assessment_results",
+      "type": "object"
+    },
+    {
+      "name": "content_library",
+      "type": "object"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "personalized_paths",
+      "type": "object"
+    },
+    {
+      "name": "intervention_alerts",
+      "type": "array"
+    },
+    {
+      "name": "content_efficacy",
+      "type": "object"
+    }
+  ],
+  "config": {
+    "bkt_slip_prior": 0.1,
+    "bkt_guess_prior": 0.2,
+    "anomaly_contamination": 0.05
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "student_mastery_states": { "type": "object" },
+      "svd_item_factors": { "type": "array" }
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-HIGHED", "H11-GAMIFICATION"],
+    "downstream": ["H11-LIFELONG"]
+  },
+  "events": {
+    "emits": ["mastery_achieved", "student_frustration_detected"],
+    "consumes": ["course_structure_updated"]
+  },
+  "metrics": [
+    "prediction_accuracy",
+    "average_session_length",
+    "intervention_success_rate"
+  ],
+  "capabilities": [
+    "bayesian_knowledge_tracing",
+    "collaborative_filtering",
+    "cognitive_load_monitoring"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

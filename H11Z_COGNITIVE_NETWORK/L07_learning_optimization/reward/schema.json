@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-REWARD",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Reward Modeling",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "trajectory",
+      "type": "List[str]",
+      "description": "trajectory input",
+      "required": true
+    },
+    {
+      "name": "preference_labels",
+      "type": "List[int]",
+      "description": "preference_labels input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "reward_score",
+      "type": "float",
+      "description": "reward_score output"
+    },
+    {
+      "name": "hacking_detected",
+      "type": "bool",
+      "description": "hacking_detected output"
+    }
+  ],
+  "config": {
+    "reward_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "reward_completed"
+    ],
+    "consumes": [
+      "reward_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "reward_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_reward"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

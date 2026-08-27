@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-VITICULTURA",
+  "version": "1.0.0",
+  "layer": 24,
+  "layer_name": "Agriculture & Food Sciences",
+  "description": "Viticulture and oenology.",
+  "category": "Viticulture",
+  "inputs": [],
+  "outputs": [],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": ["H11-IRRIGATIO"],
+    "downstream": ["H11-FERMENTATIO"]
+  }
+}

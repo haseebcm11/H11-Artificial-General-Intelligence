@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-GENOMICA Schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "kmer_size": { "type": "integer", "default": 31 },
+        "mismatch_penalty": { "type": "number", "default": 4.0 }
+      }
+    },
+    "state_schema": {
+      "type": "object",
+      "properties": {
+        "reference_id": { "type": "string" },
+        "indexed": { "type": "boolean" },
+        "variant_calls": { "type": "integer" }
+      }
+    }
+  }
+}

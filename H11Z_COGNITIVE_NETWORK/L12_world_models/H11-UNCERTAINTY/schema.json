@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-UNCERTAINTY",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Splits a list of numeric predictions into mean, variance (epistemic stand-in), and entropy of a softmax histogram (aleatoric stand-in).",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "predictions",
+      "type": "List[float]"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "mean",
+      "type": "float"
+    },
+    {
+      "name": "variance",
+      "type": "float"
+    },
+    {
+      "name": "entropy",
+      "type": "float"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-PREDICT"
+    ],
+    "downstream": [
+      "H11-BAYES",
+      "H11-MONTECARLO"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "ensemble-split"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

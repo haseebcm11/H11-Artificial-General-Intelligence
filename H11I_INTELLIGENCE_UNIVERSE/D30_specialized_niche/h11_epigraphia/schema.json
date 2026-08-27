@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EPIGRAPHIA",
+  "version": "1.0.0",
+  "layer": 30,
+  "layer_name": "Specialized & Niche Fields",
+  "description": "Agent for EPIGRAPHIA domain",
+  "category": "Niche",
+  "inputs": [
+    {
+      "name": "raw_data",
+      "type": "object",
+      "description": "Domain data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "results",
+      "type": "object",
+      "description": "Analyzed results"
+    }
+  ],
+  "config": {
+    "sensitivity": {
+      "type": "number",
+      "default": 0.8,
+      "description": "Analysis sensitivity"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["H11-EPIGRAPHIA_processed"],
+    "consumes": ["data_ready"]
+  },
+  "metrics": [
+    {
+      "name": "process_time",
+      "type": "histogram",
+      "description": "Time taken to process"
+    }
+  ],
+  "capabilities": ["domain_analysis"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

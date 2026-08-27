@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SATCOM",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Telecommunications",
+  "description": "Satellite constellation and orbital propagation modeling.",
+  "category": "Orbital",
+  "inputs": [
+    {
+      "name": "ground_lat",
+      "type": "number",
+      "description": "Latitude",
+      "required": true
+    },
+    {
+      "name": "ground_lon",
+      "type": "number",
+      "description": "Longitude",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "link_margin_db",
+      "type": "number",
+      "description": "Available link margin"
+    }
+  ],
+  "config": {
+    "constellation_size": {
+      "type": "integer",
+      "default": 1000,
+      "description": "Number of satellites"
+    }
+  },
+  "state_schema": {
+    "active_satellites": {
+      "type": "integer",
+      "description": "Sats in orbit"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-NETWORKING"]
+  },
+  "events": {
+    "emits": ["SatellitePassed", "LinkLost"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "isl_hops",
+      "type": "histogram",
+      "description": "Inter-satellite link hops"
+    }
+  ],
+  "capabilities": ["sgp4_propagation", "rain_fade_model"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

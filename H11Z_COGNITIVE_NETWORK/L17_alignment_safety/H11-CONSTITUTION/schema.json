@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-CONSTITUTION State Schema",
+  "type": "object",
+  "properties": {
+    "constitution_version": {"type": "string"},
+    "principles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "text": {"type": "string"},
+          "domain_tags": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    }
+  },
+  "required": ["constitution_version", "principles"]
+}

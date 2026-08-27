@@ -1,0 +1,58 @@
+{
+  "name": "H11-BROWSING",
+  "version": "1.0.0",
+  "description": "Agent for headless web navigation, structured extraction, and complex DOM interactions.",
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "enum": ["navigate", "click", "type", "scroll", "extract", "screenshot", "wait"],
+        "description": "The command action to perform."
+      },
+      "params": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string" },
+          "selector": { "type": "string" },
+          "text": { "type": "string" },
+          "dx": { "type": "number" },
+          "dy": { "type": "number" },
+          "full_page": { "type": "boolean" },
+          "seconds": { "type": "number" }
+        }
+      }
+    },
+    "required": ["action", "params"]
+  },
+  "outputs": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string",
+        "enum": ["success", "error"]
+      },
+      "action": {
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
+      },
+      "content": {
+        "type": "string",
+        "description": "Optimized DOM tree serialized for LLMs."
+      },
+      "screenshot_b64": {
+        "type": "string",
+        "description": "Base64 encoded screenshot string."
+      },
+      "error": {
+        "type": "string"
+      },
+      "timestamp": {
+        "type": "number"
+      }
+    },
+    "required": ["status", "action", "timestamp"]
+  }
+}

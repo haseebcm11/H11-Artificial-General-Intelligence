@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MORPHOLOGIA",
+  "version": "1.0.0",
+  "layer": 21,
+  "layer_name": "Literature & Linguistics",
+  "description": "Agent for morphological analysis and word formation.",
+  "category": "Linguistics",
+  "inputs": [
+    {
+      "name": "words",
+      "type": "array",
+      "description": "Surface forms to parse"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "parses",
+      "type": "array",
+      "description": "Morphological analyses"
+    }
+  ],
+  "config": {
+    "agglutinative_fallback": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use RNN for unseen complex words"
+    }
+  },
+  "state_schema": {
+    "parse_cache": {
+      "type": "object",
+      "description": "LRU cache for parsed words"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-SEMANTICA", "H11-TRANSLATIO"]
+  },
+  "capabilities": ["lemmatization", "morphological-generation"]
+}

@@ -1,0 +1,17 @@
+{
+  "agent_id": "H11-CURIOSITY",
+  "layer": 13,
+  "type": "cognitive_reasoning",
+  "capabilities": [
+    "information_gain",
+    "surprise_exploration",
+    "novelty_seeking",
+    "question_generation"
+  ],
+  "configuration": {
+    "intrinsic_reward_weight": 0.5,
+    "novelty_threshold": 0.8,
+    "prediction_learning_rate": 0.01,
+    "memory_capacity": 10000
+  }
+}

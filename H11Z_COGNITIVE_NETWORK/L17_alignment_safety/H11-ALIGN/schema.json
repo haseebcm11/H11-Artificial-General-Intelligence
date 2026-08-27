@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-ALIGN State Schema",
+  "type": "object",
+  "properties": {
+    "alignment_dag": {
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "priority": {"type": "number"},
+              "constraint_type": {"type": "string"}
+            }
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source": {"type": "string"},
+              "target": {"type": "string"},
+              "weight": {"type": "number"}
+            }
+          }
+        }
+      }
+    },
+    "current_divergence_metrics": {
+      "type": "object",
+      "additionalProperties": {"type": "number"}
+    }
+  },
+  "required": ["alignment_dag", "current_divergence_metrics"]
+}

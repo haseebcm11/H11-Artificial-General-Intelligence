@@ -1,0 +1,6 @@
+{
+  "name": "H11-COATING",
+  "description": "Coatings Engineering Agent for designing functional and protective coatings.",
+  "version": "1.0.0",
+  "capabilities": ["anti_corrosion", "tribology", "deposition_optimization", "thermal_barrier"]
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-GOVERNANCE Schema",
+  "type": "object",
+  "properties": {
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "weight": { "type": "number" },
+          "type": { "type": "string", "enum": ["human", "ai_auditor"] }
+        },
+        "required": ["id", "weight", "type"]
+      }
+    },
+    "active_policies": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "quorum_threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "required": ["nodes", "active_policies", "quorum_threshold"]
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EMBEDDER",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Maps tokens to dense vectors with a deterministic hashing trick so identical tokens always produce identical vectors.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "tokens",
+      "type": "List[str]"
+    },
+    {
+      "name": "dim",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "vector",
+      "type": "List[float]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-TOKENIZER",
+      "H11-SUBWORD"
+    ],
+    "downstream": [
+      "H11-VECTORDb",
+      "H11-INDEX",
+      "H11-SIMILARITY",
+      "H11-CONTRASTIVE",
+      "H11-LATENT",
+      "H11-COMPRESSION-EMB"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "hashing-trick",
+    "l2-normalize"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

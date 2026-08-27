@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-STOPPING",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Multi-sequence matching, regex stopping, and structural limits.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "generated_text",
+      "type": "str",
+      "desc": "Currently generated string"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "should_stop",
+      "type": "bool",
+      "desc": "Whether to halt generation"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "active_rules": {
+      "type": "int",
+      "description": "Number of registered stop rules"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

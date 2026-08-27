@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LONGTERM",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Persistent, unbounded vector and graph-based memory storage.",
+  "category": "Permanent Store",
+  "inputs": [
+    {"name": "consolidated_traces", "type": "array", "description": "Traces to store permanently", "required": false},
+    {"name": "retrieval_cue", "type": "array", "description": "Query embedding", "required": false},
+    {"name": "operation", "type": "string", "description": "ENCODE, RETRIEVE, CONSOLIDATE", "required": true}
+  ],
+  "outputs": [
+    {"name": "retrieved_nodes", "type": "array", "description": "Matched memory records"},
+    {"name": "confidence_scores", "type": "array", "description": "Similarity scores"},
+    {"name": "index_health", "type": "number", "description": "Graph connectivity metric"}
+  ],
+  "config": {
+    "vector_dim": {"type": "integer", "default": 768, "description": "Embedding dimensions"},
+    "ef_construction": {"type": "integer", "default": 200, "description": "HNSW build param"},
+    "m_links": {"type": "integer", "default": 16, "description": "HNSW graph edges per node"}
+  },
+  "state_schema": {
+    "hnsw_index": {"type": "object", "description": "Vector similarity graph"},
+    "document_store": {"type": "object", "description": "Key-value persistent store"},
+    "consolidation_queue": {"type": "array", "description": "Items waiting for deep indexing"}
+  },
+  "dependencies": {
+    "upstream": ["H11-SHORTTERM", "H11-SEMANTIC"],
+    "downstream": ["H11-REASON"]
+  },
+  "events": {
+    "emits": ["memory_consolidated", "retrieval_success"],
+    "consumes": ["sleep_cycle_start"]
+  },
+  "metrics": [
+    {"name": "total_records", "type": "counter", "description": "Total stored memories"},
+    {"name": "recall_latency", "type": "histogram", "description": "Time to fetch memories"}
+  ],
+  "capabilities": ["vector-search", "deep-consolidation", "infinite-capacity"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "massive"
+  }
+}

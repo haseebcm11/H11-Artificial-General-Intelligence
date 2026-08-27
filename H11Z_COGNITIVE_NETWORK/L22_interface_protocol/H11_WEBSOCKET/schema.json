@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-WEBSOCKET Schema",
+  "type": "object",
+  "definitions": {
+    "ConnectionState": {
+      "type": "string",
+      "enum": ["CONNECTING", "OPEN", "CLOSING", "CLOSED"]
+    },
+    "FrameType": {
+      "type": "string",
+      "enum": ["TEXT", "BINARY", "PING", "PONG", "CLOSE"]
+    },
+    "ConnectionMetrics": {
+      "type": "object",
+      "properties": {
+        "bytesReceived": { "type": "integer" },
+        "bytesSent": { "type": "integer" },
+        "pingLatencyMs": { "type": "number" },
+        "droppedFrames": { "type": "integer" }
+      },
+      "required": ["bytesReceived", "bytesSent", "pingLatencyMs"]
+    }
+  },
+  "properties": {
+    "connectionId": { "type": "string", "format": "uuid" },
+    "state": { "$ref": "#/definitions/ConnectionState" },
+    "metrics": { "$ref": "#/definitions/ConnectionMetrics" },
+    "userAgent": { "type": "string" },
+    "endpointUrl": { "type": "string", "format": "uri" }
+  },
+  "required": ["connectionId", "state", "metrics"]
+}

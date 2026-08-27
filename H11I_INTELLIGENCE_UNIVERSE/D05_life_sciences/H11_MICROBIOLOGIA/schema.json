@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-MICROBIOLOGIA Schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "fba_solver": {
+          "type": "string",
+          "default": "glpk"
+        },
+        "hgt_rate": {
+          "type": "number",
+          "default": 0.01
+        }
+      }
+    },
+    "state_schema": {
+      "type": "object",
+      "properties": {
+        "microbiome_diversity": {
+          "type": "number"
+        },
+        "active_models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

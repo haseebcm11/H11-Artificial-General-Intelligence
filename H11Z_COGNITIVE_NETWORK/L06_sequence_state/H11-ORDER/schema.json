@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ORDER",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Permutation modeling and sequence set invariance.",
+  "category": "Ordering",
+  "inputs": [
+    {
+      "name": "sequence",
+      "type": "List[Any]",
+      "description": "Items",
+      "required": true
+    },
+    {
+      "name": "order_mode",
+      "type": "str",
+      "description": "Mode",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "permuted_sequence",
+      "type": "List[Any]",
+      "description": "Result"
+    },
+    {
+      "name": "permutation_matrix",
+      "type": "List[int]",
+      "description": "Original indices"
+    }
+  ],
+  "config": {
+    "seed": {
+      "type": "int",
+      "default": 42,
+      "description": "Random seed"
+    }
+  },
+  "state_schema": {
+    "permutations_generated": {
+      "type": "int",
+      "description": "Usage tracker"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-SEQUENCE"
+    ],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "SequencePermuted"
+    ],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "shuffle_entropy",
+      "type": "gauge",
+      "description": "Randomness measure"
+    }
+  ],
+  "capabilities": [
+    "Permutation LM",
+    "Set invariant ops"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

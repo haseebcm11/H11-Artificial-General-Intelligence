@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AUTONOMOUS",
+  "version": "1.0.0",
+  "layer": 16,
+  "layer_name": "Transportation",
+  "description": "L4/L5 Autonomous driving stack",
+  "category": "Autonomy",
+  "inputs": [
+    {
+      "name": "sensor_data",
+      "type": "object",
+      "description": "LiDAR/Camera fused data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "steering",
+      "type": "float",
+      "description": "Steering angle command"
+    },
+    {
+      "name": "acceleration",
+      "type": "float",
+      "description": "Acceleration command"
+    }
+  ],
+  "config": {
+    "mpc_horizon": {
+      "type": "integer",
+      "default": "10",
+      "description": "NMPC horizon length"
+    }
+  },
+  "state_schema": {
+    "ego_pose": {
+      "type": "object",
+      "description": "x, y, yaw"
+    }
+  }
+}

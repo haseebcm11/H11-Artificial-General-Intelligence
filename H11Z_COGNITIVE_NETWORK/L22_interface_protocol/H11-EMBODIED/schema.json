@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-EMBODIED Schema",
+  "type": "object",
+  "properties": {
+    "scene_graph": {
+      "type": "object",
+      "properties": {
+        "max_nodes": { "type": "integer", "minimum": 1 },
+        "spatial_resolution": { "type": "number" },
+        "update_frequency_hz": { "type": "number" }
+      },
+      "required": ["max_nodes"]
+    },
+    "affordances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "object_class": { "type": "string" },
+          "actions": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "preconditions": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["object_class", "actions"]
+      }
+    },
+    "skill_library": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "skill_name": { "type": "string" },
+          "parameters": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["skill_name"]
+      }
+    }
+  },
+  "required": ["scene_graph", "affordances", "skill_library"]
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CONTENT",
+  "version": "1.0.0",
+  "layer": "6",
+  "layer_name": "Narrative Architect",
+  "description": "Transforms strategic goals into structured narrative sequences and drafts using DAG traversal and MDPs.",
+  "category": "Content Generation",
+  "inputs": ["strategic_objective", "brand_constraints", "raw_data_sources"],
+  "outputs": ["content_dag", "drafts"],
+  "config": {
+    "max_graph_depth": 5,
+    "tension_target": 0.8
+  },
+  "state_schema": {
+    "global_content_ontology": "KnowledgeGraph",
+    "audience_knowledge_state": "VectorSpace"
+  },
+  "dependencies": {
+    "upstream": ["H11-BRANDING"],
+    "downstream": ["H11-SEO", "H11-PR", "H11-VIDEO"]
+  },
+  "events": {
+    "emits": ["DraftGenerated", "NarrativeSequencePlanned"],
+    "consumes": ["BrandConstraintsUpdated", "ObjectiveReceived"]
+  },
+  "metrics": ["narrative_tension", "ontological_consistency", "generation_latency"],
+  "capabilities": ["graph_traversal", "reinforcement_learning_sequencing", "constrained_nlg"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

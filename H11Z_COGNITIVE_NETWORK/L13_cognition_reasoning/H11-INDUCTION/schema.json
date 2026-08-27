@@ -1,0 +1,29 @@
+{
+  "name": "H11-INDUCTION",
+  "description": "Agent for inductive logic programming and pattern generalization.",
+  "inputs": {
+    "target_predicate": "string",
+    "positive_examples": [
+      {
+        "id": "string",
+        "features": "object"
+      }
+    ],
+    "negative_examples": [
+      {
+        "id": "string",
+        "features": "object"
+      }
+    ],
+    "background_knowledge": "object"
+  },
+  "outputs": {
+    "hypothesis": {
+      "rules": ["string"],
+      "metrics": {
+        "coverage": "number",
+        "simplicity": "number"
+      }
+    }
+  }
+}

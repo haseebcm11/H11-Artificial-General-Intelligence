@@ -1,0 +1,21 @@
+{
+  "name": "H11-REDTEAM",
+  "version": "1.0.0",
+  "description": "Schema for Red-Teaming configuration and state",
+  "type": "object",
+  "properties": {
+    "red_team_state": {
+      "type": "object",
+      "properties": {
+        "active_campaign_id": { "type": "string" },
+        "generated_prompts": { "type": "integer" },
+        "successful_bypasses": { "type": "integer" }
+      }
+    },
+    "attack_strategies": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["semantic_shift", "obfuscation", "logical_fallacy"] }
+    }
+  },
+  "required": ["red_team_state", "attack_strategies"]
+}

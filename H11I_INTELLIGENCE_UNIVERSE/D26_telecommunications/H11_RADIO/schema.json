@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RADIO",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Telecommunications",
+  "description": "Broadcast radio propagation and coverage modeling.",
+  "category": "Broadcasting",
+  "inputs": [
+    {
+      "name": "transmitter_power_w",
+      "type": "number",
+      "description": "Power in watts",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "coverage_area_sq_km",
+      "type": "number",
+      "description": "Effective coverage"
+    }
+  ],
+  "config": {
+    "propagation_model": {
+      "type": "string",
+      "default": "longley-rice",
+      "description": "Model to use for path loss"
+    }
+  },
+  "state_schema": {
+    "transmitters": {
+      "type": "array",
+      "description": "List of active transmitters"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SPECTRUM"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["RadioCoverageUpdated"],
+    "consumes": ["SpectrumAllocationChanged"]
+  },
+  "metrics": [
+    {
+      "name": "simulated_paths",
+      "type": "counter",
+      "description": "Number of propagation paths simulated"
+    }
+  ],
+  "capabilities": ["terrain_modeling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

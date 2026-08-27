@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CRAWLER",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Distributed Mercator-based crawler with JS rendering.",
+  "category": "Exploration",
+  "inputs": [
+    {
+      "name": "seeds",
+      "type": "array[string]",
+      "description": "Seed URLs.",
+      "required": true
+    },
+    {
+      "name": "render_js",
+      "type": "boolean",
+      "description": "Use headless rendering."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "documents",
+      "type": "array[object]",
+      "description": "Extracted pages with metadata."
+    }
+  ],
+  "config": {
+    "bloom_filter_size_bits": {
+      "type": "integer",
+      "default": 1000000000,
+      "description": "Bit array size for URL visited set."
+    },
+    "politeness_delay_ms": {
+      "type": "integer",
+      "default": 2000,
+      "description": "Per-host crawl delay."
+    }
+  },
+  "state_schema": {
+    "active_hosts": {
+      "type": "map[string, timestamp]",
+      "description": "Last hit time per hostname."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-CONFIG"],
+    "downstream": ["H11-CLEANSER"]
+  },
+  "events": {
+    "emits": ["CrawlEpochCompleted", "SpiderTrapDetected"],
+    "consumes": ["PauseCrawlCommand"]
+  },
+  "metrics": [
+    {
+      "name": "urls_crawled",
+      "type": "counter",
+      "description": "Total successfully fetched URLs."
+    }
+  ],
+  "capabilities": ["JavaScriptExecution", "PolitenessEnforcement", "SimHashDeduplication"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

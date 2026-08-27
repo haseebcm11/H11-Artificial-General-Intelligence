@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NeuroPharm Agent Schema",
+  "type": "object",
+  "properties": {
+    "drug_molecule": {
+      "type": "object",
+      "properties": {
+        "logP": { "type": "number" },
+        "tpsa": { "type": "number" },
+        "mw": { "type": "number" },
+        "pgp_substrate": { "type": "boolean" }
+      },
+      "required": ["logP", "tpsa", "mw"]
+    },
+    "receptor_profile": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "receptor_name": { "type": "string" },
+          "ki_nm": { "type": "number" },
+          "intrinsic_activity": { "type": "number" }
+        },
+        "required": ["receptor_name", "ki_nm", "intrinsic_activity"]
+      }
+    }
+  },
+  "required": ["drug_molecule", "receptor_profile"]
+}

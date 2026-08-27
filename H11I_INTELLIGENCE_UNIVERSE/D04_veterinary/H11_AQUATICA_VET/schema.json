@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AQUATICA-VET",
+  "version": "1.0.0",
+  "layer": 4,
+  "layer_name": "Veterinary Sciences",
+  "description": "Aquatic medicine encompassing fish, marine mammals, and water chemistry.",
+  "category": "Aquatic",
+  "inputs": [
+    {
+      "name": "water_chemistry",
+      "type": "WaterPanel",
+      "description": "Crucial environmental metrics",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "water_quality_alert",
+      "type": "QualityWarning",
+      "description": "Identified chemical toxicities"
+    }
+  ],
+  "config": {
+    "nh3_toxicity_threshold": {
+      "type": "float",
+      "default": 0.05,
+      "description": "Lethal concentration of unionized ammonia in mg/L"
+    }
+  },
+  "state_schema": {
+    "biofilter_health": {
+      "type": "object",
+      "description": "Estimated state of nitrifying bacteria"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-VETPATHOLOGIA"],
+    "downstream": ["H11-ZOOLOGIA-VET"]
+  },
+  "events": {
+    "emits": ["AmmoniaSpikeAlert", "BiofilterCrash"],
+    "consumes": ["TelemetryWaterUpdate"]
+  },
+  "metrics": [
+    {
+      "name": "water_quality_evaluations",
+      "type": "counter",
+      "description": "Number of thermodynamic equilibria calculated"
+    }
+  ],
+  "capabilities": ["water_chemistry_analysis", "fish_pathology", "marine_mammal_pharmacology"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

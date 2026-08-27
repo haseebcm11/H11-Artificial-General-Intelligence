@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-IRRIGATIO",
+  "version": "1.0.0",
+  "layer": 24,
+  "layer_name": "Agriculture & Food Sciences",
+  "description": "Irrigation scheduling and soil water balance.",
+  "category": "Irrigation",
+  "inputs": [
+    {
+      "name": "weather",
+      "type": "WeatherMetrics",
+      "description": "Meteorological data for ETo calculation",
+      "required": true
+    },
+    {
+      "name": "soil_moisture",
+      "type": "array",
+      "description": "Volumetric water content from probes",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "irrigation_schedule",
+      "type": "array",
+      "description": "Valve actuation schedule"
+    }
+  ],
+  "config": {
+    "irrigation_efficiency": {
+      "type": "float",
+      "default": 0.85,
+      "description": "System application efficiency"
+    }
+  },
+  "state_schema": {
+    "root_zone_depletion": {
+      "type": "float",
+      "description": "Current depletion in mm"
+    },
+    "cumulative_et": {
+      "type": "float",
+      "description": "Cumulative ETc for the season"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SOILSCI", "H11-CROP"],
+    "downstream": ["H11-PRECISIONAG"]
+  },
+  "events": {
+    "emits": ["irrigation_scheduled"],
+    "consumes": ["rain_event"]
+  },
+  "metrics": [
+    {
+      "name": "water_use_efficiency",
+      "type": "gauge",
+      "description": "Yield per unit water applied"
+    }
+  ],
+  "capabilities": ["eto_calculation", "soil_moisture_routing"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

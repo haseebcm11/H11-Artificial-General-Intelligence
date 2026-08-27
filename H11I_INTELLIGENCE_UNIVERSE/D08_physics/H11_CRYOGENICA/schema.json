@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CRYOGENICA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Ultra-low temperature and superfluid physics agent",
+  "category": "Thermodynamics",
+  "inputs": [
+    {
+      "name": "initial_temp",
+      "type": "float",
+      "description": "Starting temperature in Kelvin",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "superfluid_fraction",
+      "type": "float",
+      "description": "Density fraction of the superfluid component"
+    }
+  ],
+  "config": {
+    "he4_lambda_point": {
+      "type": "float",
+      "default": 2.17,
+      "description": "Helium-4 superfluid transition temperature"
+    }
+  },
+  "state_schema": {
+    "mixture_phase_separated": {
+      "type": "bool",
+      "description": "True if He3-He4 mixture is in phase-separated state"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-THERMODYNAMICA"],
+    "downstream": ["H11-CONDENSATA"]
+  },
+  "events": {
+    "emits": ["superfluid_transition", "base_temp_reached"],
+    "consumes": ["heat_load_changed"]
+  },
+  "metrics": [
+    {
+      "name": "cooling_cycles",
+      "type": "counter",
+      "description": "Number of simulated refrigeration cycles"
+    }
+  ],
+  "capabilities": ["two_fluid_model", "dilution_refrigeration_calc"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

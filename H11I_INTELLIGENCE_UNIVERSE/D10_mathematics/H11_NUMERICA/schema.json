@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NUMERICA",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Numerical Methods and Linear Algebra Agent",
+  "category": "Numerical",
+  "inputs": [
+    {
+      "name": "matrix",
+      "type": "array[array[number]]",
+      "description": "System matrix or operator",
+      "required": true
+    },
+    {
+      "name": "vector",
+      "type": "array[number]",
+      "description": "Target vector for Ax=b",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "eigen_spectrum",
+      "type": "object",
+      "description": "Eigenvalues and eigenvectors"
+    },
+    {
+      "name": "solution_vector",
+      "type": "array[number]",
+      "description": "Solved x for linear system"
+    }
+  ],
+  "config": {
+    "precision_bits": {
+      "type": "integer",
+      "default": 64,
+      "description": "Floating point precision (32, 64, 128)"
+    }
+  },
+  "state_schema": {
+    "factorization_cache": {
+      "type": "map[string, object]",
+      "description": "Memoized LU/QR decompositions"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ALGEBRA"],
+    "downstream": ["H11-OPTIMIZATIO", "H11-DIFFERENTIALIS"]
+  },
+  "events": {
+    "emits": ["matrix_inverted", "condition_number_warning"],
+    "consumes": ["system_assembled"]
+  },
+  "metrics": [
+    {
+      "name": "flops_executed",
+      "type": "counter",
+      "description": "Total floating point operations"
+    }
+  ],
+  "capabilities": ["svd_decomposition", "eigen_solving", "sparse_linear_algebra"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

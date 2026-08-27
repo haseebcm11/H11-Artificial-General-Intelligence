@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PRIVACY-DATA",
+  "version": "1.0.5",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Applies PII scrubbing, k-anonymity, and differential privacy to datasets.",
+  "category": "Security & Privacy",
+  "inputs": [
+    {
+      "name": "payload",
+      "type": "string|object",
+      "description": "Text or structured data to be anonymized.",
+      "required": true
+    },
+    {
+      "name": "strictness",
+      "type": "string",
+      "description": "Level of privacy required (low, medium, strict, military)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "sanitized_payload",
+      "type": "string|object",
+      "description": "Safe, privacy-compliant data."
+    },
+    {
+      "name": "privacy_guarantees",
+      "type": "object",
+      "description": "Metadata on applied noise, k-values, and removed entities."
+    }
+  ],
+  "config": {
+    "k_anonymity_target": {
+      "type": "integer",
+      "default": 5,
+      "description": "Target k for structural generalization."
+    },
+    "epsilon_budget": {
+      "type": "number",
+      "default": 1.0,
+      "description": "Total privacy budget for Laplace noise injection."
+    },
+    "use_ner": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable ML-based Named Entity Recognition."
+    }
+  },
+  "state_schema": {
+    "epsilon_consumed": {
+      "type": "number",
+      "description": "Cumulative DP budget used across transactions."
+    },
+    "redaction_stats": {
+      "type": "object",
+      "description": "Counts of different PII categories scrubbed."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ETL-DATA"],
+    "downstream": ["H11-FEATURE-STORE"]
+  },
+  "events": {
+    "emits": ["PrivacyBudgetExhausted", "SanitizationComplete"],
+    "consumes": ["NewDataBatch"]
+  },
+  "metrics": [
+    {
+      "name": "pii_entities_removed",
+      "type": "counter",
+      "description": "Total number of PII strings redacted."
+    }
+  ],
+  "capabilities": ["NER Scrubbing", "k-Anonymity Generalization", "Laplace Noise DP"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

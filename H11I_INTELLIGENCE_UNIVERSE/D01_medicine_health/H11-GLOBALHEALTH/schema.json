@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GLOBALHEALTH",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Transnational health surveillance, Global Burden of Disease (GBD/DALY) computation, pandemic importation modeling, UHC assessment, and planetary health analytics.",
+  "category": "Global Health & Epidemiology",
+  "inputs": [
+    {
+      "name": "demographics_payload",
+      "type": "object",
+      "description": "Country population, age structure, and baseline life expectancy"
+    },
+    {
+      "name": "disease_burden_records",
+      "type": "array",
+      "description": "Cause-specific incident cases, deaths, and disability weights"
+    },
+    {
+      "name": "health_capacity_metrics",
+      "type": "object",
+      "description": "Workforce density, critical care beds, cold chain, and financing"
+    },
+    {
+      "name": "transboundary_mobility_matrix",
+      "type": "array",
+      "description": "Cross-border passenger volume and travel hazard links"
+    },
+    {
+      "name": "climate_health_covariates",
+      "type": "object",
+      "description": "Environmental temperature anomalies, humidity, precipitation, and vector data"
+    },
+    {
+      "name": "one_health_surveillance_signals",
+      "type": "array",
+      "description": "Zoonotic pathogen discoveries, wildlife trade exposure, and AMR isolates"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "daly_burden_analysis",
+      "type": "object",
+      "description": "Calculated YLL, YLD, total DALYs, and age-standardized burden rates"
+    },
+    {
+      "name": "uhc_index_evaluation",
+      "type": "object",
+      "description": "Essential health service index and catastrophic expenditure score"
+    },
+    {
+      "name": "importation_hazard_assessment",
+      "type": "object",
+      "description": "Border hazard score and epidemic arrival time probability distribution"
+    },
+    {
+      "name": "equitable_resource_allocation",
+      "type": "array",
+      "description": "Optimized allocation of medical countermeasures across sovereign states"
+    },
+    {
+      "name": "vector_borne_climate_risk",
+      "type": "object",
+      "description": "Arbovirus and malaria vectorial capacity shifts under climate anomalies"
+    },
+    {
+      "name": "global_health_alerts",
+      "type": "array",
+      "description": "IHR early warning alerts and high-priority One Health notifications"
+    }
+  ],
+  "config": {
+    "standard_reference_life_table": "WHO_GHE_2020",
+    "discount_rate": 0.03,
+    "age_weighting_enabled": false,
+    "ihr_compliance_strictness": "high",
+    "cold_chain_spoilage_penalty": 0.15
+  },
+  "state_schema": {
+    "country_profiles": "Dict[str, CountryProfile]",
+    "mobility_graph": "DirectedGraph[str, float]",
+    "active_surveillance_registry": "List[OneHealthRecord]",
+    "resource_inventory_cache": "Dict[str, int]"
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-EPIDEMIOLOGIA",
+      "H11-VIROLOGIA",
+      "H11-HEALTHINFORMATICA",
+      "D04_earth_planetary"
+    ],
+    "downstream": [
+      "H11-PUBLICHEALTH",
+      "H11-IMMUNOLOGIA",
+      "D07_governance_policy"
+    ]
+  },
+  "events": {
+    "emits": [
+      "pandemic_importation_alert",
+      "climate_vector_surge_detected",
+      "resource_depletion_warning",
+      "daly_burden_recalculated"
+    ],
+    "consumes": [
+      "outbreak_cluster_reported",
+      "extreme_weather_event_logged",
+      "countermeasure_stockpile_updated",
+      "demographic_census_refreshed"
+    ]
+  },
+  "metrics": [
+    "global_daly_throughput_per_sec",
+    "importation_risk_prediction_accuracy",
+    "resource_equity_gini_index",
+    "vectorial_capacity_estimation_error"
+  ],
+  "capabilities": [
+    "Global Burden of Disease (DALY/YLL/YLD) Modeling",
+    "International Health Regulations (IHR) Threat Detection",
+    "Cross-Border Network Pathogen Importation Analytics",
+    "Planetary Health & Climate Vector Suitability Simulation",
+    "Equitable Countermeasure & Vaccine Optimization",
+    "One Health Zoonotic & AMR Surveillance"
+  ],
+  "scaling": {
+    "compute_intensity": "medium",
+    "memory_intensity": "high"
+  }
+}

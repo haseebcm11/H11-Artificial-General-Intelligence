@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RECURRENCE",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Manages hidden state propagation and TBPTT.",
+  "category": "Recurrence",
+  "inputs": [
+    {
+      "name": "sequential_input",
+      "type": "List[List[float]]",
+      "description": "Inputs",
+      "required": true
+    },
+    {
+      "name": "reset_state",
+      "type": "bool",
+      "description": "Clear states",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "hidden_activations",
+      "type": "List[List[float]]",
+      "description": "Outputs"
+    },
+    {
+      "name": "state_snapshot",
+      "type": "dict",
+      "description": "Saved states"
+    }
+  ],
+  "config": {
+    "hidden_size": {
+      "type": "int",
+      "default": 512,
+      "description": "RNN hidden state size"
+    }
+  },
+  "state_schema": {
+    "persisted_h": {
+      "type": "List[float]",
+      "description": "Hidden state"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-SEQUENCE"
+    ],
+    "downstream": [
+      "H11-GATING"
+    ]
+  },
+  "events": {
+    "emits": [
+      "RecurrenceComputed"
+    ],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "tbptt_truncations",
+      "type": "counter",
+      "description": "Number of grad detaches"
+    }
+  ],
+  "capabilities": [
+    "Segment-level recurrence",
+    "TBPTT"
+  ],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "medium"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OPTIMIZATIO",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Mathematical Optimization Agent",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "objective_function",
+      "type": "string",
+      "description": "Function to minimize or maximize",
+      "required": true
+    },
+    {
+      "name": "constraints",
+      "type": "array[string]",
+      "description": "Equality and inequality constraints",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "optimal_point",
+      "type": "array[number]",
+      "description": "Argmin/Argmax in parameter space"
+    },
+    {
+      "name": "optimal_value",
+      "type": "number",
+      "description": "Function value at optimum"
+    }
+  ],
+  "config": {
+    "algorithm": {
+      "type": "string",
+      "default": "l-bfgs-b",
+      "description": "Solver algorithm"
+    }
+  },
+  "state_schema": {
+    "search_history": {
+      "type": "array[object]",
+      "description": "Path taken during gradient descent"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ANALYSIS", "H11-NUMERICA"],
+    "downstream": ["H11-GAMETHEORIA"]
+  },
+  "events": {
+    "emits": ["optimum_found", "stuck_in_local_minima"],
+    "consumes": ["loss_landscape_updated"]
+  },
+  "metrics": [
+    {
+      "name": "gradient_evaluations",
+      "type": "counter",
+      "description": "Number of times gradient was computed"
+    }
+  ],
+  "capabilities": ["convex_optimization", "simulated_annealing", "linear_programming"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

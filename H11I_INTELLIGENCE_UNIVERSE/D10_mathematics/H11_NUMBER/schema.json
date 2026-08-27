@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NUMBER",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Number Theory and Prime Analysis Agent",
+  "category": "Number Theory",
+  "inputs": [
+    {
+      "name": "number_sequence",
+      "type": "array[integer]",
+      "description": "Sequence of integers for theoretical analysis",
+      "required": true
+    },
+    {
+      "name": "target_domain",
+      "type": "string",
+      "description": "Specific subfield like arithmetic geometry or analytic number theory",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "prime_factors",
+      "type": "map[integer, integer]",
+      "description": "Prime factorization map"
+    },
+    {
+      "name": "diophantine_solutions",
+      "type": "array[array[integer]]",
+      "description": "Solutions to diophantine equations"
+    }
+  ],
+  "config": {
+    "sieve_limit": {
+      "type": "integer",
+      "default": 1000000,
+      "description": "Upper bound for prime sieve"
+    }
+  },
+  "state_schema": {
+    "computed_primes": {
+      "type": "array[integer]",
+      "description": "Cached prime numbers"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ALGEBRA"],
+    "downstream": ["H11-CRYPTOMATH"]
+  },
+  "events": {
+    "emits": ["prime_discovered", "conjecture_tested"],
+    "consumes": ["equation_formulated"]
+  },
+  "metrics": [
+    {
+      "name": "primes_computed",
+      "type": "counter",
+      "description": "Total prime numbers identified"
+    }
+  ],
+  "capabilities": ["prime_factorization", "modular_arithmetic", "diophantine_solving"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

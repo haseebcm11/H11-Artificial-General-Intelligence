@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-PHOTONIC Configuration",
+  "type": "object",
+  "properties": {
+    "mzi_grid_size": {
+      "type": "integer",
+      "minimum": 2
+    },
+    "wavelengths_multiplexed": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_modulation_ghz": {
+      "type": "number",
+      "minimum": 1.0
+    }
+  },
+  "required": ["mzi_grid_size", "wavelengths_multiplexed"]
+}

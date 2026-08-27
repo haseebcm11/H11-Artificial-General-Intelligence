@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SynthBio Agent Schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "chassis_organism": {
+          "type": "string",
+          "default": "E. coli"
+        },
+        "assembly_method": {
+          "type": "string",
+          "enum": ["Gibson", "GoldenGate", "BioBrick"]
+        },
+        "optimization_goal": {
+          "type": "string",
+          "enum": ["yield", "robustness", "speed"]
+        }
+      },
+      "required": ["chassis_organism", "assembly_method"]
+    },
+    "state_schema": {
+      "type": "object",
+      "properties": {
+        "designed_circuits": {
+          "type": "integer"
+        },
+        "simulated_hours": {
+          "type": "number"
+        },
+        "registered_parts": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "H11-DATAMINING",
+  "description": "Agent for data mining, clustering, and pattern recognition",
+  "version": "1.0",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "dataset_id": { "type": "string" },
+      "task_type": { "type": "string", "enum": ["CLUSTERING", "ASSOCIATION", "ANOMALY_DETECTION", "DIMENSIONALITY_REDUCTION"] },
+      "algorithm": { "type": "string" },
+      "parameters": { "type": "object" }
+    },
+    "required": ["dataset_id", "task_type", "algorithm"]
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "status": { "type": "string" },
+      "model_artifact": { "type": "string" },
+      "metrics": { "type": "object" },
+      "summary": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPEECH",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Perception & Actuation",
+  "description": "Handles Automatic Speech Recognition (ASR) and Text-to-Speech (TTS).",
+  "category": "Perception",
+  "inputs": [
+    {
+      "name": "audio_stream",
+      "type": "string",
+      "description": "URI or stream of audio data",
+      "required": false
+    },
+    {
+      "name": "task_type",
+      "type": "string",
+      "description": "ASR, TTS, DIARIZATION",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "transcript",
+      "type": "string",
+      "description": "Recognized text"
+    },
+    {
+      "name": "synthesized_audio",
+      "type": "string",
+      "description": "Generated waveform URI"
+    }
+  ],
+  "config": {
+    "sample_rate": {
+      "type": "integer",
+      "default": 16000,
+      "description": "Standard processing sample rate"
+    },
+    "enable_streaming": {
+      "type": "boolean",
+      "default": true,
+      "description": "Process audio in chunks"
+    }
+  },
+  "state_schema": {
+    "active_streams": {
+      "type": "integer",
+      "description": "Number of concurrent ASR sessions"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-GENERATIVA", "H11-EDGE"],
+    "downstream": ["H11-NLP", "H11-MULTIMODALIS"]
+  },
+  "events": {
+    "emits": ["audio_transcribed", "speech_synthesized"],
+    "consumes": ["audio_captured"]
+  },
+  "metrics": [
+    {
+      "name": "rtf_tts",
+      "type": "gauge",
+      "description": "Real-time factor for synthesis"
+    }
+  ],
+  "capabilities": ["asr", "tts", "diarization"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "medium"
+  }
+}

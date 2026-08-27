@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CURRICULUM",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Curriculum Learning",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "dataset_samples",
+      "type": "List[str]",
+      "description": "dataset_samples input",
+      "required": true
+    },
+    {
+      "name": "model_loss_history",
+      "type": "List[float]",
+      "description": "model_loss_history input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "sample_indices",
+      "type": "List[int]",
+      "description": "sample_indices output"
+    },
+    {
+      "name": "difficulty_threshold",
+      "type": "float",
+      "description": "difficulty_threshold output"
+    }
+  ],
+  "config": {
+    "curriculum_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "curriculum_completed"
+    ],
+    "consumes": [
+      "curriculum_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "curriculum_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_curriculum"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

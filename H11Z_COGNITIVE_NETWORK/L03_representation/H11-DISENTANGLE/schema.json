@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DISENTANGLE",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Scores each latent coordinate by its variance across a batch, treating high-variance axes as factors.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "latents",
+      "type": "List[List[float]]"
+    },
+    {
+      "name": "epsilon",
+      "type": "float"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "variances",
+      "type": "List[float]"
+    },
+    {
+      "name": "collapsed",
+      "type": "List[int]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-LATENT"
+    ],
+    "downstream": [
+      "H11-SEMANTIC-EMB"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "factor-variance"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

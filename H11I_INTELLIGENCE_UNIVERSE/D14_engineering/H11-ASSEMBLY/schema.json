@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-ASSEMBLY State Schema",
+  "type": "object",
+  "properties": {
+    "agent_id": {
+      "type": "string"
+    },
+    "workcells": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cell_id": { "type": "string" },
+          "status": { "type": "string", "enum": ["IDLE", "ASSEMBLING", "WAITING_PARTS", "ERROR"] },
+          "current_recipe": { "type": ["string", "null"] },
+          "step_index": { "type": "integer" }
+        },
+        "required": ["cell_id", "status"]
+      }
+    },
+    "inventory": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "description": "Quantity of parts available"
+      }
+    }
+  },
+  "required": ["agent_id", "workcells", "inventory"]
+}

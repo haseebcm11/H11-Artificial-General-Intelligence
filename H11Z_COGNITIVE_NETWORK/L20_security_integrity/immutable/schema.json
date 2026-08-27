@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-IMMUTABLE",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "Tamper-proof logging: append-only logs, write-once storage, blockchain-based logging, cryptographic chaining, log integrity verification, compliance logging, forensic readiness",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "log_entry",
+      "type": "LogEntry",
+      "description": "Data to be immutably recorded",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "receipt",
+      "type": "Receipt",
+      "description": "Cryptographic proof of inclusion"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "head_hash": {
+      "type": "str",
+      "desc": "Hash of the latest log entry"
+    },
+    "log_size": {
+      "type": "int",
+      "desc": "Number of entries"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "immutable_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "immutable_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

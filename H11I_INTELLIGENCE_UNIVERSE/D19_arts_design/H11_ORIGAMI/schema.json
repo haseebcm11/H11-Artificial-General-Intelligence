@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ORIGAMI",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "Origami Mathematics Agent",
+  "category": "Physical Arts",
+  "inputs": [{"name": "target_3d_mesh", "type": "bytes", "description": "Goal shape"}],
+  "outputs": [{"name": "crease_pattern_svg", "type": "bytes", "description": "CP"}],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": [], "downstream": []},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": true, "gpu_required": false, "memory_class": "high"}
+}

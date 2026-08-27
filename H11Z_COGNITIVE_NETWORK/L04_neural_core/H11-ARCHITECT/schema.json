@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-ARCHITECT Configuration",
+  "type": "object",
+  "properties": {
+    "search_strategy": { "type": "string", "enum": ["darts", "evolution", "rl", "random"] },
+    "population_size": { "type": "integer" },
+    "num_generations": { "type": "integer" },
+    "supernet_layers": { "type": "integer" }
+  },
+  "required": ["search_strategy"]
+}

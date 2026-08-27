@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PUBLICPOLICY",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Simulates impact of institutional directives.",
+  "category": "Social Science",
+  "inputs": [
+    {
+      "name": "policy_directive",
+      "type": "object",
+      "description": "Parameters of the enacted policy",
+      "required": true
+    },
+    {
+      "name": "societal_baseline",
+      "type": "object",
+      "description": "Pre-shock baseline metrics",
+      "required": true
+    },
+    {
+      "name": "implementation_friction",
+      "type": "number",
+      "description": "Bureaucratic inefficiency [0, 1]",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "projected_impacts",
+      "type": "object",
+      "description": "Changes to societal stocks"
+    },
+    {
+      "name": "compliance_rate",
+      "type": "number",
+      "description": "Expected public adherence"
+    },
+    {
+      "name": "unintended_consequences",
+      "type": "array",
+      "description": "Detected side effects"
+    }
+  ],
+  "config": {
+    "integration_steps": {
+      "type": "integer",
+      "default": 12,
+      "description": "Months to project forward"
+    }
+  },
+  "state_schema": {
+    "active_policies": {
+      "type": "integer",
+      "description": "Number of active simulated policies"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-POLITICALSCI", "H11-ETHICA-APPLIED"],
+    "downstream": ["H11-EDUCATION", "H11-CULTURAL"]
+  },
+  "events": {
+    "emits": ["policy_impact_evaluated"],
+    "consumes": ["law_passed"]
+  },
+  "metrics": [
+    {
+      "name": "average_friction",
+      "type": "gauge",
+      "description": "Running average of bureaucratic friction"
+    }
+  ],
+  "capabilities": ["system_dynamics_modeling", "difference_in_differences"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

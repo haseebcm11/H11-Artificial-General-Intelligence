@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ASTRONOMIA",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Observational astronomy data processing and sky surveys.",
+  "category": "Observation",
+  "inputs": [
+    {
+      "name": "raw_observation",
+      "type": "ObservationData",
+      "description": "Raw telescopic data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "catalog_entry",
+      "type": "CatalogEntry",
+      "description": "Processed object data"
+    }
+  ],
+  "config": {
+    "magnitude_limit": {
+      "type": "float",
+      "default": 24.5,
+      "description": "Faintest magnitude to process"
+    }
+  },
+  "state_schema": {
+    "active_surveys": {
+      "type": "list",
+      "description": "Currently tracked sky regions"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SENSOR"],
+    "downstream": ["H11-ASTROPHYSICA", "H11-PLANETOLOGIA"]
+  },
+  "events": {
+    "emits": ["TransientDetected", "CatalogUpdated"],
+    "consumes": ["ObservationComplete"]
+  },
+  "metrics": [
+    {
+      "name": "objects_classified_per_sec",
+      "type": "histogram",
+      "description": "Throughput of classification pipeline"
+    }
+  ],
+  "capabilities": ["photometry", "astrometry", "spectroscopy"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

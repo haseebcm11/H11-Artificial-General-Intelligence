@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-RESUME",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Resumes only from a checkpoint after a fresh ADMISSION-CONTROL pass.",
+  "category": "orchestrator",
+  "handler": "resume",
+  "inputs": [
+    {
+      "name": "checkpoint",
+      "type": "Any"
+    },
+    {
+      "name": "admitted",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-CHECKPOINT",
+      "H11C-ADMISSION-CONTROL"
+    ],
+    "downstream": [
+      "H11C-COGNITIVE-LOOP"
+    ]
+  },
+  "capabilities": [
+    "resume"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-NAS Schema",
+  "type": "object",
+  "properties": {
+    "SearchSpace": {
+      "type": "object",
+      "properties": {
+        "operations": { "type": "array", "items": { "type": "string" } },
+        "num_nodes_per_cell": { "type": "integer" },
+        "macro_architecture": { "type": "string" }
+      }
+    },
+    "NASRequest": {
+      "type": "object",
+      "properties": {
+        "space": { "$ref": "#/properties/SearchSpace" },
+        "hardware_target": { "type": "string" },
+        "max_latency_ms": { "type": "number" },
+        "epochs": { "type": "integer" }
+      },
+      "required": ["space"]
+    },
+    "NASResponse": {
+      "type": "object",
+      "properties": {
+        "optimal_genotype": { "type": "object" },
+        "estimated_accuracy": { "type": "number" },
+        "estimated_latency": { "type": "number" }
+      },
+      "required": ["optimal_genotype", "estimated_accuracy"]
+    }
+  }
+}

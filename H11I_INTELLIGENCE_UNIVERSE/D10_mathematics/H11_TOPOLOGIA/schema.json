@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TOPOLOGIA",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Topology Agent",
+  "category": "Topology",
+  "inputs": [
+    {
+      "name": "space",
+      "type": "string",
+      "description": "Topological space",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "betti_numbers",
+      "type": "array",
+      "description": "Betti numbers"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": ["H11-ALGEBRA"],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": ["homology_computation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

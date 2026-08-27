@@ -1,0 +1,17 @@
+{
+  "name": "H11-HERPETOLOGIA",
+  "version": "1.0.0",
+  "config": {
+    "thermal_grid_resolution_m": 1.0,
+    "solar_constant_w_m2": 1361.0
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "populations": {
+        "type": "array"
+      }
+    }
+  },
+  "capabilities": ["thermal_ecology", "disease_modeling", "venom_profiling"]
+}

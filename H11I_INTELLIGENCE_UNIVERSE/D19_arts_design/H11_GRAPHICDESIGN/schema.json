@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GRAPHICDESIGN",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "Graphic Design Agent",
+  "category": "Design",
+  "inputs": [{"name": "text_content", "type": "array", "description": "Copywriting"}],
+  "outputs": [{"name": "vector_layout", "type": "bytes", "description": "SVG Layout"}],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": [], "downstream": []},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": true, "gpu_required": false, "memory_class": "low"}
+}

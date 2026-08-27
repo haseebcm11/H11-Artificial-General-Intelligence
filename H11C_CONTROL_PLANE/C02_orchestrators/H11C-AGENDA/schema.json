@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-AGENDA",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Next-action agenda distinct from the long-term goal stack.",
+  "category": "orchestrator",
+  "handler": "schedule",
+  "inputs": [
+    {
+      "name": "queue",
+      "type": "Any"
+    },
+    {
+      "name": "item",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "queue",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-GOAL-STACK"
+    ],
+    "downstream": [
+      "H11C-ATTENTION-ALLOCATOR"
+    ]
+  },
+  "capabilities": [
+    "schedule"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

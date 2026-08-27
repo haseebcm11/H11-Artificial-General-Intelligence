@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CERAMICA",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "Ceramics Agent",
+  "category": "Physical Arts",
+  "inputs": [{"name": "profile_curve", "type": "array", "description": "Shape"}],
+  "outputs": [{"name": "mesh_data", "type": "bytes", "description": "3D Data"}],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": [], "downstream": []},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": true, "gpu_required": false, "memory_class": "low"}
+}

@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_VetEpidemiology_Schema",
+  "description": "Input and output contracts for the Veterinary Epidemiology Agent.",
+  "type": "object",
+  "properties": {
+    "DiseaseReportInput": {
+      "type": "object",
+      "properties": {
+        "report_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "species": {
+          "type": "string",
+          "enum": ["BOVINE", "SWINE", "AVIAN", "EQUINE", "WILDLIFE"]
+        },
+        "pathogen_suspected": { "type": "string" },
+        "clinical_signs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "morbidity_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "mortality_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "location": {
+          "type": "object",
+          "properties": {
+            "latitude": { "type": "number" },
+            "longitude": { "type": "number" }
+          },
+          "required": ["latitude", "longitude"]
+        }
+      },
+      "required": ["report_id", "timestamp", "species", "location"]
+    },
+    "SimulationParameters": {
+      "type": "object",
+      "properties": {
+        "simulation_days": { "type": "integer", "minimum": 1 },
+        "initial_infected": { "type": "integer", "minimum": 1 },
+        "contact_rate": { "type": "number" },
+        "transmission_probability": { "type": "number" },
+        "incubation_period_days": { "type": "number" },
+        "infectious_period_days": { "type": "number" }
+      },
+      "required": ["simulation_days", "contact_rate", "transmission_probability"]
+    },
+    "EpidemiologicalOutput": {
+      "type": "object",
+      "properties": {
+        "estimated_r0": { "type": "number" },
+        "peak_infection_day": { "type": "integer" },
+        "risk_level": {
+          "type": "string",
+          "enum": ["LOW", "MODERATE", "HIGH", "CRITICAL"]
+        },
+        "recommended_interventions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action": { "type": "string" },
+              "radius_km": { "type": "number" },
+              "priority": { "type": "integer" }
+            }
+          }
+        }
+      },
+      "required": ["estimated_r0", "risk_level"]
+    }
+  }
+}

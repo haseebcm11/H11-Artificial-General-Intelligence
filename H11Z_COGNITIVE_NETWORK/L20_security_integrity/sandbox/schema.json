@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SANDBOX",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "Isolation: container sandboxing (Docker/gVisor), process sandboxing, VM isolation, seccomp-bpf, namespace isolation, resource limits (cgroups), network isolation, filesystem isolation, sandbox escape detection",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "execution_request",
+      "type": "ExecutionRequest",
+      "description": "Code and environment constraints for isolated execution",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "execution_result",
+      "type": "ExecutionResult",
+      "description": "Output and telemetry from the sandbox"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "active_sandboxes": {
+      "type": "dict",
+      "desc": "Currently running sandbox instances"
+    },
+    "resource_usage": {
+      "type": "dict",
+      "desc": "Cgroup metrics"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "sandbox_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "sandbox_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

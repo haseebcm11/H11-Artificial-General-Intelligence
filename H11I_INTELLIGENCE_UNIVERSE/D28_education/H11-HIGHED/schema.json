@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-HIGHED",
+  "version": "1.0.0",
+  "layer": "28",
+  "layer_name": "Education & Learning",
+  "description": "Higher education management and cohort projection model.",
+  "category": "Institutional",
+  "inputs": [
+    {
+      "name": "enrollment_data",
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    {
+      "name": "faculty_roster",
+      "type": "object"
+    },
+    {
+      "name": "curriculum_graph",
+      "type": "object"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "progression_forecast",
+      "type": "object"
+    },
+    {
+      "name": "resource_allocation",
+      "type": "object"
+    }
+  ],
+  "config": {
+    "optimization_tolerance": 1e-4,
+    "max_iterations": 1000
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "semester_index": { "type": "integer" },
+      "active_cohorts": { "type": "integer" }
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-MACROECON", "H11-LABOR"],
+    "downstream": ["H11-LIFELONG", "H11-EDTECH"]
+  },
+  "events": {
+    "emits": ["cohort_graduated", "bottleneck_detected"],
+    "consumes": ["budget_update", "enrollment_surge"]
+  },
+  "metrics": [
+    "retention_rate",
+    "faculty_utilization",
+    "curriculum_throughput"
+  ],
+  "capabilities": [
+    "cohort_projection",
+    "faculty_allocation",
+    "prerequisite_analysis"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

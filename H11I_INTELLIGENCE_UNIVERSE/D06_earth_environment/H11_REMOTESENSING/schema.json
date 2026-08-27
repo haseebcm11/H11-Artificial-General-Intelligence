@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-REMOTESENSING Agent Schema",
+  "type": "object",
+  "properties": {
+    "image_data": {
+      "type": "string",
+      "description": "Path or URI to the raster image data"
+    },
+    "sensor_type": {
+      "type": "string",
+      "enum": ["MULTISPECTRAL", "HYPERSPECTRAL", "SAR"]
+    },
+    "analysis_task": {
+      "type": "string",
+      "enum": ["CALCULATE_INDEX", "CLASSIFY", "CHANGE_DETECTION"]
+    },
+    "index_name": {
+      "type": "string",
+      "enum": ["NDVI", "NDWI", "EVI"],
+      "description": "Required if analysis_task is CALCULATE_INDEX"
+    }
+  },
+  "required": ["image_data", "sensor_type", "analysis_task"]
+}

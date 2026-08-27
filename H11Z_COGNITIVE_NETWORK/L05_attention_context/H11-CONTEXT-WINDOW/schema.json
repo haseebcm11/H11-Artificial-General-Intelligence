@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CONTEXT-WINDOW",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Engineers the context window to mitigate the 'lost-in-the-middle' phenomenon and allocates context budgets for RAG.",
+  "inputs": [{"name": "prompt_chunks", "type": "List[str]", "description": "RAG or conversation chunks"}, {"name": "max_tokens", "type": "int", "description": "Budget limit"}],
+  "outputs": [{"name": "optimized_prompt", "type": "str", "description": "Reordered/truncated prompt"}],
+  "state_schema": {"lost_in_middle_risk": {"type": "float", "description": "Risk score of current arrangement"}}
+}

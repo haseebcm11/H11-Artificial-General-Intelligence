@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-ROBOTICS Schema",
+  "type": "object",
+  "properties": {
+    "middleware": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "enum": ["ROS2", "ROS1", "LCM", "ZMQ"]
+        },
+        "qos_profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "topic": { "type": "string" },
+              "reliability": { "type": "string", "enum": ["BEST_EFFORT", "RELIABLE"] },
+              "durability": { "type": "string", "enum": ["VOLATILE", "TRANSIENT_LOCAL"] },
+              "history_depth": { "type": "integer", "minimum": 1 }
+            },
+            "required": ["topic", "reliability", "durability"]
+          }
+        }
+      },
+      "required": ["protocol"]
+    },
+    "sim_to_real": {
+      "type": "object",
+      "properties": {
+        "domain_randomization": {
+          "type": "boolean"
+        },
+        "parameter_bounds": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z_]+$": {
+              "type": "array",
+              "items": { "type": "number" },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        },
+        "noise_models": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "sensor": { "type": "string" },
+              "type": { "type": "string", "enum": ["GAUSSIAN", "UNIFORM", "SALT_PEPPER"] },
+              "variance": { "type": "number" }
+            },
+            "required": ["sensor", "type"]
+          }
+        }
+      },
+      "required": ["domain_randomization"]
+    },
+    "kinematics": {
+      "type": "object",
+      "properties": {
+        "base_frame": { "type": "string" },
+        "end_effector_frames": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "publish_frequency": { "type": "number", "minimum": 1.0 }
+      },
+      "required": ["base_frame"]
+    }
+  },
+  "required": ["middleware", "sim_to_real", "kinematics"]
+}

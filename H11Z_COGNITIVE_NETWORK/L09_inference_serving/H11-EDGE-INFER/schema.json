@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EDGE-INFER",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "On-device inference execution and edge-cloud hybrid splitting.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "edge_payload",
+      "type": "Dict[str, Any]",
+      "desc": "Input for edge device"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "edge_result",
+      "type": "Dict[str, Any]",
+      "desc": "Inference result or cloud fallback"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "battery_level": {
+      "type": "float",
+      "description": "Simulated battery state of edge node"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

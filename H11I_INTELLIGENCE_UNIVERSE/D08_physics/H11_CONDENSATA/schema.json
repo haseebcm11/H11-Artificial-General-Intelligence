@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CONDENSATA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Condensed matter many-body simulation agent",
+  "category": "Solid State Physics",
+  "inputs": [
+    {
+      "name": "temperature",
+      "type": "float",
+      "description": "System temperature in Kelvin",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "phase",
+      "type": "PhaseState",
+      "description": "Identified thermodynamic or quantum phase"
+    }
+  ],
+  "config": {
+    "hubbard_u": {
+      "type": "float",
+      "default": 4.0,
+      "description": "On-site Coulomb repulsion"
+    }
+  },
+  "state_schema": {
+    "susceptibility": {
+      "type": "float",
+      "description": "Magnetic susceptibility"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-CRYOGENICA", "H11-THERMODYNAMICA"],
+    "downstream": ["H11-QUANTUMINFO"]
+  },
+  "events": {
+    "emits": ["phase_transition_detected"],
+    "consumes": ["temperature_changed"]
+  },
+  "metrics": [
+    {
+      "name": "diagonalizations_per_sec",
+      "type": "gauge",
+      "description": "Hamiltonian solver rate"
+    }
+  ],
+  "capabilities": ["band_structure_calc", "bcs_gap_equation"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

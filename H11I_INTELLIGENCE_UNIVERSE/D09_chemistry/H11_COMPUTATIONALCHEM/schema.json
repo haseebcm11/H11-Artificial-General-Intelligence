@@ -1,0 +1,7 @@
+{
+  "name": "H11_COMPUTATIONALCHEM",
+  "version": "1.0.0",
+  "domain": "Chemistry",
+  "description": "Computational Chemistry Agent",
+  "capabilities": ["QuantumChemistryCalculation", "MolecularDynamicsSimulation"]
+}

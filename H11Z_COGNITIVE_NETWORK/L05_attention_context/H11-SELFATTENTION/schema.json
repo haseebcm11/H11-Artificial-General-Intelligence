@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SELFATTENTION",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Executes intra-sequence attention calculations, managing $O(n^2)$ complexity and causal masking for dense contextualization.",
+  "inputs": [{"name": "sequence", "type": "Any", "description": "Token sequence"}, {"name": "mask_type", "type": "str", "description": "causal or bidirectional"}],
+  "outputs": [{"name": "context_vectors", "type": "Any", "description": "Self-attended sequence"}],
+  "state_schema": {"max_seq_len_seen": {"type": "int", "description": "Longest processed sequence"}}
+}

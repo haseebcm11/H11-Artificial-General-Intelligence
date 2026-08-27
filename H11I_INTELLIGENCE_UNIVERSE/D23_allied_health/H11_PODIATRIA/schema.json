@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PODIATRIA",
+  "version": "1.0.0",
+  "layer": 23,
+  "layer_name": "Allied Health",
+  "description": "Podiatric Medicine and Lower Extremity Biomechanics",
+  "category": "Podiatry",
+  "inputs": [
+    {
+      "name": "plantar_pressure",
+      "type": "array",
+      "description": "2D pressure matrix during gait",
+      "required": true
+    },
+    {
+      "name": "vascular_abi",
+      "type": "float",
+      "description": "Ankle-Brachial Index",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "biomechanical_dx",
+      "type": "string",
+      "description": "Structural diagnosis"
+    },
+    {
+      "name": "ulceration_risk",
+      "type": "string",
+      "description": "Diabetic foot risk category"
+    }
+  ],
+  "config": {
+    "pressure_threshold_kpa": {
+      "type": "float",
+      "default": 200.0,
+      "description": "Threshold for high-risk pressure nodes"
+    }
+  },
+  "state_schema": {
+    "tracked_wounds": {
+      "type": "object",
+      "description": "Healing trajectory of existing ulcers"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-VASCULARIA", "H11-ENDOCRINOLOGIA"],
+    "downstream": ["H11-ORTHOTICA"]
+  },
+  "events": {
+    "emits": ["FootwearPrescribed", "UlcerRiskFlagged"],
+    "consumes": ["GaitScanCompleted"]
+  },
+  "metrics": [
+    {
+      "name": "peak_plantar_pressure",
+      "type": "gauge",
+      "description": "Maximum kPa recorded during stance"
+    }
+  ],
+  "capabilities": ["pedobarography", "diabetic_foot_care", "wound_analysis"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

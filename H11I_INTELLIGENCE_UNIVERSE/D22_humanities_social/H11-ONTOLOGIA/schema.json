@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ONTOLOGIA",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Models structural ontology and metaphysics.",
+  "category": "Philosophy",
+  "inputs": [
+    {
+      "name": "raw_entities",
+      "type": "array",
+      "description": "List of strings representing unclassified entities",
+      "required": true
+    },
+    {
+      "name": "context_domain",
+      "type": "string",
+      "description": "Domain for ontological interpretation",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ontic_graph",
+      "type": "object",
+      "description": "Serialized graph of mapped entities"
+    },
+    {
+      "name": "confidence",
+      "type": "number",
+      "description": "Confidence score of the mapping"
+    }
+  ],
+  "config": {
+    "max_depth": {
+      "type": "integer",
+      "default": 10,
+      "description": "Maximum depth for ontology graph resolution"
+    }
+  },
+  "state_schema": {
+    "graph_nodes": {
+      "type": "integer",
+      "description": "Number of currently active nodes in state"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SEMANTICS", "H11-EPISTEMOLOGIA"],
+    "downstream": ["H11-AXIOLOGIA", "H11-EXISTENTIA"]
+  },
+  "events": {
+    "emits": ["ontology_updated", "category_collision"],
+    "consumes": ["entity_discovered"]
+  },
+  "metrics": [
+    {
+      "name": "resolution_latency",
+      "type": "histogram",
+      "description": "Time taken to resolve an entity mapping"
+    }
+  ],
+  "capabilities": ["ontological_mapping", "description_logic_inference"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

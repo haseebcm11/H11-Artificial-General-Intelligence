@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-AGI-KERNEL",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Top-level tick: admit, bind, compose, run, align-enforce, remember, seal.",
+  "category": "orchestrator",
+  "handler": "agi_tick",
+  "inputs": [
+    {
+      "name": "case",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-ADMISSION-CONTROL"
+    ],
+    "downstream": [
+      "H11C-COGNITIVE-LOOP"
+    ]
+  },
+  "capabilities": [
+    "agi_tick"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

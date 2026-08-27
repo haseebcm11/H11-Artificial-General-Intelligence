@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MINING",
+  "version": "1.0.0",
+  "layer": 25,
+  "layer_name": "Energy & Resources",
+  "description": "Autonomous Mining & Extraction Agent",
+  "category": "Extraction",
+  "inputs": [
+    {
+      "name": "fleet_status",
+      "type": "array",
+      "description": "Status of autonomous vehicles",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "truck_dispatch",
+      "type": "object",
+      "description": "Routing assignments"
+    }
+  ],
+  "config": {
+    "mine_type": {
+      "type": "string",
+      "default": "OPEN_PIT",
+      "description": "OPEN_PIT or UNDERGROUND"
+    }
+  },
+  "state_schema": {
+    "ore_inventory_tons": {
+      "type": "float",
+      "description": "Current stockpiles"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-RECYCLING"]
+  },
+  "events": {
+    "emits": ["mining.blast_cleared", "mining.geotech_alert"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "strip_ratio",
+      "type": "gauge",
+      "description": "Waste to ore ratio"
+    }
+  ],
+  "capabilities": ["fleet_dispatch", "block_modeling"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

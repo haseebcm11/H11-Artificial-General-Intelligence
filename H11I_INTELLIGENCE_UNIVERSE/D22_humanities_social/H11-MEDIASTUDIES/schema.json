@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MEDIASTUDIES",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Analyzes communication structures and information ecology.",
+  "category": "Communication",
+  "inputs": [
+    {
+      "name": "content_streams",
+      "type": "array",
+      "description": "Raw messages/broadcasts",
+      "required": true
+    },
+    {
+      "name": "network_topology",
+      "type": "object",
+      "description": "Topology of media platforms",
+      "required": true
+    },
+    {
+      "name": "algorithm_weights",
+      "type": "object",
+      "description": "Amplification biases",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "virality_scores",
+      "type": "object",
+      "description": "Predicted reach per stream"
+    },
+    {
+      "name": "epistemic_closure",
+      "type": "number",
+      "description": "Measure of echo chamber severity"
+    },
+    {
+      "name": "propaganda_flags",
+      "type": "array",
+      "description": "Identified manipulative streams"
+    }
+  ],
+  "config": {
+    "echo_chamber_threshold": {
+      "type": "number",
+      "default": 0.8,
+      "description": "Threshold for epistemic collapse"
+    }
+  },
+  "state_schema": {
+    "platform_trust": {
+      "type": "object",
+      "description": "Trust scores for various media nodes"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SEMANTICS", "H11-AESTHETICA"],
+    "downstream": ["H11-CULTURAL", "H11-EPISTEMOLOGIA"]
+  },
+  "events": {
+    "emits": ["viral_event", "echo_chamber_detected"],
+    "consumes": ["content_published"]
+  },
+  "metrics": [
+    {
+      "name": "snbr_average",
+      "type": "gauge",
+      "description": "Average Signal-to-Noise-and-Bias Ratio"
+    }
+  ],
+  "capabilities": ["information_diffusion_modeling", "propaganda_detection"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

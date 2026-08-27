@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EXOBIOLOGIA",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Exobiology and habitability index analysis",
+  "category": "Astrobiology",
+  "inputs": [
+    {
+      "name": "spectra",
+      "type": "object",
+      "description": "Atmospheric transmission spectrum",
+      "required": true
+    },
+    {
+      "name": "planetary_params",
+      "type": "object",
+      "description": "Planetary geophysical parameters",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "habitability_metrics",
+      "type": "object",
+      "description": "Calculated habitability scores"
+    },
+    {
+      "name": "biosignatures",
+      "type": "array",
+      "description": "Potential biological chemical signatures detected"
+    }
+  ],
+  "config": {
+    "detection_threshold_sigma": {
+      "type": "number",
+      "default": 3.5,
+      "description": "Statistical significance required for biosignature flagging"
+    },
+    "include_exotic_biochemistry": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to evaluate non-carbon/non-water metabolisms"
+    }
+  },
+  "state_schema": {
+    "analyzed_count": {
+      "type": "integer",
+      "description": "Number of planets analyzed"
+    },
+    "highest_esi_found": {
+      "type": "number",
+      "description": "Highest Earth Similarity Index discovered so far"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PLANETOLOGIA", "H11-ASTROPHYSICA"],
+    "downstream": ["H11-DEEPSPACE"]
+  },
+  "events": {
+    "emits": ["BiosignatureDetected", "HabitabilityUpdated"],
+    "consumes": ["NewSpectrumAvailable", "PlanetaryModelRefined"]
+  },
+  "metrics": [
+    {
+      "name": "false_positive_rejection_rate",
+      "type": "histogram",
+      "description": "Rate at which abiotic processes explain spectral anomalies"
+    }
+  ],
+  "capabilities": ["Biosignature Analysis", "Habitability Scoring", "Photochemical Modeling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

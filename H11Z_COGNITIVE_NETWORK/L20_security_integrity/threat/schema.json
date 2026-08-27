@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-THREAT",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "Threat intelligence: threat modeling (STRIDE/DREAD), AI-specific threat models, supply chain threats, model theft, data exfiltration, prompt-based threats, threat hunting, IOC detection",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "telemetry_event",
+      "type": "Event",
+      "description": "System log or metric event",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "threat_alert",
+      "type": "Alert",
+      "description": "Actionable intelligence on detected threat"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "ioc_database": {
+      "type": "set",
+      "desc": "Active indicators of compromise"
+    },
+    "threat_level": {
+      "type": "int",
+      "desc": "System-wide DEFCON level"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "threat_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "threat_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

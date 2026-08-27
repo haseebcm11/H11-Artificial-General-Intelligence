@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AVIATIO",
+  "version": "1.0.0",
+  "layer": 16,
+  "layer_name": "Transportation",
+  "description": "6-DOF aviation and aerodynamics",
+  "category": "Aviation",
+  "inputs": [
+    {
+      "name": "yoke_pitch",
+      "type": "float",
+      "description": "Elevator control [-1, 1]",
+      "required": true
+    },
+    {
+      "name": "yoke_roll",
+      "type": "float",
+      "description": "Aileron control [-1, 1]",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "altitude_msl",
+      "type": "float",
+      "description": "Mean Sea Level Altitude"
+    }
+  ],
+  "config": {
+    "wing_area": {
+      "type": "float",
+      "default": "16.0",
+      "description": "Reference wing area (m^2)"
+    }
+  },
+  "state_schema": {
+    "airspeed_ias": {
+      "type": "float",
+      "description": "Indicated Airspeed (knots)"
+    }
+  }
+}

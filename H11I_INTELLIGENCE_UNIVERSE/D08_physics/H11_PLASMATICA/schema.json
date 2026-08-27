@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PLASMATICA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Plasma physics and MHD.",
+  "category": "Plasma",
+  "inputs": [
+    {
+      "name": "temperature",
+      "type": "float",
+      "description": "Plasma temperature in eV",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "fusion_power",
+      "type": "float",
+      "description": "Fusion power output"
+    }
+  ],
+  "config": {
+    "pic_particles": {
+      "type": "int",
+      "default": 1000000,
+      "description": "Number of macroparticles"
+    }
+  },
+  "state_schema": {
+    "confinement_time": {
+      "type": "float",
+      "description": "Energy confinement time"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ELECTROMAGNETICA"],
+    "downstream": ["H11-THERMODYNAMICA"]
+  },
+  "events": {
+    "emits": ["PlasmaDisruption"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "plasma_beta",
+      "type": "gauge",
+      "description": "Ratio of plasma to magnetic pressure"
+    }
+  ],
+  "capabilities": ["mhd", "fusion_reactions"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

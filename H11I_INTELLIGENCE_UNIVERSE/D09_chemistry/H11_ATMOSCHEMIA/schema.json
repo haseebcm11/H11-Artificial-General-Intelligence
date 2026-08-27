@@ -1,0 +1,7 @@
+{
+  "name": "H11_ATMOSCHEMIA",
+  "version": "1.0.0",
+  "domain": "Chemistry",
+  "description": "Atmospheric Chemistry Agent",
+  "capabilities": ["PhotochemicalSimulation", "AerosolModeling"]
+}

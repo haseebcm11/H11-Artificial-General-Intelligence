@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-RESULT-REDUCER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Reduces multi-hop outputs to a single case record.",
+  "category": "integrator",
+  "handler": "reduce_results",
+  "inputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "summary",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-JOIN-BARRIER"
+    ],
+    "downstream": [
+      "H11C-MEMORY-PROJECTOR"
+    ]
+  },
+  "capabilities": [
+    "reduce_results"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

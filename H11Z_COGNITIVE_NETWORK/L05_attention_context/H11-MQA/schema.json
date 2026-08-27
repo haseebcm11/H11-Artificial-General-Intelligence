@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MQA",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Implements extreme KV-cache compression by utilizing a single global key and value head for all query heads.",
+  "inputs": [{"name": "queries", "type": "Any", "description": "All query heads"}, {"name": "single_kv", "type": "Any", "description": "Single KV head"}],
+  "outputs": [{"name": "mqa_context", "type": "Any", "description": "Multi-query output"}],
+  "state_schema": {"cache_reduction_factor": {"type": "float", "description": "Memory saved via MQA"}}
+}

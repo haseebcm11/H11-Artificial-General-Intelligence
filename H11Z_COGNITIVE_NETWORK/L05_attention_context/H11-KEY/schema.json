@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-KEY",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Projects inputs into the key space, handling Grouped-Query Attention (GQA) sharing, key caching, and sequence alignment for autoregressive generation.",
+  "inputs": [{"name": "embedding_tensor", "type": "Any", "description": "Input token representations"}, {"name": "is_inference", "type": "bool", "description": "True if autoregressive step"}],
+  "outputs": [{"name": "key_states", "type": "Any", "description": "Projected key heads for attention"}],
+  "state_schema": {"cached_keys": {"type": "int", "description": "Number of cached keys"}}
+}

@@ -1,0 +1,24 @@
+{
+  "name": "H11-TOXICITY",
+  "version": "1.0.0",
+  "description": "Toxicity scoring schema",
+  "type": "object",
+  "properties": {
+    "thresholds": {
+      "type": "object",
+      "properties": {
+        "insult": { "type": "number", "minimum": 0, "maximum": 1 },
+        "threat": { "type": "number", "minimum": 0, "maximum": 1 },
+        "harassment": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "required": ["insult", "threat"]
+    },
+    "ensemble_weights": {
+      "type": "object",
+      "properties": {
+        "ngram_model": { "type": "number" },
+        "transformer_model": { "type": "number" }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-BUDGET-CONTROLLER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Decrements hop/compute budget; zero budget forces HALT, not silent truncation.",
+  "category": "orchestrator",
+  "handler": "budget",
+  "inputs": [
+    {
+      "name": "budget",
+      "type": "Any"
+    },
+    {
+      "name": "cost",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "budget",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-ENERGY-INTEGRATOR"
+    ],
+    "downstream": [
+      "H11C-TIMEOUT-GUARDIAN"
+    ]
+  },
+  "capabilities": [
+    "budget"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ORTHODONTIA",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Dental Sciences",
+  "description": "Orthodontic treatment planning and craniofacial growth analysis.",
+  "category": "Orthodontics",
+  "inputs": [
+    {
+      "name": "cephalometric_points",
+      "type": "object",
+      "description": "3D coordinates of cephalometric landmarks",
+      "required": true
+    },
+    {
+      "name": "tooth_positions",
+      "type": "array",
+      "description": "Initial 6-DOF poses of all teeth",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ortho_diagnosis",
+      "type": "object",
+      "description": "Angle classification and cephalometric summary"
+    },
+    {
+      "name": "movement_staging",
+      "type": "array",
+      "description": "Staged tooth movements and force vectors"
+    }
+  ],
+  "config": {
+    "max_force_cn": {
+      "type": "number",
+      "default": 150.0,
+      "description": "Maximum allowable force per tooth in centiNewtons"
+    }
+  },
+  "state_schema": {
+    "current_alignment": {
+      "type": "object",
+      "description": "Current tracking of tooth progression vs plan"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DENTALIS"],
+    "downstream": ["H11-ORALCHIRURGIA"]
+  },
+  "events": {
+    "emits": ["alignment_phase_complete", "anchorage_loss_detected"],
+    "consumes": ["intraoral_scan_updated"]
+  },
+  "metrics": [
+    {
+      "name": "total_aligner_stages",
+      "type": "histogram",
+      "description": "Distribution of aligner stages prescribed"
+    }
+  ],
+  "capabilities": ["cephalometric_analysis", "aligner_staging", "biomechanical_simulation"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

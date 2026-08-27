@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-REINFORCEMENT",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Machine Learning",
+  "description": "Agent for sequential decision-making and continuous control via RL.",
+  "category": "Artificial Intelligence",
+  "inputs": [
+    {
+      "name": "environment_spec",
+      "type": "object",
+      "description": "Observation and Action spaces",
+      "required": true
+    },
+    {
+      "name": "optimization_algo",
+      "type": "string",
+      "description": "PPO, SAC, DQN",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "policy_artifact",
+      "type": "string",
+      "description": "URI to trained actor/policy network"
+    },
+    {
+      "name": "convergence_metrics",
+      "type": "object",
+      "description": "Mean reward, episode length"
+    }
+  ],
+  "config": {
+    "discount_factor": {
+      "type": "number",
+      "default": 0.99,
+      "description": "Gamma value for future rewards"
+    },
+    "replay_buffer_size": {
+      "type": "integer",
+      "default": 1000000,
+      "description": "Transitions stored in memory"
+    }
+  },
+  "state_schema": {
+    "policy_entropy": {
+      "type": "number",
+      "description": "Current entropy of the policy"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DEEPLEARNING", "H11-AUTOMATA"],
+    "downstream": ["H11-ROBOTICA", "H11-SRE"]
+  },
+  "events": {
+    "emits": ["policy_updated", "environment_solved"],
+    "consumes": ["transition_collected"]
+  },
+  "metrics": [
+    {
+      "name": "mean_episodic_reward",
+      "type": "gauge",
+      "description": "Average reward over the last 100 episodes"
+    }
+  ],
+  "capabilities": ["policy_optimization", "value_estimation", "exploration"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

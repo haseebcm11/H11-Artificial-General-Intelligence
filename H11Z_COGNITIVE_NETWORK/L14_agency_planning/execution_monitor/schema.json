@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "H11-EXECUTION-MONITOR Schema",
+    "type": "object",
+    "properties": {
+        "MonitorAction": {
+            "type": "string",
+            "enum": ["RegisterTask", "UpdateStatus", "ReportResourceUsage", "GetExecutionReport"]
+        },
+        "TaskId": {
+            "type": "string"
+        },
+        "ParentTaskId": {
+            "type": ["string", "null"]
+        },
+        "TaskType": {
+            "type": "string"
+        },
+        "Status": {
+            "type": "string",
+            "enum": ["PENDING", "RUNNING", "COMPLETED", "FAILED", "INTERVENED"]
+        },
+        "ExecutionMetrics": {
+            "type": "object",
+            "properties": {
+                "StartTime": {"type": "number"},
+                "EndTime": {"type": "number"},
+                "ExpectedDuration": {"type": "number"}
+            }
+        },
+        "ResourceUsage": {
+            "type": "object",
+            "properties": {
+                "MemoryMB": {"type": "number"},
+                "CpuPercent": {"type": "number"},
+                "ApiCalls": {"type": "integer"}
+            }
+        },
+        "SlaConfig": {
+            "type": "object",
+            "properties": {
+                "TimeoutMs": {"type": "number"},
+                "MaxMemoryMB": {"type": "number"}
+            }
+        }
+    },
+    "required": ["MonitorAction"]
+}

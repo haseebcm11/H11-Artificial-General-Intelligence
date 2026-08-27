@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-CONFLICT-MERGER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Merges disagreeing specialist outputs by confidence, never by recency alone.",
+  "category": "integrator",
+  "handler": "merge_conflicts",
+  "inputs": [
+    {
+      "name": "candidates",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "chosen",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-RESULT-REDUCER"
+    ],
+    "downstream": [
+      "H11C-REASON-INJECTOR"
+    ]
+  },
+  "capabilities": [
+    "merge_conflicts"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SERVING",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Endpoint management, model versioning, and canary deployment.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "request_payload",
+      "type": "Dict[str, Any]",
+      "desc": "Client HTTP/gRPC request"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "response_payload",
+      "type": "Dict[str, Any]",
+      "desc": "Client response"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "active_models": {
+      "type": "Dict[str, str]",
+      "description": "Model ID to version mapping"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

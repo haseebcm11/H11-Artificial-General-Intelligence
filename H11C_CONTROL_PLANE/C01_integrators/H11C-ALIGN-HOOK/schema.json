@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-ALIGN-HOOK",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Forces an ALIGN hop onto any compiled pipeline that would act.",
+  "category": "integrator",
+  "handler": "attach_align",
+  "inputs": [
+    {
+      "name": "pipeline",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "pipeline",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-PIPELINE-COMPOSER"
+    ],
+    "downstream": [
+      "H11C-ALIGN-ENFORCE"
+    ]
+  },
+  "capabilities": [
+    "attach_align"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

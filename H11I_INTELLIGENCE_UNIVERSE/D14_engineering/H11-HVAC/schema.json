@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-HVAC State Schema",
+  "type": "object",
+  "properties": {
+    "agent_id": {
+      "type": "string"
+    },
+    "zones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "zone_id": { "type": "string" },
+          "temp_setpoint": { "type": "number" },
+          "humidity_setpoint": { "type": "number" },
+          "current_temp": { "type": "number" },
+          "current_humidity": { "type": "number" },
+          "occupancy_status": { "type": "boolean" }
+        },
+        "required": ["zone_id", "temp_setpoint", "current_temp"]
+      }
+    },
+    "system_mode": {
+      "type": "string",
+      "enum": ["HEATING", "COOLING", "VENTILATION", "OFF"]
+    },
+    "total_power_consumption_kw": {
+      "type": "number"
+    }
+  },
+  "required": ["agent_id", "zones", "system_mode"]
+}

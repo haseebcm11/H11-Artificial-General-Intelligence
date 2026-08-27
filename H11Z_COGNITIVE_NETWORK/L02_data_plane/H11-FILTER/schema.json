@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FILTER",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Extreme-scale deduplication and policy-based content filtering",
+  "category": "Data Cleansing",
+  "inputs": [
+    {
+      "name": "documents",
+      "type": "array",
+      "description": "Stream of payloads to filter",
+      "required": true
+    },
+    {
+      "name": "policy",
+      "type": "object",
+      "description": "Filtering strictness parameters",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "clean_documents",
+      "type": "array",
+      "description": "Payloads that survived filtering"
+    },
+    {
+      "name": "telemetry",
+      "type": "object",
+      "description": "Drop reasons and pipeline statistics"
+    }
+  ],
+  "config": {
+    "jaccard_threshold": {
+      "type": "number",
+      "default": 0.8,
+      "description": "Similarity threshold for near-deduplication pruning"
+    },
+    "toxicity_threshold": {
+      "type": "number",
+      "default": 0.5,
+      "description": "Confidence threshold for dropping toxic text"
+    }
+  },
+  "state_schema": {
+    "bloom_filter": {
+      "type": "binary",
+      "description": "Serialized bit array for exact dedup"
+    },
+    "lsh_index": {
+      "type": "object",
+      "description": "In-memory representation of LSH buckets"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-QUALITY"],
+    "downstream": ["H11-AUGMENTER", "H11-SYNTHDATA"]
+  },
+  "events": {
+    "emits": ["filtering_complete", "policy_violation_spike"],
+    "consumes": ["blocklist_updated"]
+  },
+  "metrics": [
+    {
+      "name": "documents_dropped",
+      "type": "counter",
+      "description": "Total documents removed, tagged by reason"
+    },
+    {
+      "name": "dedup_cache_size",
+      "type": "gauge",
+      "description": "Current size of LSH index in bytes"
+    }
+  ],
+  "capabilities": ["minhash-lsh", "bloom-filter-dedup", "toxicity-classification"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

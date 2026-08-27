@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ADDICTOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Specialized agent for substance use disorders, behavioral addictions, neurobiological craving modeling, withdrawal scoring, MAT protocol optimization, and relapse risk prediction.",
+  "category": "Addiction Medicine & Behavioral Health",
+  "inputs": [
+    {
+      "name": "use_history",
+      "type": "array",
+      "items": {
+        "type": "SubstanceUseRecord"
+      },
+      "description": "Chronological history of substance exposure, doses, and routes"
+    },
+    {
+      "name": "neuro_baseline",
+      "type": "NeurochemicalBaseline",
+      "description": "Baseline receptor availability and allostatic load metrics"
+    },
+    {
+      "name": "withdrawal_inputs",
+      "type": "WithdrawalScore",
+      "description": "Current clinical withdrawal scoring parameters (COWS/CIWA-Ar)"
+    },
+    {
+      "name": "craving_cues",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Active external or affective craving triggers"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "withdrawal_trajectory",
+      "type": "DetoxificationProtocol",
+      "description": "Recommended detoxification regimen, symptom trajectory, and vitals monitoring frequency"
+    },
+    {
+      "name": "mat_protocol",
+      "type": "MATInductionPlan",
+      "description": "Evidence-based Medication-Assisted Treatment protocol, starting doses, and titration schedule"
+    },
+    {
+      "name": "relapse_risk_profile",
+      "type": "RelapseRiskProfile",
+      "description": "30-day lapse probability, primary trigger drivers, and protective countermeasures"
+    },
+    {
+      "name": "polysubstance_synergy",
+      "type": "object",
+      "description": "Analysis of combined CNS depression risk, metabolic competition, and naloxone requirement"
+    }
+  ],
+  "config": {
+    "precipitated_withdrawal_cows_threshold": 12.0,
+    "ciwa_severe_threshold": 15.0,
+    "fentanyl_depot_half_life_hours": 72.0,
+    "simulation_horizon_days": 30,
+    "stiff_solver_tolerance": 1e-6
+  },
+  "state_schema": {
+    "mu_receptor_occupancy": "float",
+    "gaba_nmda_imbalance": "float",
+    "allostatic_setpoint": "float",
+    "tolerance_coefficient": "float",
+    "abstinence_duration_days": "integer",
+    "craving_intensity_index": "float"
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-PHARMACOLOGIA",
+      "H11-NEUROLOGIA",
+      "H11-PSYCHIATRIA",
+      "H11-TOXICOLOGIA"
+    ],
+    "downstream": [
+      "H11-HEPATOLOGIA",
+      "H11-CARDIOLOGIA",
+      "H11-EMERGENCYMED",
+      "H11-PUBLICHEALTH"
+    ]
+  },
+  "events": {
+    "emits": [
+      "PrecipitatedWithdrawalAlert",
+      "DeliriumTremensWarning",
+      "SevereOverdoseRiskDetected",
+      "RelapseVulnerabilitySpike"
+    ],
+    "consumes": [
+      "SubstanceIntakeReported",
+      "WithdrawalScoreUpdated",
+      "VitalSignsStreamUpdated",
+      "CravingSurveyCompleted"
+    ]
+  },
+  "metrics": [
+    "precipitated_withdrawal_avoidance_rate",
+    "relapse_prediction_concordance_c_index",
+    "detoxification_completion_rate",
+    "mat_retention_rate_90_days"
+  ],
+  "capabilities": [
+    "opioid_withdrawal_scoring",
+    "alcohol_withdrawal_ciwa_assessment",
+    "bernese_microdosing_planning",
+    "mat_moud_optimization",
+    "relapse_hazard_modeling",
+    "polysubstance_synergy_analysis",
+    "naloxone_rescue_dosing"
+  ],
+  "scaling": {
+    "mode": "stateful_session",
+    "concurrency_limit": 400
+  }
+}

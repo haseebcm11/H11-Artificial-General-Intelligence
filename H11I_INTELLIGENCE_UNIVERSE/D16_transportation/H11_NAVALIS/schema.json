@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NAVALIS",
+  "version": "1.0.0",
+  "layer": 16,
+  "layer_name": "Transportation",
+  "description": "Naval architecture and hydrodynamics",
+  "category": "Maritime",
+  "inputs": [
+    {
+      "name": "rudder_angle",
+      "type": "float",
+      "description": "Rudder angle in degrees",
+      "required": true
+    },
+    {
+      "name": "rpm",
+      "type": "float",
+      "description": "Propeller RPM",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "speed_knots",
+      "type": "float",
+      "description": "Speed Over Ground (knots)"
+    }
+  ],
+  "config": {
+    "displacement": {
+      "type": "float",
+      "default": "50000.0",
+      "description": "Displacement in tons"
+    }
+  },
+  "state_schema": {
+    "draft": {
+      "type": "float",
+      "description": "Ship draft in meters"
+    }
+  }
+}

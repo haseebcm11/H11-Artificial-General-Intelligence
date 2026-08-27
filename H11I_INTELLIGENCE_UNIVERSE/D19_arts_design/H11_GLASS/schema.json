@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GLASS",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "Glassworking Agent",
+  "category": "Physical Arts",
+  "inputs": [{"name": "technique", "type": "string", "description": "Type"}],
+  "outputs": [{"name": "caustic_map", "type": "bytes", "description": "Light map"}],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": [], "downstream": []},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": true, "gpu_required": true, "memory_class": "medium"}
+}

@@ -1,0 +1,32 @@
+{
+  "name": "h11_code_exec",
+  "description": "Code execution and sandboxing services.",
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "enum": ["start_session", "execute", "end_session"]
+      },
+      "session_id": { "type": "string" },
+      "code": { "type": "string" },
+      "language": { "type": "string", "enum": ["python", "javascript", "bash"] },
+      "timeout_sec": { "type": "number" },
+      "dependencies": { "type": "array", "items": { "type": "string" } },
+      "env": { "type": "object", "additionalProperties": { "type": "string" } }
+    },
+    "required": ["action"]
+  },
+  "outputs": {
+    "type": "object",
+    "properties": {
+      "session_id": { "type": "string" },
+      "stdout": { "type": "string" },
+      "stderr": { "type": "string" },
+      "exit_code": { "type": "integer" },
+      "duration": { "type": "number" },
+      "error": { "type": "string" },
+      "status": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-IMMUNOTHERAPIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Models and designs personalized immunotherapies and biologics.",
+  "category": "Immunology & Oncology",
+  "inputs": [
+    {"name": "tumor_biomarkers", "type": "object"},
+    {"name": "immune_repertoire", "type": "object"},
+    {"name": "tme_spatial_graph", "type": "object"}
+  ],
+  "outputs": [
+    {"name": "therapy_design", "type": "object"},
+    {"name": "crs_risk_index", "type": "number"},
+    {"name": "response_trajectory", "type": "array"}
+  ],
+  "config": {
+    "ode_solver_tol": 1e-6,
+    "spatial_gnn_layers": 4
+  },
+  "state_schema": {
+    "immune_homeostasis_model": "StateSpaceModel"
+  },
+  "dependencies": {
+    "upstream": ["H11-ONCOLOGIA", "H11-IMMUNOLOGIA"],
+    "downstream": ["H11-PRECISIONMED"]
+  },
+  "events": {
+    "emits": ["tme_analysis_complete"],
+    "consumes": ["tumor_biopsy_updated"]
+  },
+  "metrics": ["crs_prediction_auc", "tumor_clearance_accuracy"],
+  "capabilities": ["Spatial TME modeling", "ODE immune dynamics"],
+  "scaling": {
+    "compute_intensity": "very_high",
+    "memory_intensity": "high"
+  }
+}

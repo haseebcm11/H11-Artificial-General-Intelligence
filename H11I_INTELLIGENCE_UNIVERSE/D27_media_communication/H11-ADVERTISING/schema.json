@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ADVERTISING",
+  "version": "1.0.0",
+  "layer": "5",
+  "layer_name": "Optimization",
+  "description": "Ad copy mutation, programmatic RTB simulation, and ROAS forecasting.",
+  "category": "Monetization",
+  "inputs": [
+    {
+      "name": "campaign_brief",
+      "type": "object",
+      "properties": {
+        "campaign_id": {"type": "string"},
+        "budget_usd": {"type": "number"},
+        "base_copy": {"type": "string"},
+        "target_demographics": {"type": "array"}
+      }
+    },
+    {
+      "name": "inventory_context",
+      "type": "object",
+      "properties": {
+        "content_topic": {"type": "string"},
+        "sentiment": {"type": "string", "enum": ["positive", "neutral", "negative"]},
+        "floor_price_cpm": {"type": "number"}
+      }
+    },
+    {
+      "name": "telemetry",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "creative_id": {"type": "string"},
+          "impressions": {"type": "integer"},
+          "clicks": {"type": "integer"},
+          "conversions": {"type": "integer"}
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "optimized_copy",
+      "type": "object",
+      "properties": {
+        "creative_id": {"type": "string"},
+        "headline": {"type": "string"},
+        "cta": {"type": "string"}
+      }
+    },
+    {
+      "name": "bid_decision",
+      "type": "object",
+      "properties": {
+        "bid_price_cpm": {"type": "number"},
+        "win_probability": {"type": "number"}
+      }
+    },
+    {
+      "name": "roi_forecast",
+      "type": "number"
+    }
+  ],
+  "config": {
+    "rtb_timeout_ms": 100,
+    "exploration_rate_epsilon": 0.15,
+    "brand_safety_strictness": 0.9
+  },
+  "state_schema": {
+    "cmab_state": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "alpha": {"type": "number"},
+          "beta": {"type": "number"}
+        }
+      }
+    },
+    "budget_pacing": {
+      "type": "object",
+      "properties": {
+        "spend_to_date": {"type": "number"},
+        "velocity": {"type": "number"}
+      }
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SOCIALMEDIA", "H11-ANALYTICS"],
+    "downstream": ["H11-BROADCAST", "H11-PUBLISHING"]
+  },
+  "events": {
+    "emits": ["bid_placed", "creative_mutated", "budget_exhausted"],
+    "consumes": ["auction_result", "conversion_ping"]
+  },
+  "metrics": [
+    "average_ctr",
+    "roas",
+    "bid_win_rate"
+  ],
+  "capabilities": [
+    "contextual_bandit_optimization",
+    "dqn_bid_pricing",
+    "psychographic_copywriting"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

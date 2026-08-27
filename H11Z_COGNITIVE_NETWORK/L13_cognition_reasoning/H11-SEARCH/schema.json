@@ -1,0 +1,36 @@
+{
+  "name": "H11-SEARCH",
+  "description": "Agent for state-space search and exploration algorithms.",
+  "version": "1.0.0",
+  "interfaces": {
+    "inputs": [
+      {
+        "name": "problem",
+        "type": "object",
+        "description": "Definition of initial state, goal test, and successors."
+      },
+      {
+        "name": "algorithm",
+        "type": "string",
+        "description": "Algorithm to use (e.g., A_STAR, MCTS, BEAM_SEARCH)."
+      },
+      {
+        "name": "hyperparameters",
+        "type": "object",
+        "description": "Parameters like beam_width, max_iterations, exploration_constant."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "path",
+        "type": "array",
+        "description": "Sequence of actions/states to the goal."
+      },
+      {
+        "name": "metrics",
+        "type": "object",
+        "description": "Nodes expanded, time taken, memory usage."
+      }
+    ]
+  }
+}

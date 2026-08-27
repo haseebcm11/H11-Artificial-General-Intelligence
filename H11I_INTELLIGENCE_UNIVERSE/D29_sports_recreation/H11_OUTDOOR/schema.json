@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OUTDOOR",
+  "version": "1.0.0",
+  "layer": 29,
+  "layer_name": "Sports & Recreation",
+  "description": "Outdoor Recreation and Survival Agent",
+  "category": "Outdoor",
+  "inputs": [
+    {
+      "name": "route_points",
+      "type": "array",
+      "description": "GPS/DEM route coordinates",
+      "required": true
+    },
+    {
+      "name": "load_kg",
+      "type": "number",
+      "description": "Backpack mass",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ete_hrs",
+      "type": "number",
+      "description": "Estimated time enroute"
+    },
+    {
+      "name": "kcal_cost",
+      "type": "number",
+      "description": "Energy expenditure"
+    }
+  ],
+  "config": {
+    "terrain_friction_default": {
+      "type": "number",
+      "default": 1.2,
+      "description": "Default multiplier for dirt trails"
+    }
+  },
+  "state_schema": {
+    "acclimatization_days": {
+      "type": "number",
+      "description": "Time spent at high altitude"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SPORTSCI"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["route_planned", "risk_alert_issued"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "route_compute_time",
+      "type": "histogram",
+      "description": "Latency for path cost solving"
+    }
+  ],
+  "capabilities": ["pandolf_energy_modeling", "hypoxia_risk_estimation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

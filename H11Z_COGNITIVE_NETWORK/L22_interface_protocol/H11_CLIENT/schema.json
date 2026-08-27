@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-CLIENT Schema",
+  "type": "object",
+  "definitions": {
+    "RetryConfig": {
+      "type": "object",
+      "properties": {
+        "maxAttempts": { "type": "integer" },
+        "baseBackoffMs": { "type": "integer" },
+        "maxBackoffMs": { "type": "integer" },
+        "statusCodes": { "type": "array", "items": { "type": "integer" } }
+      }
+    },
+    "CircuitBreakerState": {
+      "type": "string",
+      "enum": ["CLOSED", "OPEN", "HALF_OPEN"]
+    }
+  },
+  "properties": {
+    "targetService": { "type": "string" },
+    "timeoutMs": { "type": "integer" },
+    "retry": { "$ref": "#/definitions/RetryConfig" },
+    "state": { "$ref": "#/definitions/CircuitBreakerState" }
+  },
+  "required": ["targetService", "timeoutMs"]
+}

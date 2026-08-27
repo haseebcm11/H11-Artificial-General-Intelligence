@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RELATIVITAS",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Relativistic spacetime manifold simulation agent",
+  "category": "Theoretical Physics",
+  "inputs": [
+    {
+      "name": "manifold_point",
+      "type": "tuple",
+      "description": "4-dimensional spacetime coordinate",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "proper_time",
+      "type": "float",
+      "description": "Proper time elapsed along geodesic"
+    }
+  ],
+  "config": {
+    "speed_of_light": {
+      "type": "float",
+      "default": 299792458.0,
+      "description": "Speed of light in vacuum"
+    }
+  },
+  "state_schema": {
+    "active_geodesics": {
+      "type": "int",
+      "description": "Number of currently simulated geodesics"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-GRAVITATIO"],
+    "downstream": ["H11-STRINGTHEORIA"]
+  },
+  "events": {
+    "emits": ["geodesic_computed"],
+    "consumes": ["mass_distribution_updated"]
+  },
+  "metrics": [
+    {
+      "name": "tensor_ops_per_sec",
+      "type": "histogram",
+      "description": "Tensor operation latency"
+    }
+  ],
+  "capabilities": ["metric_calculation", "geodesic_integration"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

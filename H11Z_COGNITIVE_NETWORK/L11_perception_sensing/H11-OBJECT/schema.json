@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OBJECT",
+  "version": "1.0.5",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "agent_name": "Spatial Object Detector",
+  "description": "Predicts bounding boxes and class confidences using feature pyramids via DETR/YOLO mechanisms.",
+  "interfaces": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "feature_pyramid": { "type": "object" },
+        "confidence_thresh": { "type": "number", "minimum": 0, "maximum": 1 },
+        "iou_thresh": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "required": ["feature_pyramid"]
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "boxes": { "type": "array" },
+        "classes": { "type": "array" },
+        "scores": { "type": "array" }
+      },
+      "required": ["boxes", "classes", "scores"]
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LOGICA-MATH",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Mathematical Logic and Set Theory Agent",
+  "category": "Logic",
+  "inputs": [
+    {
+      "name": "axioms",
+      "type": "array[string]",
+      "description": "Formal axioms in first-order logic",
+      "required": true
+    },
+    {
+      "name": "theorem_statement",
+      "type": "string",
+      "description": "Theorem to prove",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "proof_tree",
+      "type": "object",
+      "description": "Generated formal proof"
+    },
+    {
+      "name": "consistency_status",
+      "type": "boolean",
+      "description": "Satisfiability of the axiom set"
+    }
+  ],
+  "config": {
+    "max_deduction_depth": {
+      "type": "integer",
+      "default": 100,
+      "description": "Maximum depth for automated theorem proving"
+    }
+  },
+  "state_schema": {
+    "proved_theorems": {
+      "type": "array[string]",
+      "description": "Cache of historically proven theorems"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-CATEGORY", "H11-ALGEBRA"]
+  },
+  "events": {
+    "emits": ["proof_found", "contradiction_derived"],
+    "consumes": ["axiom_added"]
+  },
+  "metrics": [
+    {
+      "name": "deduction_steps",
+      "type": "counter",
+      "description": "Number of logical inferences made"
+    }
+  ],
+  "capabilities": ["first_order_logic", "model_theory", "set_theory_validation"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

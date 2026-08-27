@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-THERMODYNAMICA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Models thermodynamics and heat transfer.",
+  "category": "Thermodynamics",
+  "inputs": [
+    {
+      "name": "temperatures",
+      "type": "List[float]",
+      "description": "Initial temperatures",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "entropy_generated",
+      "type": "float",
+      "description": "Total entropy produced"
+    }
+  ],
+  "config": {
+    "time_step": {
+      "type": "float",
+      "default": 0.1,
+      "description": "Integration time step"
+    }
+  },
+  "state_schema": {
+    "node_count": {
+      "type": "int",
+      "description": "Number of thermal nodes"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-FLUIDA"],
+    "downstream": ["H11-CONDENSATA"]
+  },
+  "events": {
+    "emits": ["ThermalEquilibriumReached"],
+    "consumes": ["HeatSourceAdded"]
+  },
+  "metrics": [
+    {
+      "name": "solve_time",
+      "type": "histogram",
+      "description": "Time to solve linear system"
+    }
+  ],
+  "capabilities": ["heat_transfer_modeling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

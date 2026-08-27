@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SKILL",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Procedural memory for retrieving and composing executable skills.",
+  "category": "Procedural Memory",
+  "inputs": [
+    {"name": "task_query", "type": "string", "description": "Goal needing tools", "required": true},
+    {"name": "available_inputs", "type": "array", "description": "Types available", "required": true}
+  ],
+  "outputs": [
+    {"name": "executable_plan", "type": "object", "description": "Chained tool calls"},
+    {"name": "missing_prerequisites", "type": "array", "description": "Gaps in library"}
+  ],
+  "config": {
+    "auto_versioning": {"type": "boolean", "default": true, "description": "SemVer increments"},
+    "strict_typing": {"type": "boolean", "default": true, "description": "Enforce I/O types"}
+  },
+  "state_schema": {
+    "registry": {"type": "object", "description": "Source code storage"},
+    "dag": {"type": "object", "description": "Skill dependencies"}
+  },
+  "dependencies": {"upstream": ["H11-TOOL-MAKER"], "downstream": ["H11-EXECUTION-ENGINE"]},
+  "capabilities": ["voyager-library", "tool-composition", "ast-validation"],
+  "scaling": {"horizontal": true, "gpu_required": false, "memory_class": "low"}
+}

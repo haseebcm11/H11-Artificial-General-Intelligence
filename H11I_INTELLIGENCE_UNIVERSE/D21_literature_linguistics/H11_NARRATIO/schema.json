@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NARRATIO",
+  "version": "1.0.0",
+  "layer": 21,
+  "layer_name": "Literature & Linguistics",
+  "description": "Agent for narrative generation and structural analysis.",
+  "category": "Literature",
+  "inputs": [
+    {
+      "name": "world_state",
+      "type": "object",
+      "description": "Initial state of the narrative world"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "prose",
+      "type": "string",
+      "description": "Generated narrative text"
+    }
+  ],
+  "config": {
+    "use_anachrony": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to use non-linear storytelling"
+    }
+  },
+  "state_schema": {
+    "event_dag": {
+      "type": "object",
+      "description": "Causal event graph"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SEMANTICA"],
+    "downstream": ["H11-DRAMA"]
+  },
+  "capabilities": ["plot-generation", "causal-reasoning"]
+}

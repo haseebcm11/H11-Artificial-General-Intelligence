@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RLHF",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "RL from Human Feedback",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "prompt",
+      "type": "str",
+      "description": "prompt input",
+      "required": true
+    },
+    {
+      "name": "completions",
+      "type": "List[str]",
+      "description": "completions input",
+      "required": true
+    },
+    {
+      "name": "human_scores",
+      "type": "List[float]",
+      "description": "human_scores input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "optimized_policy",
+      "type": "List[float]",
+      "description": "optimized_policy output"
+    },
+    {
+      "name": "kl_divergence",
+      "type": "float",
+      "description": "kl_divergence output"
+    }
+  ],
+  "config": {
+    "rlhf_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "rlhf_completed"
+    ],
+    "consumes": [
+      "rlhf_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "rlhf_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_rlhf"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

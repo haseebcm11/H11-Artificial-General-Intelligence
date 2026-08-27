@@ -1,0 +1,36 @@
+{
+  "name": "H11-PLAN",
+  "description": "Agent for automated planning, task decomposition, and HTN/STRIPS integration.",
+  "version": "1.0.0",
+  "interfaces": {
+    "inputs": [
+      {
+        "name": "goal_state",
+        "type": "object",
+        "description": "The desired end state or high-level task to achieve."
+      },
+      {
+        "name": "initial_state",
+        "type": "object",
+        "description": "The current state of the world."
+      },
+      {
+        "name": "domain_knowledge",
+        "type": "object",
+        "description": "Available actions, preconditions, effects, and HTN methods."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "plan",
+        "type": "array",
+        "description": "Ordered sequence of primitive actions to achieve the goal."
+      },
+      {
+        "name": "plan_metadata",
+        "type": "object",
+        "description": "Cost, expected duration, and alternative plans."
+      }
+    ]
+  }
+}

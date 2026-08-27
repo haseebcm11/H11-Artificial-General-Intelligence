@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PHOTOGRAPHIA",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "Computational Photography and Optics Agent",
+  "category": "Digital Arts",
+  "inputs": [
+    {
+      "name": "scene_radiance_map",
+      "type": "bytes",
+      "description": "High dynamic range light map of the scene",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "raw_image_data",
+      "type": "bytes",
+      "description": "Simulated raw sensor data"
+    },
+    {
+      "name": "developed_image_data",
+      "type": "bytes",
+      "description": "Processed sRGB or AdobeRGB image"
+    }
+  ],
+  "config": {
+    "simulate_lens_flares": {
+      "type": "boolean",
+      "default": true,
+      "description": "Calculate complex internal lens reflections"
+    }
+  },
+  "state_schema": {
+    "sensor_temperature_c": {
+      "type": "float",
+      "description": "Sensor temp impacting thermal noise"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-RAYTRACER"],
+    "downstream": ["H11-CINEMATOGRA", "H11-IMAGEPROCESSOR"]
+  },
+  "events": {
+    "emits": ["exposure_complete", "buffer_full"],
+    "consumes": ["lighting_changed"]
+  },
+  "metrics": [
+    {
+      "name": "shutter_count",
+      "type": "counter",
+      "description": "Number of simulated exposures"
+    }
+  ],
+  "capabilities": ["optics_simulation", "sensor_modeling", "demosaicing"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

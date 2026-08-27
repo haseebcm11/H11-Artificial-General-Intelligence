@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-STREAMING Configuration",
+  "type": "object",
+  "properties": {
+    "broker_urls": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "processing_engine": {
+      "type": "string",
+      "enum": ["flink", "spark_streaming", "kafka_streams"]
+    },
+    "default_delivery_semantics": {
+      "type": "string",
+      "enum": ["at_least_once", "exactly_once", "at_most_once"],
+      "default": "at_least_once"
+    },
+    "cluster_name": {
+      "type": "string"
+    }
+  },
+  "required": ["broker_urls", "processing_engine"]
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LARGEANIMAL",
+  "version": "1.0.0",
+  "layer": 4,
+  "layer_name": "Veterinary Sciences",
+  "description": "Production and herd health optimization system.",
+  "category": "Production Animal",
+  "inputs": [
+    {
+      "name": "herd_demographics",
+      "type": "HerdData",
+      "description": "Data regarding herd composition and type",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "intervention_strategy",
+      "type": "HerdIntervention",
+      "description": "Recommended protocols for the herd"
+    }
+  ],
+  "config": {
+    "economic_threshold_usd": {
+      "type": "float",
+      "default": 1000.0,
+      "description": "Minimum ROI required for intervention proposal"
+    }
+  },
+  "state_schema": {
+    "herd_tracking": {
+      "type": "dict",
+      "description": "Longitudinal performance and health records per herd"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-VETEPIDEMIOLOGIA"],
+    "downstream": ["H11-VETPHARMACOLOGIA"]
+  },
+  "events": {
+    "emits": ["MetabolicAlert", "OutbreakPredicted"],
+    "consumes": ["RegionalDiseaseUpdate"]
+  },
+  "metrics": [
+    {
+      "name": "projected_roi",
+      "type": "histogram",
+      "description": "Distribution of calculated ROIs for interventions"
+    }
+  ],
+  "capabilities": ["herd_health", "production_optimization", "metabolic_modeling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

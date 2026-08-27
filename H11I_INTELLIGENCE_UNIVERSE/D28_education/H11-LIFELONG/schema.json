@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LIFELONG",
+  "version": "1.0.0",
+  "layer": "28",
+  "layer_name": "Education & Learning",
+  "description": "Continuous education pathway optimization and skill obsolescence tracking.",
+  "category": "Adult Education",
+  "inputs": [
+    {
+      "name": "alumni_profiles",
+      "type": "array"
+    },
+    {
+      "name": "market_depreciation",
+      "type": "object"
+    },
+    {
+      "name": "learning_opportunities",
+      "type": "object"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "obsolescence_alerts",
+      "type": "array"
+    },
+    {
+      "name": "pivot_trajectories",
+      "type": "object"
+    },
+    {
+      "name": "spaced_rep_schedule",
+      "type": "object"
+    }
+  ],
+  "config": {
+    "obsolescence_threshold": 0.6,
+    "max_pivot_steps": 4,
+    "forgetting_curve_steepness": 0.2
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "skill_adjacency_graph": { "type": "object" },
+      "learner_decay_states": { "type": "object" }
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-HIGHED", "H11-VOCATIONAL", "H11-LABOR"],
+    "downstream": ["H11-MACROECON"]
+  },
+  "events": {
+    "emits": ["career_pivot_recommended", "skill_obsolete"],
+    "consumes": ["job_transition", "course_completed"]
+  },
+  "metrics": [
+    "workforce_resilience_index",
+    "pivot_success_rate",
+    "average_skill_half_life"
+  ],
+  "capabilities": [
+    "survival_analysis",
+    "skill_space_pathfinding",
+    "spaced_repetition_scheduling"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

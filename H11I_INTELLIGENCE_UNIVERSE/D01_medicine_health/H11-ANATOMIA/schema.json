@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ANATOMIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Agent for human anatomy, structural biology, and spatial topology mapping.",
+  "category": "Structural Modeling",
+  "inputs": [
+    {"name": "region_query", "type": "SpatialRegion"},
+    {"name": "detail_level", "type": "ResolutionEnum"},
+    {"name": "layers", "type": "List[TissueType]"}
+  ],
+  "outputs": [
+    {"name": "topology_graph", "type": "StructuralGraph"},
+    {"name": "neurovascular_supply", "type": "SupplyMap"}
+  ],
+  "config": {
+    "include_variants": true
+  },
+  "state_schema": {
+    "loaded_atlas": "AnatomyGraph"
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-PHYSIOLOGIA", "H11-PATHOLOGIA", "H11-PARASITOLOGIA"]
+  },
+  "events": {
+    "emits": ["AnatomyQueried"],
+    "consumes": []
+  },
+  "metrics": ["query_latency", "graph_nodes_loaded"],
+  "capabilities": ["Spatial Querying", "Pathfinding", "Tissue Mapping"],
+  "scaling": {
+    "memory_intensive": true
+  }
+}

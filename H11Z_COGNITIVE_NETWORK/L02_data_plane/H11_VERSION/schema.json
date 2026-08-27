@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-VERSION",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Git-like version control and delta storage for datasets.",
+  "category": "Dataset Versioning",
+  "inputs": [
+    {
+      "name": "target_dataset_uri",
+      "type": "string",
+      "description": "Path to the dataset to commit.",
+      "required": true
+    },
+    {
+      "name": "commit_message",
+      "type": "string",
+      "description": "Description of the commit.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "version_hash",
+      "type": "string",
+      "description": "Unique immutable identifier for this dataset state."
+    }
+  ],
+  "config": {
+    "chunk_size_mb": {
+      "type": "integer",
+      "default": 64,
+      "description": "Target size for content-defined chunking."
+    },
+    "hash_algorithm": {
+      "type": "string",
+      "default": "sha256",
+      "description": "Hashing algorithm for Merkle tree."
+    }
+  },
+  "state_schema": {
+    "head_commit": {
+      "type": "string",
+      "description": "The current latest commit hash."
+    },
+    "cas_size_bytes": {
+      "type": "integer",
+      "description": "Total size of the content-addressable storage."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-CURATOR"],
+    "downstream": ["H11-SHARDER", "H11-PROVENANCE"]
+  },
+  "events": {
+    "emits": ["dataset_committed", "dataset_restored"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "storage_saved_bytes",
+      "type": "gauge",
+      "description": "Amount of storage saved via deduplication."
+    },
+    {
+      "name": "commit_duration_sec",
+      "type": "histogram",
+      "description": "Time taken to hash and commit a dataset."
+    }
+  ],
+  "capabilities": ["merkle_hashing", "delta_compression", "branching"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

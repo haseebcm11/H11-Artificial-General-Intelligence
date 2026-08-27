@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FASHION",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "Fashion Design Agent",
+  "category": "Apparel",
+  "inputs": [{"name": "style_prompt", "type": "string", "description": "Style"}],
+  "outputs": [{"name": "pattern_pieces", "type": "array", "description": "2D patterns"}],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": [], "downstream": []},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": true, "gpu_required": true, "memory_class": "high"}
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "APIGatewayConfig",
+  "type": "object",
+  "properties": {
+    "rate_limiting": {
+      "type": "object",
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["token_bucket", "leaky_bucket", "sliding_window"]
+        },
+        "capacity": { "type": "integer" },
+        "refill_rate": { "type": "number" }
+      },
+      "required": ["algorithm", "capacity", "refill_rate"]
+    },
+    "circuit_breaker": {
+      "type": "object",
+      "properties": {
+        "failure_threshold": { "type": "number" },
+        "reset_timeout_ms": { "type": "integer" }
+      },
+      "required": ["failure_threshold", "reset_timeout_ms"]
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "upstream_url": { "type": "string" },
+          "strip_prefix": { "type": "boolean" }
+        },
+        "required": ["path", "upstream_url"]
+      }
+    }
+  },
+  "required": ["rate_limiting", "circuit_breaker", "routes"]
+}

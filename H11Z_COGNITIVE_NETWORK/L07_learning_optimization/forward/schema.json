@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FORWARD",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Forward Propagation",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "input_tensor",
+      "type": "List[List[float]]",
+      "description": "input_tensor input",
+      "required": true
+    },
+    {
+      "name": "model_weights",
+      "type": "Dict[str, List[float]]",
+      "description": "model_weights input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "logits",
+      "type": "List[float]",
+      "description": "logits output"
+    },
+    {
+      "name": "activation_cache_id",
+      "type": "str",
+      "description": "activation_cache_id output"
+    }
+  ],
+  "config": {
+    "forward_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "forward_completed"
+    ],
+    "consumes": [
+      "forward_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "forward_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_forward"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

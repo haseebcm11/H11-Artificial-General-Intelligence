@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-FAIRNESS-ALIGN Schema",
+  "type": "object",
+  "properties": {
+    "intervention_id": {
+      "type": "string"
+    },
+    "target_attribute": {
+      "type": "string"
+    },
+    "original_embedding": {
+      "type": "array",
+      "items": { "type": "number" }
+    },
+    "projection_method": {
+      "type": "string",
+      "enum": ["INLP", "GRADIENT_REVERSAL", "REWEIGHTING"]
+    }
+  },
+  "required": ["intervention_id", "target_attribute", "original_embedding", "projection_method"]
+}

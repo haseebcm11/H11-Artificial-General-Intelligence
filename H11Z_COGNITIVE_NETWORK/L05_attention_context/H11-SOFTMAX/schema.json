@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SOFTMAX",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Computes normalized attention scores, employing numerical stabilization techniques and temperature scaling.",
+  "inputs": [{"name": "raw_scores", "type": "Any", "description": "Unnormalized QK^T"}, {"name": "temperature", "type": "float", "description": "Scaling factor"}],
+  "outputs": [{"name": "attention_probs", "type": "Any", "description": "Softmax probabilities"}],
+  "state_schema": {"average_entropy": {"type": "float", "description": "Entropy of distribution"}}
+}

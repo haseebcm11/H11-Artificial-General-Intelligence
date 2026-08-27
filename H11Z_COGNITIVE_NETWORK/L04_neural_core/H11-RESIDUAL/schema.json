@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-RESIDUAL Schema",
+  "type": "object",
+  "properties": {
+    "skip_type": {
+      "type": "string",
+      "enum": ["additive", "concatenation", "gated", "rezero", "highway"]
+    },
+    "pre_activation": {
+      "type": "boolean",
+      "default": true
+    },
+    "deq_config": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean", "default": false },
+        "solver": { "enum": ["broyden", "anderson", "forward_iteration"] },
+        "tolerance": { "type": "number", "minimum": 1e-7 }
+      }
+    },
+    "stochastic_depth_prob": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "default": 0.0
+    }
+  },
+  "required": ["skip_type", "pre_activation"]
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-RENEWABILIS Configuration",
+  "type": "object",
+  "properties": {
+    "site_latitude": {
+      "type": "number",
+      "minimum": -90.0,
+      "maximum": 90.0
+    },
+    "site_longitude": {
+      "type": "number",
+      "minimum": -180.0,
+      "maximum": 180.0
+    },
+    "weather_api_endpoint": {
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  "required": ["site_latitude", "site_longitude"]
+}

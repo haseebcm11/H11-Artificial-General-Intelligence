@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MULTIMODAL-EMB",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Aligns a text vector and an image-side vector by cosine, returning a joint score and a concatenated shared vector.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "text_vec",
+      "type": "List[float]"
+    },
+    {
+      "name": "image_vec",
+      "type": "List[float]"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "alignment",
+      "type": "float"
+    },
+    {
+      "name": "joint",
+      "type": "List[float]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-EMBEDDER"
+    ],
+    "downstream": [
+      "H11-SIMILARITY"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "clip-contract"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

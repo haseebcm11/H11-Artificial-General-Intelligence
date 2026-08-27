@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FOODSCI",
+  "version": "1.0.0",
+  "layer": 24,
+  "layer_name": "Agriculture & Food Sciences",
+  "description": "Predictive microbiology and shelf life.",
+  "category": "Food Science",
+  "inputs": [],
+  "outputs": [],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": ["H11-FOODTECH"],
+    "downstream": ["H11-GASTRONOMIA"]
+  }
+}

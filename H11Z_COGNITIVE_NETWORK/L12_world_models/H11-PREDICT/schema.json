@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PREDICT",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Extrapolates a numeric sequence by repeating the last finite difference for a given horizon.",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "sequence",
+      "type": "List[float]"
+    },
+    {
+      "name": "horizon",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "next_states",
+      "type": "List[float]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-WORLDMODEL"
+    ],
+    "downstream": [
+      "H11-SCENARIO",
+      "H11-MONTECARLO"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "delta-extrapolate"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

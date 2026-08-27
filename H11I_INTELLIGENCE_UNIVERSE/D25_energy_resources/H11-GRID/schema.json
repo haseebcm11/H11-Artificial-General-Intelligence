@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GRID",
+  "version": "1.0.0",
+  "layer": 25,
+  "layer_name": "Energy & Resources",
+  "description": "Smart Grid Transmission Agent",
+  "category": "Transmission",
+  "inputs": [
+    {
+      "name": "gen_injections",
+      "type": "object",
+      "description": "Active power from generators",
+      "required": true
+    },
+    {
+      "name": "load_demands",
+      "type": "object",
+      "description": "Nodal load demands",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "dispatch_signals",
+      "type": "object",
+      "description": "Setpoints for generators"
+    }
+  ],
+  "config": {
+    "base_mva": {
+      "type": "float",
+      "default": 100.0,
+      "description": "System base MVA"
+    }
+  },
+  "state_schema": {
+    "system_frequency": {
+      "type": "float",
+      "description": "Current AC frequency"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SOLARIS", "H11-EOLICA", "H11-BATTERIA"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["grid.blackout_warning", "grid.price_update"],
+    "consumes": ["gen.trip"]
+  },
+  "metrics": [
+    {
+      "name": "average_lmp",
+      "type": "gauge",
+      "description": "Average Locational Marginal Price"
+    }
+  ],
+  "capabilities": ["acopf_solving", "frequency_control"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

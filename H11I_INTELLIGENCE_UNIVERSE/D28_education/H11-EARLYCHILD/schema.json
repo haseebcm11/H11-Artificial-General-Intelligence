@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EARLYCHILD",
+  "version": "1.0.0",
+  "layer": "6",
+  "layer_name": "Educational Systems",
+  "description": "Orchestrates play-based, exploratory learning for early childhood development.",
+  "category": "Foundational Education",
+  "inputs": [
+    {
+      "name": "developmental_stage",
+      "type": "string"
+    },
+    {
+      "name": "target_foundations",
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  ],
+  "outputs": [
+    {
+      "name": "sandbox_config",
+      "type": "object"
+    }
+  ],
+  "config": {
+    "play_loop_hz": 30,
+    "stealth_assessment_enabled": true
+  },
+  "state_schema": {
+    "active_sandboxes": "Dict[str, PlayEnvironment]",
+    "curiosity_models": "Dict[str, IntrinsicMotivationState]"
+  },
+  "dependencies": {
+    "upstream": ["H11-VOICE", "H11-CURRICULUM"],
+    "downstream": ["H11-ELEARNING", "H11-PARENT_DASHBOARD"]
+  },
+  "events": {
+    "emits": ["milestone_reached", "play_session_ended"],
+    "consumes": ["voice_interaction", "manipulative_moved"]
+  },
+  "metrics": [
+    "curiosity_engagement_time",
+    "phoneme_detection_latency",
+    "stealth_assessment_confidence"
+  ],
+  "capabilities": [
+    "sandbox_orchestration",
+    "stealth_assessment",
+    "phonemic_analysis"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

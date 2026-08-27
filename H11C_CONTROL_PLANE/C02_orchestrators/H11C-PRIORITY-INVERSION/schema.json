@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-PRIORITY-INVERSION",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Boosts a low-priority holder of a safety lock so the high-priority waiter is not starved.",
+  "category": "orchestrator",
+  "handler": "preempt",
+  "inputs": [
+    {
+      "name": "running",
+      "type": "Any"
+    },
+    {
+      "name": "incoming_priority",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "preempt",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-PREEMPTOR"
+    ],
+    "downstream": [
+      "H11C-SCHEDULER"
+    ]
+  },
+  "capabilities": [
+    "preempt"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

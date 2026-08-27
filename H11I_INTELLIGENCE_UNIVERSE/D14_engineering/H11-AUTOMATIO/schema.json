@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-AUTOMATIO Agent Schema",
+  "type": "object",
+  "properties": {
+    "robotics_config": {
+      "type": "object",
+      "properties": {
+        "dof": { "type": "integer" },
+        "dh_parameters": {
+          "type": "array",
+          "items": { "type": "number" }
+        },
+        "max_velocity_rad_s": { "type": "number" }
+      },
+      "required": ["dof"]
+    },
+    "plc_connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ip_address": { "type": "string" },
+          "protocol": { "enum": ["OPC_UA", "MODBUS", "PROFINET"] },
+          "scan_rate_ms": { "type": "integer" }
+        }
+      }
+    }
+  },
+  "required": ["robotics_config"]
+}

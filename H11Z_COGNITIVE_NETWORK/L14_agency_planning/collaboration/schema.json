@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-COLLABORATION Schema",
+  "type": "object",
+  "properties": {
+    "collaboration_request": {
+      "type": "object",
+      "properties": {
+        "action_type": {
+          "type": "string",
+          "enum": ["POST_BLACKBOARD", "READ_BLACKBOARD", "INITIATE_CNP", "SUBMIT_BID", "PROPOSE_CONSENSUS"]
+        },
+        "payload": {
+          "type": "object",
+          "description": "Polymorphic payload based on action_type"
+        },
+        "agent_id": {
+          "type": "string"
+        }
+      },
+      "required": ["action_type", "payload", "agent_id"]
+    }
+  }
+}

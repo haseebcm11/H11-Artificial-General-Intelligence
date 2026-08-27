@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SCENARIO",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "From a base numeric map, emits branches that perturb each key by \u00b1delta.",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "base_case",
+      "type": "Dict[str,float]"
+    },
+    {
+      "name": "delta",
+      "type": "float"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "branches",
+      "type": "List[dict]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-PREDICT",
+      "H11-MENTAL-SIM"
+    ],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "one-at-a-time-stress"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

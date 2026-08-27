@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AUTOGRAD",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Automatic Differentiation",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "computation_tape",
+      "type": "List[str]",
+      "description": "computation_tape input",
+      "required": true
+    },
+    {
+      "name": "target_node",
+      "type": "str",
+      "description": "target_node input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "adjoints",
+      "type": "Dict[str, float]",
+      "description": "adjoints output"
+    },
+    {
+      "name": "jacobian_matrix",
+      "type": "List[List[float]]",
+      "description": "jacobian_matrix output"
+    }
+  ],
+  "config": {
+    "autograd_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "autograd_completed"
+    ],
+    "consumes": [
+      "autograd_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "autograd_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_autograd"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

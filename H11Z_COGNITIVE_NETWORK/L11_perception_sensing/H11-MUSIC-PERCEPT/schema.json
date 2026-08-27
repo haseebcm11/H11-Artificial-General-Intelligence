@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MUSIC-PERCEPT",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "type": "cognitive_agent",
+  "domain": "music_information_retrieval",
+  "capabilities": [
+    "beat_tracking",
+    "tempo_estimation",
+    "chord_recognition",
+    "instrument_identification",
+    "onset_detection",
+    "structural_segmentation"
+  ],
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "audio_stream": {
+        "type": "array",
+        "items": { "type": "number" },
+        "description": "Raw audio waveform"
+      },
+      "sample_rate": {
+        "type": "integer",
+        "minimum": 8000,
+        "default": 44100
+      },
+      "features": {
+        "type": "array",
+        "items": { "type": "string", "enum": ["beat", "chord", "instrument", "structure", "melody"] }
+      }
+    },
+    "required": ["audio_stream", "sample_rate"]
+  },
+  "outputs": {
+    "type": "object",
+    "properties": {
+      "tempo": { "type": "number", "description": "BPM" },
+      "beats": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "time": { "type": "number" },
+            "is_downbeat": { "type": "boolean" }
+          }
+        }
+      },
+      "chords": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "start": { "type": "number" },
+            "end": { "type": "number" },
+            "chord_label": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

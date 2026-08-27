@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RESILIENCE",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "System resilience: fault tolerance, graceful degradation, bulkhead pattern, circuit breaker, retry with backoff, timeout management, redundancy, resilience testing, blast radius limitation",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "service_call",
+      "type": "CallRequest",
+      "description": "RPC or internal service request",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "call_result",
+      "type": "CallResult",
+      "description": "Success, failure, or fallback response"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "circuit_states": {
+      "type": "dict",
+      "desc": "State of various breakers (OPEN/CLOSED)"
+    },
+    "failure_counts": {
+      "type": "dict",
+      "desc": "Recent error rates per service"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "resilience_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "resilience_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

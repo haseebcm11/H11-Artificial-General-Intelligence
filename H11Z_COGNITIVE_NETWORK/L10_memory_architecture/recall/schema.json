@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RECALL",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Reconstructive memory via cue-dependent spreading activation.",
+  "category": "Recall",
+  "inputs": [
+    {"name": "cue", "type": "string", "description": "Stimulus", "required": true},
+    {"name": "context", "type": "object", "description": "Mood and environment state", "required": false}
+  ],
+  "outputs": [
+    {"name": "reconstructed_trace", "type": "string", "description": "Assembled memory"},
+    {"name": "confabulation_risk", "type": "number", "description": "Hallucination metric"}
+  ],
+  "config": {
+    "activation_decay": {"type": "number", "default": "0.8", "description": "Spread decay multiplier"},
+    "firing_threshold": {"type": "number", "default": "0.5", "description": "Min activation to recall"}
+  },
+  "state_schema": {
+    "priming_buffer": {"type": "object", "description": "Temporarily heightened nodes"}
+  },
+  "dependencies": {"upstream": ["H11-RETRIEVAL", "H11-EMOTION"], "downstream": ["H11-CONSCIOUSNESS"]},
+  "events": {"emits": ["memory_reconstructed"], "consumes": ["stimulus_received"]},
+  "metrics": [{"name": "confabulation_rate", "type": "gauge", "description": "Average risk over time"}],
+  "capabilities": ["spreading_activation", "confabulation_detection"],
+  "scaling": {"horizontal": true, "gpu_required": false, "memory_class": "medium"}
+}

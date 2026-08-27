@@ -1,0 +1,12 @@
+{
+  "agent_id": "H11-CIVILIS",
+  "name": "CivilisAgent",
+  "description": "Civil engineering and infrastructure planning agent.",
+  "version": "1.0.0",
+  "capabilities": [
+    "terrain_analysis",
+    "route_optimization",
+    "hydrology_modeling"
+  ],
+  "dependencies": []
+}

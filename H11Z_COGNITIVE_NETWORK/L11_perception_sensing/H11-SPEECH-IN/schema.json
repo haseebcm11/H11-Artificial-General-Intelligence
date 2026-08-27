@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPEECH-IN",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "description": "Automatic Speech Recognition (ASR) agent utilizing Whisper and CTC streaming.",
+  "capabilities": [
+    "multilingual_asr",
+    "streaming_transcription",
+    "punctuation_restoration",
+    "voice_activity_detection"
+  ],
+  "interfaces": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "audio_chunk": { "type": "array" },
+        "is_streaming": { "type": "boolean" }
+      }
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "text": { "type": "string" },
+        "word_timestamps": { "type": "array" },
+        "is_final": { "type": "boolean" }
+      }
+    }
+  }
+}

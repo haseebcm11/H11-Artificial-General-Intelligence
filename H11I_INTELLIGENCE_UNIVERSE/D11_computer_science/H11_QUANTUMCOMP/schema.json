@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-QUANTUMCOMP",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Computer Science",
+  "description": "Quantum computing simulation and analysis",
+  "category": "Quantum",
+  "inputs": [
+    {
+      "name": "circuit_definition",
+      "type": "array",
+      "description": "List of quantum gates",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state_vector",
+      "type": "array",
+      "description": "Complex amplitudes of the final state"
+    }
+  ],
+  "config": {
+    "error_model": {
+      "type": "string",
+      "default": "depolarizing",
+      "description": "Type of quantum error channel"
+    }
+  },
+  "state_schema": {
+    "entanglement_entropy": {
+      "type": "number",
+      "description": "Current entanglement entropy"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["circuit_measured"],
+    "consumes": ["quantum_task_assigned"]
+  },
+  "metrics": [
+    {
+      "name": "circuit_depth",
+      "type": "histogram",
+      "description": "Depth of executed quantum circuits"
+    }
+  ],
+  "capabilities": ["quantum_simulation", "error_correction_analysis"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

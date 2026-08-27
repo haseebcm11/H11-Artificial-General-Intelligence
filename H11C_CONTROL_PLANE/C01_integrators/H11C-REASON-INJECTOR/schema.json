@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-REASON-INJECTOR",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Turns diagnosis and vitals into reasoning premises, not free text.",
+  "category": "integrator",
+  "handler": "inject_premises",
+  "inputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "premises",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-SCHEMA-BRIDGE"
+    ],
+    "downstream": [
+      "H11-REASON"
+    ]
+  },
+  "capabilities": [
+    "inject_premises"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

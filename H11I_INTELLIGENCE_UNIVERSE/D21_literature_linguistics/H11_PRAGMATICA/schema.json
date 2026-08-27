@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PRAGMATICA",
+  "version": "1.0.0",
+  "layer": 21,
+  "layer_name": "Literature & Linguistics",
+  "description": "Agent for pragmatics and discourse analysis.",
+  "category": "Linguistics",
+  "inputs": [
+    {
+      "name": "utterance",
+      "type": "string",
+      "description": "Spoken or written utterance"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "speech_act",
+      "type": "string",
+      "description": "Illocutionary act"
+    }
+  ],
+  "config": {
+    "gricean_strictness": {
+      "type": "number",
+      "default": 0.8,
+      "description": "Threshold for implicature generation"
+    }
+  },
+  "state_schema": {
+    "common_ground": {
+      "type": "array",
+      "description": "Mutually accepted facts"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SEMANTICA"],
+    "downstream": ["H11-DRAMA"]
+  },
+  "capabilities": ["speech-act-recognition", "implicature-derivation"]
+}

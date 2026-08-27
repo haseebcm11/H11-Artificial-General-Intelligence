@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-MUTATION Schema",
+  "type": "object",
+  "properties": {
+    "MutationPolicy": {
+      "type": "object",
+      "properties": {
+        "weight_mutation_rate": { "type": "number", "default": 0.8 },
+        "weight_mutation_power": { "type": "number", "default": 0.1 },
+        "add_node_rate": { "type": "number", "default": 0.03 },
+        "add_conn_rate": { "type": "number", "default": 0.05 }
+      }
+    },
+    "MutationRequest": {
+      "type": "object",
+      "properties": {
+        "genome": { "type": "object" },
+        "policy": { "$ref": "#/properties/MutationPolicy" },
+        "global_innovation_tracker": { "type": "object" }
+      },
+      "required": ["genome", "policy"]
+    }
+  }
+}

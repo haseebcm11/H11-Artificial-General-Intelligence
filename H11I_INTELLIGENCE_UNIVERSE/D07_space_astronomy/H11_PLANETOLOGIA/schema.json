@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PLANETOLOGIA",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Exoplanet detection and planetary science.",
+  "category": "Planetary Science",
+  "inputs": [
+    {
+      "name": "timeseries_data",
+      "type": "ExoplanetData",
+      "description": "Transit or RV data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "planet_model",
+      "type": "PlanetModel",
+      "description": "Derived planetary characteristics"
+    }
+  ],
+  "config": {
+    "mcmc_steps": {
+      "type": "int",
+      "default": 5000,
+      "description": "MCMC iterations for transit fitting"
+    }
+  },
+  "state_schema": {
+    "ephemerides": {
+      "type": "dict",
+      "description": "Tracked planetary transits"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ASTRONOMIA"],
+    "downstream": ["H11-EXOBIOLOGIA"]
+  },
+  "events": {
+    "emits": ["ExoplanetConfirmed"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "fits_performed",
+      "type": "counter",
+      "description": "Number of lightcurves fitted"
+    }
+  ],
+  "capabilities": ["transit_fitting", "rv_analysis"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

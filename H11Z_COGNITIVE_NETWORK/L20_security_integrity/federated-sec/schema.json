@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FEDERATED-SEC",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "Federated learning security: secure aggregation, model update verification, Byzantine-robust aggregation, gradient leakage prevention, federated differential privacy, client selection security",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "client_updates",
+      "type": "List[Update]",
+      "description": "Gradients from edge clients",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "global_update",
+      "type": "GlobalUpdate",
+      "description": "Aggregated robust gradients"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "client_trust_scores": {
+      "type": "dict",
+      "desc": "Reputation of FL clients"
+    },
+    "aggregation_round": {
+      "type": "int",
+      "desc": "Current FL round"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "federated-sec_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "federated-sec_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

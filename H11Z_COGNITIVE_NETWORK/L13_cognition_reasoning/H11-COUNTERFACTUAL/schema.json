@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-COUNTERFACTUAL Agent Schema",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["evaluate_counterfactual", "regret_analysis"]
+    },
+    "factual_state": {
+      "type": "object",
+      "additionalProperties": { "type": "number" }
+    },
+    "intervention": {
+      "type": "object",
+      "additionalProperties": { "type": "number" }
+    },
+    "target": {
+      "type": "string"
+    }
+  },
+  "required": ["action", "factual_state", "intervention", "target"]
+}

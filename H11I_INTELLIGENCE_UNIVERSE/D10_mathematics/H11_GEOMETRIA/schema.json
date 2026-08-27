@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GEOMETRIA",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Geometry Agent",
+  "category": "Geometry",
+  "inputs": [
+    {
+      "name": "manifold",
+      "type": "string",
+      "description": "Manifold definition",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "curvature",
+      "type": "number",
+      "description": "Scalar curvature"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": ["H11-ANALYSIS"],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": ["differential_geometry"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

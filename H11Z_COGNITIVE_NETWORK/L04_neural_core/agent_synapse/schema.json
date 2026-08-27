@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SynapseConfiguration",
+  "type": "object",
+  "properties": {
+    "plasticity_rule": {
+      "type": "string",
+      "enum": ["static", "hebbian", "oja", "stdp"],
+      "default": "static"
+    },
+    "pruning_threshold": {
+      "type": "number",
+      "default": 1e-4
+    },
+    "learning_rate": {
+      "type": "number",
+      "default": 0.001
+    },
+    "sparsity_target": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0.9
+    }
+  },
+  "required": ["plasticity_rule"]
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-COMBINATORIA",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Combinatorics and Graph Theory Agent",
+  "category": "Combinatorics",
+  "inputs": [
+    {
+      "name": "graph_def",
+      "type": "object",
+      "description": "Adjacency matrix or edge list",
+      "required": false
+    },
+    {
+      "name": "combinatorial_query",
+      "type": "string",
+      "description": "Expression requesting permutations or partitions",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "graph_metrics",
+      "type": "object",
+      "description": "Chromatic number, connectivity, etc."
+    },
+    {
+      "name": "enumerations",
+      "type": "array[array[integer]]",
+      "description": "Generated combinatorial structures"
+    }
+  ],
+  "config": {
+    "max_graph_nodes": {
+      "type": "integer",
+      "default": 100000,
+      "description": "Maximum nodes for memory safety"
+    }
+  },
+  "state_schema": {
+    "cached_chromatic_polynomials": {
+      "type": "map[string, string]",
+      "description": "Memoized graph polynomials"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ALGEBRA"],
+    "downstream": ["H11-CRYPTOMATH", "H11-GAMETHEORIA"]
+  },
+  "events": {
+    "emits": ["graph_colored", "isomorphism_found"],
+    "consumes": ["network_updated"]
+  },
+  "metrics": [
+    {
+      "name": "subgraphs_explored",
+      "type": "counter",
+      "description": "Number of induced subgraphs evaluated"
+    }
+  ],
+  "capabilities": ["graph_coloring", "integer_partitions", "network_flows"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

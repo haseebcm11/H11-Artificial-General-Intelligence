@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PRECISIONAG",
+  "version": "1.0.0",
+  "layer": 24,
+  "layer_name": "Agriculture & Food Sciences",
+  "description": "Precision agriculture and VRT.",
+  "category": "Precision Ag",
+  "inputs": [],
+  "outputs": [],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": ["H11-CROP", "H11-SOILSCI"],
+    "downstream": []
+  }
+}

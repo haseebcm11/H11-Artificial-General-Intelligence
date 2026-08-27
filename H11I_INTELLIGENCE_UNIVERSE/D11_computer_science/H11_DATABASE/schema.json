@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DATABASE",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Computer Science",
+  "description": "Database query optimization and transaction management",
+  "category": "Data Management",
+  "inputs": [
+    {
+      "name": "query_ast",
+      "type": "object",
+      "description": "Abstract Syntax Tree of the query",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result_set",
+      "type": "array",
+      "description": "Records matching the query"
+    }
+  ],
+  "config": {
+    "isolation_level": {
+      "type": "string",
+      "default": "read_committed",
+      "description": "Transaction isolation level"
+    }
+  },
+  "state_schema": {
+    "buffer_pool_hits": {
+      "type": "integer",
+      "description": "Number of cache hits"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["transaction_committed", "deadlock_detected"],
+    "consumes": ["data_mutation_requested"]
+  },
+  "metrics": [
+    {
+      "name": "query_latency_ms",
+      "type": "histogram",
+      "description": "Latency of query execution"
+    }
+  ],
+  "capabilities": ["query_optimization", "mvcc", "indexing"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

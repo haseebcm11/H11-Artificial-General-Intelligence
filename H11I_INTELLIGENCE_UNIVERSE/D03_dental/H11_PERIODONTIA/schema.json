@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PERIODONTIA",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Dental Sciences",
+  "description": "Periodontal disease staging, grading, and treatment planning.",
+  "category": "Periodontics",
+  "inputs": [
+    {
+      "name": "periodontal_chart",
+      "type": "object",
+      "description": "Probing depths, recession, and BOP",
+      "required": true
+    },
+    {
+      "name": "patient_health_factors",
+      "type": "object",
+      "description": "Systemic risk factors like diabetes and smoking",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "staging_grading",
+      "type": "object",
+      "description": "Periodontitis stage and grade classification"
+    },
+    {
+      "name": "periodontal_therapy",
+      "type": "array",
+      "description": "Recommended therapies (SRP, Surgery, Maintenance)"
+    }
+  ],
+  "config": {
+    "surgery_threshold_pocket_mm": {
+      "type": "number",
+      "default": 6.0,
+      "description": "Pocket depth triggering surgical evaluation"
+    }
+  },
+  "state_schema": {
+    "longitudinal_cal": {
+      "type": "array",
+      "description": "Historical clinical attachment loss records over time"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DENTALIS"],
+    "downstream": ["H11-PROSTHODONTIA", "H11-ORALCHIRURGIA"]
+  },
+  "events": {
+    "emits": ["periodontal_clearance_granted", "hopeless_tooth_identified"],
+    "consumes": ["restoration_placed"]
+  },
+  "metrics": [
+    {
+      "name": "average_cal_reduction",
+      "type": "gauge",
+      "description": "Average reduction in clinical attachment loss post-treatment"
+    }
+  ],
+  "capabilities": ["staging_and_grading", "srp_planning", "bone_loss_analysis"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

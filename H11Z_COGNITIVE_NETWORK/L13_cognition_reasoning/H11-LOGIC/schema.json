@@ -1,0 +1,36 @@
+{
+  "name": "H11-LOGIC",
+  "description": "Agent for formal logic, SAT/SMT solving, and logical inference.",
+  "version": "1.0.0",
+  "interfaces": {
+    "inputs": [
+      {
+        "name": "knowledge_base",
+        "type": "array",
+        "description": "List of formal logical statements (facts and rules)."
+      },
+      {
+        "name": "query",
+        "type": "string",
+        "description": "Logical expression to prove or evaluate."
+      },
+      {
+        "name": "mode",
+        "type": "string",
+        "description": "Inference mode: 'RESOLUTION', 'FORWARD_CHAIN', 'SAT'."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "boolean",
+        "description": "True if the query is provable/satisfiable."
+      },
+      {
+        "name": "proof_trace",
+        "type": "array",
+        "description": "Sequence of steps or variable bindings."
+      }
+    ]
+  }
+}

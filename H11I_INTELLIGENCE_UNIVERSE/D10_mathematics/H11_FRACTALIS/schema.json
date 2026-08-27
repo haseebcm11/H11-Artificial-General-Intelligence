@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FRACTALIS",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Fractal Geometry and Chaos Theory Agent",
+  "category": "Chaos",
+  "inputs": [
+    {
+      "name": "iterated_function",
+      "type": "string",
+      "description": "Complex mapping (e.g., z^2 + c)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "hausdorff_dimension",
+      "type": "number",
+      "description": "Fractal dimension"
+    },
+    {
+      "name": "escape_times",
+      "type": "array[integer]",
+      "description": "Bailout iterations for rendering"
+    }
+  ],
+  "config": {
+    "max_iterations": {
+      "type": "integer",
+      "default": 1000,
+      "description": "Escape time iteration limit"
+    }
+  },
+  "state_schema": {
+    "attractors": {
+      "type": "array[object]",
+      "description": "Discovered strange attractors"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ANALYSIS"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["attractor_found", "dimension_calculated"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "pixels_evaluated",
+      "type": "counter",
+      "description": "Total complex points iterated"
+    }
+  ],
+  "capabilities": ["ifs_rendering", "lyapunov_fractals", "dimension_estimation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

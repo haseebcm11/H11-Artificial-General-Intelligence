@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AGENT-MODEL",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Infers another agent's action preference as a normalised frequency table (level-0 ToM).",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "actions",
+      "type": "List[str]"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "beliefs",
+      "type": "Dict[str,float]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-OBJECT-PERMANENCE",
+      "H11-WORLDMODEL"
+    ],
+    "downstream": [
+      "H11-MENTAL-SIM"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "level0-tom"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

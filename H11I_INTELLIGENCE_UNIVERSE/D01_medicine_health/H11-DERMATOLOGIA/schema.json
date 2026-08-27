@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DERMATOLOGIA",
+  "version": "1.2.0",
+  "layer": "I",
+  "layer_name": "Intelligence Universe",
+  "description": "# H11-DERMATOLOGIA SPEC\\n ",
+  "inputs": [
+    {
+      "name": "payload",
+      "type": "object",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "agent_id",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ETYMOLOGIA",
+  "version": "1.0.0",
+  "layer": 21,
+  "layer_name": "Literature & Linguistics",
+  "description": "Agent for historical linguistics and etymological reconstruction.",
+  "category": "Linguistics",
+  "inputs": [
+    {
+      "name": "word",
+      "type": "string",
+      "description": "Target word"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "proto_form",
+      "type": "string",
+      "description": "Reconstructed root"
+    }
+  ],
+  "config": {
+    "use_diachronic_embeddings": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use vector models for semantic drift"
+    }
+  },
+  "state_schema": {
+    "phylogenetic_tree": {
+      "type": "object",
+      "description": "Language family graph"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PHONETICA", "H11-SEMANTICA"],
+    "downstream": []
+  },
+  "capabilities": ["comparative-method", "semantic-drift-tracking"]
+}

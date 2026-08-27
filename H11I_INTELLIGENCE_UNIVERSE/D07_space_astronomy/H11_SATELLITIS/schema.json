@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SATELLITIS",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Satellite constellation management and network routing",
+  "category": "Swarm & Network",
+  "inputs": [
+    {
+      "name": "fleet_telemetry",
+      "type": "array",
+      "description": "Health and state vectors of all nodes",
+      "required": true
+    },
+    {
+      "name": "task_requests",
+      "type": "object",
+      "description": "Targets for observation or data routing",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "routing_tables",
+      "type": "object",
+      "description": "Updated ISL topology and routes"
+    },
+    {
+      "name": "station_keeping",
+      "type": "array",
+      "description": "Commands to correct phase drift"
+    }
+  ],
+  "config": {
+    "walker_tpf": {
+      "type": "string",
+      "default": "24/3/1",
+      "description": "Walker Delta constellation notation"
+    },
+    "isl_max_range_km": {
+      "type": "number",
+      "default": 5000.0,
+      "description": "Maximum range for optical inter-satellite links"
+    }
+  },
+  "state_schema": {
+    "active_nodes": {
+      "type": "integer",
+      "description": "Number of satellites currently operational"
+    },
+    "network_fragmentation": {
+      "type": "number",
+      "description": "Metric of disconnected sub-graphs"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SPACECRAFT", "H11-ORBITALIS"],
+    "downstream": ["H11-SPACEDEBRIS"]
+  },
+  "events": {
+    "emits": ["TopologyUpdated", "ConstellationRephased"],
+    "consumes": ["NodeFailed", "NewNodeDeployed"]
+  },
+  "metrics": [
+    {
+      "name": "average_isl_latency_ms",
+      "type": "gauge",
+      "description": "Mean latency across the space network"
+    }
+  ],
+  "capabilities": ["Dynamic Routing", "Constellation Station-Keeping", "Task Scheduling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

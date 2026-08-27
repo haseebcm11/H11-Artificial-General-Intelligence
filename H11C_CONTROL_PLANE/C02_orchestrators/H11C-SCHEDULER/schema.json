@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-SCHEDULER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Priority queue of ready hops. Safety-gated hops outrank speculative ones.",
+  "category": "orchestrator",
+  "handler": "schedule",
+  "inputs": [
+    {
+      "name": "queue",
+      "type": "Any"
+    },
+    {
+      "name": "item",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "queue",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-BUDGET-CONTROLLER"
+    ],
+    "downstream": [
+      "H11C-ROUTER"
+    ]
+  },
+  "capabilities": [
+    "schedule"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

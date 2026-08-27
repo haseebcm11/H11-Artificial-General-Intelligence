@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CONSTRUCTION",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Architecture & Construction",
+  "description": "Project management, scheduling, and logistics.",
+  "category": "Construction",
+  "inputs": [],
+  "outputs": [],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": ["H11-BIM"], "downstream": []},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": false, "gpu_required": false, "memory_class": "medium"}
+}

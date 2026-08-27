@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SOUNDDESIGN",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Sound design, Foley, and procedural acoustics.",
+  "category": "AudioEngineering",
+  "inputs": [
+    {
+      "name": "event_description",
+      "type": "string",
+      "description": "Textual description of the sound",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "audio_buffer",
+      "type": "object",
+      "description": "Generated audio"
+    }
+  ],
+  "config": {
+    "safety_limiter": {
+      "type": "boolean",
+      "default": true,
+      "description": "Prevent DSP explosion"
+    }
+  },
+  "state_schema": {
+    "active_models": {
+      "type": "array",
+      "description": "Physical models currently loaded"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-MUSICPROD", "H11-AUDIOENG"]
+  },
+  "events": {
+    "emits": ["sfx_generated"],
+    "consumes": ["generate_sfx"]
+  },
+  "metrics": [
+    {
+      "name": "dsp_stability_index",
+      "type": "gauge",
+      "description": "Safety margin of physical models"
+    }
+  ],
+  "capabilities": ["physical_modeling", "foley_synthesis", "ambiance_generation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "medium"
+  }
+}

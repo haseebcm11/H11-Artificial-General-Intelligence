@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-JOIN-BARRIER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Joins fanout branches; incomplete sets do not pass.",
+  "category": "orchestrator",
+  "handler": "join",
+  "inputs": [
+    {
+      "name": "branches",
+      "type": "Any"
+    },
+    {
+      "name": "expected",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "joined",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-PARALLEL-FANOUT"
+    ],
+    "downstream": [
+      "H11C-RESULT-REDUCER"
+    ]
+  },
+  "capabilities": [
+    "join"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

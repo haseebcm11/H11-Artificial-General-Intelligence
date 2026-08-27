@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-VOCATIONAL",
+  "version": "1.0.0",
+  "layer": "28",
+  "layer_name": "Education & Learning",
+  "description": "Agile vocational training, credentialing, and workshop resource allocation.",
+  "category": "Micro-credentialing",
+  "inputs": [
+    {
+      "name": "labor_signals",
+      "type": "array",
+      "items": { "type": "number" }
+    },
+    {
+      "name": "equipment_inventory",
+      "type": "object"
+    },
+    {
+      "name": "apprentice_pool",
+      "type": "array"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "curriculum_adjustment",
+      "type": "object"
+    },
+    {
+      "name": "workshop_schedule",
+      "type": "object"
+    },
+    {
+      "name": "credential_efficacy",
+      "type": "object"
+    }
+  ],
+  "config": {
+    "ucb_exploration_param": 1.414,
+    "max_apprentice_ratio": 5,
+    "schedule_horizon_days": 14
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "active_modules": { "type": "array" },
+      "mab_weights": { "type": "object" }
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-LABOR", "H11-MACROECON"],
+    "downstream": ["H11-LIFELONG", "H11-MANUFACTURING"]
+  },
+  "events": {
+    "emits": ["new_cohort_certified", "equipment_maintenance_needed"],
+    "consumes": ["labor_shortage_alert"]
+  },
+  "metrics": [
+    "employment_rate_90d",
+    "workshop_utilization",
+    "credential_roi"
+  ],
+  "capabilities": [
+    "mab_credential_testing",
+    "milp_workshop_scheduling",
+    "skill_gap_analysis"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

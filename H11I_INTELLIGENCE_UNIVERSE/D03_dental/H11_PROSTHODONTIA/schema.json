@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PROSTHODONTIA",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Dental Sciences",
+  "description": "CAD/CAM prosthesis design and occlusal dynamics modeling.",
+  "category": "Prosthodontics",
+  "inputs": [
+    {
+      "name": "prep_mesh",
+      "type": "object",
+      "description": "3D scan of tooth preparations",
+      "required": true
+    },
+    {
+      "name": "bite_transform",
+      "type": "array",
+      "description": "Matrix defining inter-arch relationship",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "prosthesis_mesh",
+      "type": "object",
+      "description": "Generated 3D model of the restoration"
+    },
+    {
+      "name": "stress_analysis",
+      "type": "object",
+      "description": "FEA results for occlusal loading"
+    }
+  ],
+  "config": {
+    "min_zirconia_thickness_mm": {
+      "type": "number",
+      "default": 1.0,
+      "description": "Minimum occlusal thickness for monolithic zirconia"
+    }
+  },
+  "state_schema": {
+    "virtual_articulator": {
+      "type": "object",
+      "description": "State variables for mandibular kinematics"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DENTALIS", "H11-PERIODONTIA"],
+    "downstream": ["H11-ORALCHIRURGIA"]
+  },
+  "events": {
+    "emits": ["cad_design_ready", "occlusal_interference_detected"],
+    "consumes": ["implant_placed"]
+  },
+  "metrics": [
+    {
+      "name": "designs_generated",
+      "type": "counter",
+      "description": "Number of CAD crowns/bridges generated"
+    }
+  ],
+  "capabilities": ["cad_modeling", "virtual_articulation", "fea_stress_analysis"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

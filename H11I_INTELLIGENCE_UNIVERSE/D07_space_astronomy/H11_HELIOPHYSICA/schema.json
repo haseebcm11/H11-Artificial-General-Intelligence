@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-HELIOPHYSICA",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Solar physics and space weather forecasting.",
+  "category": "Solar Physics",
+  "inputs": [
+    {
+      "name": "solar_data",
+      "type": "SolarObservation",
+      "description": "Magnetograms and UV data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "space_weather_forecast",
+      "type": "SpaceWeatherForecast",
+      "description": "Kp index and CME warnings"
+    }
+  ],
+  "config": {
+    "cme_threshold_velocity": {
+      "type": "float",
+      "default": 400.0,
+      "description": "Trigger speed for CME alerts in km/s"
+    }
+  },
+  "state_schema": {
+    "active_regions": {
+      "type": "list",
+      "description": "Currently tracked sunspots"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ASTROPHYSICA"],
+    "downstream": ["H11-SPACECRAFT", "H11-SATELLITIS"]
+  },
+  "events": {
+    "emits": ["CMEAlert", "SolarFlare"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "forecast_accuracy",
+      "type": "gauge",
+      "description": "Error in arrival time"
+    }
+  ],
+  "capabilities": ["mhd_modeling", "space_weather"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

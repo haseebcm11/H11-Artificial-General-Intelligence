@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ARCHITECTURA_SW",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Computer Science",
+  "description": "Macro-level system design and DDD analysis",
+  "category": "Architecture",
+  "inputs": [
+    {
+      "name": "dependency_graph",
+      "type": "object",
+      "description": "Current system dependencies",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "architecture_metrics",
+      "type": "object",
+      "description": "Cohesion, coupling, and abstractness scores"
+    }
+  ],
+  "config": {
+    "target_pattern": {
+      "type": "string",
+      "default": "microservices",
+      "description": "Target architectural style"
+    }
+  },
+  "state_schema": {
+    "adrs": {
+      "type": "array",
+      "description": "Architecture Decision Records"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["architecture_evaluated", "anti_pattern_detected"],
+    "consumes": ["codebase_scanned"]
+  },
+  "metrics": [
+    {
+      "name": "system_coupling",
+      "type": "gauge",
+      "description": "Overall measure of afferent/efferent coupling"
+    }
+  ],
+  "capabilities": ["ddd_modeling", "c4_visualization", "debt_analysis"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-REGENERATIVA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Models stem cell differentiation, biomatrix mechanotransduction, 3D bioprinting, vascularization kinetics, and regenerative safety.",
+  "category": "Regenerative Medicine & Tissue Engineering",
+  "inputs": [
+    {"name": "cell_source_profile", "type": "object"},
+    {"name": "scaffold_spec", "type": "object"},
+    {"name": "tissue_niche", "type": "object"},
+    {"name": "growth_factors", "type": "object"}
+  ],
+  "outputs": [
+    {"name": "differentiation_trajectory", "type": "object"},
+    {"name": "bioprinting_protocol", "type": "object"},
+    {"name": "vascularization_prediction", "type": "object"},
+    {"name": "safety_assurance", "type": "object"}
+  ],
+  "config": {
+    "oxygen_diffusion_coeff_mm2_s": 2.0e-5,
+    "hypoxia_threshold_mmhg": 10.0,
+    "max_diffusion_depth_um": 200.0,
+    "teratoma_risk_threshold": 0.0001
+  },
+  "state_schema": {
+    "regenerative_tissue_state": "RegenerativeTissueState"
+  },
+  "dependencies": {
+    "upstream": ["H11-GENETICA-MED", "H11-IMMUNOLOGIA", "H11-PATHOLOGIA"],
+    "downstream": ["H11-CHIRURGIA", "H11-ORTHOPAEDIA", "H11-CARDIOLOGIA", "H11-NEUROLOGIA"]
+  },
+  "events": {
+    "emits": [
+      "scaffold_maturation_complete",
+      "teratoma_risk_flagged",
+      "perfusion_established",
+      "hypoxic_core_detected"
+    ],
+    "consumes": [
+      "stem_cell_karyotype_verified",
+      "immune_compatibility_evaluated",
+      "defect_histopathology_updated"
+    ]
+  },
+  "metrics": [
+    "lineage_fidelity_score",
+    "vascular_density_mm2",
+    "teratoma_free_probability",
+    "scaffold_resorption_index",
+    "construct_viability_percentage"
+  ],
+  "capabilities": [
+    "Stem cell lineage prediction",
+    "3D biofabrication protocol design",
+    "Mechanotransduction & YAP/TAZ modeling",
+    "Hypoxic core & angiogenesis simulation",
+    "Host foreign body reaction modeling"
+  ],
+  "scaling": {
+    "compute_intensity": "high",
+    "memory_intensity": "high"
+  }
+}

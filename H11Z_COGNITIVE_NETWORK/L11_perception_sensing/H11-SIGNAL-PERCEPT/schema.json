@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-018",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "agent_name": "Signal Perception Agent",
+  "capabilities": [
+    "dsp_filtering",
+    "spectral_analysis",
+    "noise_reduction",
+    "fft_windowing"
+  ],
+  "input_types": ["time_series_1d"],
+  "output_types": ["spectrogram", "filtered_time_series", "frequency_peaks"]
+}

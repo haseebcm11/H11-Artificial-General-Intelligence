@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SELFPLAY",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Self-Play Training",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "agent_policies",
+      "type": "List[str]",
+      "description": "agent_policies input",
+      "required": true
+    },
+    {
+      "name": "match_results",
+      "type": "List[int]",
+      "description": "match_results input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "updated_ratings",
+      "type": "Dict[str, int]",
+      "description": "updated_ratings output"
+    },
+    {
+      "name": "next_matchup",
+      "type": "Tuple[str, str]",
+      "description": "next_matchup output"
+    }
+  ],
+  "config": {
+    "selfplay_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "selfplay_completed"
+    ],
+    "consumes": [
+      "selfplay_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "selfplay_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_selfplay"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-DATAWAREHOUSE Configuration",
+  "type": "object",
+  "properties": {
+    "warehouse_name": {
+      "type": "string"
+    },
+    "storage_backend": {
+      "type": "string",
+      "enum": ["redshift", "bigquery", "snowflake", "clickhouse"]
+    },
+    "max_concurrent_queries": {
+      "type": "integer",
+      "default": 100
+    },
+    "materialized_view_refresh_interval_sec": {
+      "type": "integer",
+      "default": 3600
+    }
+  },
+  "required": ["warehouse_name", "storage_backend"]
+}

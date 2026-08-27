@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EvoBioSchema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "substitution_model": {"type": "string", "enum": ["JC69", "K80"]},
+        "population_size": {"type": "integer"}
+      }
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "sequences": {
+          "type": "object",
+          "additionalProperties": {"type": "string"}
+        },
+        "tree": {"type": "object"}
+      }
+    }
+  }
+}

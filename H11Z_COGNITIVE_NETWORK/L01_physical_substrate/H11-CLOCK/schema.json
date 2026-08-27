@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-CLOCK Schema",
+  "type": "object",
+  "properties": {
+    "oscillator_type": {
+      "type": "string",
+      "enum": ["CRYSTAL_XO", "TCXO", "OCXO", "ATOMIC_RUBIDIUM", "MEMS"]
+    },
+    "pll_configuration": {
+      "type": "object",
+      "properties": {
+        "reference_freq_mhz": { "type": "number" },
+        "multiplier": { "type": "integer" },
+        "divider": { "type": "integer" },
+        "jitter_ps_rms": { "type": "number" }
+      },
+      "required": ["reference_freq_mhz", "multiplier", "divider"]
+    },
+    "clock_distribution": {
+      "type": "string",
+      "enum": ["H_TREE", "CLOCK_MESH", "SPINE_AND_RIB"]
+    },
+    "network_sync": {
+      "type": "object",
+      "properties": {
+        "protocol": { "type": "string", "enum": ["NTP", "PTP_V2", "WHITE_RABBIT"] },
+        "stratum_level": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "max_offset_ns": { "type": "number" }
+      },
+      "required": ["protocol", "stratum_level"]
+    },
+    "clock_gating_enabled": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": ["oscillator_type", "pll_configuration", "clock_distribution", "network_sync"]
+}

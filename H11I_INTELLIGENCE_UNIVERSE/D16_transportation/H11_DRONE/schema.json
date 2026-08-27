@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DRONE",
+  "version": "1.0.0",
+  "layer": 16,
+  "layer_name": "Transportation",
+  "description": "UAV dynamics and swarm logic",
+  "category": "Aviation",
+  "inputs": [
+    {
+      "name": "target_x",
+      "type": "float",
+      "description": "Target X position",
+      "required": true
+    },
+    {
+      "name": "target_y",
+      "type": "float",
+      "description": "Target Y position",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "motor_rpms",
+      "type": "array",
+      "description": "Array of 4 motor speeds"
+    }
+  ],
+  "config": {
+    "mass_kg": {
+      "type": "float",
+      "default": "1.5",
+      "description": "Drone total mass"
+    }
+  },
+  "state_schema": {
+    "voltage": {
+      "type": "float",
+      "description": "Battery voltage"
+    }
+  }
+}

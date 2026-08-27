@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-STYLE",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Applies consistent artistic and brand styles across diverse generative outputs.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "content", "type": "bytes"}, {"name": "style_reference", "type": "bytes"}, {"name": "strength", "type": "float"}
+  ],
+  "outputs": [
+    {"name": "styled_content", "type": "bytes"}, {"name": "style_similarity", "type": "float"}
+  ]
+}

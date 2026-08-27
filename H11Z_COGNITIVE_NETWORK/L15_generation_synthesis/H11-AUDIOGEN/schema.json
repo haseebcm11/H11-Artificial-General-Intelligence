@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AUDIOGEN",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Generates audio tracks, sound effects, and ambient noise from text.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "description", "type": "str"}, {"name": "duration_sec", "type": "float"}, {"name": "sample_rate", "type": "int"}
+  ],
+  "outputs": [
+    {"name": "audio_waveform", "type": "List[float]"}, {"name": "codec_tokens", "type": "List[int]"}
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SystemsBioSchema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "simulation_steps": {"type": "integer"},
+        "dt": {"type": "number"},
+        "integration_method": {"type": "string", "enum": ["euler", "rk4"]}
+      }
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "time": {"type": "number"},
+        "concentrations": {
+          "type": "object",
+          "additionalProperties": {"type": "number"}
+        }
+      }
+    }
+  }
+}

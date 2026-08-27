@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FORGET",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Information decay and explicit machine unlearning.",
+  "category": "Forgetting",
+  "inputs": [
+    {"name": "target_id", "type": "string", "description": "Forced unlearn target", "required": false}
+  ],
+  "outputs": [
+    {"name": "pruned_ids", "type": "array", "description": "Naturally decayed items"}
+  ],
+  "config": {
+    "base_decay_rate": {"type": "number", "default": "0.01", "description": "Time decay factor"},
+    "retention_cutoff": {"type": "number", "default": "0.2", "description": "Min retrievability"}
+  },
+  "state_schema": {
+    "decay_profiles": {"type": "object", "description": "Tracking item stability"}
+  },
+  "dependencies": {"upstream": ["H11-METRICS"], "downstream": ["H11-RETRIEVAL"]},
+  "events": {"emits": ["items_forgotten", "unlearn_complete"], "consumes": ["memory_pressure_high"]},
+  "metrics": [{"name": "decay_volume", "type": "counter", "description": "Items forgotten per cycle"}],
+  "capabilities": ["natural_decay", "targeted_amnesia"],
+  "scaling": {"horizontal": true, "gpu_required": false, "memory_class": "low"}
+}

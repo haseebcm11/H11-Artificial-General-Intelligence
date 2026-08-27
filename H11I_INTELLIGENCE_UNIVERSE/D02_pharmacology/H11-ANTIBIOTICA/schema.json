@@ -1,0 +1,51 @@
+{
+  "agent_id": "H11-ANTIBIOTICA",
+  "domain": "Pharmacology & Drug Sciences",
+  "subdomain": "Antibiotics",
+  "capabilities": [
+    "beta_lactam_analysis",
+    "fluoroquinolone_modeling",
+    "resistance_mechanism_simulation",
+    "mic_prediction",
+    "antibiotic_stewardship"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "compound_class": {
+        "type": "string",
+        "description": "The class of antibiotic."
+      },
+      "molecular_weight": {
+        "type": "number"
+      },
+      "bacterial_strain": {
+        "type": "string"
+      },
+      "known_resistance_genes": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    },
+    "required": ["compound_class", "bacterial_strain"]
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "predicted_mic_mcg_ml": {
+        "type": "number"
+      },
+      "resistance_risk_score": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1.0
+      },
+      "stewardship_recommendation": {
+        "type": "string"
+      },
+      "pk_pd_target": {
+        "type": "string"
+      }
+    }
+  }
+}

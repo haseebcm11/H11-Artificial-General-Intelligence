@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Pharmacokinetics Agent Schema",
+  "type": "object",
+  "properties": {
+    "drug_params": {
+      "type": "object",
+      "properties": {
+        "Vd": { "type": "number", "description": "Volume of distribution in Liters" },
+        "Cl": { "type": "number", "description": "Clearance in L/hr" },
+        "ka": { "type": "number", "description": "Absorption rate constant (1/hr)" },
+        "F": { "type": "number", "description": "Bioavailability (0-1)" }
+      },
+      "required": ["Vd", "Cl"]
+    },
+    "dosing": {
+      "type": "object",
+      "properties": {
+        "route": { "type": "string", "enum": ["IV", "PO"] },
+        "dose": { "type": "number" },
+        "interval_hr": { "type": "number" },
+        "num_doses": { "type": "integer" }
+      },
+      "required": ["route", "dose"]
+    }
+  },
+  "required": ["drug_params", "dosing"]
+}

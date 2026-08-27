@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FAILOVER",
+  "version": "1.0.0",
+  "layer": 18,
+  "layer_name": "Orchestration & Control Plane",
+  "description": "Agent for Failover & redundancy",
+  "category": "Orchestration",
+  "inputs": [
+    {
+      "name": "request_id",
+      "type": "string",
+      "description": "Unique identifier",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "status",
+      "type": "string",
+      "description": "Operation status"
+    }
+  ],
+  "config": {
+    "timeout_ms": {
+      "type": "integer",
+      "default": 1000,
+      "description": "Operation timeout"
+    }
+  },
+  "state_schema": {
+    "active_operations": {
+      "type": "integer",
+      "description": "Number of active operations"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-MONITOR"
+    ],
+    "downstream": [
+      "H11-EXECUTION"
+    ]
+  },
+  "events": {
+    "emits": [
+      "failover_completed"
+    ],
+    "consumes": [
+      "failover_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "failover_latency",
+      "type": "histogram",
+      "description": "Latency of Failover & redundancy"
+    }
+  ],
+  "capabilities": [
+    "Failover & redundancy"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

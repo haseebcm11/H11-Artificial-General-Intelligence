@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-QUANTUMINFO",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Quantum information and computing agent",
+  "category": "Quantum Technology",
+  "inputs": [
+    {
+      "name": "circuit",
+      "type": "QuantumCircuit",
+      "description": "Gate sequence to execute",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "fidelity",
+      "type": "float",
+      "description": "State fidelity after decoherence"
+    }
+  ],
+  "config": {
+    "max_qubits": {
+      "type": "int",
+      "default": 30,
+      "description": "Maximum simulateable qubits (RAM bound)"
+    }
+  },
+  "state_schema": {
+    "current_depth": {
+      "type": "int",
+      "description": "Circuit depth executed"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-CONDENSATA", "H11-PARTICULA"],
+    "downstream": ["H11-QUANTUMOPTICA"]
+  },
+  "events": {
+    "emits": ["circuit_completed"],
+    "consumes": ["error_syndrome_detected"]
+  },
+  "metrics": [
+    {
+      "name": "kraus_ops_per_sec",
+      "type": "counter",
+      "description": "Kraus operators applied"
+    }
+  ],
+  "capabilities": ["density_matrix_evolution", "entanglement_calculation"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

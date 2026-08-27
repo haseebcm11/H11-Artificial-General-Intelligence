@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-KVCACHE",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Dynamically allocates and pages Key-Value matrices in VRAM during generative decoding using PagedAttention principles.",
+  "inputs": [{"name": "new_keys", "type": "Any", "description": "New keys"}, {"name": "new_values", "type": "Any", "description": "New values"}, {"name": "session_id", "type": "str", "description": "Decoding session"}],
+  "outputs": [{"name": "cache_pointers", "type": "List[int]", "description": "Physical memory block IDs"}],
+  "state_schema": {"fragmentation_ratio": {"type": "float", "description": "VRAM fragmentation"}}
+}

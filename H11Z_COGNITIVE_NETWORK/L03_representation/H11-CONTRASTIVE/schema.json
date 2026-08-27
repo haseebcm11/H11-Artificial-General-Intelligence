@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CONTRASTIVE",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Computes an NT-Xent-style loss between a positive pair and a set of negatives.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "anchor",
+      "type": "List[float]"
+    },
+    {
+      "name": "positive",
+      "type": "List[float]"
+    },
+    {
+      "name": "negatives",
+      "type": "List[List[float]]"
+    },
+    {
+      "name": "temperature",
+      "type": "float"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "loss",
+      "type": "float"
+    },
+    {
+      "name": "positive_sim",
+      "type": "float"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-EMBEDDER"
+    ],
+    "downstream": [
+      "H11-LATENT"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "nt-xent"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-SUPPLY-CHAIN-PIN",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Only pinned agent ids may run. Unknown agent.py paths fail closed.",
+  "category": "security",
+  "handler": "allowlist",
+  "inputs": [
+    {
+      "name": "item",
+      "type": "Any"
+    },
+    {
+      "name": "allowed",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [],
+    "downstream": [
+      "H11C-MODEL-INTEGRITY"
+    ]
+  },
+  "capabilities": [
+    "allowlist"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

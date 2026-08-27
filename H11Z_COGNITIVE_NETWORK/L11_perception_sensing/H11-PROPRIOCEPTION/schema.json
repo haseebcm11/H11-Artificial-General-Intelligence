@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PROPRIOCEPTION",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "domain": "Internal Body State Estimation",
+  "capabilities": [
+    "imu_kinematic_fusion",
+    "center_of_mass_estimation",
+    "body_schema_adaptation",
+    "forward_kinematics"
+  ],
+  "inputs": {
+    "joint_encoders": "vector_n",
+    "imu_streams": "6dof_tensor"
+  },
+  "outputs": {
+    "body_state": "dict",
+    "center_of_mass": "vector_3"
+  }
+}

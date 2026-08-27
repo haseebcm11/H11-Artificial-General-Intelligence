@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-POWER Schema",
+  "type": "object",
+  "properties": {
+    "power_delivery_network": {
+      "type": "object",
+      "properties": {
+        "vrm_phases": { "type": "integer", "minimum": 1 },
+        "switching_frequency_khz": { "type": "number" },
+        "transient_response_ns": { "type": "number" }
+      },
+      "required": ["vrm_phases", "switching_frequency_khz"]
+    },
+    "tdp_management": {
+      "type": "object",
+      "properties": {
+        "pl1_limit_watts": { "type": "number" },
+        "pl2_limit_watts": { "type": "number" },
+        "tau_seconds": { "type": "number" }
+      },
+      "required": ["pl1_limit_watts", "pl2_limit_watts", "tau_seconds"]
+    },
+    "dvfs_policy": {
+      "type": "string",
+      "enum": ["PERFORMANCE", "POWERSAVE", "ONDEMAND", "CONSERVATIVE", "SCHEDUTIL"]
+    },
+    "ups_config": {
+      "type": "object",
+      "properties": {
+        "capacity_kwh": { "type": "number" },
+        "max_discharge_kw": { "type": "number" },
+        "topology": {
+          "type": "string",
+          "enum": ["OFFLINE", "LINE_INTERACTIVE", "DOUBLE_CONVERSION"]
+        }
+      },
+      "required": ["capacity_kwh"]
+    }
+  },
+  "required": ["power_delivery_network", "tdp_management", "dvfs_policy"]
+}

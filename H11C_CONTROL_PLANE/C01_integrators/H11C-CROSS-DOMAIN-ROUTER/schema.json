@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-CROSS-DOMAIN-ROUTER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Classifies a case into medical/legal/finance/engineering/science/general.",
+  "category": "integrator",
+  "handler": "route_domain",
+  "inputs": [
+    {
+      "name": "case",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "domain",
+      "type": "Any"
+    },
+    {
+      "name": "pipeline_id",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-ADMISSION-CONTROL"
+    ],
+    "downstream": [
+      "H11C-MEDICAL-INTEGRATOR"
+    ]
+  },
+  "capabilities": [
+    "route_domain"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

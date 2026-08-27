@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPEECH-OUT",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Converts text to natural-sounding speech with prosody and emotion control.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "text", "type": "str"}, {"name": "speaker_embedding", "type": "List[float]"}, {"name": "emotion", "type": "str"}
+  ],
+  "outputs": [
+    {"name": "speech_audio", "type": "List[float]"}, {"name": "phoneme_durations", "type": "List[float]"}
+  ]
+}

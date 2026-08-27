@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DEVOPS",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Computer Science",
+  "description": "Continuous Integration and Deployment pipelines",
+  "category": "Operations",
+  "inputs": [
+    {
+      "name": "commit_sha",
+      "type": "string",
+      "description": "Commit to build",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "deployment_status",
+      "type": "string",
+      "description": "Result of the pipeline"
+    }
+  ],
+  "config": {
+    "require_approvals": {
+      "type": "boolean",
+      "default": true,
+      "description": "Require manual approval for prod"
+    }
+  },
+  "state_schema": {
+    "running_jobs": {
+      "type": "integer",
+      "description": "Active pipeline jobs"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPILER", "H11-TESTING"],
+    "downstream": ["H11-CLOUD"]
+  },
+  "events": {
+    "emits": ["pipeline_succeeded", "deployment_started"],
+    "consumes": ["code_pushed"]
+  },
+  "metrics": [
+    {
+      "name": "deployment_frequency",
+      "type": "counter",
+      "description": "Number of successful deployments"
+    }
+  ],
+  "capabilities": ["cicd_orchestration", "iac_apply", "canary_deploy"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

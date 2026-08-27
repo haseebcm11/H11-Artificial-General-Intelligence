@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ZERO-TRUST",
+  "version": "1.0.0",
+  "layer": 12,
+  "layer_name": "Cybersecurity",
+  "description": "Continuous contextual authorization engine.",
+  "category": "Zero-Trust Architecture",
+  "inputs": [
+    {
+      "name": "access_request",
+      "type": "AuthContext",
+      "description": "Subject, Object, Action triad.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "decision",
+      "type": "string",
+      "description": "ALLOW or DENY"
+    }
+  ],
+  "config": {
+    "default_deny": {
+      "type": "boolean",
+      "default": true,
+      "description": "Fail closed policy."
+    }
+  },
+  "state_schema": {
+    "active_tokens": {
+      "type": "integer",
+      "description": "Valid ephemeral tokens in circulation."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-IDENTITAS"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["AccessDenied", "PolicyUpdated"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "evaluations_per_second",
+      "type": "counter",
+      "description": "Throughput."
+    }
+  ],
+  "capabilities": ["ABAC", "Token Issuance"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

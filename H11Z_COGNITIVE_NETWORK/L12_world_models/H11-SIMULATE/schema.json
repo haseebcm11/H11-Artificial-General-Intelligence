@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SIMULATE",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Steps a 1-D bounded grid: position' = clip(position + action, 0, width-1).",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "position",
+      "type": "int"
+    },
+    {
+      "name": "action",
+      "type": "int"
+    },
+    {
+      "name": "goal",
+      "type": "int"
+    },
+    {
+      "name": "width",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "position",
+      "type": "int"
+    },
+    {
+      "name": "reward",
+      "type": "float"
+    },
+    {
+      "name": "done",
+      "type": "bool"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-WORLDMODEL"
+    ],
+    "downstream": [
+      "H11-PHYSICS-ENGINE"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "grid-step"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

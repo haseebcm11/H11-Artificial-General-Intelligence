@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FINETUNE",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Fine-Tuning",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "pretrained_weights",
+      "type": "Dict[str, List[float]]",
+      "description": "pretrained_weights input",
+      "required": true
+    },
+    {
+      "name": "sft_dataset",
+      "type": "List[str]",
+      "description": "sft_dataset input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "finetuned_weights",
+      "type": "Dict[str, List[float]]",
+      "description": "finetuned_weights output"
+    },
+    {
+      "name": "validation_loss",
+      "type": "float",
+      "description": "validation_loss output"
+    }
+  ],
+  "config": {
+    "finetune_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "finetune_completed"
+    ],
+    "consumes": [
+      "finetune_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "finetune_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_finetune"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

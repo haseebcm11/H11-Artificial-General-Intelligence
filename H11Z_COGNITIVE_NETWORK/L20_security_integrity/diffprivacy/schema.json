@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DIFFPRIVACY",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "DP mechanisms: epsilon-delta DP, Gaussian/Laplace mechanisms, DP-SGD, composition theorems, privacy budget management, Renyi DP, local vs central DP, DP for text/embeddings",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "aggregation_query",
+      "type": "Query",
+      "description": "Statistical query over sensitive data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "noisy_result",
+      "type": "NoisyResult",
+      "description": "Result with calibrated noise"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "privacy_budget": {
+      "type": "float",
+      "desc": "Remaining epsilon"
+    },
+    "query_history": {
+      "type": "list",
+      "desc": "Log of queries and sensitivities"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "diffprivacy_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "diffprivacy_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

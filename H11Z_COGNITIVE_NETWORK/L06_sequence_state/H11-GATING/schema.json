@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GATING",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Multiplicative gating and information flow routing.",
+  "category": "Gating",
+  "inputs": [
+    {
+      "name": "primary_features",
+      "type": "List[float]",
+      "description": "Base",
+      "required": true
+    },
+    {
+      "name": "gating_signals",
+      "type": "List[float]",
+      "description": "Control",
+      "required": true
+    },
+    {
+      "name": "gate_type",
+      "type": "str",
+      "description": "Type",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "modulated_output",
+      "type": "List[float]",
+      "description": "Result"
+    },
+    {
+      "name": "gate_activations",
+      "type": "List[float]",
+      "description": "Gate values"
+    }
+  ],
+  "config": {
+    "beta_init": {
+      "type": "float",
+      "default": 1.0,
+      "description": "Swish beta"
+    }
+  },
+  "state_schema": {
+    "dead_gates_detected": {
+      "type": "int",
+      "description": "Metric"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-RECURRENCE"
+    ],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "GatesApplied"
+    ],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "saturation_ratio",
+      "type": "gauge",
+      "description": "Percent of gates near extremes"
+    }
+  ],
+  "capabilities": [
+    "SwiGLU",
+    "Highway routing"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "low"
+  }
+}

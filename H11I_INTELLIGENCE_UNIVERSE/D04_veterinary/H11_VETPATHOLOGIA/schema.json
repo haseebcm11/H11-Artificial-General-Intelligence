@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-VETPATHOLOGIA Data Contracts",
+  "description": "Schemas for Veterinary Pathology Agent Inputs and Outputs",
+  "type": "object",
+  "properties": {
+    "PathologyCase": {
+      "type": "object",
+      "properties": {
+        "case_id": { "type": "string" },
+        "species": { "type": "string" },
+        "breed": { "type": "string" },
+        "age_months": { "type": "number" },
+        "clinical_history": { "type": "string" },
+        "necropsy_findings": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/NecropsyFinding" }
+        },
+        "histopathology_slides": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/HistologySlide" }
+        },
+        "molecular_tests": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/MolecularTest" }
+        }
+      },
+      "required": ["case_id", "species", "clinical_history"]
+    },
+    "PathologyReport": {
+      "type": "object",
+      "properties": {
+        "report_id": { "type": "string" },
+        "case_id": { "type": "string" },
+        "morphological_diagnoses": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "etiological_diagnosis": { "type": "string" },
+        "pathogenesis_summary": { "type": "string" },
+        "confidence_score": { "type": "number" }
+      },
+      "required": ["report_id", "case_id", "morphological_diagnoses"]
+    }
+  },
+  "definitions": {
+    "NecropsyFinding": {
+      "type": "object",
+      "properties": {
+        "organ_system": { "type": "string" },
+        "lesion_description": { "type": "string" },
+        "severity": { "type": "string", "enum": ["mild", "moderate", "severe"] },
+        "distribution": { "type": "string", "enum": ["focal", "multifocal", "diffuse"] }
+      },
+      "required": ["organ_system", "lesion_description", "severity"]
+    },
+    "HistologySlide": {
+      "type": "object",
+      "properties": {
+        "slide_id": { "type": "string" },
+        "tissue": { "type": "string" },
+        "stain": { "type": "string" },
+        "features": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "mitotic_count": { "type": "number" }
+      },
+      "required": ["slide_id", "tissue", "stain"]
+    },
+    "MolecularTest": {
+      "type": "object",
+      "properties": {
+        "test_type": { "type": "string", "enum": ["PCR", "NGS", "IHC", "ISH"] },
+        "target": { "type": "string" },
+        "result": { "type": "string" },
+        "quantification": { "type": "number" }
+      },
+      "required": ["test_type", "target", "result"]
+    }
+  }
+}

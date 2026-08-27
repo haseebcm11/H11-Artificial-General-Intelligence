@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-BANKING",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Manages core banking operations and liquidity.",
+  "category": "Finance",
+  "inputs": [
+    {
+      "name": "deposits",
+      "type": "number",
+      "description": "Customer deposits",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "banking_metrics",
+      "type": "object",
+      "description": "Loans issued, reserves"
+    }
+  ],
+  "config": {
+    "basel_lcr_requirement": {
+      "type": "number",
+      "default": 1.0,
+      "description": "Liquidity coverage ratio"
+    }
+  },
+  "state_schema": {
+    "balance_sheet": {
+      "type": "object",
+      "description": "Bank balance sheet"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-MACROECON"],
+    "downstream": ["H11-FINANCIA"]
+  }
+}

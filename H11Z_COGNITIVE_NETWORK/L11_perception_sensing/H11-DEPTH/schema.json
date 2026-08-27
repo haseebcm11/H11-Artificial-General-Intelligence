@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DEPTH",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "type": "cognitive_agent",
+  "domain": "depth_estimation",
+  "capabilities": [
+    "monocular_depth",
+    "stereo_depth",
+    "depth_completion",
+    "point_cloud_projection"
+  ],
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "rgb_image": { "type": "array", "description": "HxWx3" },
+      "intrinsics": { "type": "object" },
+      "sparse_depth": { "type": "array" }
+    },
+    "required": ["rgb_image", "intrinsics"]
+  },
+  "outputs": {
+    "type": "object",
+    "properties": {
+      "depth_map": { "type": "array", "description": "HxW Float32 Metric Depth" },
+      "confidence_map": { "type": "array" },
+      "point_cloud": { "type": "array", "description": "Nx3 points" }
+    }
+  }
+}

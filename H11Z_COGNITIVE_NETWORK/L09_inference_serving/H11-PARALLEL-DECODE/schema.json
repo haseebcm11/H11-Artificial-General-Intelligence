@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PARALLEL-DECODE",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Non-autoregressive and parallel generation techniques like Jacobi decoding.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "prompt_segments",
+      "type": "List[str]",
+      "desc": "Segments to decode in parallel"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "merged_output",
+      "type": "str",
+      "desc": "Reconstructed full sequence"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "parallel_efficiency": {
+      "type": "float",
+      "description": "Measured speedup vs sequential"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

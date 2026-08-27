@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-BEAM",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Multi-hypothesis beam search decoding with length normalization.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "beam_width",
+      "type": "int",
+      "desc": "Number of beams"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "best_sequence",
+      "type": "List[int]",
+      "desc": "Top scoring token sequence"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "active_beams": {
+      "type": "int",
+      "description": "Number of ongoing beam searches"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

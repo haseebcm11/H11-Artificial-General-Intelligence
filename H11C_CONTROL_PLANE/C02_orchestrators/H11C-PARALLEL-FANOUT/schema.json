@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-PARALLEL-FANOUT",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Duplicates an envelope to N workers with isolated blackboards.",
+  "category": "orchestrator",
+  "handler": "fanout",
+  "inputs": [
+    {
+      "name": "n",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "branches",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-WORKER-POOL"
+    ],
+    "downstream": [
+      "H11C-JOIN-BARRIER"
+    ]
+  },
+  "capabilities": [
+    "fanout"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

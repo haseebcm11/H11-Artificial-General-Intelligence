@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-017",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "agent_name": "Sensor Abstraction Agent",
+  "capabilities": [
+    "hardware_abstraction",
+    "calibration_management",
+    "health_monitoring",
+    "temporal_synchronization"
+  ],
+  "input_types": ["raw_bytes", "hardware_signals"],
+  "output_types": ["normalized_tensors", "health_metrics"]
+}

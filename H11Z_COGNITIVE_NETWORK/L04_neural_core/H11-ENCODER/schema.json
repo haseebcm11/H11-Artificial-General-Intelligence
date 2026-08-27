@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-ENCODER Schema",
+  "type": "object",
+  "properties": {
+    "modality": {
+      "type": "string",
+      "enum": ["text", "vision", "audio"]
+    },
+    "patch_size": {
+      "type": "integer",
+      "description": "Required for vision modality (e.g., 16 for ViT-B/16)"
+    },
+    "masking_prob": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "default": 0.15
+    },
+    "use_cls_token": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": ["modality"]
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ANALYSIS",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Real and Complex Analysis Agent",
+  "category": "Analysis",
+  "inputs": [
+    {
+      "name": "functions",
+      "type": "array[object]",
+      "description": "Symbolic representations of functions",
+      "required": true
+    },
+    {
+      "name": "domain_bounds",
+      "type": "object",
+      "description": "Integration or limits domains",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "series_expansions",
+      "type": "object",
+      "description": "Taylor, Fourier, or Laurent series"
+    },
+    {
+      "name": "singularities",
+      "type": "array[object]",
+      "description": "Poles and essential singularities"
+    }
+  ],
+  "config": {
+    "precision_epsilon": {
+      "type": "number",
+      "default": 1e-10,
+      "description": "Tolerance for limit convergence"
+    }
+  },
+  "state_schema": {
+    "computed_integrals": {
+      "type": "map[string, number]",
+      "description": "Cache of solved definite integrals"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ALGEBRA"],
+    "downstream": ["H11-DIFFERENTIALIS", "H11-PROBABILITAS"]
+  },
+  "events": {
+    "emits": ["limit_converged", "divergence_proven"],
+    "consumes": ["function_defined"]
+  },
+  "metrics": [
+    {
+      "name": "limits_computed",
+      "type": "counter",
+      "description": "Total analytical limits resolved"
+    }
+  ],
+  "capabilities": ["contour_integration", "fourier_analysis", "lebesgue_measure"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

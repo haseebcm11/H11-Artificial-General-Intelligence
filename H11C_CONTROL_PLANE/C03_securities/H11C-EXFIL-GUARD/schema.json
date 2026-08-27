@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-EXFIL-GUARD",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Blocks secret and medical fields from leaving the compartment.",
+  "category": "security",
+  "handler": "redact",
+  "inputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    },
+    {
+      "name": "keys",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-DATA-CLASS"
+    ],
+    "downstream": [
+      "H11C-OUTPUT-REDACTOR"
+    ]
+  },
+  "capabilities": [
+    "redact"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

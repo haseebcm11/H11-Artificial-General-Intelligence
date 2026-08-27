@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TEMPERATURE",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Dynamic temperature scaling, annealing, and RLHF calibration.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "raw_logits",
+      "type": "List[float]",
+      "desc": "Raw unscaled logits"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scaled_logits",
+      "type": "List[float]",
+      "desc": "Temperature scaled logits"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "annealing_step": {
+      "type": "int",
+      "description": "Current step in annealing curve"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ORTHOPAEDIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Agent for musculoskeletal biomechanics, orthopedics, and bone remodeling.",
+  "category": "Orthopedics",
+  "inputs": [
+    {"name": "kinematic_data", "type": "GaitAnalysis"},
+    {"name": "bone_geometry", "type": "Mesh"}
+  ],
+  "outputs": [
+    {"name": "joint_stress", "type": "StressTensor"},
+    {"name": "fracture_risk", "type": "number"}
+  ],
+  "config": {
+    "wolff_law_constant": 0.005,
+    "mesh_resolution_mm": 2.0
+  },
+  "state_schema": {
+    "regional_bmd": "map<string, number>",
+    "fatigue_cycles": "integer"
+  },
+  "dependencies": {
+    "upstream": ["H11-NEUROLOGIA", "H11-ENDOCRINOLOGIA"],
+    "downstream": ["H11-REHABILITATIO", "H11-RHEUMATOLOGIA"]
+  },
+  "events": {
+    "emits": ["OverloadWarning", "UnionAchieved"],
+    "consumes": ["TraumaEvent", "CalciumDrop"]
+  },
+  "metrics": ["inverse_dynamics_error", "mesh_convergence"],
+  "capabilities": ["kinematic_simulation", "fracture_mechanics"],
+  "scaling": {
+    "mode": "compute_heavy",
+    "concurrency_limit": 50
+  }
+}

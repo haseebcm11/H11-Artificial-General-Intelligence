@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CACHE-INF",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Embedding-based semantic caching for exact and fuzzy match.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "query_text",
+      "type": "str",
+      "desc": "Input prompt"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "cached_response",
+      "type": "Optional[str]",
+      "desc": "Cached string if hit"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "cache_entries": {
+      "type": "int",
+      "description": "Number of items in cache"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "H11_FOODCHEMIA",
+  "version": "1.0.0",
+  "domain": "Chemistry",
+  "description": "Food Chemistry Agent",
+  "capabilities": ["NutritionalAnalysis", "SpoilagePrediction", "FlavorProfiling"]
+}

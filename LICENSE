@@ -1,0 +1,47 @@
+================================================================================
+           H11-AGI SOURCE-AVAILABLE RESEARCH & VIEW-ONLY LICENSE
+================================================================================
+Copyright (c) 2026 Mohamed Haseeb C M. All Rights Reserved.
+
+1. PERMITTED ACCESS (VIEW-ONLY):
+   Permission is hereby granted to any person viewing this repository to read,
+   review, and inspect the source code, specifications, and architectural
+   documentation solely for personal study, academic review, and security
+   audit purposes.
+
+2. PROHIBITED USES (NO PERMISSION GRANTED WITHOUT PRIOR WRITTEN CONSENT):
+   Without prior express written authorization and an executed license agreement
+   from the Copyright Holder, you are strictly PROHIBITED from:
+   
+   (a) RUNNING OR EXECUTING: Running, executing, compiling, deploying, hosting,
+       serving, or operating the software, any individual agent, or any runtime
+       module in any local, server, cloud, or production environment.
+   (b) COMMERCIAL USE: Using the software, architecture, algorithms, or
+       documentation in any commercial product, cloud service, SaaS API, or
+       revenue-generating activity.
+   (c) COPYING & DERIVATIVES: Copying, modifying, translating, redistributing,
+       sublicensing, publishing mirrors, or creating derivative works based on
+       this codebase or its architectural design.
+   (d) MODEL TRAINING & EXTRACTION: Using any part of this repository, agent
+       specifications, mathematical models, or domain logic as training data,
+       fine-tuning corpora, prompt distillation, or architecture extraction for
+       external AI models or automated systems.
+
+3. RESERVATION OF PATENT & INTELLECTUAL PROPERTY RIGHTS:
+   This license does NOT grant any patent rights, trademark rights, trade secret
+   rights, or commercial runtime licenses, either express or implied. The
+   Three-Pillar Unified Architecture, the Six Operational Graphs, the 1,000-Agent
+   Taxonomy, and the HAEP Protocols are proprietary intellectual property and
+   subject to patent applications.
+
+4. COMMERCIAL & RUNTIME LICENSING INQUIRIES:
+   To request permission, licensing terms, enterprise evaluation access, or
+   academic research partnerships, contact the author or repository owner.
+
+5. NO WARRANTY:
+   THE SOFTWARE AND SPECIFICATIONS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+   KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO
+   EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES,
+   OR OTHER LIABILITY ARISING FROM OR IN CONNECTION WITH THE SOFTWARE.
+================================================================================

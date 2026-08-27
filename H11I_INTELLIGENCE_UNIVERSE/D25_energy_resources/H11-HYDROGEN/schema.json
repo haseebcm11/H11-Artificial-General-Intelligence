@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-HYDROGEN",
+  "version": "1.0.0",
+  "layer": 25,
+  "layer_name": "Energy & Resources",
+  "description": "Hydrogen Fuel Cell Agent",
+  "category": "Energy Conversion",
+  "inputs": [
+    {
+      "name": "electrical_power",
+      "type": "float",
+      "description": "Input power (MW)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "h2_production_rate",
+      "type": "float",
+      "description": "H2 produced (kg/h)"
+    }
+  ],
+  "config": {
+    "system_mode": {
+      "type": "string",
+      "default": "ELECTROLYZER",
+      "description": "ELECTROLYZER or FUEL_CELL"
+    }
+  },
+  "state_schema": {
+    "storage_tank_pressure_bar": {
+      "type": "float",
+      "description": "Tank pressure"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-GRID"],
+    "downstream": ["H11-GRID"]
+  },
+  "events": {
+    "emits": ["hydrogen.purity_warning"],
+    "consumes": ["grid.price_update"]
+  },
+  "metrics": [
+    {
+      "name": "efficiency_lhv",
+      "type": "gauge",
+      "description": "Efficiency based on LHV"
+    }
+  ],
+  "capabilities": ["pem_modeling", "gas_compression"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

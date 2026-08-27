@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-5G",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Telecommunications",
+  "description": "5G/6G Mobile Network modeling.",
+  "category": "Cellular",
+  "inputs": [
+    {
+      "name": "slice_type",
+      "type": "string",
+      "description": "Network slice profile",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "cell_throughput_mbps",
+      "type": "number",
+      "description": "Total throughput"
+    }
+  ],
+  "config": {
+    "carrier_frequency_ghz": {
+      "type": "number",
+      "default": 3.5,
+      "description": "Operating frequency"
+    }
+  },
+  "state_schema": {
+    "connected_ues": {
+      "type": "number",
+      "description": "Active users"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-FIBER", "H11-SPECTRUM"],
+    "downstream": ["H11-NETWORKING"]
+  },
+  "events": {
+    "emits": ["HandoverExecuted"],
+    "consumes": ["UeMobilityEvent"]
+  },
+  "metrics": [
+    {
+      "name": "latency_ms",
+      "type": "histogram",
+      "description": "User latency distribution"
+    }
+  ],
+  "capabilities": ["network_slicing", "massive_mimo"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

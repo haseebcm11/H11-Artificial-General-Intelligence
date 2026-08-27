@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-INTERNATIONAL",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Models geopolitical dynamics and international relations.",
+  "category": "Social Science",
+  "inputs": [
+    {
+      "name": "global_state_matrix",
+      "type": "object",
+      "description": "Stats for all sovereign actors",
+      "required": true
+    },
+    {
+      "name": "diplomatic_events",
+      "type": "array",
+      "description": "Recent geopolitical actions",
+      "required": true
+    },
+    {
+      "name": "trade_network",
+      "type": "object",
+      "description": "Economic dependencies",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "polarity_type",
+      "type": "string",
+      "description": "System polarity (e.g., multipolar)"
+    },
+    {
+      "name": "conflict_probabilities",
+      "type": "object",
+      "description": "Dyadic conflict likelihoods"
+    },
+    {
+      "name": "alliance_shifts",
+      "type": "array",
+      "description": "Predicted structural changes"
+    }
+  ],
+  "config": {
+    "security_dilemma_sensitivity": {
+      "type": "number",
+      "default": 1.2,
+      "description": "Sensitivity scalar for arms race equations"
+    }
+  },
+  "state_schema": {
+    "trust_matrix": {
+      "type": "object",
+      "description": "N x N matrix of dyadic trust scores"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-POLITICALSCI", "H11-PUBLICPOLICY"],
+    "downstream": ["H11-CULTURAL", "H11-MEDIASTUDIES"]
+  },
+  "events": {
+    "emits": ["war_declared", "treaty_signed"],
+    "consumes": ["border_incident", "regime_change"]
+  },
+  "metrics": [
+    {
+      "name": "global_tension_index",
+      "type": "gauge",
+      "description": "Aggregate probability of major conflict"
+    }
+  ],
+  "capabilities": ["game_theoretic_modeling", "richardson_arms_race_simulation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LOSS",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Loss Computation",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "logits",
+      "type": "List[float]",
+      "description": "logits input",
+      "required": true
+    },
+    {
+      "name": "targets",
+      "type": "List[int]",
+      "description": "targets input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "loss_value",
+      "type": "float",
+      "description": "loss_value output"
+    },
+    {
+      "name": "scaled_loss",
+      "type": "float",
+      "description": "scaled_loss output"
+    }
+  ],
+  "config": {
+    "loss_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "loss_completed"
+    ],
+    "consumes": [
+      "loss_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "loss_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_loss"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

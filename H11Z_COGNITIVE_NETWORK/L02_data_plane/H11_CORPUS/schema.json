@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CORPUS",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Ingests, cleans, and deduplicates raw text corpora.",
+  "category": "Corpus Management",
+  "inputs": [
+    {
+      "name": "raw_sources",
+      "type": "array",
+      "description": "List of URIs to raw data dumps.",
+      "required": true
+    },
+    {
+      "name": "dedup_threshold",
+      "type": "number",
+      "description": "Jaccard similarity threshold.",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "parsed_corpus_uri",
+      "type": "string",
+      "description": "Path to cleaned dataset."
+    },
+    {
+      "name": "corpus_stats",
+      "type": "object",
+      "description": "Statistics of the processed corpus."
+    }
+  ],
+  "config": {
+    "minhash_num_permutations": {
+      "type": "integer",
+      "default": 128,
+      "description": "Number of hash permutations for MinHash."
+    },
+    "lsh_bands": {
+      "type": "integer",
+      "default": 16,
+      "description": "Number of bands for LSH."
+    }
+  },
+  "state_schema": {
+    "processed_bytes": {
+      "type": "integer",
+      "description": "Total raw bytes processed."
+    },
+    "lsh_index_version": {
+      "type": "string",
+      "description": "Version identifier for the current LSH index state."
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-CURATOR", "H11-PROVENANCE"]
+  },
+  "events": {
+    "emits": ["corpus_ingested", "deduplication_finished"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "exact_duplicates_removed",
+      "type": "counter",
+      "description": "Documents dropped via SHA-256."
+    },
+    {
+      "name": "fuzzy_duplicates_removed",
+      "type": "counter",
+      "description": "Documents dropped via MinHash LSH."
+    }
+  ],
+  "capabilities": ["text_extraction", "minhash_lsh", "language_identification"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "extreme"
+  }
+}

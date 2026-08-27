@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DEEPSPACE",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Deep space autonomy and interstellar mission planning",
+  "category": "Interstellar Operations",
+  "inputs": [
+    {
+      "name": "dsn_signal",
+      "type": "object",
+      "description": "Faint telemetry from the Deep Space Network",
+      "required": true
+    },
+    {
+      "name": "power_state",
+      "type": "object",
+      "description": "Status of the RTG power source",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "autonomous_plan",
+      "type": "object",
+      "description": "Multi-year autonomous execution sequence"
+    },
+    {
+      "name": "relativistic_state",
+      "type": "object",
+      "description": "Lorentz factors and proper time"
+    }
+  ],
+  "config": {
+    "rtg_half_life_yrs": {
+      "type": "number",
+      "default": 87.7,
+      "description": "Half-life of Pu-238"
+    },
+    "c_m_s": {
+      "type": "number",
+      "default": 299792458.0,
+      "description": "Speed of light in a vacuum"
+    }
+  },
+  "state_schema": {
+    "proper_time_elapsed_yrs": {
+      "type": "number",
+      "description": "Time experienced by the spacecraft"
+    },
+    "distance_au": {
+      "type": "number",
+      "description": "Current distance from the Sun in Astronomical Units"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PROPULSIO", "H11-COSMOLOGIA"],
+    "downstream": ["H11-SPACECRAFT"]
+  },
+  "events": {
+    "emits": ["AutonomousRecoveryExecuted", "ScienceDataTransmitted"],
+    "consumes": ["CarrierLockLost", "DecadeBoundaryCrossed"]
+  },
+  "metrics": [
+    {
+      "name": "dsn_snr_db",
+      "type": "gauge",
+      "description": "Signal-to-Noise ratio of the downlink"
+    }
+  ],
+  "capabilities": ["Relativistic Kinematics", "Decadal Autonomy", "Weak Signal Processing"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

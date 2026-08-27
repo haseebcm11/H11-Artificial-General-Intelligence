@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RAIL",
+  "version": "1.0.0",
+  "layer": 16,
+  "layer_name": "Transportation",
+  "description": "Railway physics and network signaling",
+  "category": "Rail",
+  "inputs": [
+    {
+      "name": "notch",
+      "type": "integer",
+      "description": "Throttle notch [0, 8]",
+      "required": true
+    },
+    {
+      "name": "brake_pipe",
+      "type": "float",
+      "description": "Air brake pipe pressure (psi)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "speed",
+      "type": "float",
+      "description": "Train speed (m/s)"
+    },
+    {
+      "name": "drawbar_force",
+      "type": "float",
+      "description": "Force between locos and consist (kN)"
+    }
+  ],
+  "config": {
+    "num_cars": {
+      "type": "integer",
+      "default": "100",
+      "description": "Number of freight cars"
+    }
+  },
+  "state_schema": {
+    "block_authority": {
+      "type": "boolean",
+      "description": "Clearance to proceed"
+    }
+  }
+}

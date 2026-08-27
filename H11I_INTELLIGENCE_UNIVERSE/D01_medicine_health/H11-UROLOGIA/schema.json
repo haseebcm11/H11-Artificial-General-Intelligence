@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-UROLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Agent for urinary tract dynamics, prostate pathology, and urolithiasis.",
+  "category": "Urology",
+  "inputs": [
+    {"name": "uroflowmetry", "type": "FlowCurve"},
+    {"name": "urinalysis", "type": "UrinalysisPanel"}
+  ],
+  "outputs": [
+    {"name": "stone_risk_index", "type": "map<string, number>"},
+    {"name": "bladder_outlet_obstruction", "type": "number"}
+  ],
+  "config": {
+    "stone_formation_temp_c": 37.0
+  },
+  "state_schema": {
+    "detrusor_pressure_history": "array<number>",
+    "residual_volume_ml": "number"
+  },
+  "dependencies": {
+    "upstream": ["H11-NEPHROLOGIA", "H11-NEUROLOGIA"],
+    "downstream": ["H11-INFECTIOLOGIA"]
+  },
+  "events": {
+    "emits": ["RetentionAlert", "StonePassed"],
+    "consumes": ["FluidIntake", "RenalColic"]
+  },
+  "metrics": ["flow_curve_fit_error", "saturation_compute_time"],
+  "capabilities": ["urodynamics_modeling", "crystallization_kinetics"],
+  "scaling": {
+    "mode": "stateless_compute",
+    "concurrency_limit": 250
+  }
+}

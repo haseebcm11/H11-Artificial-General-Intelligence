@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_PETROCHEMIA_Schema",
+  "type": "object",
+  "properties": {
+    "process_type": {
+      "type": "string",
+      "enum": ["distillation", "fcc", "reforming", "hydrocracking"]
+    },
+    "feedstock": {
+      "type": "object",
+      "properties": {
+        "api_gravity": { "type": "number" },
+        "sulfur_wt_pct": { "type": "number" }
+      }
+    },
+    "operating_temp_C": { "type": "number" },
+    "operating_press_bar": { "type": "number" }
+  },
+  "required": ["process_type", "feedstock"]
+}

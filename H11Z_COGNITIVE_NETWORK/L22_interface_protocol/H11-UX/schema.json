@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-UX Agent Schema",
+  "type": "object",
+  "properties": {
+    "ux_evaluation": {
+      "type": "object",
+      "properties": {
+        "flow_id": { "type": "string" },
+        "heuristic_scores": { "type": "object", "additionalProperties": { "type": "number" } },
+        "recommendations": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["flow_id"]
+    },
+    "confidence_mapping": {
+      "type": "object",
+      "properties": {
+        "confidence_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "suggested_ui_state": { "type": "string" }
+      }
+    }
+  }
+}

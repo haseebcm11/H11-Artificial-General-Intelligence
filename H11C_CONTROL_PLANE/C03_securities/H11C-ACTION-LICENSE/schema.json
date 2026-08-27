@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-ACTION-LICENSE",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Issues a one-hop ACT license only when align_enforce, sandbox, and policy pass.",
+  "category": "security",
+  "handler": "license",
+  "inputs": [
+    {
+      "name": "ok_flags",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "licensed",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-ALIGN-ENFORCE",
+      "H11C-SANDBOX-GATE",
+      "H11C-POLICY-ENGINE"
+    ],
+    "downstream": [
+      "H11C-ACTION-BINDER"
+    ]
+  },
+  "capabilities": [
+    "license"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

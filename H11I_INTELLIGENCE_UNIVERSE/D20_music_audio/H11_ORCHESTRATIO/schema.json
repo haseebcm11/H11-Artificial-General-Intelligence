@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ORCHESTRATIO",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Orchestration, arrangement, and virtual conducting.",
+  "category": "Orchestration",
+  "inputs": [
+    {
+      "name": "score",
+      "type": "array",
+      "description": "Unassigned musical parts",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "orchestrated_score",
+      "type": "array",
+      "description": "Parts assigned to instruments with expression"
+    }
+  ],
+  "config": {
+    "realism_enforcement": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce physical constraints of instruments"
+    }
+  },
+  "state_schema": {
+    "active_ensemble": {
+      "type": "object",
+      "description": "Current loaded instruments"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-HARMONIA", "H11-RHYTHMUS"],
+    "downstream": ["H11-MUSICPROD"]
+  },
+  "events": {
+    "emits": ["orchestration_complete"],
+    "consumes": ["assign_instruments"]
+  },
+  "metrics": [
+    {
+      "name": "tessitura_violations",
+      "type": "counter",
+      "description": "Number of out-of-range notes corrected"
+    }
+  ],
+  "capabilities": ["instrument_mapping", "cc_generation", "timbral_blending"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

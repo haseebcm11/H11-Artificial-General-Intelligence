@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MULTIMODALIS",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Machine Learning",
+  "description": "Fuses and aligns representations across text, vision, audio, and sensory inputs.",
+  "category": "Artificial Intelligence",
+  "inputs": [
+    {
+      "name": "modal_streams",
+      "type": "object",
+      "description": "Dictionary of raw or embedded modal data",
+      "required": true
+    },
+    {
+      "name": "fusion_strategy",
+      "type": "string",
+      "description": "EARLY, LATE, CROSS_ATTENTION",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "joint_embedding",
+      "type": "object",
+      "description": "Unified dense representation"
+    },
+    {
+      "name": "cross_modal_att",
+      "type": "object",
+      "description": "Attention weights between modalities"
+    }
+  ],
+  "config": {
+    "joint_embedding_dim": {
+      "type": "integer",
+      "default": 1024,
+      "description": "Dimensionality of the shared latent space"
+    },
+    "temperature_scaling": {
+      "type": "number",
+      "default": 0.07,
+      "description": "Softmax temp for contrastive loss"
+    }
+  },
+  "state_schema": {
+    "joint_space_metrics": {
+      "type": "object",
+      "description": "Running statistics of the embedding space"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPUTERVISION", "H11-NLP", "H11-SPEECH"],
+    "downstream": ["H11-GENERATIVA", "H11-ROBOTICA"]
+  },
+  "events": {
+    "emits": ["fusion_completed", "modality_dropout_handled"],
+    "consumes": ["stream_synchronized"]
+  },
+  "metrics": [
+    {
+      "name": "alignment_loss",
+      "type": "gauge",
+      "description": "Current InfoNCE loss between modalities"
+    }
+  ],
+  "capabilities": ["contrastive_alignment", "cross_attention", "late_fusion"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

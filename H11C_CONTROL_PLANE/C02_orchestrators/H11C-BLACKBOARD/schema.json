@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-BLACKBOARD",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Shared working memory with namespaced keys; isolation domains cannot overwrite each other.",
+  "category": "orchestrator",
+  "handler": "blackboard",
+  "inputs": [
+    {
+      "name": "op",
+      "type": "Any"
+    },
+    {
+      "name": "key",
+      "type": "Any"
+    },
+    {
+      "name": "value",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "board",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-ISOLATION-DOMAIN"
+    ],
+    "downstream": [
+      "H11C-CONTEXT-PACKER"
+    ]
+  },
+  "capabilities": [
+    "blackboard"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

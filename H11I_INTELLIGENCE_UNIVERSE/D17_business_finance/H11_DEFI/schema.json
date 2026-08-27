@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DEFI",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Models decentralized finance protocols.",
+  "category": "Finance",
+  "inputs": [{"name": "pool_x", "type": "number", "required": true}],
+  "outputs": [{"name": "exchange_rate", "type": "number"}],
+  "config": {"swap_fee": {"type": "number", "default": 0.003}},
+  "state_schema": {"tvl": {"type": "number"}},
+  "dependencies": {"upstream": ["H11-CRYPTOECON"], "downstream": []}
+}

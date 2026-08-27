@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-COGNITIVA",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Models functional architecture of the mind.",
+  "category": "Cognitive Science",
+  "inputs": [
+    {
+      "name": "sensory_buffer",
+      "type": "object",
+      "description": "Raw perceptual inputs",
+      "required": true
+    },
+    {
+      "name": "current_goal",
+      "type": "string",
+      "description": "Executive target",
+      "required": false
+    },
+    {
+      "name": "memory_query",
+      "type": "string",
+      "description": "Retrieval prompt",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "attention_focus",
+      "type": "string",
+      "description": "Most salient input node"
+    },
+    {
+      "name": "working_memory",
+      "type": "array",
+      "description": "Current active chunks"
+    },
+    {
+      "name": "cognitive_load",
+      "type": "number",
+      "description": "Percentage of capacity used"
+    }
+  ],
+  "config": {
+    "wm_capacity": {
+      "type": "integer",
+      "default": 4,
+      "description": "Max chunks in working memory"
+    }
+  },
+  "state_schema": {
+    "declarative_nodes": {
+      "type": "integer",
+      "description": "Total facts in long term memory"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-NEUROSCIENTIA", "H11-PSYCHOLOGIA"],
+    "downstream": ["H11-EDUCATION", "H11-EXISTENTIA"]
+  },
+  "events": {
+    "emits": ["attentional_blink", "chunk_consolidated"],
+    "consumes": ["sensory_spike"]
+  },
+  "metrics": [
+    {
+      "name": "average_cognitive_load",
+      "type": "gauge",
+      "description": "Running average of WM utilization"
+    }
+  ],
+  "capabilities": ["act_r_architecture", "spreading_activation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

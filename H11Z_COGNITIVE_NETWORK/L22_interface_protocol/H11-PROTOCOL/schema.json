@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ProtocolAdapterConfig",
+  "type": "object",
+  "properties": {
+    "translators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_protocol": {
+            "type": "string",
+            "enum": ["rest", "grpc", "websocket", "mqtt"]
+          },
+          "target_protocol": {
+            "type": "string",
+            "enum": ["rest", "grpc", "websocket", "mqtt"]
+          },
+          "mapping_file": {
+            "type": "string"
+          }
+        },
+        "required": ["source_protocol", "target_protocol"]
+      }
+    }
+  }
+}

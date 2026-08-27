@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-DIFFUSION-NET Configuration",
+  "type": "object",
+  "properties": {
+    "backbone_type": { "type": "string", "enum": ["unet", "dit"] },
+    "image_size": { "type": "integer" },
+    "in_channels": { "type": "integer" },
+    "hidden_size": { "type": "integer" },
+    "num_timesteps": { "type": "integer" },
+    "scheduler": { "type": "string", "enum": ["ddpm", "ddim", "euler"] }
+  },
+  "required": ["backbone_type", "hidden_size", "scheduler"]
+}

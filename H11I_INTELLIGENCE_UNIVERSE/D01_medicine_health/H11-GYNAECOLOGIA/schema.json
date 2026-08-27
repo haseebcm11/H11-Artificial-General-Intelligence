@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GYNAECOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Agent for the female reproductive system and gynecological disorders.",
+  "category": "Gynecology",
+  "inputs": [
+    {"name": "hormone_panel", "type": "EndocrineProfile"},
+    {"name": "symptom_log", "type": "CycleTracking"}
+  ],
+  "outputs": [
+    {"name": "cycle_phase", "type": "string"},
+    {"name": "pathology_risk", "type": "map<string, number>"}
+  ],
+  "config": {
+    "default_cycle_length": 28,
+    "luteal_phase_length": 14
+  },
+  "state_schema": {
+    "hpo_state_vector": "array<number>",
+    "endometrial_thickness_mm": "number"
+  },
+  "dependencies": {
+    "upstream": ["H11-ENDOCRINOLOGIA", "H11-RADIOLOGIA"],
+    "downstream": ["H11-OBSTETRICIA", "H11-ONCOLOGIA"]
+  },
+  "events": {
+    "emits": ["OvulationDetected", "AbnormalBleeding"],
+    "consumes": ["MenstruationStart", "HormoneDose"]
+  },
+  "metrics": ["cycle_prediction_error_days"],
+  "capabilities": ["hpo_axis_simulation", "pcos_phenotyping"],
+  "scaling": {
+    "mode": "stateful_simulation",
+    "concurrency_limit": 300
+  }
+}

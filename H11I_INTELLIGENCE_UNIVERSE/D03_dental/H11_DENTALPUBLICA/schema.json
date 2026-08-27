@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DENTALPUBLICA",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Dental Sciences",
+  "description": "Population oral health, epidemiology, and health policy analysis.",
+  "category": "Dental Public Health",
+  "inputs": [
+    {
+      "name": "demographic_dataset",
+      "type": "array",
+      "description": "Population stats, income levels, and locations",
+      "required": true
+    },
+    {
+      "name": "dmft_surveys",
+      "type": "array",
+      "description": "Sampled Decayed, Missing, Filled Teeth scores",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "fluoridation_policy",
+      "type": "object",
+      "description": "Water fluoridation recommendations"
+    },
+    {
+      "name": "program_roi_analysis",
+      "type": "object",
+      "description": "Cost-benefit analysis of public programs"
+    }
+  ],
+  "config": {
+    "target_fluoride_ppm": {
+      "type": "number",
+      "default": 0.7,
+      "description": "Optimal fluoride concentration"
+    }
+  },
+  "state_schema": {
+    "regional_statistics": {
+      "type": "object",
+      "description": "Aggregated oral health metrics by zip code"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DENTALIS"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["policy_recommendation_generated"],
+    "consumes": ["aggregated_clinical_data_published"]
+  },
+  "metrics": [
+    {
+      "name": "populations_analyzed",
+      "type": "counter",
+      "description": "Number of population cohorts processed"
+    }
+  ],
+  "capabilities": ["epidemiological_modeling", "gis_mapping", "economic_roi_calculation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

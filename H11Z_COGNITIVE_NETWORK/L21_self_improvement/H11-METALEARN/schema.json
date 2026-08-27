@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-METALEARN Output Schema",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "adapted_weights": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "meta_loss": {
+      "type": "number"
+    },
+    "inner_loop_steps": {
+      "type": "integer"
+    }
+  },
+  "required": ["task_id", "adapted_weights", "meta_loss"]
+}

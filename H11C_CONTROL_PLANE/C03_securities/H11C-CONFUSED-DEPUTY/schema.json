@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-CONFUSED-DEPUTY",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Prevents a low-privilege hop from wielding a higher-privilege token.",
+  "category": "security",
+  "handler": "privilege",
+  "inputs": [
+    {
+      "name": "scopes",
+      "type": "Any"
+    },
+    {
+      "name": "drop",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scopes",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-CAPABILITY-TOKEN"
+    ],
+    "downstream": [
+      "H11C-DELEGATION-LIMIT"
+    ]
+  },
+  "capabilities": [
+    "privilege"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

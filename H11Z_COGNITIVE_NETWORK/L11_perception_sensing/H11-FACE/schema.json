@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FACE",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "name": "Facial Analysis & Identity Agent",
+  "description": "Performs face detection, alignment, embedding extraction, and attribute analysis.",
+  "type": "perception_module",
+  "capabilities": [
+    "face_detection",
+    "face_recognition",
+    "facial_landmarks",
+    "emotion_analysis",
+    "liveness_detection"
+  ],
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "image": { "type": "object" },
+      "task_mode": { "type": "string" },
+      "gallery": { "type": "object" }
+    }
+  },
+  "outputs": {
+    "type": "object",
+    "properties": {
+      "faces": { "type": "array" }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-QUALITY",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Multi-dimensional quality scoring and SLA enforcement gate",
+  "category": "Data Governance",
+  "inputs": [
+    {
+      "name": "dataset_batch",
+      "type": "object",
+      "description": "The raw data payload to be evaluated",
+      "required": true
+    },
+    {
+      "name": "contract_id",
+      "type": "string",
+      "description": "Reference to the applied QualityContract",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "gate_status",
+      "type": "string",
+      "description": "Decision: PASSED, QUARANTINED, REJECTED"
+    },
+    {
+      "name": "dimension_scores",
+      "type": "object",
+      "description": "Scores across Wang & Strong quality dimensions"
+    }
+  ],
+  "config": {
+    "drift_alpha": {
+      "type": "number",
+      "default": 0.05,
+      "description": "P-value threshold for Kolmogorov-Smirnov drift significance"
+    },
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "If true, rejects data on ANY contract violation"
+    }
+  },
+  "state_schema": {
+    "quarantine_count": {
+      "type": "integer",
+      "description": "Total datasets currently quarantined"
+    },
+    "historical_baselines": {
+      "type": "object",
+      "description": "Mapping of stream IDs to running ECDF and moments"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-INGEST", "H11-ALIGNER-DATA"],
+    "downstream": ["H11-FILTER", "H11-TRAINER"]
+  },
+  "events": {
+    "emits": ["data_rejected", "drift_detected", "quality_report_ready"],
+    "consumes": ["contract_updated"]
+  },
+  "metrics": [
+    {
+      "name": "rejection_rate",
+      "type": "gauge",
+      "description": "Percentage of batches failing the quality gate"
+    },
+    {
+      "name": "average_intrinsic_score",
+      "type": "histogram",
+      "description": "Distribution of intrinsic data accuracy scores"
+    }
+  ],
+  "capabilities": ["statistical-profiling", "contract-enforcement", "drift-detection"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

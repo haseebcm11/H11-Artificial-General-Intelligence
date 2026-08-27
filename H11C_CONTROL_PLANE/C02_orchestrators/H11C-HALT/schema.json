@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-HALT",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Seals the case. No further ACT. Resume requires a new admission.",
+  "category": "orchestrator",
+  "handler": "halt",
+  "inputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-KILL-SWITCH",
+      "H11C-EMERGENCY-STOP"
+    ],
+    "downstream": [
+      "H11C-AUDIT-CHAIN"
+    ]
+  },
+  "capabilities": [
+    "halt"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

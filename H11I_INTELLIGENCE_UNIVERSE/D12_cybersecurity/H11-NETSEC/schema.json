@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NETSEC",
+  "version": "1.0.0",
+  "layer": 12,
+  "layer_name": "Cybersecurity",
+  "description": "Network traffic anomaly detection.",
+  "category": "Network Security",
+  "inputs": [
+    {
+      "name": "packet_buffer",
+      "type": "list[bytes]",
+      "description": "Raw packet data chunks.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "anomaly_score",
+      "type": "float",
+      "description": "Risk score of the current flow state."
+    }
+  ],
+  "config": {
+    "dpi_depth_bytes": {
+      "type": "integer",
+      "default": 128,
+      "description": "Number of payload bytes to inspect."
+    }
+  },
+  "state_schema": {
+    "flow_table": {
+      "type": "map[string, FlowStats]",
+      "description": "Active connection states."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-OSINT"],
+    "downstream": ["H11-INCIDENT"]
+  },
+  "events": {
+    "emits": ["NetworkAnomalyDetected"],
+    "consumes": ["NewStreamRegistered"]
+  },
+  "metrics": [
+    {
+      "name": "packets_processed",
+      "type": "counter",
+      "description": "Total packets analyzed."
+    }
+  ],
+  "capabilities": ["Deep Packet Inspection", "Flow Analysis"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

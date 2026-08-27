@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PHYSIOTHERAPIA",
+  "version": "1.0.0",
+  "layer": 23,
+  "layer_name": "Allied Health",
+  "description": "Physiotherapy Assessment and Rehabilitation",
+  "category": "Physical Therapy",
+  "inputs": [
+    {
+      "name": "kinematic_data",
+      "type": "array",
+      "description": "Joint angle time series",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "rehab_protocol",
+      "type": "object",
+      "description": "Phased rehabilitation plan"
+    }
+  ],
+  "config": {
+    "fea_resolution": {
+      "type": "string",
+      "default": "medium",
+      "description": "Resolution for finite element analysis"
+    }
+  },
+  "state_schema": {
+    "current_phase": {
+      "type": "string",
+      "description": "Tissue healing phase"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ORTHOPEDICA"],
+    "downstream": ["H11-OCCUPATIONAL"]
+  },
+  "events": {
+    "emits": ["ProtocolGenerated"],
+    "consumes": ["KinematicUpdate"]
+  },
+  "metrics": [
+    {
+      "name": "protocol_generation_time",
+      "type": "histogram",
+      "description": "Time to compute rehab protocol"
+    }
+  ],
+  "capabilities": ["kinematic_analysis", "load_management"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

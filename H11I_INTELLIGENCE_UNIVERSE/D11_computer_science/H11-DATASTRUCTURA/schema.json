@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DATASTRUCTURA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Fundamentals",
+  "description": "Designs and selects optimal memory representations and data structures.",
+  "category": "Data Management",
+  "inputs": [
+    {
+      "name": "data_schema",
+      "type": "object",
+      "description": "Type and shape of the data",
+      "required": true
+    },
+    {
+      "name": "access_pattern",
+      "type": "object",
+      "description": "Frequency of CRUD operations",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "selected_structure",
+      "type": "string",
+      "description": "The optimal structure class"
+    },
+    {
+      "name": "estimated_footprint",
+      "type": "number",
+      "description": "Expected memory usage in MB"
+    }
+  ],
+  "config": {
+    "optimize_for": {
+      "type": "string",
+      "default": "latency",
+      "description": "latency, memory, or throughput"
+    }
+  },
+  "state_schema": {
+    "telemetry_history": {
+      "type": "array",
+      "description": "Historical access patterns"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPILER"],
+    "downstream": ["H11-ALGORITHMICA", "H11-DATABASE"]
+  },
+  "events": {
+    "emits": ["layout_optimized", "structure_migrated"],
+    "consumes": ["telemetry_updated"]
+  },
+  "metrics": [
+    {
+      "name": "cache_miss_rate",
+      "type": "gauge",
+      "description": "Estimated L1/L2 cache miss rate"
+    }
+  ],
+  "capabilities": ["memory_layout_optimization", "succinct_structures"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

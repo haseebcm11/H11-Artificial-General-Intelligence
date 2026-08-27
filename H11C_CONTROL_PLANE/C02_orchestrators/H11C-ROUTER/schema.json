@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-ROUTER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Routes an envelope to the next agent id in the compiled pipeline.",
+  "category": "orchestrator",
+  "handler": "route",
+  "inputs": [
+    {
+      "name": "pipeline",
+      "type": "Any"
+    },
+    {
+      "name": "index",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "next_agent",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-PIPELINE-COMPOSER"
+    ],
+    "downstream": [
+      "H11C-ZERO-TRUST-HOP"
+    ]
+  },
+  "capabilities": [
+    "route"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

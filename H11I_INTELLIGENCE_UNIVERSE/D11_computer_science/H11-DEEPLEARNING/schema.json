@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DEEPLEARNING",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Machine Learning",
+  "description": "Synthesizes, trains, and executes deep neural networks and handles NAS.",
+  "category": "Artificial Intelligence",
+  "inputs": [
+    {
+      "name": "dataset_uri",
+      "type": "string",
+      "description": "Pointer to tensor-based dataset",
+      "required": true
+    },
+    {
+      "name": "topology_spec",
+      "type": "object",
+      "description": "Desired architecture constraints",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "computational_graph",
+      "type": "object",
+      "description": "Serialized model graph"
+    },
+    {
+      "name": "learned_weights",
+      "type": "string",
+      "description": "URI to checkpoint"
+    }
+  ],
+  "config": {
+    "mixed_precision": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable FP16/BF16 training"
+    },
+    "gradient_checkpointing": {
+      "type": "boolean",
+      "default": false,
+      "description": "Trade compute for memory during backprop"
+    }
+  },
+  "state_schema": {
+    "nas_pareto_front": {
+      "type": "array",
+      "description": "Discovered architectures"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DATASTRUCTURA", "H11-MULTIMODALIS"],
+    "downstream": ["H11-GENERATIVA", "H11-EDGE"]
+  },
+  "events": {
+    "emits": ["epoch_completed", "training_diverged"],
+    "consumes": ["resource_freed"]
+  },
+  "metrics": [
+    {
+      "name": "tflops_per_sec",
+      "type": "gauge",
+      "description": "Training throughput"
+    }
+  ],
+  "capabilities": ["neural_architecture_search", "distributed_training", "quantization"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EXOTICA-VET",
+  "version": "1.0.0",
+  "layer": 4,
+  "layer_name": "Veterinary Sciences",
+  "description": "Expert system for reptile, amphibian, and small mammal medicine.",
+  "category": "Exotic Animal",
+  "inputs": [
+    {
+      "name": "exotic_species_data",
+      "type": "TaxonomicIdentifier",
+      "description": "Precise taxonomic classification",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scaled_dosages",
+      "type": "PharmacokineticAdjustment",
+      "description": "Allometrically scaled drug dosages"
+    }
+  ],
+  "config": {
+    "allometric_k_value_default": {
+      "type": "float",
+      "default": 10.0,
+      "description": "Default metabolic constant for reptiles if unknown"
+    }
+  },
+  "state_schema": {
+    "taxa_metabolic_db": {
+      "type": "dict",
+      "description": "Cached metabolic constants by clade"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ZOOLOGIA-VET"],
+    "downstream": ["H11-VETPHARMACOLOGIA"]
+  },
+  "events": {
+    "emits": ["HusbandryAlert", "DosageScaled"],
+    "consumes": ["TaxonomicUpdate"]
+  },
+  "metrics": [
+    {
+      "name": "scaling_error_rate",
+      "type": "counter",
+      "description": "Number of times scaling calculation failed validation"
+    }
+  ],
+  "capabilities": ["allometric_scaling", "husbandry_evaluation", "exotic_diagnostics"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TOPK",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Truncating probability distributions to the top K tokens.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "logits",
+      "type": "List[float]",
+      "desc": "Logits to filter"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "filtered_logits",
+      "type": "List[float]",
+      "desc": "Logits with non-top-k set to -inf"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "dynamic_k_history": {
+      "type": "List[int]",
+      "description": "History of dynamically chosen K values"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

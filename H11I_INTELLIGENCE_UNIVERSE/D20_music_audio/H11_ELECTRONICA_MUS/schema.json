@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ELECTRONICA-MUS",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Electronic music synthesis and beatmaking.",
+  "category": "GenreSpecific",
+  "inputs": [
+    {
+      "name": "genre",
+      "type": "string",
+      "description": "Electronic subgenre",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "sequences",
+      "type": "array",
+      "description": "Programmed MIDI and automation"
+    }
+  ],
+  "config": {
+    "synthesis_type": {
+      "type": "string",
+      "default": "Wavetable",
+      "description": "Primary sound generation method"
+    }
+  },
+  "state_schema": {
+    "active_oscillators": {
+      "type": "integer",
+      "description": "Current DSP load"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-RHYTHMUS"],
+    "downstream": ["H11-MUSICPROD"]
+  },
+  "events": {
+    "emits": ["patch_generated"],
+    "consumes": ["generate_electronic_track"]
+  },
+  "metrics": [
+    {
+      "name": "modulation_complexity",
+      "type": "gauge",
+      "description": "Density of LFO/Env routings"
+    }
+  ],
+  "capabilities": ["dsp_synthesis", "step_sequencing", "automation_generation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

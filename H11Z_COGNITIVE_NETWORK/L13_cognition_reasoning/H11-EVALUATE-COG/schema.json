@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-EVALUATE-COG IO Schema",
+  "type": "object",
+  "properties": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "candidate_output": {
+          "type": "string"
+        },
+        "context": {
+          "type": "string"
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "dimension": {"type": "string"},
+              "weight": {"type": "number"}
+            }
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": ["code", "math", "text", "general"]
+        }
+      },
+      "required": ["candidate_output"]
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "overall_score": {"type": "number"},
+        "calibrated_confidence": {"type": "number"},
+        "passed": {"type": "boolean"},
+        "dimension_scores": {
+          "type": "object",
+          "additionalProperties": {"type": "number"}
+        },
+        "feedback": {"type": "string"}
+      }
+    }
+  }
+}

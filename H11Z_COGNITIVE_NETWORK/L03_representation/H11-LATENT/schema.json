@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LATENT",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Projects a vector into a lower-dimensional latent by chunk-pooling, then reconstructs by repeating chunks.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "vector",
+      "type": "List[float]"
+    },
+    {
+      "name": "latent_dim",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "latent",
+      "type": "List[float]"
+    },
+    {
+      "name": "reconstruction",
+      "type": "List[float]"
+    },
+    {
+      "name": "mse",
+      "type": "float"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-EMBEDDER"
+    ],
+    "downstream": [
+      "H11-DISENTANGLE"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "bottleneck-pool"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

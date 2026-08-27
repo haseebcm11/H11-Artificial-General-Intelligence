@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-INORGANICA",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Chemistry",
+  "description": "Inorganic coordination and organometallic chemistry.",
+  "category": "Inorganic",
+  "inputs": [
+    {
+      "name": "metal_center",
+      "type": "string",
+      "description": "Metal element and oxidation state",
+      "required": true
+    },
+    {
+      "name": "ligands",
+      "type": "array",
+      "description": "List of attached ligands",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "spin_state",
+      "type": "string",
+      "description": "High or low spin configuration"
+    }
+  ],
+  "config": {
+    "use_angular_overlap": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use AOM instead of basic CFT"
+    }
+  },
+  "state_schema": {
+    "cached_complexes": {
+      "type": "object",
+      "description": "LRU cache of computed metal complexes"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPUTATIONALCHEM"],
+    "downstream": ["H11-CATALYSIS"]
+  },
+  "events": {
+    "emits": ["complex_optimized", "jahn_teller_detected"],
+    "consumes": ["catalyst_design_requested"]
+  },
+  "metrics": [
+    {
+      "name": "ligand_field_calcs",
+      "type": "counter",
+      "description": "Number of LFT calculations performed"
+    }
+  ],
+  "capabilities": ["crystal_field_theory", "electron_counting"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SSM-CORE",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Selective state space modeling (Mamba/S4 style).",
+  "category": "State Space",
+  "inputs": [
+    {
+      "name": "hidden_states",
+      "type": "List[List[float]]",
+      "description": "Input sequence",
+      "required": true
+    },
+    {
+      "name": "dt_proj",
+      "type": "List[List[float]]",
+      "description": "Delta projections",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ssm_outputs",
+      "type": "List[List[float]]",
+      "description": "SSM outputs"
+    },
+    {
+      "name": "final_state",
+      "type": "List[float]",
+      "description": "Final hidden state for streaming"
+    }
+  ],
+  "config": {
+    "state_dimension": {
+      "type": "int",
+      "default": 16,
+      "description": "N dimension of SSM"
+    },
+    "discretization_method": {
+      "type": "str",
+      "default": "zoh",
+      "description": "ZOH or bilinear"
+    }
+  },
+  "state_schema": {
+    "cached_h": {
+      "type": "List[float]",
+      "description": "Running state vector"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-SEQUENCE"
+    ],
+    "downstream": [
+      "H11-SCAN"
+    ]
+  },
+  "events": {
+    "emits": [
+      "SSMComputed"
+    ],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "dt_saturation",
+      "type": "gauge",
+      "description": "Delta saturation level"
+    }
+  ],
+  "capabilities": [
+    "Input-dependent transitions",
+    "ZOH discretization"
+  ],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

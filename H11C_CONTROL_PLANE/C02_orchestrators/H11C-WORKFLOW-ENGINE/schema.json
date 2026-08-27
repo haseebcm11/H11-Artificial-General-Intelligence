@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-WORKFLOW-ENGINE",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Executes a DAG of hops, refusing cycles.",
+  "category": "orchestrator",
+  "handler": "run_workflow",
+  "inputs": [
+    {
+      "name": "nodes",
+      "type": "Any"
+    },
+    {
+      "name": "edges",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "order",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-DEPENDENCY-RESOLVER"
+    ],
+    "downstream": [
+      "H11C-PIPELINE-RUNNER"
+    ]
+  },
+  "capabilities": [
+    "run_workflow"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

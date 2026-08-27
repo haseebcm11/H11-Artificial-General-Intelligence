@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-DRUGDELIVERY Schema",
+  "type": "object",
+  "properties": {
+    "api_properties": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "solubility_mg_ml": { "type": "number" },
+        "logp": { "type": "number" },
+        "pka": { "type": "number" },
+        "molecular_weight": { "type": "number" }
+      },
+      "required": ["name", "solubility_mg_ml", "logp"]
+    },
+    "delivery_requirements": {
+      "type": "object",
+      "properties": {
+        "route": { "enum": ["oral", "transdermal", "iv_nanoparticle", "controlled_release"] },
+        "target_release_duration_hrs": { "type": "number" }
+      },
+      "required": ["route"]
+    }
+  },
+  "required": ["api_properties", "delivery_requirements"]
+}

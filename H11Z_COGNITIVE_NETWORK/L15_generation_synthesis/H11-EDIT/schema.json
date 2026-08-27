@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EDIT",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Edits existing generated content iteratively via instructions.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "original", "type": "bytes"}, {"name": "instruction", "type": "str"}, {"name": "edit_mask", "type": "Optional[bytes]"}
+  ],
+  "outputs": [
+    {"name": "edited", "type": "bytes"}, {"name": "edit_distance", "type": "float"}
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-COMPILER",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Computer Science",
+  "description": "Lexical analysis, parsing, and code optimization",
+  "category": "Language Processing",
+  "inputs": [
+    {
+      "name": "source_code",
+      "type": "string",
+      "description": "Source to compile",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "executable",
+      "type": "string",
+      "description": "Compiled output (base64 or IR)"
+    }
+  ],
+  "config": {
+    "optimization_level": {
+      "type": "integer",
+      "default": 2,
+      "description": "O0, O1, O2, O3"
+    }
+  },
+  "state_schema": {
+    "lines_compiled": {
+      "type": "integer",
+      "description": "Total lines processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["compilation_finished", "syntax_error"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "compile_time_ms",
+      "type": "histogram",
+      "description": "Time taken to compile files"
+    }
+  ],
+  "capabilities": ["parsing", "type_checking", "code_generation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

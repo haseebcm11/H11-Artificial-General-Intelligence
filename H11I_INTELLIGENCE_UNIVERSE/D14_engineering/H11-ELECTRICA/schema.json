@@ -1,0 +1,12 @@
+{
+  "agent_id": "H11-ELECTRICA",
+  "name": "ElectricaAgent",
+  "description": "Electrical power systems and grid engineering agent.",
+  "version": "1.0.0",
+  "capabilities": [
+    "power_flow_analysis",
+    "component_sizing",
+    "grid_optimization"
+  ],
+  "dependencies": []
+}

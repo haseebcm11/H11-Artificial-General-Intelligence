@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GENERATE",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Autoregressive token-by-token text generation with advanced logit processing.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "prompt_ids", "type": "List[int]"}, {"name": "temperature", "type": "float"}, {"name": "top_p", "type": "float"}
+  ],
+  "outputs": [
+    {"name": "tokens", "type": "List[int]"}, {"name": "logprobs", "type": "List[float]"}, {"name": "finish_reason", "type": "str"}
+  ]
+}

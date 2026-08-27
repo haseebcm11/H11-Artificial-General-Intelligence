@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-EVOLUTION Schema",
+  "type": "object",
+  "properties": {
+    "EvolutionaryEpoch": {
+      "type": "object",
+      "properties": {
+        "epoch_id": { "type": "string" },
+        "population_size": { "type": "integer" },
+        "environments": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "agents": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["epoch_id", "population_size", "environments", "agents"]
+    },
+    "EvaluationResult": {
+      "type": "object",
+      "properties": {
+        "agent_id": { "type": "string" },
+        "environment_id": { "type": "string" },
+        "fitness_score": { "type": "number" },
+        "behavioral_descriptor": {
+          "type": "array",
+          "items": { "type": "number" }
+        }
+      },
+      "required": ["agent_id", "environment_id", "fitness_score"]
+    }
+  }
+}

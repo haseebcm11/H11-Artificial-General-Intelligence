@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GENDER",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Models performativity and intersectional dynamics.",
+  "category": "Social Science",
+  "inputs": [
+    {
+      "name": "population_tensors",
+      "type": "object",
+      "description": "Identity vectors for population",
+      "required": true
+    },
+    {
+      "name": "cultural_norms",
+      "type": "array",
+      "description": "The Hegemonic Norm Matrix",
+      "required": true
+    },
+    {
+      "name": "action_space",
+      "type": "object",
+      "description": "Expressions available to entities",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "systemic_friction",
+      "type": "object",
+      "description": "Penalty scores per entity"
+    },
+    {
+      "name": "intersectional_clusters",
+      "type": "array",
+      "description": "Groupings of shared experiences"
+    },
+    {
+      "name": "normative_shifts",
+      "type": "array",
+      "description": "How norms are adapting"
+    }
+  ],
+  "config": {
+    "dimensions": {
+      "type": "integer",
+      "default": 4,
+      "description": "Number of intersecting identity axes"
+    }
+  },
+  "state_schema": {
+    "normative_epochs": {
+      "type": "integer",
+      "description": "Number of norm shifts tracked"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-CULTURAL", "H11-ONTOLOGIA"],
+    "downstream": ["H11-PSYCHOLOGIA", "H11-PUBLICPOLICY"]
+  },
+  "events": {
+    "emits": ["norm_subverted", "friction_spike"],
+    "consumes": ["cultural_shift"]
+  },
+  "metrics": [
+    {
+      "name": "mean_systemic_friction",
+      "type": "gauge",
+      "description": "Average friction experienced by population"
+    }
+  ],
+  "capabilities": ["intersectional_tensor_mapping", "performativity_modeling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

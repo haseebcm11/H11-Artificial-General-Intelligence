@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-QUERY",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Projects input embeddings into the query space for attention, applying QK-norm and rotary positional embeddings (RoPE) to stabilize query-key dot products.",
+  "inputs": [{"name": "embedding_tensor", "type": "Any", "description": "Input token representations"}, {"name": "position_ids", "type": "List[int]", "description": "Token positions"}],
+  "outputs": [{"name": "query_states", "type": "Any", "description": "Projected and normalized query heads"}],
+  "state_schema": {"query_weight_norm": {"type": "float", "description": "Norm of W_Q matrix"}}
+}

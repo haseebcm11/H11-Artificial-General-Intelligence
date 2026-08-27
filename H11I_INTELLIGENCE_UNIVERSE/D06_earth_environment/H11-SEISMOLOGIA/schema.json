@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SEISMOLOGIA Schema",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "lat": { "type": "number" },
+        "lon": { "type": "number" },
+        "depth_km": { "type": "number", "minimum": 0 }
+      },
+      "required": ["lat", "lon", "depth_km"]
+    },
+    "magnitude": {
+      "type": "number",
+      "minimum": -2,
+      "maximum": 10
+    },
+    "analysis_type": {
+      "type": "string",
+      "enum": ["hypocenter_location", "focal_mechanism", "shake_map", "hazard_forecast"]
+    }
+  },
+  "required": ["event_id", "location", "magnitude", "analysis_type"]
+}

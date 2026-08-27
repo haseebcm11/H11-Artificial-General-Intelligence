@@ -1,0 +1,18 @@
+{
+  "agent_id": "H11-FOCUS",
+  "layer": 13,
+  "type": "cognitive_reasoning",
+  "capabilities": [
+    "selective_attention",
+    "divided_attention",
+    "sustained_attention",
+    "salience_detection",
+    "attentional_bottleneck"
+  ],
+  "configuration": {
+    "max_attention_capacity": 100.0,
+    "top_down_weight": 0.6,
+    "bottom_up_weight": 0.4,
+    "distractor_inhibition_rate": 0.2
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RL",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Reinforcement Learning",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "states",
+      "type": "List[List[float]]",
+      "description": "states input",
+      "required": true
+    },
+    {
+      "name": "actions",
+      "type": "List[int]",
+      "description": "actions input",
+      "required": true
+    },
+    {
+      "name": "rewards",
+      "type": "List[float]",
+      "description": "rewards input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "policy_loss",
+      "type": "float",
+      "description": "policy_loss output"
+    },
+    {
+      "name": "value_loss",
+      "type": "float",
+      "description": "value_loss output"
+    }
+  ],
+  "config": {
+    "rl_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "rl_completed"
+    ],
+    "consumes": [
+      "rl_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "rl_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_rl"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

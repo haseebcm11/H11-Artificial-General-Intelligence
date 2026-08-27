@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SESSION",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Cross-session continuity, state hydration, and persona evolution.",
+  "category": "Session Management",
+  "inputs": [
+    {"name": "user_id", "type": "string", "description": "User identifier", "required": true},
+    {"name": "event_type", "type": "string", "enum": ["INIT", "HEARTBEAT", "TERMINATE"], "required": true},
+    {"name": "initial_context", "type": "string", "description": "Cold-start prompt", "required": false}
+  ],
+  "outputs": [
+    {"name": "session_id", "type": "string", "description": "Active session UUID"},
+    {"name": "hydrated_persona", "type": "object", "description": "Persistent traits"},
+    {"name": "open_loops", "type": "array", "items": {"type": "string"}, "description": "Unresolved threads"}
+  ],
+  "config": {
+    "timeout_minutes": {"type": "integer", "default": 30, "description": "Idle time before auto-terminate"},
+    "max_open_loops": {"type": "integer", "default": 5, "description": "Limit on hydrated tasks"}
+  },
+  "state_schema": {
+    "active_sessions": {"type": "object", "description": "Map of user to active session metadata"},
+    "user_ledgers": {"type": "object", "description": "Historical session data per user"}
+  },
+  "dependencies": {
+    "upstream": ["H11-STATE", "H11-CONTEXT-MEM"],
+    "downstream": ["H11-ROUTER"]
+  },
+  "events": {
+    "emits": ["session_started", "session_ended", "persona_updated"],
+    "consumes": ["user_input_received"]
+  },
+  "metrics": [
+    {"name": "session_duration_avg", "type": "histogram", "description": "Average time per session"},
+    {"name": "hydration_latency", "type": "histogram", "description": "Time to load state"}
+  ],
+  "capabilities": ["state_hydration", "cross_session_learning", "timeout_management"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

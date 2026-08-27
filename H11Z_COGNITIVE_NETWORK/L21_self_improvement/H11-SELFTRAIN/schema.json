@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SELFTRAIN Schema",
+  "type": "object",
+  "properties": {
+    "SelfTrainingRequest": {
+      "type": "object",
+      "properties": {
+        "unlabeled_data_uri": { "type": "string" },
+        "initial_confidence_threshold": { "type": "number", "default": 0.95 },
+        "curriculum_strategy": {
+          "type": "string",
+          "enum": ["linear_decay", "step_decay", "adaptive_entropy"]
+        },
+        "max_iterations": { "type": "integer", "default": 10 }
+      },
+      "required": ["unlabeled_data_uri"]
+    },
+    "SelfTrainingResponse": {
+      "type": "object",
+      "properties": {
+        "pseudo_labels_generated": { "type": "integer" },
+        "final_confidence_threshold": { "type": "number" },
+        "drift_detected": { "type": "boolean" },
+        "model_version": { "type": "string" }
+      }
+    }
+  }
+}

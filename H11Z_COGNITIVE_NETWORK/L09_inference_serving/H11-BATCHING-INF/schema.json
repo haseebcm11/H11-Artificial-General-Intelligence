@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-BATCHING-INF",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "In-flight batching, chunked prefill, and request queueing.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "new_requests",
+      "type": "List[str]",
+      "desc": "Incoming requests"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "active_batch",
+      "type": "List[str]",
+      "desc": "Requests selected for next iteration"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "queue_depth": {
+      "type": "int",
+      "description": "Pending requests in queue"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

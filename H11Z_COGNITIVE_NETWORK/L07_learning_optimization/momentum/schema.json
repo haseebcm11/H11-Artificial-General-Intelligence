@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MOMENTUM",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Momentum and Velocity",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "gradients",
+      "type": "Dict[str, List[float]]",
+      "description": "gradients input",
+      "required": true
+    },
+    {
+      "name": "momentum_factor",
+      "type": "float",
+      "description": "momentum_factor input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "velocity_adjusted_updates",
+      "type": "Dict[str, List[float]]",
+      "description": "velocity_adjusted_updates output"
+    },
+    {
+      "name": "ema_weights",
+      "type": "Dict[str, List[float]]",
+      "description": "ema_weights output"
+    }
+  ],
+  "config": {
+    "momentum_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "momentum_completed"
+    ],
+    "consumes": [
+      "momentum_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "momentum_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_momentum"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

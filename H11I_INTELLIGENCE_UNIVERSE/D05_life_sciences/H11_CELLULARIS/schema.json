@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-CELLULARIS Schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "integration_method": { "type": "string", "enum": ["euler", "rk4", "lsoda"] },
+        "time_step_ms": { "type": "number", "default": 0.1 }
+      }
+    },
+    "state_schema": {
+      "type": "object",
+      "properties": {
+        "cell_id": { "type": "string" },
+        "phase": { "type": "string", "enum": ["G1", "S", "G2", "M", "G0"] },
+        "atp_concentration_mM": { "type": "number" },
+        "membrane_potential_mV": { "type": "number" },
+        "is_apoptotic": { "type": "boolean" }
+      },
+      "required": ["cell_id", "phase", "atp_concentration_mM", "membrane_potential_mV"]
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

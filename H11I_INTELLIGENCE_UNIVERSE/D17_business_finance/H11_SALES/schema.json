@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SALES",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Models sales pipelines and revenue.",
+  "category": "Business",
+  "inputs": [{"name": "leads", "type": "integer", "required": true}],
+  "outputs": [{"name": "closed_won", "type": "integer"}],
+  "config": {"avg_deal_size": {"type": "number", "default": 10000}},
+  "state_schema": {"revenue": {"type": "number"}},
+  "dependencies": {"upstream": ["H11-MARKETING", "H11-CUSTOMER"], "downstream": ["H11-FINANCIA"]}
+}

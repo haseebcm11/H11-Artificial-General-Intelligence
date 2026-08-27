@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-GPU Architecture Configuration",
+  "type": "object",
+  "properties": {
+    "architecture": {
+      "type": "string",
+      "enum": ["Ampere", "Hopper", "Blackwell", "CDNA2", "CDNA3"]
+    },
+    "num_sms": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "tensor_cores_per_sm": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "hbm_bandwidth_gbps": {
+      "type": "number",
+      "minimum": 100
+    },
+    "clock_speed_mhz": {
+      "type": "number"
+    },
+    "shared_memory_per_sm_kb": {
+      "type": "integer"
+    },
+    "kernel_workload": {
+      "type": "object",
+      "properties": {
+        "threads_per_block": { "type": "integer" },
+        "registers_per_thread": { "type": "integer" },
+        "shared_mem_per_block_kb": { "type": "integer" }
+      }
+    }
+  },
+  "required": ["architecture", "num_sms", "hbm_bandwidth_gbps"]
+}

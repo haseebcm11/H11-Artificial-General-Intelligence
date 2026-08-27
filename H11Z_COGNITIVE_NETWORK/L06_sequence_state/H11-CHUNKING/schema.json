@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CHUNKING",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Adaptive and semantic sequence fragmentation.",
+  "category": "Chunking",
+  "inputs": [
+    {
+      "name": "raw_sequence",
+      "type": "List[int]",
+      "description": "Flat tokens",
+      "required": true
+    },
+    {
+      "name": "chunk_mode",
+      "type": "str",
+      "description": "Mode",
+      "required": true
+    },
+    {
+      "name": "max_chunk_size",
+      "type": "int",
+      "description": "Limit",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "chunks",
+      "type": "List[List[int]]",
+      "description": "Segments"
+    },
+    {
+      "name": "chunk_metadata",
+      "type": "List[dict]",
+      "description": "Positions"
+    }
+  ],
+  "config": {
+    "default_overlap": {
+      "type": "int",
+      "default": 64,
+      "description": "Overlap tokens"
+    }
+  },
+  "state_schema": {
+    "total_chunks_produced": {
+      "type": "int",
+      "description": "Counter"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-SEQUENCE"
+    ],
+    "downstream": [
+      "H11-LONGCONTEXT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "SequenceChunked"
+    ],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "average_chunk_size",
+      "type": "histogram",
+      "description": "Size distro"
+    }
+  ],
+  "capabilities": [
+    "Semantic boundary detection",
+    "Halo overlaps"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-MINERALOGIA Agent Schema",
+  "type": "object",
+  "properties": {
+    "chemical_formula": {
+      "type": "string"
+    },
+    "crystal_system": {
+      "type": "string",
+      "enum": ["ISOMETRIC", "TETRAGONAL", "ORTHORHOMBIC", "HEXAGONAL", "TRIGONAL", "MONOCLINIC", "TRICLINIC"]
+    },
+    "analysis_type": {
+      "type": "string",
+      "enum": ["IDENTIFICATION", "XRD_SIMULATION", "SOLID_SOLUTION"]
+    },
+    "observed_properties": {
+      "type": "object",
+      "properties": {
+        "hardness": { "type": "number" },
+        "specific_gravity": { "type": "number" }
+      }
+    }
+  },
+  "required": ["analysis_type"]
+}

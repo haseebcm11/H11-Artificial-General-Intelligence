@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-MOTIVATION Schema",
+  "description": "Data structures for drive states, actions, and evaluations",
+  "type": "object",
+  "definitions": {
+    "DriveState": {
+      "type": "object",
+      "properties": {
+        "drive_id": { "type": "string" },
+        "drive_type": { "type": "string", "enum": ["cognitive_energy", "curiosity", "social_alignment", "achievement", "maintenance"] },
+        "current_level": { "type": "number" },
+        "setpoint": { "type": "number" },
+        "importance_weight": { "type": "number", "default": 1.0 },
+        "decay_rate": { "type": "number", "default": 0.01 },
+        "volatility": { "type": "number", "default": 0.1 }
+      },
+      "required": ["drive_id", "drive_type", "current_level", "setpoint"]
+    },
+    "CandidateAction": {
+      "type": "object",
+      "properties": {
+        "action_id": { "type": "string" },
+        "description": { "type": "string" },
+        "expected_drive_effects": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        },
+        "expected_extrinsic_reward": { "type": "number", "default": 0.0 },
+        "information_gain_estimate": { "type": "number", "default": 0.0 },
+        "confidence": { "type": "number", "default": 1.0 }
+      },
+      "required": ["action_id", "expected_drive_effects"]
+    },
+    "EvaluationResult": {
+      "type": "object",
+      "properties": {
+        "action_id": { "type": "string" },
+        "intrinsic_utility": { "type": "number" },
+        "extrinsic_utility": { "type": "number" },
+        "curiosity_bonus": { "type": "number" },
+        "conflict_penalty": { "type": "number" },
+        "total_utility": { "type": "number" },
+        "post_action_drive_states": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        }
+      },
+      "required": ["action_id", "total_utility"]
+    }
+  },
+  "properties": {
+    "drives": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/DriveState" }
+    },
+    "actions": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/CandidateAction" }
+    }
+  },
+  "required": ["drives"]
+}

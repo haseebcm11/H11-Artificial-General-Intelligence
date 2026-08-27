@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CONSTITUTIO",
+  "version": "1.0.0",
+  "layer": 18,
+  "layer_name": "Law & Governance",
+  "description": "Analyzes constitutional frameworks and basic rights.",
+  "category": "Legal",
+  "inputs": [
+    {
+      "name": "case_id",
+      "type": "string",
+      "description": "Case identifier",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ruling",
+      "type": "string",
+      "description": "Final legal ruling"
+    }
+  ],
+  "config": {
+    "max_precedents": {
+      "type": "integer",
+      "default": 100,
+      "description": "Maximum precedents to analyze"
+    }
+  },
+  "state_schema": {
+    "active_cases": {
+      "type": "integer",
+      "description": "Currently active cases"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["case_resolved"],
+    "consumes": ["case_filed"]
+  },
+  "metrics": [
+    {
+      "name": "cases_processed",
+      "type": "counter",
+      "description": "Number of processed cases"
+    }
+  ],
+  "capabilities": ["legal_reasoning", "precedent_search"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

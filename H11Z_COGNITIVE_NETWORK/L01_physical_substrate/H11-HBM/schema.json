@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_HBM_Config",
+  "type": "object",
+  "properties": {
+    "hbm_generation": {
+      "type": "string",
+      "enum": ["HBM2E", "HBM3", "HBM3E"],
+      "description": "The specific generation of High-Bandwidth Memory to simulate."
+    },
+    "stack_height": {
+      "type": "integer",
+      "enum": [4, 8, 12, 16],
+      "description": "Number of DRAM dies per HBM stack (e.g., 8-Hi, 12-Hi)."
+    },
+    "pin_speed_gbps": {
+      "type": "number",
+      "description": "Data rate per pin in Gigabits per second."
+    },
+    "bus_width_bits": {
+      "type": "integer",
+      "default": 1024,
+      "description": "Total width of the data bus per stack."
+    },
+    "packaging_tech": {
+      "type": "string",
+      "enum": ["CoWoS-S", "CoWoS-R", "CoWoS-L", "FO-EB"],
+      "description": "2.5D or 3D packaging technology used for integration."
+    }
+  },
+  "required": ["hbm_generation", "stack_height", "pin_speed_gbps", "packaging_tech"]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "H11-DELEGATION",
+  "version": "1.0.0",
+  "description": "Task delegation and capability-aware routing agent",
+  "endpoints": {
+    "delegate": {
+      "inputs": {
+        "tasks": "List[TaskRequirement]",
+        "registry": "List[DelegateeProfile]",
+        "policy": "DelegationPolicy"
+      },
+      "outputs": {
+        "assignments": "List[DelegationAssignment]",
+        "topology": "TaskDependencyGraph"
+      }
+    }
+  }
+}

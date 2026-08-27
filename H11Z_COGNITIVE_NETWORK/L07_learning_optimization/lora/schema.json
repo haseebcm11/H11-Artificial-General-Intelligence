@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LORA",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "LoRA and PEFT Adapters",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "base_weights",
+      "type": "Dict[str, List[float]]",
+      "description": "base_weights input",
+      "required": true
+    },
+    {
+      "name": "rank_r",
+      "type": "int",
+      "description": "rank_r input",
+      "required": true
+    },
+    {
+      "name": "alpha",
+      "type": "float",
+      "description": "alpha input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "lora_A",
+      "type": "List[List[float]]",
+      "description": "lora_A output"
+    },
+    {
+      "name": "lora_B",
+      "type": "List[List[float]]",
+      "description": "lora_B output"
+    }
+  ],
+  "config": {
+    "lora_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "lora_completed"
+    ],
+    "consumes": [
+      "lora_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "lora_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_lora"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

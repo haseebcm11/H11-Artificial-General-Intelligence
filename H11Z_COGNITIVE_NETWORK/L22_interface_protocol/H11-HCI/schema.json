@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-HCI Schema",
+  "type": "object",
+  "properties": {
+    "modalities": {
+      "type": "object",
+      "properties": {
+        "speech": {
+          "type": "object",
+          "properties": { "weight": { "type": "number" }, "timeout_ms": { "type": "integer" } }
+        },
+        "gesture": {
+          "type": "object",
+          "properties": { "weight": { "type": "number" }, "confidence_threshold": { "type": "number" } }
+        },
+        "gaze": {
+          "type": "object",
+          "properties": { "weight": { "type": "number" } }
+        }
+      }
+    },
+    "user_modeling": {
+      "type": "object",
+      "properties": {
+        "track_cognitive_load": { "type": "boolean" },
+        "adaptation_rate": { "type": "number" }
+      },
+      "required": ["track_cognitive_load"]
+    },
+    "dialog_management": {
+      "type": "object",
+      "properties": {
+        "max_turns_history": { "type": "integer", "minimum": 1 },
+        "allow_interruptions": { "type": "boolean" }
+      }
+    }
+  },
+  "required": ["modalities", "user_modeling"]
+}

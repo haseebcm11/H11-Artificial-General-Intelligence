@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-HEALTHINFORMATICA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Semantic interoperability engine and clinical knowledge graph manager.",
+  "category": "Informatics",
+  "inputs": [
+    {"name": "raw_ehr_payload", "type": "object"},
+    {"name": "clinical_notes", "type": "array"},
+    {"name": "lab_results", "type": "array"}
+  ],
+  "outputs": [
+    {"name": "patient_graph_delta", "type": "object"},
+    {"name": "extracted_entities", "type": "array"},
+    {"name": "charting_anomalies", "type": "array"}
+  ],
+  "config": {
+    "ontology_version": "2023-AA",
+    "strict_fhir_validation": true
+  },
+  "state_schema": {
+    "clinical_knowledge_graph": "PropertyGraph",
+    "entity_cache": "LRUCache"
+  },
+  "dependencies": {
+    "upstream": ["H11-TELEMEDICINA", "H11-DIAGNOSTICA"],
+    "downstream": ["H11-PUBLICHEALTH", "H11-PRECISIONMED"]
+  },
+  "events": {
+    "emits": ["graph_updated", "anomaly_flagged"],
+    "consumes": ["new_clinical_note", "lab_result_finalized"]
+  },
+  "metrics": ["entity_resolution_rate", "graph_insertion_latency"],
+  "capabilities": ["Clinical NLP", "Knowledge Graph Management", "Ontology Mapping"],
+  "scaling": {
+    "compute_intensity": "medium",
+    "memory_intensity": "very_high"
+  }
+}

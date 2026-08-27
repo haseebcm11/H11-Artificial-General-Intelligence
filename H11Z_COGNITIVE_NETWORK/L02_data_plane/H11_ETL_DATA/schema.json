@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ETL-DATA",
+  "version": "3.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Orchestrates batch ETL pipelines, DAG execution, and schema transforms.",
+  "category": "Orchestration & Transformation",
+  "inputs": [
+    {
+      "name": "dag_trigger",
+      "type": "object",
+      "description": "Trigger payload containing execution logical date.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "dag_result",
+      "type": "object",
+      "description": "Status and metrics of the ETL execution."
+    }
+  ],
+  "config": {
+    "max_active_runs": {
+      "type": "integer",
+      "default": 16,
+      "description": "Concurrency limit for pipelines."
+    },
+    "retry_delay_sec": {
+      "type": "integer",
+      "default": 300,
+      "description": "Wait time before task retry."
+    }
+  },
+  "state_schema": {
+    "active_dags": {
+      "type": "object",
+      "description": "Map of currently executing DAGs and their task states."
+    },
+    "cdc_watermarks": {
+      "type": "object",
+      "description": "Offsets for incremental loading."
+    }
+  },
+  "dependencies": {
+    "upstream": ["External_DBs", "S3"],
+    "downstream": ["H11-FEATURE-STORE", "H11-PRIVACY-DATA"]
+  },
+  "events": {
+    "emits": ["DagSucceeded", "DagFailed", "SchemaDriftDetected"],
+    "consumes": ["ScheduledTrigger", "ManualTrigger"]
+  },
+  "metrics": [
+    {
+      "name": "rows_processed",
+      "type": "counter",
+      "description": "Total rows extracted, transformed, and loaded."
+    }
+  ],
+  "capabilities": ["DAG Scheduling", "Topological Sort", "CDC Incrementals", "Schema Mapping"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

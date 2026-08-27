@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DISTILLATION",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Knowledge Distillation",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "teacher_logits",
+      "type": "List[float]",
+      "description": "teacher_logits input",
+      "required": true
+    },
+    {
+      "name": "student_logits",
+      "type": "List[float]",
+      "description": "student_logits input",
+      "required": true
+    },
+    {
+      "name": "temperature",
+      "type": "float",
+      "description": "temperature input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "distillation_loss",
+      "type": "float",
+      "description": "distillation_loss output"
+    },
+    {
+      "name": "student_gradients",
+      "type": "List[float]",
+      "description": "student_gradients output"
+    }
+  ],
+  "config": {
+    "distillation_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "distillation_completed"
+    ],
+    "consumes": [
+      "distillation_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "distillation_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_distillation"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

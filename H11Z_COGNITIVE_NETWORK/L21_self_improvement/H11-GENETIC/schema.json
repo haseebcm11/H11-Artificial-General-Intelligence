@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-GENETIC Schema",
+  "type": "object",
+  "properties": {
+    "Genome": {
+      "type": "object",
+      "properties": {
+        "genome_id": { "type": "string" },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "node_id": { "type": "integer" },
+              "type": { "type": "string", "enum": ["input", "hidden", "output"] }
+            }
+          }
+        },
+        "connections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "in_node": { "type": "integer" },
+              "out_node": { "type": "integer" },
+              "weight": { "type": "number" },
+              "innovation_number": { "type": "integer" },
+              "enabled": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "CrossoverRequest": {
+      "type": "object",
+      "properties": {
+        "parent1": { "$ref": "#/properties/Genome" },
+        "parent2": { "$ref": "#/properties/Genome" },
+        "fitness1": { "type": "number" },
+        "fitness2": { "type": "number" }
+      },
+      "required": ["parent1", "parent2", "fitness1", "fitness2"]
+    }
+  }
+}

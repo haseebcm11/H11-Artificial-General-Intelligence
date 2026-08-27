@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MARTIALIS",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Mars operations, EDL, and autonomous surface navigation",
+  "category": "Planetary Exploration",
+  "inputs": [
+    {
+      "name": "atmospheric_data",
+      "type": "object",
+      "description": "Mars-GRAM density and dust profiles",
+      "required": true
+    },
+    {
+      "name": "vehicle_state",
+      "type": "object",
+      "description": "State during EDL or surface ops",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "edl_triggers",
+      "type": "object",
+      "description": "Critical timing for parachute and retro-rockets"
+    },
+    {
+      "name": "rover_path",
+      "type": "array",
+      "description": "Waypoints for autonomous traverse"
+    }
+  ],
+  "config": {
+    "target_parachute_mach": {
+      "type": "number",
+      "default": 1.7,
+      "description": "Target Mach number for supersonic parachute deployment"
+    },
+    "max_wheel_slip": {
+      "type": "number",
+      "default": 0.4,
+      "description": "Maximum allowable slip ratio before aborting drive"
+    }
+  },
+  "state_schema": {
+    "solar_longitude_ls": {
+      "type": "number",
+      "description": "Martian season indicator (0-360)"
+    },
+    "current_sol": {
+      "type": "integer",
+      "description": "Mission elapsed time in Martian days"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PLANETOLOGIA", "H11-ORBITALIS"],
+    "downstream": ["H11-SPACECRAFT"]
+  },
+  "events": {
+    "emits": ["EDLSequenceFired", "CommRelayEstablished"],
+    "consumes": ["DustStormWarning", "OrbiterPassPredicted"]
+  },
+  "metrics": [
+    {
+      "name": "edl_dynamic_pressure_pa",
+      "type": "gauge",
+      "description": "Peak q experienced during hypersonic entry"
+    }
+  ],
+  "capabilities": ["Hypersonic Aerodynamics", "Visual SLAM", "Rotorcraft Flight Modeling"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-REHABILITATIO",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Models biomechanical gait, range of motion, and muscle fatigue for physical therapy.",
+  "category": "Rehabilitation Medicine",
+  "inputs": [
+    {
+      "name": "motion_capture",
+      "type": "array",
+      "description": "3D coordinate markers of joints"
+    },
+    {
+      "name": "emg_data",
+      "type": "array",
+      "description": "Electromyography millivolt signals"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "joint_kinematics",
+      "type": "object",
+      "description": "Angles, moments, and powers of major joints"
+    },
+    {
+      "name": "fatigue_index",
+      "type": "number",
+      "description": "Spectral shift based fatigue indicator"
+    }
+  ],
+  "config": {
+    "filter_cutoff_hz": 6.0,
+    "emg_rectification": true
+  },
+  "state_schema": {
+    "baseline_rom": "object",
+    "session_progress": "array"
+  },
+  "dependencies": {
+    "upstream": ["H11-CHIRURGIA", "H11-NEUROLOGIA"],
+    "downstream": ["H11-SPORTMEDICINA"]
+  },
+  "events": {
+    "emits": ["asymmetry_detected", "fatigue_threshold_reached"],
+    "consumes": ["exercise_started", "sensor_data_stream"]
+  },
+  "metrics": ["gait_symmetry_index", "rom_improvement_rate"],
+  "capabilities": ["inverse_kinematics", "emg_frequency_analysis"],
+  "scaling": {
+    "mode": "stateful",
+    "max_concurrent_sessions": 200
+  }
+}

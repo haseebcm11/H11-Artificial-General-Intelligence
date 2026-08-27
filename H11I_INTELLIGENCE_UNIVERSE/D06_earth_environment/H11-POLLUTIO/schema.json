@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-POLLUTIO Agent Schema",
+  "type": "object",
+  "properties": {
+    "site_id": {
+      "type": "string"
+    },
+    "medium": {
+      "type": "string",
+      "enum": ["air", "water", "soil"]
+    },
+    "contaminants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "chemical_name": {"type": "string"},
+          "concentration": {"type": "number"},
+          "unit": {"type": "string"}
+        },
+        "required": ["chemical_name", "concentration", "unit"]
+      }
+    },
+    "environmental_conditions": {
+      "type": "object"
+    }
+  },
+  "required": ["site_id", "medium", "contaminants"]
+}

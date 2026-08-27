@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PRECISIONMED",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Orchestrates multi-omics data integration, biomarker stratification, targeted therapy selection, and longitudinal ctDNA resistance monitoring.",
+  "category": "Precision Medicine",
+  "inputs": [
+    {
+      "name": "patient_id",
+      "type": "string",
+      "description": "Unique patient identifier"
+    },
+    {
+      "name": "genomic_variants",
+      "type": "array",
+      "description": "List of somatic and germline genomic alterations with VAF and CNV calls"
+    },
+    {
+      "name": "biomarker_panel",
+      "type": "object",
+      "description": "Composite biomarker metrics including TMB, MSI, HRD, and PD-L1 scores"
+    },
+    {
+      "name": "clinical_phenotype",
+      "type": "object",
+      "description": "Histology, cancer staging, organ function parameters, and prior treatment history"
+    },
+    {
+      "name": "pharmacogenomic_profile",
+      "type": "object",
+      "description": "Diplotypes for metabolic enzymes and transporters (CYP, DPYD, TPMT, UGT1A1)"
+    },
+    {
+      "name": "candidate_regimens",
+      "type": "array",
+      "description": "Candidate therapeutic options for precision ranking"
+    },
+    {
+      "name": "longitudinal_ctdna",
+      "type": "array",
+      "description": "Serial liquid biopsy time points for MRD kinetics analysis"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "molecular_subtypes",
+      "type": "array",
+      "description": "Classified disease molecular subtype signatures"
+    },
+    {
+      "name": "actionable_targets",
+      "type": "array",
+      "description": "ESCAT and AMP/ASCO/CAP tiered biomarker targets"
+    },
+    {
+      "name": "ranked_therapies",
+      "type": "array",
+      "description": "Multi-criteria ranked therapeutic recommendations with efficacy and toxicity indices"
+    },
+    {
+      "name": "resistance_risks",
+      "type": "array",
+      "description": "Predicted bypass pathways and emergent resistance mechanisms"
+    },
+    {
+      "name": "mrd_protocol",
+      "type": "object",
+      "description": "ctDNA clearance kinetics, molecular response status, and test intervals"
+    },
+    {
+      "name": "executive_summary",
+      "type": "string",
+      "description": "Narrative briefing for molecular tumor boards"
+    }
+  ],
+  "config": {
+    "min_vaf_threshold": 0.02,
+    "escat_tier_cutoff": "TIER_IV_PRECLINICAL",
+    "enable_chip_filtering": true,
+    "mcda_weights": {
+      "efficacy": 0.45,
+      "synthetic_lethality": 0.25,
+      "toxicity_penalty": 0.20,
+      "trial_availability": 0.10
+    },
+    "mrd_progression_velocity_threshold": 0.05
+  },
+  "state_schema": {
+    "actionability_kb_cache": "object",
+    "chip_gene_registry": "array",
+    "longitudinal_patient_ledger": "object"
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-GENETICA-MED",
+      "H11-PHARMACOGENOMICA",
+      "H11-PATHOLOGIA",
+      "H11-HEALTHINFORMATICA",
+      "H11-IMMUNOTHERAPIA"
+    ],
+    "downstream": [
+      "H11-PALLIATIVA",
+      "H11-TELEMEDICINA",
+      "H11-TOXICOLOGIA"
+    ]
+  },
+  "events": {
+    "emits": [
+      "molecular_target_identified",
+      "therapy_rankings_generated",
+      "mrd_molecular_progression_alert",
+      "synthetic_lethality_opportunity_flagged"
+    ],
+    "consumes": [
+      "genomic_variants_annotated",
+      "pharmacogenomic_report_ready",
+      "liquid_biopsy_sequenced",
+      "clinical_staging_updated"
+    ]
+  },
+  "metrics": [
+    "therapeutic_response_concordance",
+    "mrd_early_detection_lead_time_days",
+    "adr_avoidance_rate",
+    "clinical_trial_matching_yield"
+  ],
+  "capabilities": [
+    "multi_omics_fusion",
+    "escat_amp_actionability_tiering",
+    "synthetic_lethality_detection",
+    "bayesian_mcda_regimen_ranking",
+    "ctdna_mrd_kinetics_tracking",
+    "resistance_bypass_prediction",
+    "chip_mutation_filtration"
+  ],
+  "scaling": {
+    "mode": "horizontal",
+    "compute_intensity": "high",
+    "memory_intensity": "medium"
+  }
+}

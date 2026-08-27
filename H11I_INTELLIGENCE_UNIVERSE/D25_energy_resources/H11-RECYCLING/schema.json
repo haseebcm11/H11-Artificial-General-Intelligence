@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RECYCLING",
+  "version": "1.0.0",
+  "layer": 25,
+  "layer_name": "Energy & Resources",
+  "description": "Circular Materials Agent",
+  "category": "Processing",
+  "inputs": [
+    {
+      "name": "feed_composition",
+      "type": "object",
+      "description": "Elemental fractions",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "recovered_mass",
+      "type": "object",
+      "description": "Yield of pure elements"
+    }
+  ],
+  "config": {
+    "process_type": {
+      "type": "string",
+      "default": "HYDROMETALLURGY",
+      "description": "HYDRO or PYRO metallurgy"
+    }
+  },
+  "state_schema": {
+    "throughput_kg_hr": {
+      "type": "float",
+      "description": "Current processing rate"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-BATTERIA", "H11-MINING"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["recycling.toxic_gas_alert"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "recovery_yield",
+      "type": "gauge",
+      "description": "Overall extraction efficiency"
+    }
+  ],
+  "capabilities": ["spectral_sorting", "leach_kinetics"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "medium"
+  }
+}

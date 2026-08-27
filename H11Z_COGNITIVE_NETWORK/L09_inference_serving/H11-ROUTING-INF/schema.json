@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ROUTING-INF",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Task-aware, cost-aware, and latency-aware request routing.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "request_features",
+      "type": "Dict[str, Any]",
+      "desc": "Complexity metrics of query"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "target_model",
+      "type": "str",
+      "desc": "Chosen model ID to serve request"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "routing_stats": {
+      "type": "Dict[str, int]",
+      "description": "Count of requests per model"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

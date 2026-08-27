@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EcologiaSchema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "time_step": {"type": "number"},
+        "environmental_noise": {"type": "number"}
+      }
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "populations": {
+          "type": "object",
+          "additionalProperties": {"type": "number"}
+        }
+      }
+    }
+  }
+}

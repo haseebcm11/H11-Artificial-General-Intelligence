@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MIDWIFERY",
+  "version": "1.0.0",
+  "layer": 23,
+  "layer_name": "Allied Health",
+  "description": "Midwifery and Perinatal Support",
+  "category": "Obstetrics/Midwifery",
+  "inputs": [
+    {
+      "name": "ctg_trace",
+      "type": "array",
+      "description": "Fetal heart rate time series",
+      "required": true
+    },
+    {
+      "name": "cervical_exam",
+      "type": "object",
+      "description": "Dilation and station",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "labor_status",
+      "type": "object",
+      "description": "Progression and fetal well-being"
+    }
+  ],
+  "config": {
+    "action_line_delay_hrs": {
+      "type": "float",
+      "default": 4.0,
+      "description": "Hours behind expected dilation to trigger escalation"
+    }
+  },
+  "state_schema": {
+    "current_stage": {
+      "type": "string",
+      "description": "Stage of labor"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-OBSTETRICA", "H11-PEDIATRIA"]
+  },
+  "events": {
+    "emits": ["LaborProgressed", "ObstetricEscalation"],
+    "consumes": ["CTGUpdated"]
+  },
+  "metrics": [
+    {
+      "name": "montevideo_units",
+      "type": "gauge",
+      "description": "Uterine contraction strength index"
+    }
+  ],
+  "capabilities": ["ctg_analysis", "partogram_tracking"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

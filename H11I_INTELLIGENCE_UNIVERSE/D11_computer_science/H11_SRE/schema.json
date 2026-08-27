@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SRE",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Computer Science",
+  "description": "Observability, incident management, and chaos engineering",
+  "category": "Operations",
+  "inputs": [
+    {
+      "name": "telemetry",
+      "type": "array",
+      "description": "Metrics from services",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "slo_status",
+      "type": "object",
+      "description": "Current status of all SLOs"
+    }
+  ],
+  "config": {
+    "error_budget_window_days": {
+      "type": "integer",
+      "default": 28,
+      "description": "Rolling window for SLO tracking"
+    }
+  },
+  "state_schema": {
+    "remaining_budget": {
+      "type": "number",
+      "description": "Percentage of error budget remaining"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-CLOUD"],
+    "downstream": ["H11-DEVOPS"]
+  },
+  "events": {
+    "emits": ["incident_created", "deploy_freeze"],
+    "consumes": ["metric_recorded"]
+  },
+  "metrics": [
+    {
+      "name": "mttr_minutes",
+      "type": "histogram",
+      "description": "Mean time to recovery"
+    }
+  ],
+  "capabilities": ["anomaly_detection", "runbook_execution", "chaos_injection"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

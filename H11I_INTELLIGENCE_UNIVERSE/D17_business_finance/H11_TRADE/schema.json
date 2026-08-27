@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TRADE",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Models international trade.",
+  "category": "Economics",
+  "inputs": [{"name": "home_endowments", "type": "object", "required": true}],
+  "outputs": [{"name": "trade_volume", "type": "number"}],
+  "config": {"iceberg_cost": {"type": "number", "default": 1.1}},
+  "state_schema": {"flows": {"type": "array"}},
+  "dependencies": {"upstream": ["H11-MACROECON"], "downstream": ["H11-SUPPLYCHAIN"]}
+}

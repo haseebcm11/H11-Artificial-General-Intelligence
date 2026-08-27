@@ -1,0 +1,17 @@
+{
+  "agent_id": "H11-INSIGHT",
+  "layer": 13,
+  "type": "cognitive_reasoning",
+  "capabilities": [
+    "restructuring_problems",
+    "constraint_relaxation",
+    "incubation",
+    "insight_problem_solving",
+    "eureka_detection"
+  ],
+  "configuration": {
+    "impasse_threshold": 0.1,
+    "incubation_cycles": 100,
+    "spreading_activation_decay": 0.8
+  }
+}

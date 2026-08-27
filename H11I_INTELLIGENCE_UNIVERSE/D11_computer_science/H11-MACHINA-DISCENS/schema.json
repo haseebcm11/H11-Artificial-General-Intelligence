@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MACHINA-DISCENS",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Machine Learning",
+  "description": "Classical machine learning agent for statistical modeling and AutoML.",
+  "category": "Artificial Intelligence",
+  "inputs": [
+    {
+      "name": "dataset_uri",
+      "type": "string",
+      "description": "Pointer to tabular/structured dataset",
+      "required": true
+    },
+    {
+      "name": "task_type",
+      "type": "string",
+      "description": "Classification, Regression, Clustering, Anomaly",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "model_artifact",
+      "type": "string",
+      "description": "URI to serialized model pipeline"
+    },
+    {
+      "name": "cv_metrics",
+      "type": "object",
+      "description": "Cross-validation scores"
+    }
+  ],
+  "config": {
+    "cv_folds": {
+      "type": "integer",
+      "default": 5,
+      "description": "Number of cross-validation folds"
+    },
+    "hp_optimization_trials": {
+      "type": "integer",
+      "default": 50,
+      "description": "Bayesian optimization trial count"
+    }
+  },
+  "state_schema": {
+    "active_pipelines": {
+      "type": "integer",
+      "description": "Currently deployed models"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DATASTRUCTURA", "H11-DATABASE"],
+    "downstream": ["H11-EXPLAINABLE", "H11-METALEARNING"]
+  },
+  "events": {
+    "emits": ["model_trained", "drift_detected"],
+    "consumes": ["data_updated"]
+  },
+  "metrics": [
+    {
+      "name": "training_latency_s",
+      "type": "histogram",
+      "description": "Time to train a full pipeline"
+    }
+  ],
+  "capabilities": ["statistical_learning", "feature_engineering", "automl"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

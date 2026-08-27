@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PHARMACOGENOMICA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Predicts drug response and toxicity based on genomic profiles.",
+  "category": "Pharmacology",
+  "inputs": [
+    {"name": "patient_id", "type": "string"},
+    {"name": "genomic_profile", "type": "string"},
+    {"name": "proposed_drugs", "type": "array"}
+  ],
+  "outputs": [
+    {"name": "dosage_recommendations", "type": "array"},
+    {"name": "toxicity_risks", "type": "array"}
+  ],
+  "config": {
+    "confidence_threshold": 0.85,
+    "cyp_alleles_tracked": 128
+  },
+  "state_schema": {
+    "allele_frequency_graph": "Graph",
+    "interaction_ledger": "TimeSeries"
+  },
+  "dependencies": {
+    "upstream": ["H11-GENOMICA", "H11-PHARMACOLOGIA"],
+    "downstream": ["H11-PRECISIONMED"]
+  },
+  "events": {
+    "emits": ["pharmacogenomic_analysis_complete"],
+    "consumes": ["genomic_sequence_updated"]
+  },
+  "metrics": ["prediction_accuracy", "adr_avoidance_rate"],
+  "capabilities": ["PK/PD modeling", "SNP interaction analysis"],
+  "scaling": {
+    "compute_intensity": "high",
+    "memory_intensity": "medium"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ASTROPHYSICA",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Models stellar evolution and astrophysics.",
+  "category": "Astrophysics",
+  "inputs": [
+    {
+      "name": "stellar_params",
+      "type": "StellarParameters",
+      "description": "Initial mass and composition",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "evolution_track",
+      "type": "EvolutionTrack",
+      "description": "Computed stellar lifespan"
+    }
+  ],
+  "config": {
+    "network_tolerance": {
+      "type": "float",
+      "default": 1e-6,
+      "description": "Tolerance for nuclear network solver"
+    }
+  },
+  "state_schema": {
+    "active_models": {
+      "type": "int",
+      "description": "Number of stars currently being modeled"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ASTRONOMIA"],
+    "downstream": ["H11-GALACTICA", "H11-HELIOPHYSICA"]
+  },
+  "events": {
+    "emits": ["SupernovaEvent", "EvolutionPhaseChanged"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "timesteps_per_second",
+      "type": "counter",
+      "description": "Integration speed"
+    }
+  ],
+  "capabilities": ["stellar_modeling", "nucleosynthesis"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

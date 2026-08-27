@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DIFFERENTIALIS",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Differential Equations Agent",
+  "category": "Differential Equations",
+  "inputs": [
+    {
+      "name": "equations",
+      "type": "array[object]",
+      "description": "ODEs or PDEs to solve",
+      "required": true
+    },
+    {
+      "name": "boundary_conditions",
+      "type": "object",
+      "description": "Initial or boundary constraints",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "analytical_solutions",
+      "type": "map[string, string]",
+      "description": "Closed-form solutions if available"
+    },
+    {
+      "name": "numerical_trajectories",
+      "type": "array[object]",
+      "description": "Time-series data for numerical integration"
+    }
+  ],
+  "config": {
+    "solver_method": {
+      "type": "string",
+      "default": "rk45",
+      "description": "Numerical solver algorithm"
+    }
+  },
+  "state_schema": {
+    "phase_space_cache": {
+      "type": "array[object]",
+      "description": "Cached attractor boundaries"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ANALYSIS", "H11-ALGEBRA"],
+    "downstream": ["H11-NUMERICA"]
+  },
+  "events": {
+    "emits": ["bifurcation_detected", "solution_converged"],
+    "consumes": ["system_perturbed"]
+  },
+  "metrics": [
+    {
+      "name": "steps_integrated",
+      "type": "counter",
+      "description": "Number of numerical steps taken"
+    }
+  ],
+  "capabilities": ["ode_solving", "pde_solving", "dynamical_systems"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

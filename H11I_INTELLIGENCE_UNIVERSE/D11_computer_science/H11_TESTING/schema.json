@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TESTING",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Computer Science",
+  "description": "Automated validation, mutation testing, and fuzzing",
+  "category": "Quality Assurance",
+  "inputs": [
+    {
+      "name": "test_suite",
+      "type": "object",
+      "description": "Definition of tests to run",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "report",
+      "type": "object",
+      "description": "Results of test execution"
+    }
+  ],
+  "config": {
+    "fuzzing_duration_s": {
+      "type": "integer",
+      "default": 60,
+      "description": "How long to run the fuzzer"
+    }
+  },
+  "state_schema": {
+    "flaky_tests": {
+      "type": "array",
+      "description": "Tests known to be non-deterministic"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPILER"],
+    "downstream": ["H11-DEVOPS"]
+  },
+  "events": {
+    "emits": ["tests_passed", "tests_failed", "fuzz_crash_found"],
+    "consumes": ["build_completed"]
+  },
+  "metrics": [
+    {
+      "name": "mutation_score",
+      "type": "gauge",
+      "description": "Percentage of mutants killed by tests"
+    }
+  ],
+  "capabilities": ["unit_testing", "property_based_testing", "fuzzing"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

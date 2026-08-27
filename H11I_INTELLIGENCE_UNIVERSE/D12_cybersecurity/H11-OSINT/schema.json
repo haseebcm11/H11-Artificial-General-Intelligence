@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OSINT",
+  "version": "1.0.0",
+  "layer": 12,
+  "layer_name": "Cybersecurity",
+  "description": "Scrapes public and dark web for leaked data and threat chatter.",
+  "category": "Open Source Intelligence",
+  "inputs": [
+    {
+      "name": "target_keywords",
+      "type": "list[string]",
+      "description": "Terms to monitor.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "discovered_leaks",
+      "type": "list[LeakData]",
+      "description": "Found secrets."
+    }
+  ],
+  "config": {
+    "tor_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use onion routing for scraping."
+    }
+  },
+  "state_schema": {
+    "indexed_pages": {
+      "type": "integer",
+      "description": "Total pages scraped."
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-THREATINTEL", "H11-IDENTITAS"]
+  },
+  "events": {
+    "emits": ["SecretLeaked", "ImminentAttackWarning"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "pages_scraped_per_hour",
+      "type": "gauge",
+      "description": "Scraping velocity."
+    }
+  ],
+  "capabilities": ["Web Scraping", "NLP Classification", "Dark Web Access"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AVIARIA-VET",
+  "version": "1.0.0",
+  "layer": 4,
+  "layer_name": "Veterinary Sciences",
+  "description": "Avian medicine covering companion birds and commercial poultry.",
+  "category": "Avian",
+  "inputs": [
+    {
+      "name": "avian_context",
+      "type": "AvianContextType",
+      "description": "Determines if evaluating a pet or a commercial flock",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "zoonotic_risk",
+      "type": "RiskLevel",
+      "description": "Risk of human transmission (e.g. Psittacosis, HPAI)"
+    }
+  ],
+  "config": {
+    "hpai_alert_threshold": {
+      "type": "float",
+      "default": 0.05,
+      "description": "Daily mortality rate threshold to trigger HPAI lockdown"
+    }
+  },
+  "state_schema": {
+    "flock_monitoring": {
+      "type": "dict",
+      "description": "Time-series data for flock mortality and water intake"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-VETEPIDEMIOLOGIA", "H11-VETPATHOLOGIA"],
+    "downstream": ["H11-VETPHARMACOLOGIA"]
+  },
+  "events": {
+    "emits": ["ReportableDiseaseSuspected", "FlockBiosecurityLockdown"],
+    "consumes": ["RegionalAvianFluReport"]
+  },
+  "metrics": [
+    {
+      "name": "flock_interventions",
+      "type": "counter",
+      "description": "Total number of flock-wide actions initiated"
+    }
+  ],
+  "capabilities": ["poultry_epidemiology", "avian_therapeutics", "zoonotic_surveillance"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

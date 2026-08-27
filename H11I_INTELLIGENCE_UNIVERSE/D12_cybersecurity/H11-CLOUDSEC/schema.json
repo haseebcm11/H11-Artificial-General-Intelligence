@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CLOUDSEC",
+  "version": "1.0.0",
+  "layer": 12,
+  "layer_name": "Cybersecurity",
+  "description": "Cloud infrastructure posture and runtime security.",
+  "category": "Cloud Security",
+  "inputs": [
+    {
+      "name": "audit_event",
+      "type": "CloudEvent",
+      "description": "Cloud API mutation event.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "remediation_applied",
+      "type": "boolean",
+      "description": "Did the agent auto-remediate an issue?"
+    }
+  ],
+  "config": {
+    "auto_remediate": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to automatically fix misconfigurations."
+    }
+  },
+  "state_schema": {
+    "resource_count": {
+      "type": "integer",
+      "description": "Nodes in the resource graph."
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-IDENTITAS", "H11-INCIDENT"]
+  },
+  "events": {
+    "emits": ["MisconfigurationFixed", "NodeCordoned"],
+    "consumes": ["CloudResourceCreated"]
+  },
+  "metrics": [
+    {
+      "name": "posture_score",
+      "type": "gauge",
+      "description": "Current security posture score (0-100)."
+    }
+  ],
+  "capabilities": ["CSPM", "CWPP"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

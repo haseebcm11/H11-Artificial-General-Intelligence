@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LABELER",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Active learning and weak supervision labeling.",
+  "category": "Annotation",
+  "inputs": [
+    {
+      "name": "dataset",
+      "type": "array[object]",
+      "description": "Unlabeled data pool.",
+      "required": true
+    },
+    {
+      "name": "taxonomy",
+      "type": "object",
+      "description": "Label classification schema."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "labeled_dataset",
+      "type": "array[object]",
+      "description": "Data with probabilistic labels attached."
+    }
+  ],
+  "config": {
+    "active_learning_budget": {
+      "type": "integer",
+      "default": 1000,
+      "description": "Max samples to query."
+    },
+    "uncertainty_metric": {
+      "type": "string",
+      "default": "entropy",
+      "description": "Metric for active learning (entropy, margin)."
+    }
+  },
+  "state_schema": {
+    "lf_weights": {
+      "type": "map[string, float]",
+      "description": "Learned weights for labeling functions."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-CLEANSER"],
+    "downstream": ["H11-TRAINER"]
+  },
+  "events": {
+    "emits": ["HumanAnnotationRequested", "LabelModelTrained"],
+    "consumes": ["HumanAnnotationSubmitted"]
+  },
+  "metrics": [
+    {
+      "name": "krippendorff_alpha",
+      "type": "gauge",
+      "description": "Inter-annotator agreement."
+    }
+  ],
+  "capabilities": ["SnorkelWeakSupervision", "ActiveLearning", "KrippendorffAlpha"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

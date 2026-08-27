@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ActivationConfiguration",
+  "type": "object",
+  "properties": {
+    "default_activation": {
+      "type": "string",
+      "enum": ["relu", "gelu", "swish"],
+      "default": "gelu"
+    },
+    "enable_checkpointing": {
+      "type": "boolean",
+      "default": false
+    },
+    "dead_neuron_threshold": {
+      "type": "number",
+      "default": 0.001
+    }
+  },
+  "required": ["default_activation"]
+}

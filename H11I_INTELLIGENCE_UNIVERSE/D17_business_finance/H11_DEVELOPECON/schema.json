@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DEVELOPECON",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Models development economics and structural change.",
+  "category": "Economics",
+  "inputs": [{"name": "capital_stock", "type": "number", "required": true}],
+  "outputs": [{"name": "growth_rate", "type": "number"}],
+  "config": {"savings_rate": {"type": "number", "default": 0.2}},
+  "state_schema": {"trajectory": {"type": "array"}},
+  "dependencies": {"upstream": [], "downstream": ["H11-TRADE"]}
+}

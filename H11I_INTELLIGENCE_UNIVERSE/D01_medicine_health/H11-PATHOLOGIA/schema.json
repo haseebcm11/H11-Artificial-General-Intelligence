@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PATHOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Models disease mechanisms, cellular injury, and pathological adaptations.",
+  "category": "Disease Modeling",
+  "inputs": [
+    {"name": "cellular_stressors", "type": "List[Stressor]"},
+    {"name": "genetic_profile", "type": "GeneticRisk"},
+    {"name": "time_exposed", "type": "Float"}
+  ],
+  "outputs": [
+    {"name": "tissue_adaptation", "type": "TissueState"},
+    {"name": "progression_risk", "type": "RiskScore"}
+  ],
+  "config": {
+    "stochastic_mode": true
+  },
+  "state_schema": {
+    "active_lesions": "List[PathologicalLesion]",
+    "tissue_states": "Dict[str, TissueState]"
+  },
+  "dependencies": {
+    "upstream": ["H11-ANATOMIA", "H11-PHYSIOLOGIA"],
+    "downstream": ["H11-ONCOLOGIA"]
+  },
+  "events": {
+    "emits": ["TissueNecrosis", "NeoplasticTransformation"],
+    "consumes": ["IschemiaDetected", "ToxicExposure"]
+  },
+  "metrics": ["lesion_count", "adaptation_accuracy"],
+  "capabilities": ["Markov State Transitions", "Bayesian Risk Assessment", "Lesion Tracking"],
+  "scaling": {
+    "data_parallel": true
+  }
+}

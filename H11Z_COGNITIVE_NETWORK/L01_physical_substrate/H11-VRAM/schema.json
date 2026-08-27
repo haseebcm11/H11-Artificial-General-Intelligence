@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VRAM Management Configuration",
+  "type": "object",
+  "properties": {
+    "total_capacity_gb": {
+      "type": "number",
+      "minimum": 1
+    },
+    "allocator_strategy": {
+      "type": "string",
+      "enum": ["slab", "buddy", "pool"]
+    },
+    "enable_uvm": {
+      "type": "boolean"
+    },
+    "preferred_layout": {
+      "type": "string",
+      "enum": ["NCHW", "NHWC"]
+    },
+    "defragmentation_threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "required": ["total_capacity_gb", "allocator_strategy"]
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ALGEBRA",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Abstract Algebra Agent",
+  "category": "Algebra",
+  "inputs": [
+    {
+      "name": "equation",
+      "type": "string",
+      "description": "Polynomial equation to solve",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "roots",
+      "type": "array",
+      "description": "List of roots"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-NUMBER"]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": ["galois_theory"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

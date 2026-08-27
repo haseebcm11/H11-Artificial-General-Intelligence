@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-MODEL-INTEGRITY",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Pins specialist module hashes before a hop.",
+  "category": "security",
+  "handler": "mac",
+  "inputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "mac",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-SUPPLY-CHAIN-PIN"
+    ],
+    "downstream": [
+      "H11C-ZERO-TRUST-HOP"
+    ]
+  },
+  "capabilities": [
+    "mac"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

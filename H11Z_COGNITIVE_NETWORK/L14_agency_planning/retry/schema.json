@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-RETRY Agent Schema",
+  "description": "Schemas for interacting with the Retry & Recovery agent.",
+  "type": "object",
+  "properties": {
+    "ReportErrorRequest": {
+      "type": "object",
+      "properties": {
+        "operation_id": { "type": "string" },
+        "service_name": { "type": "string" },
+        "error_type": { "type": "string", "enum": ["TIMEOUT", "RATE_LIMIT", "VALIDATION", "INTERNAL", "NETWORK"] },
+        "error_message": { "type": "string" },
+        "payload": { "type": "object" }
+      },
+      "required": ["operation_id", "service_name", "error_type"]
+    },
+    "RecoveryDecisionResponse": {
+      "type": "object",
+      "properties": {
+        "action": { "type": "string", "enum": ["RETRY", "FALLBACK", "ABORT", "COMPENSATE"] },
+        "delay_ms": { "type": "number" },
+        "circuit_state": { "type": "string", "enum": ["CLOSED", "OPEN", "HALF_OPEN"] },
+        "dlq_enqueued": { "type": "boolean" },
+        "fallback_payload": { "type": "object" }
+      },
+      "required": ["action", "circuit_state"]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-POSITIONAL-ENC",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Adds sinusoidal or rotary positional coordinates to a sequence of token vectors.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "vectors",
+      "type": "List[List[float]]"
+    },
+    {
+      "name": "mode",
+      "type": "str"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "encoded",
+      "type": "List[List[float]]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-TOKENIZER",
+      "H11-EMBEDDER"
+    ],
+    "downstream": [
+      "H11-INDEX"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "sinusoidal",
+    "rope"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

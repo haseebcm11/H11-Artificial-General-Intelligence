@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OCR",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "description": "Optical character recognition, text detection, and layout analysis agent.",
+  "capabilities": [
+    "scene_text_detection",
+    "document_layout_analysis",
+    "handwriting_recognition",
+    "table_extraction"
+  ],
+  "interfaces": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "image_tensor": { "type": "array" },
+        "layout_mode": { "type": "string" }
+      }
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "text_regions": { "type": "array" },
+        "layout_tree": { "type": "object" }
+      }
+    }
+  }
+}

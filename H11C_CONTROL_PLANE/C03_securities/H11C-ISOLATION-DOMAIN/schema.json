@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-ISOLATION-DOMAIN",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Hard partition of blackboard namespaces per case.",
+  "category": "security",
+  "handler": "compartment",
+  "inputs": [
+    {
+      "name": "label",
+      "type": "Any"
+    },
+    {
+      "name": "sink",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-COMPARTMENT"
+    ],
+    "downstream": [
+      "H11C-BLACKBOARD"
+    ]
+  },
+  "capabilities": [
+    "compartment"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

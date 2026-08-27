@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FILMSCORE",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Film scoring and adaptive audio for media.",
+  "category": "MediaIntegration",
+  "inputs": [
+    {
+      "name": "timecode_events",
+      "type": "array",
+      "description": "Visual hit points",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "tempo_map",
+      "type": "object",
+      "description": "Calculated tempos to hit cues"
+    }
+  ],
+  "config": {
+    "max_tempo_shift": {
+      "type": "number",
+      "default": 10.0,
+      "description": "Max BPM change per measure"
+    }
+  },
+  "state_schema": {
+    "current_smpte": {
+      "type": "string",
+      "description": "Active timecode"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPOSITIO"],
+    "downstream": ["H11-MUSICPROD"]
+  },
+  "events": {
+    "emits": ["tempo_map_generated"],
+    "consumes": ["sync_to_picture"]
+  },
+  "metrics": [
+    {
+      "name": "hit_point_accuracy_ms",
+      "type": "histogram",
+      "description": "Deviation from exact visual cue"
+    }
+  ],
+  "capabilities": ["tempo_mapping", "adaptive_branching", "smpte_sync"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-DATACENTER Schema",
+  "type": "object",
+  "properties": {
+    "orchestration_engine": {
+      "type": "string",
+      "enum": ["KUBERNETES", "BORG", "MESOS", "H11_CUSTOM"]
+    },
+    "resource_scheduling": {
+      "type": "object",
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["TETRIS", "QUINCY", "FIRMAMENT", "MULTI_DIMENSIONAL_KNAPSACK"]
+        },
+        "overcommit_ratio": {
+          "type": "number",
+          "minimum": 1.0,
+          "maximum": 5.0
+        }
+      },
+      "required": ["algorithm", "overcommit_ratio"]
+    },
+    "cooling_system": {
+      "type": "string",
+      "enum": ["AIR", "LIQUID_TO_AIR", "LIQUID_TO_LIQUID", "SINGLE_PHASE_IMMERSION", "TWO_PHASE_IMMERSION"]
+    },
+    "power_usage_effectiveness": {
+      "type": "number",
+      "minimum": 1.0,
+      "maximum": 3.0
+    },
+    "network_topology": {
+      "type": "string",
+      "enum": ["FAT_TREE", "DRAGONFLY", "TORUS", "JELLYFISH"]
+    },
+    "sla_targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "metric": { "type": "string" },
+          "target_percentile": { "type": "number" },
+          "latency_ms": { "type": "number" }
+        },
+        "required": ["metric", "target_percentile", "latency_ms"]
+      }
+    }
+  },
+  "required": ["orchestration_engine", "resource_scheduling", "cooling_system", "power_usage_effectiveness", "network_topology", "sla_targets"]
+}

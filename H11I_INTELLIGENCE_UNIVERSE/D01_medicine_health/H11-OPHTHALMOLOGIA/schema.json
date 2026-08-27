@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OPHTHALMOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Agent for ocular anatomy, visual pathways, and ophthalmic diseases.",
+  "category": "Ophthalmology",
+  "inputs": [
+    {"name": "oct_macula_scan", "type": "OCTDataCube"},
+    {"name": "visual_field_array", "type": "array", "items": {"type": "number"}}
+  ],
+  "outputs": [
+    {"name": "glaucoma_progression_index", "type": "number"},
+    {"name": "optical_correction", "type": "LensPrescription"}
+  ],
+  "config": {
+    "pupil_size_mm": 4.0,
+    "wavelength_nm": 555
+  },
+  "state_schema": {
+    "iop_history": "array<number>",
+    "rnfl_baseline": "number"
+  },
+  "dependencies": {
+    "upstream": ["H11-NEUROLOGIA", "H11-ENDOCRINOLOGIA"],
+    "downstream": ["H11-GERIATRIA"]
+  },
+  "events": {
+    "emits": ["VisionLossAlert", "PrescriptionUpdated"],
+    "consumes": ["IOPMeasurement", "GlucoseSpike"]
+  },
+  "metrics": ["vf_mean_deviation", "lens_opacity_index"],
+  "capabilities": ["refraction_modeling", "retinal_degeneration_sim"],
+  "scaling": {
+    "mode": "gpu_accelerated",
+    "concurrency_limit": 100
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PARASITOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Models protozoan and helminthic lifecycles, migration, and tropical diseases.",
+  "category": "Infectious Disease",
+  "inputs": [
+    {"name": "parasite_species", "type": "ParasiteData"},
+    {"name": "vector_exposure", "type": "VectorEvent"},
+    {"name": "host_anatomy", "type": "AnatomyGraph"}
+  ],
+    "outputs": [
+    {"name": "parasitic_burden", "type": "Float"},
+    {"name": "lifecycle_stage", "type": "StageEnum"},
+    {"name": "systemic_effects", "type": "List[Effect]"},
+    {"name": "migration_path", "type": "List[str]"}
+  ],
+  "config": {
+    "track_worm_count": true
+  },
+  "state_schema": {
+    "parasite_cohorts": "List[ParasiteCohort]"
+  },
+  "dependencies": {
+    "upstream": ["H11-ANATOMIA", "H11-EPIDEMIOLOGIA"],
+    "downstream": ["H11-PHYSIOLOGIA", "H11-PATHOLOGIA"]
+  },
+  "events": {
+    "emits": ["LifecycleAdvanced", "OrganObstructed", "RBCRupture"],
+    "consumes": ["AntiparasiticAdministered"]
+  },
+  "metrics": ["parasitemia_level", "migration_progress"],
+  "capabilities": ["Lifecycle State Machine", "Anatomical Migration", "Eosinophil Evasion"],
+  "scaling": {
+    "event_driven": true
+  }
+}

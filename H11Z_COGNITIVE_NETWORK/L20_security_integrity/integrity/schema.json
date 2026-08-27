@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-INTEGRITY",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "Data integrity: checksums (SHA-256), Merkle trees, digital signatures, code signing, model hash verification, integrity monitoring, tamper detection, supply chain security, SBOM",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "asset",
+      "type": "Asset",
+      "description": "File or model to verify",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "integrity_report",
+      "type": "IntegrityReport",
+      "description": "Verification status and hashes"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "merkle_root": {
+      "type": "str",
+      "desc": "Root hash of system state"
+    },
+    "sbom_registry": {
+      "type": "dict",
+      "desc": "Registered component hashes"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "integrity_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "integrity_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

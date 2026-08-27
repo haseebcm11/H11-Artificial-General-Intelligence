@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SEGMENT",
+  "version": "2.1.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "agent_name": "Interactive Mask Segmenter",
+  "description": "Performs panoptic and interactive point/box-prompted segmentation using lightweight decoders.",
+  "interfaces": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "image_embedding": { "type": "array" },
+        "mode": { "type": "string", "enum": ["SEMANTIC", "INSTANCE", "PANOPTIC", "PROMPTABLE"] },
+        "point_prompts": { "type": "array" }
+      },
+      "required": ["image_embedding", "mode"]
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "rle_masks": { "type": "array", "description": "Run-length encoded boolean masks." },
+        "classes": { "type": "array" },
+        "iou_scores": { "type": "array" }
+      }
+    }
+  }
+}

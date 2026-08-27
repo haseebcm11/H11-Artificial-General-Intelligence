@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_Cluster_Config",
+  "type": "object",
+  "properties": {
+    "total_gpus": {
+      "type": "integer",
+      "description": "Total number of accelerator chips in the cluster."
+    },
+    "gpus_per_node": {
+      "type": "integer",
+      "enum": [4, 8, 16],
+      "description": "Number of accelerators per physical chassis/node."
+    },
+    "nodes_per_rack": {
+      "type": "integer",
+      "description": "Density of compute nodes per server rack."
+    },
+    "scheduler_type": {
+      "type": "string",
+      "enum": ["SLURM", "Kubernetes", "Custom_Topology_Aware"],
+      "description": "Orchestrator used for job scheduling and placement."
+    },
+    "all_reduce_algo": {
+      "type": "string",
+      "enum": ["Ring", "Tree", "Halving-Doubling", "Hierarchical"],
+      "description": "Collective communication algorithm optimized for."
+    }
+  },
+  "required": ["total_gpus", "gpus_per_node", "nodes_per_rack"]
+}

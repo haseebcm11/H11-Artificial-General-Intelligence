@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OncoPharm Agent Schema",
+  "type": "object",
+  "properties": {
+    "tumor_profile": {
+      "type": "object",
+      "properties": {
+        "cancer_type": { "type": "string" },
+        "mutations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "expression_levels": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        }
+      },
+      "required": ["cancer_type", "mutations"]
+    },
+    "regimen": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "drug_name": { "type": "string" },
+          "mechanism": { "type": "string" },
+          "dose_mg": { "type": "number" }
+        },
+        "required": ["drug_name", "mechanism", "dose_mg"]
+      }
+    }
+  },
+  "required": ["tumor_profile", "regimen"]
+}

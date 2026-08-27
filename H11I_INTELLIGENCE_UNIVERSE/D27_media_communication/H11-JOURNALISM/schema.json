@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-JOURNALISM",
+  "version": "1.0.0",
+  "layer": "2",
+  "layer_name": "Data Synthesis",
+  "description": "Investigative journalism synthesis, fact-checking, and narrative assembly.",
+  "category": "Content Curation",
+  "inputs": [
+    {
+      "name": "raw_sources",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_id": {"type": "string"},
+          "content": {"type": "string"},
+          "author_id": {"type": "string"},
+          "timestamp": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    {
+      "name": "investigation_focus",
+      "type": "string"
+    },
+    {
+      "name": "bias_tolerance",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    }
+  ],
+  "outputs": [
+    {
+      "name": "verified_narrative",
+      "type": "object",
+      "properties": {
+        "headline": {"type": "string"},
+        "lead_paragraph": {"type": "string"},
+        "body_blocks": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "citations": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "confidence_score",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    {
+      "name": "flagged_claims",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_text": {"type": "string"},
+          "reason": {"type": "string"}
+        }
+      }
+    }
+  ],
+  "config": {
+    "knowledge_graph_endpoint": "https://api.h11.internal/kg",
+    "ner_model_version": "roberta-v3-journalism",
+    "drt_engine_timeout_ms": 15000
+  },
+  "state_schema": {
+    "source_credibility_ledger": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "trust_score": {"type": "number"},
+          "verification_count": {"type": "integer"}
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-OSINT", "H11-NLP"],
+    "downstream": ["H11-BROADCAST", "H11-PUBLISHING"]
+  },
+  "events": {
+    "emits": ["narrative_synthesized", "high_bias_detected"],
+    "consumes": ["new_source_material_available"]
+  },
+  "metrics": [
+    "claims_verified_per_second",
+    "average_confidence_score",
+    "ledger_update_latency"
+  ],
+  "capabilities": [
+    "tripartite_fact_verification",
+    "bias_matrix_mapping",
+    "discourse_representation_assembly"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

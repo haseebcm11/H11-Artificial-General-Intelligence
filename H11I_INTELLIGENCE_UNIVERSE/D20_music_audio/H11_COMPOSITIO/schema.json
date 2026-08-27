@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-COMPOSITIO",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Melodic and structural composition.",
+  "category": "Composition",
+  "inputs": [
+    {
+      "name": "form_template",
+      "type": "string",
+      "description": "Macro structure like Sonata, Rondo",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "melodic_lines",
+      "type": "array",
+      "description": "Generated melodic contours"
+    }
+  ],
+  "config": {
+    "variation_index": {
+      "type": "number",
+      "default": 0.5,
+      "description": "Degree of variation in motifs"
+    }
+  },
+  "state_schema": {
+    "active_motifs": {
+      "type": "array",
+      "description": "Currently active musical motifs"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-HARMONIA"]
+  },
+  "events": {
+    "emits": ["melody_generated"],
+    "consumes": ["request_composition"]
+  },
+  "metrics": [
+    {
+      "name": "coherence_score",
+      "type": "gauge",
+      "description": "Measure of motivic consistency"
+    }
+  ],
+  "capabilities": ["structural_generation", "melody_writing"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

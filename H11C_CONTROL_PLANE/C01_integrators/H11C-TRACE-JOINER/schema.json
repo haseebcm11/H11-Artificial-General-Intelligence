@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-TRACE-JOINER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Joins hop traces that share a trace_id into one causal chain.",
+  "category": "integrator",
+  "handler": "join_traces",
+  "inputs": [
+    {
+      "name": "traces",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "trace",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-EVENT-FUSION"
+    ],
+    "downstream": [
+      "H11C-TAMPER-EVIDENT"
+    ]
+  },
+  "capabilities": [
+    "join_traces"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

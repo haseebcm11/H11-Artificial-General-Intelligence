@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FORMATTING",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Structures raw generated data into requested syntaxes (Markdown, JSON, LaTeX).",
+  "category": "Generation",
+  "inputs": [
+    {"name": "raw_content", "type": "str"}, {"name": "target_format", "type": "str"}, {"name": "schema", "type": "Optional[Dict[str, Any]]"}
+  ],
+  "outputs": [
+    {"name": "formatted_content", "type": "str"}, {"name": "is_valid", "type": "bool"}
+  ]
+}

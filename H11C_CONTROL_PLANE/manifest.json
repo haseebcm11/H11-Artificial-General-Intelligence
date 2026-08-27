@@ -1,0 +1,761 @@
+{
+  "system": "H11C Control Plane",
+  "total_agents": 125,
+  "families": {
+    "integrator": 40,
+    "orchestrator": 45,
+    "security": 40
+  },
+  "agents": [
+    {
+      "agent_id": "H11C-SCHEMA-BRIDGE",
+      "family": "integrator",
+      "handler": "remap_fields",
+      "path": "C01_integrators/H11C-SCHEMA-BRIDGE"
+    },
+    {
+      "agent_id": "H11C-EVENT-FUSION",
+      "family": "integrator",
+      "handler": "fuse_events",
+      "path": "C01_integrators/H11C-EVENT-FUSION"
+    },
+    {
+      "agent_id": "H11C-SUBSTRATE-BINDER",
+      "family": "integrator",
+      "handler": "bind_role",
+      "path": "C01_integrators/H11C-SUBSTRATE-BINDER"
+    },
+    {
+      "agent_id": "H11C-DOMAIN-BINDER",
+      "family": "integrator",
+      "handler": "bind_role",
+      "path": "C01_integrators/H11C-DOMAIN-BINDER"
+    },
+    {
+      "agent_id": "H11C-PIPELINE-COMPOSER",
+      "family": "integrator",
+      "handler": "compose_pipeline",
+      "path": "C01_integrators/H11C-PIPELINE-COMPOSER"
+    },
+    {
+      "agent_id": "H11C-CONTRACT-CHECKER",
+      "family": "integrator",
+      "handler": "check_contract",
+      "path": "C01_integrators/H11C-CONTRACT-CHECKER"
+    },
+    {
+      "agent_id": "H11C-TYPE-COERCER",
+      "family": "integrator",
+      "handler": "coerce_types",
+      "path": "C01_integrators/H11C-TYPE-COERCER"
+    },
+    {
+      "agent_id": "H11C-TRACE-JOINER",
+      "family": "integrator",
+      "handler": "join_traces",
+      "path": "C01_integrators/H11C-TRACE-JOINER"
+    },
+    {
+      "agent_id": "H11C-MEMORY-PROJECTOR",
+      "family": "integrator",
+      "handler": "project_memory",
+      "path": "C01_integrators/H11C-MEMORY-PROJECTOR"
+    },
+    {
+      "agent_id": "H11C-REASON-INJECTOR",
+      "family": "integrator",
+      "handler": "inject_premises",
+      "path": "C01_integrators/H11C-REASON-INJECTOR"
+    },
+    {
+      "agent_id": "H11C-ALIGN-HOOK",
+      "family": "integrator",
+      "handler": "attach_align",
+      "path": "C01_integrators/H11C-ALIGN-HOOK"
+    },
+    {
+      "agent_id": "H11C-PERCEPTION-BINDER",
+      "family": "integrator",
+      "handler": "bind_role",
+      "path": "C01_integrators/H11C-PERCEPTION-BINDER"
+    },
+    {
+      "agent_id": "H11C-ACTION-BINDER",
+      "family": "integrator",
+      "handler": "bind_role",
+      "path": "C01_integrators/H11C-ACTION-BINDER"
+    },
+    {
+      "agent_id": "H11C-WORLD-BINDER",
+      "family": "integrator",
+      "handler": "bind_role",
+      "path": "C01_integrators/H11C-WORLD-BINDER"
+    },
+    {
+      "agent_id": "H11C-LANGUAGE-BINDER",
+      "family": "integrator",
+      "handler": "bind_role",
+      "path": "C01_integrators/H11C-LANGUAGE-BINDER"
+    },
+    {
+      "agent_id": "H11C-MEDICAL-INTEGRATOR",
+      "family": "integrator",
+      "handler": "route_domain",
+      "path": "C01_integrators/H11C-MEDICAL-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-LEGAL-INTEGRATOR",
+      "family": "integrator",
+      "handler": "route_domain",
+      "path": "C01_integrators/H11C-LEGAL-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-FINANCE-INTEGRATOR",
+      "family": "integrator",
+      "handler": "route_domain",
+      "path": "C01_integrators/H11C-FINANCE-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-ENGINEERING-INTEGRATOR",
+      "family": "integrator",
+      "handler": "route_domain",
+      "path": "C01_integrators/H11C-ENGINEERING-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-SCIENCE-INTEGRATOR",
+      "family": "integrator",
+      "handler": "route_domain",
+      "path": "C01_integrators/H11C-SCIENCE-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-CROSS-DOMAIN-ROUTER",
+      "family": "integrator",
+      "handler": "route_domain",
+      "path": "C01_integrators/H11C-CROSS-DOMAIN-ROUTER"
+    },
+    {
+      "agent_id": "H11C-CONTEXT-PACKER",
+      "family": "integrator",
+      "handler": "pack_context",
+      "path": "C01_integrators/H11C-CONTEXT-PACKER"
+    },
+    {
+      "agent_id": "H11C-RESULT-REDUCER",
+      "family": "integrator",
+      "handler": "reduce_results",
+      "path": "C01_integrators/H11C-RESULT-REDUCER"
+    },
+    {
+      "agent_id": "H11C-CONFLICT-MERGER",
+      "family": "integrator",
+      "handler": "merge_conflicts",
+      "path": "C01_integrators/H11C-CONFLICT-MERGER"
+    },
+    {
+      "agent_id": "H11C-CAPABILITY-MAPPER",
+      "family": "integrator",
+      "handler": "map_capabilities",
+      "path": "C01_integrators/H11C-CAPABILITY-MAPPER"
+    },
+    {
+      "agent_id": "H11C-DEPENDENCY-RESOLVER",
+      "family": "integrator",
+      "handler": "resolve_deps",
+      "path": "C01_integrators/H11C-DEPENDENCY-RESOLVER"
+    },
+    {
+      "agent_id": "H11C-VERSION-ALIGNER",
+      "family": "integrator",
+      "handler": "check_contract",
+      "path": "C01_integrators/H11C-VERSION-ALIGNER"
+    },
+    {
+      "agent_id": "H11C-STREAM-INTEGRATOR",
+      "family": "integrator",
+      "handler": "fuse_events",
+      "path": "C01_integrators/H11C-STREAM-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-BATCH-INTEGRATOR",
+      "family": "integrator",
+      "handler": "reduce_results",
+      "path": "C01_integrators/H11C-BATCH-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-HUMAN-INTEGRATOR",
+      "family": "integrator",
+      "handler": "splice_external",
+      "path": "C01_integrators/H11C-HUMAN-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-TOOL-INTEGRATOR",
+      "family": "integrator",
+      "handler": "splice_external",
+      "path": "C01_integrators/H11C-TOOL-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-CORPUS-INTEGRATOR",
+      "family": "integrator",
+      "handler": "splice_external",
+      "path": "C01_integrators/H11C-CORPUS-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-SENSOR-INTEGRATOR",
+      "family": "integrator",
+      "handler": "bind_role",
+      "path": "C01_integrators/H11C-SENSOR-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-ACTUATOR-INTEGRATOR",
+      "family": "integrator",
+      "handler": "bind_role",
+      "path": "C01_integrators/H11C-ACTUATOR-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-ENERGY-INTEGRATOR",
+      "family": "integrator",
+      "handler": "pack_context",
+      "path": "C01_integrators/H11C-ENERGY-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-OBSERVABILITY-INTEGRATOR",
+      "family": "integrator",
+      "handler": "fuse_events",
+      "path": "C01_integrators/H11C-OBSERVABILITY-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-MULTIMODAL-INTEGRATOR",
+      "family": "integrator",
+      "handler": "fuse_events",
+      "path": "C01_integrators/H11C-MULTIMODAL-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-TEMPORAL-INTEGRATOR",
+      "family": "integrator",
+      "handler": "join_traces",
+      "path": "C01_integrators/H11C-TEMPORAL-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-GRAPH-INTEGRATOR",
+      "family": "integrator",
+      "handler": "resolve_deps",
+      "path": "C01_integrators/H11C-GRAPH-INTEGRATOR"
+    },
+    {
+      "agent_id": "H11C-SPINE-REGISTRAR",
+      "family": "integrator",
+      "handler": "register_spine",
+      "path": "C01_integrators/H11C-SPINE-REGISTRAR"
+    },
+    {
+      "agent_id": "H11C-COGNITIVE-LOOP",
+      "family": "orchestrator",
+      "handler": "cognitive_tick",
+      "path": "C02_orchestrators/H11C-COGNITIVE-LOOP"
+    },
+    {
+      "agent_id": "H11C-GOAL-STACK",
+      "family": "orchestrator",
+      "handler": "goal_stack",
+      "path": "C02_orchestrators/H11C-GOAL-STACK"
+    },
+    {
+      "agent_id": "H11C-TASK-DECOMPOSER",
+      "family": "orchestrator",
+      "handler": "goal_stack",
+      "path": "C02_orchestrators/H11C-TASK-DECOMPOSER"
+    },
+    {
+      "agent_id": "H11C-SCHEDULER",
+      "family": "orchestrator",
+      "handler": "schedule",
+      "path": "C02_orchestrators/H11C-SCHEDULER"
+    },
+    {
+      "agent_id": "H11C-ROUTER",
+      "family": "orchestrator",
+      "handler": "route",
+      "path": "C02_orchestrators/H11C-ROUTER"
+    },
+    {
+      "agent_id": "H11C-WORKFLOW-ENGINE",
+      "family": "orchestrator",
+      "handler": "run_workflow",
+      "path": "C02_orchestrators/H11C-WORKFLOW-ENGINE"
+    },
+    {
+      "agent_id": "H11C-STATE-MACHINE",
+      "family": "orchestrator",
+      "handler": "state_machine",
+      "path": "C02_orchestrators/H11C-STATE-MACHINE"
+    },
+    {
+      "agent_id": "H11C-BLACKBOARD",
+      "family": "orchestrator",
+      "handler": "blackboard",
+      "path": "C02_orchestrators/H11C-BLACKBOARD"
+    },
+    {
+      "agent_id": "H11C-AGENDA",
+      "family": "orchestrator",
+      "handler": "schedule",
+      "path": "C02_orchestrators/H11C-AGENDA"
+    },
+    {
+      "agent_id": "H11C-ATTENTION-ALLOCATOR",
+      "family": "orchestrator",
+      "handler": "allocate",
+      "path": "C02_orchestrators/H11C-ATTENTION-ALLOCATOR"
+    },
+    {
+      "agent_id": "H11C-BUDGET-CONTROLLER",
+      "family": "orchestrator",
+      "handler": "budget",
+      "path": "C02_orchestrators/H11C-BUDGET-CONTROLLER"
+    },
+    {
+      "agent_id": "H11C-TIMEOUT-GUARDIAN",
+      "family": "orchestrator",
+      "handler": "timeout",
+      "path": "C02_orchestrators/H11C-TIMEOUT-GUARDIAN"
+    },
+    {
+      "agent_id": "H11C-RETRY",
+      "family": "orchestrator",
+      "handler": "retry",
+      "path": "C02_orchestrators/H11C-RETRY"
+    },
+    {
+      "agent_id": "H11C-FALLBACK",
+      "family": "orchestrator",
+      "handler": "fallback",
+      "path": "C02_orchestrators/H11C-FALLBACK"
+    },
+    {
+      "agent_id": "H11C-PARALLEL-FANOUT",
+      "family": "orchestrator",
+      "handler": "fanout",
+      "path": "C02_orchestrators/H11C-PARALLEL-FANOUT"
+    },
+    {
+      "agent_id": "H11C-JOIN-BARRIER",
+      "family": "orchestrator",
+      "handler": "join",
+      "path": "C02_orchestrators/H11C-JOIN-BARRIER"
+    },
+    {
+      "agent_id": "H11C-PREEMPTOR",
+      "family": "orchestrator",
+      "handler": "preempt",
+      "path": "C02_orchestrators/H11C-PREEMPTOR"
+    },
+    {
+      "agent_id": "H11C-PRIORITY-INVERSION",
+      "family": "orchestrator",
+      "handler": "preempt",
+      "path": "C02_orchestrators/H11C-PRIORITY-INVERSION"
+    },
+    {
+      "agent_id": "H11C-LOAD-SHEDDER",
+      "family": "orchestrator",
+      "handler": "budget",
+      "path": "C02_orchestrators/H11C-LOAD-SHEDDER"
+    },
+    {
+      "agent_id": "H11C-SESSION",
+      "family": "orchestrator",
+      "handler": "blackboard",
+      "path": "C02_orchestrators/H11C-SESSION"
+    },
+    {
+      "agent_id": "H11C-PLAN-EXECUTOR",
+      "family": "orchestrator",
+      "handler": "run_workflow",
+      "path": "C02_orchestrators/H11C-PLAN-EXECUTOR"
+    },
+    {
+      "agent_id": "H11C-REPLANNER",
+      "family": "orchestrator",
+      "handler": "cognitive_tick",
+      "path": "C02_orchestrators/H11C-REPLANNER"
+    },
+    {
+      "agent_id": "H11C-INTERRUPT-HANDLER",
+      "family": "orchestrator",
+      "handler": "preempt",
+      "path": "C02_orchestrators/H11C-INTERRUPT-HANDLER"
+    },
+    {
+      "agent_id": "H11C-META-CONTROLLER",
+      "family": "orchestrator",
+      "handler": "allocate",
+      "path": "C02_orchestrators/H11C-META-CONTROLLER"
+    },
+    {
+      "agent_id": "H11C-PERCEPTION-CYCLE",
+      "family": "orchestrator",
+      "handler": "cognitive_tick",
+      "path": "C02_orchestrators/H11C-PERCEPTION-CYCLE"
+    },
+    {
+      "agent_id": "H11C-DELIBERATION-CYCLE",
+      "family": "orchestrator",
+      "handler": "cognitive_tick",
+      "path": "C02_orchestrators/H11C-DELIBERATION-CYCLE"
+    },
+    {
+      "agent_id": "H11C-ACTION-CYCLE",
+      "family": "orchestrator",
+      "handler": "cognitive_tick",
+      "path": "C02_orchestrators/H11C-ACTION-CYCLE"
+    },
+    {
+      "agent_id": "H11C-REFLECTION-CYCLE",
+      "family": "orchestrator",
+      "handler": "cognitive_tick",
+      "path": "C02_orchestrators/H11C-REFLECTION-CYCLE"
+    },
+    {
+      "agent_id": "H11C-SLEEP-CYCLE",
+      "family": "orchestrator",
+      "handler": "cognitive_tick",
+      "path": "C02_orchestrators/H11C-SLEEP-CYCLE"
+    },
+    {
+      "agent_id": "H11C-CURIOSITY-DRIVER",
+      "family": "orchestrator",
+      "handler": "goal_stack",
+      "path": "C02_orchestrators/H11C-CURIOSITY-DRIVER"
+    },
+    {
+      "agent_id": "H11C-INTERRUPTIBLE-LOOP",
+      "family": "orchestrator",
+      "handler": "cognitive_tick",
+      "path": "C02_orchestrators/H11C-INTERRUPTIBLE-LOOP"
+    },
+    {
+      "agent_id": "H11C-NESTED-GOAL",
+      "family": "orchestrator",
+      "handler": "goal_stack",
+      "path": "C02_orchestrators/H11C-NESTED-GOAL"
+    },
+    {
+      "agent_id": "H11C-MULTI-CASE",
+      "family": "orchestrator",
+      "handler": "fanout",
+      "path": "C02_orchestrators/H11C-MULTI-CASE"
+    },
+    {
+      "agent_id": "H11C-CONSENSUS",
+      "family": "orchestrator",
+      "handler": "join",
+      "path": "C02_orchestrators/H11C-CONSENSUS"
+    },
+    {
+      "agent_id": "H11C-DEBATE",
+      "family": "orchestrator",
+      "handler": "merge_conflicts",
+      "path": "C02_orchestrators/H11C-DEBATE"
+    },
+    {
+      "agent_id": "H11C-SUPERVISOR",
+      "family": "orchestrator",
+      "handler": "allocate",
+      "path": "C02_orchestrators/H11C-SUPERVISOR"
+    },
+    {
+      "agent_id": "H11C-WORKER-POOL",
+      "family": "orchestrator",
+      "handler": "fanout",
+      "path": "C02_orchestrators/H11C-WORKER-POOL"
+    },
+    {
+      "agent_id": "H11C-EVENT-BUS",
+      "family": "orchestrator",
+      "handler": "fuse_events",
+      "path": "C02_orchestrators/H11C-EVENT-BUS"
+    },
+    {
+      "agent_id": "H11C-DEADLINE",
+      "family": "orchestrator",
+      "handler": "timeout",
+      "path": "C02_orchestrators/H11C-DEADLINE"
+    },
+    {
+      "agent_id": "H11C-MODE-SWITCH",
+      "family": "orchestrator",
+      "handler": "state_machine",
+      "path": "C02_orchestrators/H11C-MODE-SWITCH"
+    },
+    {
+      "agent_id": "H11C-HALT",
+      "family": "orchestrator",
+      "handler": "halt",
+      "path": "C02_orchestrators/H11C-HALT"
+    },
+    {
+      "agent_id": "H11C-RESUME",
+      "family": "orchestrator",
+      "handler": "resume",
+      "path": "C02_orchestrators/H11C-RESUME"
+    },
+    {
+      "agent_id": "H11C-CHECKPOINT",
+      "family": "orchestrator",
+      "handler": "checkpoint",
+      "path": "C02_orchestrators/H11C-CHECKPOINT"
+    },
+    {
+      "agent_id": "H11C-PIPELINE-RUNNER",
+      "family": "orchestrator",
+      "handler": "run_pipeline",
+      "path": "C02_orchestrators/H11C-PIPELINE-RUNNER"
+    },
+    {
+      "agent_id": "H11C-AGI-KERNEL",
+      "family": "orchestrator",
+      "handler": "agi_tick",
+      "path": "C02_orchestrators/H11C-AGI-KERNEL"
+    },
+    {
+      "agent_id": "H11C-IDENTITY",
+      "family": "security",
+      "handler": "identity",
+      "path": "C03_securities/H11C-IDENTITY"
+    },
+    {
+      "agent_id": "H11C-CAPABILITY-TOKEN",
+      "family": "security",
+      "handler": "capability",
+      "path": "C03_securities/H11C-CAPABILITY-TOKEN"
+    },
+    {
+      "agent_id": "H11C-SANDBOX-GATE",
+      "family": "security",
+      "handler": "sandbox",
+      "path": "C03_securities/H11C-SANDBOX-GATE"
+    },
+    {
+      "agent_id": "H11C-ENVELOPE-AUTH",
+      "family": "security",
+      "handler": "capability",
+      "path": "C03_securities/H11C-ENVELOPE-AUTH"
+    },
+    {
+      "agent_id": "H11C-SCHEMA-FIREWALL",
+      "family": "security",
+      "handler": "check_contract",
+      "path": "C03_securities/H11C-SCHEMA-FIREWALL"
+    },
+    {
+      "agent_id": "H11C-INJECTION-GATE",
+      "family": "security",
+      "handler": "injection",
+      "path": "C03_securities/H11C-INJECTION-GATE"
+    },
+    {
+      "agent_id": "H11C-TOOL-ALLOWLIST",
+      "family": "security",
+      "handler": "allowlist",
+      "path": "C03_securities/H11C-TOOL-ALLOWLIST"
+    },
+    {
+      "agent_id": "H11C-DATA-CLASS",
+      "family": "security",
+      "handler": "classify",
+      "path": "C03_securities/H11C-DATA-CLASS"
+    },
+    {
+      "agent_id": "H11C-COMPARTMENT",
+      "family": "security",
+      "handler": "compartment",
+      "path": "C03_securities/H11C-COMPARTMENT"
+    },
+    {
+      "agent_id": "H11C-AUDIT-CHAIN",
+      "family": "security",
+      "handler": "audit",
+      "path": "C03_securities/H11C-AUDIT-CHAIN"
+    },
+    {
+      "agent_id": "H11C-RATE-LIMIT",
+      "family": "security",
+      "handler": "rate_limit",
+      "path": "C03_securities/H11C-RATE-LIMIT"
+    },
+    {
+      "agent_id": "H11C-PRIVILEGE-DROP",
+      "family": "security",
+      "handler": "privilege",
+      "path": "C03_securities/H11C-PRIVILEGE-DROP"
+    },
+    {
+      "agent_id": "H11C-OUTPUT-REDACTOR",
+      "family": "security",
+      "handler": "redact",
+      "path": "C03_securities/H11C-OUTPUT-REDACTOR"
+    },
+    {
+      "agent_id": "H11C-INPUT-SANITIZER",
+      "family": "security",
+      "handler": "sanitize",
+      "path": "C03_securities/H11C-INPUT-SANITIZER"
+    },
+    {
+      "agent_id": "H11C-POLICY-ENGINE",
+      "family": "security",
+      "handler": "policy",
+      "path": "C03_securities/H11C-POLICY-ENGINE"
+    },
+    {
+      "agent_id": "H11C-CONSENT-GATE",
+      "family": "security",
+      "handler": "consent",
+      "path": "C03_securities/H11C-CONSENT-GATE"
+    },
+    {
+      "agent_id": "H11C-KILL-SWITCH",
+      "family": "security",
+      "handler": "halt",
+      "path": "C03_securities/H11C-KILL-SWITCH"
+    },
+    {
+      "agent_id": "H11C-DUAL-CONTROL",
+      "family": "security",
+      "handler": "dual",
+      "path": "C03_securities/H11C-DUAL-CONTROL"
+    },
+    {
+      "agent_id": "H11C-PROVENANCE-SEAL",
+      "family": "security",
+      "handler": "mac",
+      "path": "C03_securities/H11C-PROVENANCE-SEAL"
+    },
+    {
+      "agent_id": "H11C-INTEGRITY-MAC",
+      "family": "security",
+      "handler": "mac",
+      "path": "C03_securities/H11C-INTEGRITY-MAC"
+    },
+    {
+      "agent_id": "H11C-REPLAY-GUARD",
+      "family": "security",
+      "handler": "replay",
+      "path": "C03_securities/H11C-REPLAY-GUARD"
+    },
+    {
+      "agent_id": "H11C-CONFUSED-DEPUTY",
+      "family": "security",
+      "handler": "privilege",
+      "path": "C03_securities/H11C-CONFUSED-DEPUTY"
+    },
+    {
+      "agent_id": "H11C-DELEGATION-LIMIT",
+      "family": "security",
+      "handler": "privilege",
+      "path": "C03_securities/H11C-DELEGATION-LIMIT"
+    },
+    {
+      "agent_id": "H11C-SECRET-VAULT",
+      "family": "security",
+      "handler": "vault",
+      "path": "C03_securities/H11C-SECRET-VAULT"
+    },
+    {
+      "agent_id": "H11C-ISOLATION-DOMAIN",
+      "family": "security",
+      "handler": "compartment",
+      "path": "C03_securities/H11C-ISOLATION-DOMAIN"
+    },
+    {
+      "agent_id": "H11C-MEDICAL-SAFETY",
+      "family": "security",
+      "handler": "policy",
+      "path": "C03_securities/H11C-MEDICAL-SAFETY"
+    },
+    {
+      "agent_id": "H11C-HIGH-STAKES",
+      "family": "security",
+      "handler": "dual",
+      "path": "C03_securities/H11C-HIGH-STAKES"
+    },
+    {
+      "agent_id": "H11C-EXFIL-GUARD",
+      "family": "security",
+      "handler": "redact",
+      "path": "C03_securities/H11C-EXFIL-GUARD"
+    },
+    {
+      "agent_id": "H11C-MODEL-INTEGRITY",
+      "family": "security",
+      "handler": "mac",
+      "path": "C03_securities/H11C-MODEL-INTEGRITY"
+    },
+    {
+      "agent_id": "H11C-SUPPLY-CHAIN-PIN",
+      "family": "security",
+      "handler": "allowlist",
+      "path": "C03_securities/H11C-SUPPLY-CHAIN-PIN"
+    },
+    {
+      "agent_id": "H11C-SESSION-BOUND",
+      "family": "security",
+      "handler": "replay",
+      "path": "C03_securities/H11C-SESSION-BOUND"
+    },
+    {
+      "agent_id": "H11C-LEAST-PRIVILEGE",
+      "family": "security",
+      "handler": "privilege",
+      "path": "C03_securities/H11C-LEAST-PRIVILEGE"
+    },
+    {
+      "agent_id": "H11C-ZERO-TRUST-HOP",
+      "family": "security",
+      "handler": "zero_trust",
+      "path": "C03_securities/H11C-ZERO-TRUST-HOP"
+    },
+    {
+      "agent_id": "H11C-TAMPER-EVIDENT",
+      "family": "security",
+      "handler": "audit",
+      "path": "C03_securities/H11C-TAMPER-EVIDENT"
+    },
+    {
+      "agent_id": "H11C-EMERGENCY-STOP",
+      "family": "security",
+      "handler": "halt",
+      "path": "C03_securities/H11C-EMERGENCY-STOP"
+    },
+    {
+      "agent_id": "H11C-ALIGN-ENFORCE",
+      "family": "security",
+      "handler": "align_enforce",
+      "path": "C03_securities/H11C-ALIGN-ENFORCE"
+    },
+    {
+      "agent_id": "H11C-ACTION-LICENSE",
+      "family": "security",
+      "handler": "license",
+      "path": "C03_securities/H11C-ACTION-LICENSE"
+    },
+    {
+      "agent_id": "H11C-WITNESS-LOG",
+      "family": "security",
+      "handler": "audit",
+      "path": "C03_securities/H11C-WITNESS-LOG"
+    },
+    {
+      "agent_id": "H11C-QUARANTINE",
+      "family": "security",
+      "handler": "halt",
+      "path": "C03_securities/H11C-QUARANTINE"
+    },
+    {
+      "agent_id": "H11C-ADMISSION-CONTROL",
+      "family": "security",
+      "handler": "admit",
+      "path": "C03_securities/H11C-ADMISSION-CONTROL"
+    }
+  ]
+}

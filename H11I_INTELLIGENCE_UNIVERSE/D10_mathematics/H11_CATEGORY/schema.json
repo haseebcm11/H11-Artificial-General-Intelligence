@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CATEGORY",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Category Theory Agent",
+  "category": "Category Theory",
+  "inputs": [
+    {
+      "name": "categories",
+      "type": "array[object]",
+      "description": "Definitions of objects and morphisms",
+      "required": true
+    },
+    {
+      "name": "functors",
+      "type": "array[object]",
+      "description": "Mappings between categories",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "natural_transformations",
+      "type": "array[object]",
+      "description": "Derived morphisms between functors"
+    },
+    {
+      "name": "adjunctions",
+      "type": "array[object]",
+      "description": "Pairs of adjoint functors"
+    }
+  ],
+  "config": {
+    "strict_typing": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce strict object typing during morphism composition"
+    }
+  },
+  "state_schema": {
+    "commutative_diagrams": {
+      "type": "array[object]",
+      "description": "Cache of verified commuting diagrams"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-LOGICA-MATH", "H11-ALGEBRA", "H11-TOPOLOGIA"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["isomorphism_established", "diagram_commutes"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "morphisms_composed",
+      "type": "counter",
+      "description": "Number of valid functional compositions checked"
+    }
+  ],
+  "capabilities": ["functor_mapping", "natural_transformation", "limit_computation"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

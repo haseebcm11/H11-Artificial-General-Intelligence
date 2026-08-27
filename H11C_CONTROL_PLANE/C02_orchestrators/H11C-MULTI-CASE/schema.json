@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-MULTI-CASE",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Runs isolated cases in parallel without blackboard crossover.",
+  "category": "orchestrator",
+  "handler": "fanout",
+  "inputs": [
+    {
+      "name": "n",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "branches",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-ISOLATION-DOMAIN"
+    ],
+    "downstream": [
+      "H11C-JOIN-BARRIER"
+    ]
+  },
+  "capabilities": [
+    "fanout"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

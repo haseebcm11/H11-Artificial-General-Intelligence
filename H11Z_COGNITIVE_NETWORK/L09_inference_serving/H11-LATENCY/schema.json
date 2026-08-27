@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LATENCY",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Kernel fusion, memory access tuning to reduce TTFT and ITL.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "kernel_ops",
+      "type": "List[str]",
+      "desc": "List of operations to fuse"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "fused_kernel",
+      "type": "str",
+      "desc": "Optimized execution path"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "ttft_history": {
+      "type": "List[float]",
+      "description": "Moving window of TTFT values"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

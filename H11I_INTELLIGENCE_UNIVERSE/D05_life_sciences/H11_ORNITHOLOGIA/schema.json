@@ -1,0 +1,19 @@
+{
+  "name": "H11-ORNITHOLOGIA",
+  "version": "1.0.0",
+  "config": {
+    "boid_separation_weight": 1.5,
+    "boid_alignment_weight": 1.0,
+    "boid_cohesion_weight": 1.0,
+    "acoustic_sample_rate": 44100
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "flocks": {
+        "type": "array"
+      }
+    }
+  },
+  "capabilities": ["flocking_simulation", "migration_mapping", "acoustic_analysis"]
+}

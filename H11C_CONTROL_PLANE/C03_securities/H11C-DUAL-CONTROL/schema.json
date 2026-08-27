@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-DUAL-CONTROL",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "High-stakes ACT requires two independent approvals.",
+  "category": "security",
+  "handler": "dual",
+  "inputs": [
+    {
+      "name": "approvals",
+      "type": "Any"
+    },
+    {
+      "name": "need",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-HIGH-STAKES"
+    ],
+    "downstream": [
+      "H11C-ACTION-LICENSE"
+    ]
+  },
+  "capabilities": [
+    "dual"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

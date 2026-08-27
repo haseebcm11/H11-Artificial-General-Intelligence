@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SELFIMPROVE Schema",
+  "type": "object",
+  "properties": {
+    "SelfImprovementRequest": {
+      "type": "object",
+      "properties": {
+        "target_module": { "type": "string" },
+        "source_code": { "type": "string" },
+        "optimization_objective": { "type": "string", "enum": ["latency", "memory", "accuracy", "generalization"] },
+        "constraints": {
+          "type": "object",
+          "properties": {
+            "max_memory_mb": { "type": "number" },
+            "preserve_signatures": { "type": "boolean" }
+          }
+        }
+      },
+      "required": ["target_module", "source_code", "optimization_objective"]
+    },
+    "SelfImprovementResponse": {
+      "type": "object",
+      "properties": {
+        "modified_source": { "type": "string" },
+        "patch_diff": { "type": "string" },
+        "safety_proof_hash": { "type": "string" },
+        "empirical_speedup": { "type": "number" },
+        "status": { "type": "string", "enum": ["verified", "rejected", "pending_human_review"] }
+      },
+      "required": ["modified_source", "status"]
+    }
+  }
+}

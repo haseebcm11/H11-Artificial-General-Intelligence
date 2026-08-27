@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GERIATRIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Orchestrates Comprehensive Geriatric Assessment (CGA), frailty phenotyping (Fried/Rockwood), EWGSOP2 sarcopenia staging, Beers/STOPP/START polypharmacy deprescribing, delirium risk stratification, and multi-morbidity intrinsic capacity modeling.",
+  "category": "Geriatric Medicine",
+  "inputs": [
+    {
+      "name": "cga_bundle",
+      "type": "ComprehensiveGeriatricAssessmentInput"
+    },
+    {
+      "name": "medication_regimen",
+      "type": "MedicationList"
+    },
+    {
+      "name": "functional_biomarkers",
+      "type": "FunctionalBiomarkers"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "frailty_profile",
+      "type": "FrailtyAssessmentReport"
+    },
+    {
+      "name": "deprescribing_guidance",
+      "type": "DeprescribingRecommendation"
+    },
+    {
+      "name": "sarcopenia_delirium_status",
+      "type": "GeriatricSyndromeProfile"
+    },
+    {
+      "name": "intrinsic_capacity_trajectory",
+      "type": "IntrinsicCapacityVector"
+    }
+  ],
+  "config": {
+    "beers_criteria_version": "2023",
+    "stopp_start_version": "v3",
+    "frailty_model_default": "hybrid_fried_rockwood",
+    "acb_warning_threshold": 3
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "patient_id": {
+        "type": "string"
+      },
+      "frailty_index": {
+        "type": "number"
+      },
+      "cga_history": {
+        "type": "array"
+      },
+      "active_geriatric_syndromes": {
+        "type": "array"
+      },
+      "anticholinergic_burden": {
+        "type": "integer"
+      }
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-FARMACOLOGIA",
+      "H11-NEUROLOGIA",
+      "H11-ENDOCRINOLOGIA",
+      "H11-NUTRITIO"
+    ],
+    "downstream": [
+      "H11-PALLIATIVA",
+      "H11-REHABILITATIO",
+      "H11-CARDIOLOGIA",
+      "H11-ORTHOPAEDIA"
+    ]
+  },
+  "events": {
+    "emits": [
+      "acute_delirium_flagged",
+      "high_fall_risk_alert",
+      "critical_anticholinergic_burden",
+      "rapid_functional_decline_detected"
+    ],
+    "consumes": [
+      "new_prescription_event",
+      "mobility_telemetry_update",
+      "acute_hospitalization_event"
+    ]
+  },
+  "metrics": [
+    "cga_completion_latency_ms",
+    "deprescribing_rule_match_rate",
+    "frailty_trajectory_accuracy"
+  ],
+  "capabilities": [
+    "cga_multidimensional_scoring",
+    "fried_frailty_phenotyping",
+    "rockwood_deficit_accumulation",
+    "beers_stopp_start_deprescribing",
+    "ewgsop2_sarcopenia_classification",
+    "cam_4at_delirium_screening",
+    "falls_risk_stratification",
+    "intrinsic_capacity_tracking"
+  ],
+  "scaling": {
+    "min_instances": 1,
+    "max_instances": 8,
+    "target_cpu_utilization": 0.75
+  }
+}

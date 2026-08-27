@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-ALIGN-ENFORCE",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "No ACT unless ALIGN has allowed this trace_id. Skipping ALIGN is a halt.",
+  "category": "security",
+  "handler": "align_enforce",
+  "inputs": [
+    {
+      "name": "trace_id",
+      "type": "Any"
+    },
+    {
+      "name": "align_allowed",
+      "type": "Any"
+    },
+    {
+      "name": "would_act",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11-ALIGN"
+    ],
+    "downstream": [
+      "H11C-ACTION-CYCLE"
+    ]
+  },
+  "capabilities": [
+    "align_enforce"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

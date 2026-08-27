@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-CHAIN schema",
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string",
+      "description": "The user query requiring step-by-step thought."
+    },
+    "cot_type": {
+      "type": "string",
+      "enum": ["zero_shot", "few_shot"],
+      "default": "zero_shot"
+    },
+    "self_consistency_k": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 1
+    },
+    "exemplars": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": {"type": "string"},
+          "chain": {"type": "string"},
+          "answer": {"type": "string"}
+        }
+      }
+    }
+  },
+  "required": ["query"]
+}

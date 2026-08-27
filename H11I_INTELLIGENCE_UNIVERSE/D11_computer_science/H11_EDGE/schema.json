@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EDGE",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Computer Science",
+  "description": "Edge computing topology and placement optimization",
+  "category": "Distributed Systems",
+  "inputs": [
+    {
+      "name": "edge_tasks",
+      "type": "array",
+      "description": "Tasks to be scheduled",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "placement_plan",
+      "type": "object",
+      "description": "Map of task IDs to node IDs"
+    }
+  ],
+  "config": {
+    "energy_weight": {
+      "type": "number",
+      "default": 0.5,
+      "description": "Weight of energy conservation vs latency"
+    }
+  },
+  "state_schema": {
+    "active_nodes": {
+      "type": "array",
+      "description": "Currently online edge nodes"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["node_offline", "task_migrated"],
+    "consumes": ["telemetry_received"]
+  },
+  "metrics": [
+    {
+      "name": "offload_ratio",
+      "type": "gauge",
+      "description": "Ratio of tasks offloaded to cloud vs edge"
+    }
+  ],
+  "capabilities": ["task_placement", "federated_aggregation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

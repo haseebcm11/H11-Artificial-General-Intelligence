@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-GIS Agent Schema",
+  "type": "object",
+  "properties": {
+    "operation": {
+      "type": "string",
+      "enum": ["buffer", "intersection", "union", "distance", "contains"]
+    },
+    "geometry_a": {
+      "type": "object",
+      "description": "GeoJSON format geometry"
+    },
+    "geometry_b": {
+      "type": "object",
+      "description": "GeoJSON format geometry (optional depending on operation)"
+    },
+    "distance": {
+      "type": "number",
+      "description": "Buffer distance"
+    }
+  },
+  "required": ["operation", "geometry_a"]
+}

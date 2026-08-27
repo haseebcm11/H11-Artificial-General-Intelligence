@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-HASH",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Projects a vector through random hyperplanes to a bit string (SimHash) for Hamming-space retrieval.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "vector",
+      "type": "List[float]"
+    },
+    {
+      "name": "bits",
+      "type": "int"
+    },
+    {
+      "name": "seed",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "bits",
+      "type": "str"
+    },
+    {
+      "name": "int_hash",
+      "type": "int"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-SIMILARITY",
+      "H11-EMBEDDER"
+    ],
+    "downstream": [
+      "H11-INDEX"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "simhash"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

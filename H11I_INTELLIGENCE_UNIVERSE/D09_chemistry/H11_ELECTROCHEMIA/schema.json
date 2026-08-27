@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_ELECTROCHEMIA_Schema",
+  "type": "object",
+  "properties": {
+    "system_type": {
+      "type": "string",
+      "enum": ["battery", "fuel_cell", "electrolyzer", "corrosion"]
+    },
+    "anode": { "type": "string" },
+    "cathode": { "type": "string" },
+    "electrolyte": { "type": "string" },
+    "temperature": { "type": "number" }
+  },
+  "required": ["system_type", "anode", "cathode"]
+}

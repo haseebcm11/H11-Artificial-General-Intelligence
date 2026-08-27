@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MONTECARLO",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Systematic resampling of weighted particles; returns the weighted mean and effective sample size.",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "particles",
+      "type": "List[float]"
+    },
+    {
+      "name": "weights",
+      "type": "List[float]"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "resampled",
+      "type": "List[float]"
+    },
+    {
+      "name": "mean",
+      "type": "float"
+    },
+    {
+      "name": "ess",
+      "type": "float"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-UNCERTAINTY",
+      "H11-PREDICT"
+    ],
+    "downstream": [
+      "H11-SCENARIO"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "systematic-resample"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

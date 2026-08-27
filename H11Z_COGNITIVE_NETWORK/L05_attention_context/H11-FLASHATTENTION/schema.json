@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FLASHATTENTION",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Executes hardware-aware, IO-optimized exact attention using SRAM tiling and online softmax.",
+  "inputs": [{"name": "qkv_blocks", "type": "List[Any]", "description": "Tiled QKV chunks"}, {"name": "block_size", "type": "int", "description": "SRAM tile size"}],
+  "outputs": [{"name": "fused_output", "type": "Any", "description": "Exact attention output"}],
+  "state_schema": {"sram_utilization": {"type": "float", "description": "Percent of SRAM used"}}
+}

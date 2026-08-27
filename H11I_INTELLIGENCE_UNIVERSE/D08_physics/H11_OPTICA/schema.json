@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OPTICA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Optics, ray-tracing, and photonics.",
+  "category": "Optics",
+  "inputs": [
+    {
+      "name": "light_sources",
+      "type": "List[LightSource]",
+      "description": "Light emitters",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "intensity_field",
+      "type": "Grid2D",
+      "description": "Computed intensity"
+    }
+  ],
+  "config": {
+    "wavelength_nm": {
+      "type": "float",
+      "default": 532.0,
+      "description": "Default simulation wavelength"
+    }
+  },
+  "state_schema": {
+    "traced_rays": {
+      "type": "int",
+      "description": "Total rays traced"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ELECTROMAGNETICA"],
+    "downstream": ["H11-QUANTUMOPTICA"]
+  },
+  "events": {
+    "emits": ["RayTraceCompleted"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "rays_per_second",
+      "type": "gauge",
+      "description": "Ray tracing throughput"
+    }
+  ],
+  "capabilities": ["ray_tracing", "jones_calculus"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

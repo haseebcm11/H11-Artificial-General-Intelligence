@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CHAOS",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "Chaos practice: controlled failure injection, Chaos Monkey, Litmus, game days, steady-state hypothesis, blast radius, chaos experiments, failure mode analysis, chaos in ML systems",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "experiment_spec",
+      "type": "Experiment",
+      "description": "Definition of the chaos test",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "experiment_report",
+      "type": "Report",
+      "description": "Results of the chaos experiment"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "active_experiments": {
+      "type": "list",
+      "desc": "Currently running fault injections"
+    },
+    "steady_state_metrics": {
+      "type": "dict",
+      "desc": "Baseline system health"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "chaos_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "chaos_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

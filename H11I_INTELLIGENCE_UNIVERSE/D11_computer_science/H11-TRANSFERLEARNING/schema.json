@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TRANSFERLEARNING",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Machine Learning",
+  "description": "Handles domain adaptation, fine-tuning, and knowledge transfer across tasks.",
+  "category": "Artificial Intelligence",
+  "inputs": [
+    {
+      "name": "source_model",
+      "type": "string",
+      "description": "URI to the pre-trained base model",
+      "required": true
+    },
+    {
+      "name": "target_dataset",
+      "type": "string",
+      "description": "URI to the fine-tuning dataset",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "adapted_model",
+      "type": "string",
+      "description": "URI to the fine-tuned/adapted model"
+    },
+    {
+      "name": "domain_divergence",
+      "type": "number",
+      "description": "MMD or Wasserstein distance metric"
+    }
+  ],
+  "config": {
+    "peft_method": {
+      "type": "string",
+      "default": "LORA",
+      "description": "Parameter efficient method (LORA, ADAPTER, PROMPT)"
+    },
+    "prevent_forgetting": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use EWC or similar to preserve source task perf"
+    }
+  },
+  "state_schema": {
+    "adapter_registry": {
+      "type": "object",
+      "description": "Cache of trained task weights"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DEEPLEARNING", "H11-MACHINA-DISCENS"],
+    "downstream": ["H11-MULTIMODALIS", "H11-EDGE"]
+  },
+  "events": {
+    "emits": ["model_adapted", "negative_transfer_detected"],
+    "consumes": ["new_task_registered"]
+  },
+  "metrics": [
+    {
+      "name": "adaptation_speed_samples",
+      "type": "histogram",
+      "description": "Samples needed to reach baseline target performance"
+    }
+  ],
+  "capabilities": ["fine_tuning", "domain_adaptation", "knowledge_distillation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

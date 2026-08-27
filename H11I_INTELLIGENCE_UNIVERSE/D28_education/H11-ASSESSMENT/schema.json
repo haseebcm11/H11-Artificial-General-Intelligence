@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ASSESSMENT",
+  "version": "1.0.0",
+  "layer": "6",
+  "layer_name": "Educational Systems",
+  "description": "Administers adaptive assessments and performs latent trait estimation via IRT.",
+  "category": "Evaluation",
+  "inputs": [
+    {
+      "name": "test_spec",
+      "type": "object"
+    },
+    {
+      "name": "responses",
+      "type": "array",
+      "items": {"type": "object"}
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ability_estimate",
+      "type": "object"
+    }
+  ],
+  "config": {
+    "irt_model": "3PL",
+    "target_standard_error": 0.25,
+    "max_items": 30
+  },
+  "state_schema": {
+    "item_bank": "Dict[str, ItemParameters]",
+    "active_tests": "Dict[str, CATState]"
+  },
+  "dependencies": {
+    "upstream": ["H11-CURRICULUM", "H11-LLM_CORE"],
+    "downstream": ["H11-CURRICULUM", "H11-STUDENT_MODEL"]
+  },
+  "events": {
+    "emits": ["assessment_completed", "misconception_detected"],
+    "consumes": ["module_completed", "item_challenged"]
+  },
+  "metrics": [
+    "average_test_length",
+    "item_exposure_rates",
+    "estimation_variance"
+  ],
+  "capabilities": [
+    "computerized_adaptive_testing",
+    "irt_calibration",
+    "rubric_based_grading"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

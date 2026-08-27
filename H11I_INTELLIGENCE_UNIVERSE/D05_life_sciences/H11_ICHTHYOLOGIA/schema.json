@@ -1,0 +1,17 @@
+{
+  "name": "H11-ICHTHYOLOGIA",
+  "version": "1.0.0",
+  "config": {
+    "use_3d_spatial_grid": true,
+    "water_density_kg_m3": 1025.0
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "fisheries": {
+        "type": "array"
+      }
+    }
+  },
+  "capabilities": ["fisheries_management", "hydrodynamics", "bioenergetics"]
+}

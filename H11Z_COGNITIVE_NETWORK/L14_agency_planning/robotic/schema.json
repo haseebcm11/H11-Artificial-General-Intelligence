@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RoboticAgent Input/Output Schema",
+  "type": "object",
+  "properties": {
+    "TaskRequest": {
+      "type": "object",
+      "properties": {
+        "action_type": { "type": "string", "enum": ["reach", "grasp", "navigate"] },
+        "target_pose": {
+          "type": "array",
+          "items": { "type": "number" },
+          "description": "Target end-effector pose [x, y, z, roll, pitch, yaw]"
+        },
+        "obstacles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "center": { "type": "array", "items": { "type": "number" } },
+              "radius": { "type": "number" }
+            }
+          }
+        },
+        "current_joints": {
+          "type": "array",
+          "items": { "type": "number" }
+        }
+      },
+      "required": ["action_type", "target_pose", "current_joints"]
+    },
+    "TaskResult": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "trajectory": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": "number" }
+          },
+          "description": "Sequence of joint configurations over time"
+        },
+        "estimated_duration": { "type": "number" },
+        "error": { "type": "string" }
+      },
+      "required": ["success"]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-ACTION Schema",
+  "type": "object",
+  "properties": {
+    "action_request": {
+      "type": "object",
+      "properties": {
+        "dag_id": { "type": "string" },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "node_id": { "type": "string" },
+              "action_type": { "type": "string" },
+              "parameters": { "type": "object" },
+              "dependencies": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "required": ["node_id", "action_type", "parameters", "dependencies"]
+          }
+        },
+        "initial_state": {
+          "type": "object",
+          "description": "Current world state used for feasibility checking."
+        }
+      },
+      "required": ["dag_id", "nodes", "initial_state"]
+    }
+  },
+  "required": ["action_request"]
+}

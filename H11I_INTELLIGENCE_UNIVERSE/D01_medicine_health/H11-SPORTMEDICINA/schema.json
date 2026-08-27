@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPORTMEDICINA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Calculates athlete workloads, fitness-fatigue models, and injury risk probabilities.",
+  "category": "Sports Medicine",
+  "inputs": [
+    {
+      "name": "training_session",
+      "type": "object",
+      "description": "Heart rate, duration, RPE, GPS load"
+    },
+    {
+      "name": "biomarkers",
+      "type": "object",
+      "description": "Cortisol, CK, HRV"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "fitness_fatigue_state",
+      "type": "object",
+      "description": "Current readiness and fatigue metrics"
+    },
+    {
+      "name": "injury_risk",
+      "type": "number",
+      "description": "Probability of non-contact injury"
+    }
+  ],
+  "config": {
+    "acwr_window_acute": 7,
+    "acwr_window_chronic": 28
+  },
+  "state_schema": {
+    "historical_loads": "array",
+    "banister_model_params": "object"
+  },
+  "dependencies": {
+    "upstream": ["H11-REHABILITATIO", "H11-NUTRITIO"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["overtraining_warning", "peak_performance_window"],
+    "consumes": ["session_completed", "sleep_data_logged"]
+  },
+  "metrics": ["acwr_ratio", "readiness_score"],
+  "capabilities": ["workload_modeling", "performance_peaking"],
+  "scaling": {
+    "mode": "horizontal",
+    "data_volume": "medium"
+  }
+}

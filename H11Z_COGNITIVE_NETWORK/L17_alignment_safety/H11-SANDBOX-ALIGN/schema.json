@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SANDBOX-ALIGN Agent Schema",
+  "type": "object",
+  "properties": {
+    "IsolationLevel": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "AIR_GAPPED"],
+      "description": "Current strictness of the sandbox environment."
+    },
+    "CausalViolations": {
+      "type": "integer",
+      "description": "Number of attempted forbidden operations."
+    },
+    "EpistemicIntegrity": {
+      "type": "number",
+      "description": "Confidence level that the target is unaware of the sandbox (0.0 to 1.0).",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "ActiveMockServices": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "IsolationLevel",
+    "CausalViolations",
+    "EpistemicIntegrity"
+  ]
+}

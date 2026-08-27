@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-OBSERVABILITY-INTEGRATOR",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Exports control-plane events to the telemetry log.",
+  "category": "integrator",
+  "handler": "fuse_events",
+  "inputs": [
+    {
+      "name": "events",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "events",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-EVENT-FUSION"
+    ],
+    "downstream": [
+      "H11C-AUDIT-CHAIN"
+    ]
+  },
+  "capabilities": [
+    "fuse_events"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

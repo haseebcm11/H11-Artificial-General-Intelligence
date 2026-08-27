@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-CHECKPOINT",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Snapshots blackboard + pipeline index; snapshots are MAC'd.",
+  "category": "orchestrator",
+  "handler": "checkpoint",
+  "inputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "checkpoint",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-INTEGRITY-MAC"
+    ],
+    "downstream": [
+      "H11C-RESUME"
+    ]
+  },
+  "capabilities": [
+    "checkpoint"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PSYCHOLOGIA",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Models individual behavioral drivers and psychological homeostasis.",
+  "category": "Psychology",
+  "inputs": [
+    {
+      "name": "entity_id",
+      "type": "string",
+      "description": "Target entity",
+      "required": true
+    },
+    {
+      "name": "recent_stimuli",
+      "type": "array",
+      "description": "Events experienced by entity",
+      "required": true
+    },
+    {
+      "name": "current_traits",
+      "type": "object",
+      "description": "Baseline OCEAN scores",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state_shift",
+      "type": "object",
+      "description": "Changes to mood/affect"
+    },
+    {
+      "name": "tension_vector",
+      "type": "number",
+      "description": "Accumulated psychological pressure"
+    },
+    {
+      "name": "predicted_behavior",
+      "type": "string",
+      "description": "Most likely next action class"
+    }
+  ],
+  "config": {
+    "homeostasis_rate": {
+      "type": "number",
+      "default": 0.05,
+      "description": "Rate at which mood returns to baseline"
+    }
+  },
+  "state_schema": {
+    "active_psyches": {
+      "type": "integer",
+      "description": "Number of tracked entities"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-EXISTENTIA", "H11-EDUCATION"],
+    "downstream": ["H11-COGNITIVA", "H11-POLITICALSCI"]
+  },
+  "events": {
+    "emits": ["psychotic_break", "catharsis_achieved"],
+    "consumes": ["stimulus_event"]
+  },
+  "metrics": [
+    {
+      "name": "average_tension",
+      "type": "gauge",
+      "description": "Mean tension across the population"
+    }
+  ],
+  "capabilities": ["hmm_state_inference", "hydraulic_drive_modeling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-INTERRUPT-HANDLER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Handles kill-switch and emergency-stop as non-maskable interrupts.",
+  "category": "orchestrator",
+  "handler": "preempt",
+  "inputs": [
+    {
+      "name": "running",
+      "type": "Any"
+    },
+    {
+      "name": "incoming_priority",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "preempt",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-EMERGENCY-STOP"
+    ],
+    "downstream": [
+      "H11C-HALT"
+    ]
+  },
+  "capabilities": [
+    "preempt"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

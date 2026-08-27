@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FEDERATED",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Machine Learning",
+  "description": "Orchestrates decentralized training and privacy-preserving aggregation.",
+  "category": "Distributed AI",
+  "inputs": [
+    {
+      "name": "global_model",
+      "type": "string",
+      "description": "URI to current global model weights",
+      "required": true
+    },
+    {
+      "name": "privacy_budget",
+      "type": "object",
+      "description": "Allowed epsilon and delta",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "updated_model",
+      "type": "string",
+      "description": "URI to newly aggregated global model"
+    },
+    {
+      "name": "consumed_budget",
+      "type": "number",
+      "description": "Total DP epsilon consumed in this round"
+    }
+  ],
+  "config": {
+    "fraction_fit": {
+      "type": "number",
+      "default": 0.1,
+      "description": "Fraction of clients to sample per round"
+    },
+    "secure_aggregation": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use SMPC for gradient masking"
+    }
+  },
+  "state_schema": {
+    "cumulative_privacy_loss": {
+      "type": "number",
+      "description": "Global epsilon consumed"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-EDGE", "H11-DEEPLEARNING"],
+    "downstream": ["H11-ROBUSTA", "H11-FAIRNESS"]
+  },
+  "events": {
+    "emits": ["aggregation_completed", "budget_exhausted"],
+    "consumes": ["client_update_received"]
+  },
+  "metrics": [
+    {
+      "name": "straggler_rate",
+      "type": "gauge",
+      "description": "Percentage of clients dropping out per round"
+    }
+  ],
+  "capabilities": ["federated_averaging", "differential_privacy", "secure_aggregation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

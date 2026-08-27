@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LEARNINGRATE",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "LR Scheduling",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "current_step",
+      "type": "int",
+      "description": "current_step input",
+      "required": true
+    },
+    {
+      "name": "total_steps",
+      "type": "int",
+      "description": "total_steps input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "current_lr",
+      "type": "float",
+      "description": "current_lr output"
+    },
+    {
+      "name": "phase",
+      "type": "str",
+      "description": "phase output"
+    }
+  ],
+  "config": {
+    "learningrate_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "learningrate_completed"
+    ],
+    "consumes": [
+      "learningrate_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "learningrate_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_learningrate"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

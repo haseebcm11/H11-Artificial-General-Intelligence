@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-VERSION-SELF Output Schema",
+  "type": "object",
+  "properties": {
+    "commit_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "parent_hashes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "branch_name": {
+      "type": "string"
+    },
+    "delta_size_bytes": {
+      "type": "integer"
+    }
+  },
+  "required": ["commit_hash", "parent_hashes", "branch_name"]
+}

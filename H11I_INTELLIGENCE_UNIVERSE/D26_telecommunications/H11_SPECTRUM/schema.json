@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPECTRUM",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Telecommunications",
+  "description": "RF Spectrum allocation and interference modeling.",
+  "category": "Physical",
+  "inputs": [
+    {
+      "name": "center_freq_mhz",
+      "type": "number",
+      "description": "Requested frequency",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "granted",
+      "type": "boolean",
+      "description": "Allocation success"
+    }
+  ],
+  "config": {
+    "grid_resolution_km": {
+      "type": "number",
+      "default": 1.0,
+      "description": "Spatial grid size"
+    }
+  },
+  "state_schema": {
+    "allocated_bands": {
+      "type": "integer",
+      "description": "Number of tracked allocations"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-RADIO", "H11-5G", "H11-WIFI"]
+  },
+  "events": {
+    "emits": ["InterferenceSpike", "AllocationRevoked"],
+    "consumes": ["TxPowerChange"]
+  },
+  "metrics": [
+    {
+      "name": "noise_floor_dbm",
+      "type": "gauge",
+      "description": "Average global noise floor"
+    }
+  ],
+  "capabilities": ["sparse_tensor_grid", "cognitive_radio"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

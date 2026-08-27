@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-VISION",
+  "version": "1.2.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "agent_name": "Visual Perception Encoder",
+  "description": "Transforms raw visual input into dense semantic embeddings and multi-scale feature pyramids using ViT/ConvNeXt backbones.",
+  "interfaces": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "image_tensor": { "type": "array", "items": { "type": "number" }, "description": "Normalized image tensor." },
+        "resolution": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
+        "backbone": { "type": "string", "enum": ["ViT-B", "ViT-L", "Swin-T", "ConvNeXt-B"] }
+      },
+      "required": ["image_tensor", "resolution"]
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "global_token": { "type": "array", "items": { "type": "number" } },
+        "feature_maps": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "number" } } }
+      },
+      "required": ["global_token", "feature_maps"]
+    }
+  },
+  "compute_requirements": {
+    "vram_mb": 4096,
+    "hardware": ["cuda", "mps", "tpu"]
+  }
+}

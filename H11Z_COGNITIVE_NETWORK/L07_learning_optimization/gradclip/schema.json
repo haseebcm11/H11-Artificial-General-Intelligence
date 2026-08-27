@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GRADCLIP",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Gradient Clipping",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "gradients",
+      "type": "Dict[str, List[float]]",
+      "description": "gradients input",
+      "required": true
+    },
+    {
+      "name": "max_norm",
+      "type": "float",
+      "description": "max_norm input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "clipped_gradients",
+      "type": "Dict[str, List[float]]",
+      "description": "clipped_gradients output"
+    },
+    {
+      "name": "global_norm",
+      "type": "float",
+      "description": "global_norm output"
+    }
+  ],
+  "config": {
+    "gradclip_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "gradclip_completed"
+    ],
+    "consumes": [
+      "gradclip_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "gradclip_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_gradclip"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

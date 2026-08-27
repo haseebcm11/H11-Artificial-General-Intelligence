@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FAIRNESS",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Machine Learning",
+  "description": "Audits ML models for bias and applies fairness mitigation strategies.",
+  "category": "AI Safety & Ethics",
+  "inputs": [
+    {
+      "name": "model_predictions",
+      "type": "object",
+      "description": "Outputs of the model",
+      "required": true
+    },
+    {
+      "name": "sensitive_attributes",
+      "type": "object",
+      "description": "Protected class labels",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "disparity_scores",
+      "type": "object",
+      "description": "Gap between groups for TPR/FPR"
+    },
+    {
+      "name": "certification",
+      "type": "boolean",
+      "description": "Passes fairness threshold?"
+    }
+  ],
+  "config": {
+    "acceptable_disparity_margin": {
+      "type": "number",
+      "default": 0.05,
+      "description": "Max allowed deviation between groups"
+    },
+    "mitigation_strategy": {
+      "type": "string",
+      "default": "POST_PROCESSING",
+      "description": "PRE, IN, or POST processing"
+    }
+  },
+  "state_schema": {
+    "audit_history": {
+      "type": "array",
+      "description": "Record of disparate impact scores"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-EXPLAINABLE", "H11-MACHINA-DISCENS"],
+    "downstream": ["H11-SRE"]
+  },
+  "events": {
+    "emits": ["audit_completed", "bias_mitigated", "deployment_blocked"],
+    "consumes": ["model_staged"]
+  },
+  "metrics": [
+    {
+      "name": "max_tpr_disparity",
+      "type": "gauge",
+      "description": "Maximum True Positive Rate gap between demographic groups"
+    }
+  ],
+  "capabilities": ["equalized_odds", "demographic_parity", "adversarial_debiasing"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

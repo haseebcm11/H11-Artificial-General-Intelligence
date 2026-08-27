@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SEDIMENTOLOGIA Agent Schema",
+  "type": "object",
+  "properties": {
+    "basin_id": {
+      "type": "string"
+    },
+    "analysis_type": {
+      "type": "string",
+      "enum": ["TRANSPORT_DYNAMICS", "FACIES_ANALYSIS", "STRATIGRAPHIC_MODELING"]
+    },
+    "particle_data": {
+      "type": "object",
+      "properties": {
+        "diameter_mm": { "type": "number" },
+        "density_kg_m3": { "type": "number" }
+      }
+    },
+    "flow_conditions": {
+      "type": "object",
+      "properties": {
+        "velocity_m_s": { "type": "number" },
+        "depth_m": { "type": "number" }
+      }
+    }
+  },
+  "required": ["analysis_type"]
+}

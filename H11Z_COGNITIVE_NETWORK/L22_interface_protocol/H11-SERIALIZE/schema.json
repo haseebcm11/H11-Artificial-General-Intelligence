@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SerializeConfig",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "enum": ["json", "messagepack", "protobuf", "flatbuffers"]
+    },
+    "zero_copy": {
+      "type": "boolean",
+      "default": false
+    },
+    "schema_registry_url": {
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  "required": ["format"]
+}

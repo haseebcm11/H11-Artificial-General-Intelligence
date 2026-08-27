@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-DRUGDISCOVERY Pipeline Schema",
+  "type": "object",
+  "properties": {
+    "compounds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "smiles": { "type": "string" },
+          "assay_score": { "type": "number" },
+          "mol_weight": { "type": "number" },
+          "logp": { "type": "number" }
+        },
+        "required": ["smiles"]
+      }
+    },
+    "optimization_goals": {
+      "type": "object",
+      "properties": {
+        "target_logp": { "type": "number" },
+        "max_mw": { "type": "number" }
+      }
+    }
+  },
+  "required": ["compounds"]
+}

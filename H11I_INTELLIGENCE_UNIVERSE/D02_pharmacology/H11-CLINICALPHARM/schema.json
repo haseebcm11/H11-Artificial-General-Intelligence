@@ -1,0 +1,10 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-CLINICALPHARM Config",
+  "type": "object",
+  "properties": {
+    "default_alpha": {"type": "number"},
+    "default_power": {"type": "number"}
+  },
+  "required": ["default_alpha", "default_power"]
+}

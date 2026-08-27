@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EVENTBUS",
+  "version": "1.0.0",
+  "layer": 18,
+  "layer_name": "Orchestration & Control Plane",
+  "description": "Agent for Event bus",
+  "category": "Orchestration",
+  "inputs": [
+    {
+      "name": "request_id",
+      "type": "string",
+      "description": "Unique identifier",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "status",
+      "type": "string",
+      "description": "Operation status"
+    }
+  ],
+  "config": {
+    "timeout_ms": {
+      "type": "integer",
+      "default": 1000,
+      "description": "Operation timeout"
+    }
+  },
+  "state_schema": {
+    "active_operations": {
+      "type": "integer",
+      "description": "Number of active operations"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-MONITOR"
+    ],
+    "downstream": [
+      "H11-EXECUTION"
+    ]
+  },
+  "events": {
+    "emits": [
+      "eventbus_completed"
+    ],
+    "consumes": [
+      "eventbus_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "eventbus_latency",
+      "type": "histogram",
+      "description": "Latency of Event bus"
+    }
+  ],
+  "capabilities": [
+    "Event bus"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

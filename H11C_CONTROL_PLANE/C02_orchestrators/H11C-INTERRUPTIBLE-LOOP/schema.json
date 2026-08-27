@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-INTERRUPTIBLE-LOOP",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Cognitive loop variant that yields after each phase for NMI checks.",
+  "category": "orchestrator",
+  "handler": "cognitive_tick",
+  "inputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-INTERRUPT-HANDLER"
+    ],
+    "downstream": [
+      "H11C-COGNITIVE-LOOP"
+    ]
+  },
+  "capabilities": [
+    "cognitive_tick"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

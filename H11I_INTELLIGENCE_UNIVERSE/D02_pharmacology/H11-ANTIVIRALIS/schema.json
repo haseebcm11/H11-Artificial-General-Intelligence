@@ -1,0 +1,50 @@
+{
+  "agent_id": "H11-ANTIVIRALIS",
+  "domain": "Pharmacology & Drug Sciences",
+  "subdomain": "Antivirals",
+  "capabilities": [
+    "protease_inhibitor_docking",
+    "nucleoside_analog_assessment",
+    "viral_mutation_tracking",
+    "pandemic_readiness_scoring"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "compound_structure_smiles": {
+        "type": "string"
+      },
+      "antiviral_class": {
+        "type": "string",
+        "enum": ["Nucleoside_Analog", "Protease_Inhibitor", "Integrase_Inhibitor", "Entry_Inhibitor"]
+      },
+      "viral_target": {
+        "type": "string"
+      },
+      "known_mutations": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    },
+    "required": ["antiviral_class", "viral_target"]
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "predicted_ic50_nm": {
+        "type": "number"
+      },
+      "resistance_fold_change": {
+        "type": "number"
+      },
+      "exonuclease_evasion_score": {
+        "type": "number"
+      },
+      "pandemic_readiness_index": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      }
+    }
+  }
+}

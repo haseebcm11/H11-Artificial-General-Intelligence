@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-CONSENT-GATE",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Requires an explicit consent flag for human-impacting ACT. Absence is deny.",
+  "category": "security",
+  "handler": "consent",
+  "inputs": [
+    {
+      "name": "consent",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-HUMAN-INTEGRATOR"
+    ],
+    "downstream": [
+      "H11C-DUAL-CONTROL"
+    ]
+  },
+  "capabilities": [
+    "consent"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

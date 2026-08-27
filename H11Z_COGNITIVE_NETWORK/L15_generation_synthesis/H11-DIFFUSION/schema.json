@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DIFFUSION",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Manages core diffusion processes including forward noise addition and reverse denoising.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "latent_shape", "type": "Tuple[int, int, int]"}, {"name": "timesteps", "type": "int"}, {"name": "guidance_scale", "type": "float"}
+  ],
+  "outputs": [
+    {"name": "denoised_latent", "type": "List[float]"}, {"name": "trajectory", "type": "List[List[float]]"}
+  ]
+}

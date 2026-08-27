@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-ENVELOPE-AUTH",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Authenticates the envelope bearer token before routing.",
+  "category": "security",
+  "handler": "capability",
+  "inputs": [
+    {
+      "name": "identity",
+      "type": "Any"
+    },
+    {
+      "name": "scopes",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "token",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-CAPABILITY-TOKEN"
+    ],
+    "downstream": [
+      "H11C-ZERO-TRUST-HOP"
+    ]
+  },
+  "capabilities": [
+    "capability"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

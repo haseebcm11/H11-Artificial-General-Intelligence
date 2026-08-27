@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PERSONA",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Maintains consistent character voices and behaviors across generated sessions.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "persona_id", "type": "str"}, {"name": "user_input", "type": "str"}, {"name": "context", "type": "List[str]"}
+  ],
+  "outputs": [
+    {"name": "persona_response", "type": "str"}, {"name": "emotional_shift", "type": "Dict[str, float]"}
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-INCIDENT",
+  "version": "1.0.0",
+  "layer": 12,
+  "layer_name": "Cybersecurity",
+  "description": "Automated alert triage and incident containment.",
+  "category": "Incident Response",
+  "inputs": [
+    {
+      "name": "alerts",
+      "type": "list[SecurityAlert]",
+      "description": "Incoming security alerts.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "containment_actions",
+      "type": "list[string]",
+      "description": "Actions executed to stop the threat."
+    }
+  ],
+  "config": {
+    "auto_containment_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Allow agent to mutate state."
+    }
+  },
+  "state_schema": {
+    "active_cases": {
+      "type": "integer",
+      "description": "Open investigations."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-NETSEC", "H11-APPSEC", "H11-CLOUDSEC"],
+    "downstream": ["H11-IDENTITAS"]
+  },
+  "events": {
+    "emits": ["IncidentContained", "CriticalBreachDeclared"],
+    "consumes": ["SecurityAlert"]
+  },
+  "metrics": [
+    {
+      "name": "mean_time_to_respond",
+      "type": "histogram",
+      "description": "MTTR in seconds."
+    }
+  ],
+  "capabilities": ["SOAR", "Alert Correlation"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

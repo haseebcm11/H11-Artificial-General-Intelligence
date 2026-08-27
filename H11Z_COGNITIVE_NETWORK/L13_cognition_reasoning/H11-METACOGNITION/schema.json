@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-METACOGNITION Agent Schema",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["estimate_confidence", "select_strategy", "monitor_progress"]
+    },
+    "query": {
+      "type": "string"
+    },
+    "complexity_features": {
+      "type": "object",
+      "properties": {
+        "length": { "type": "number" },
+        "domain": { "type": "string" },
+        "ambiguity_score": { "type": "number" }
+      }
+    }
+  },
+  "required": ["action"]
+}

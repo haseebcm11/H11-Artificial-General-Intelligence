@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NUCLEARIS-MED",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Calculates radiotracer decay kinetics, SUVs, and internal radiation dosimetry.",
+  "category": "Nuclear Medicine",
+  "inputs": [
+    {
+      "name": "injection_data",
+      "type": "object",
+      "description": "Isotope, activity, time"
+    },
+    {
+      "name": "scan_counts",
+      "type": "array",
+      "description": "ROI voxel counts from PET/SPECT"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "suv_map",
+      "type": "object",
+      "description": "Standardized Uptake Values (bw, lbm, bsa)"
+    },
+    {
+      "name": "absorbed_dose",
+      "type": "object",
+      "description": "MIRD absorbed dose estimates per organ"
+    }
+  ],
+  "config": {
+    "decay_constants": "NNDC_database",
+    "dosimetry_model": "MIRD_Phantom"
+  },
+  "state_schema": {
+    "isotope_inventory": "object",
+    "patient_specific_kinetics": "object"
+  },
+  "dependencies": {
+    "upstream": ["H11-RADIOLOGIA"],
+    "downstream": ["H11-ONCOLOGIA"]
+  },
+  "events": {
+    "emits": ["dose_limit_exceeded", "kinetic_model_fitted"],
+    "consumes": ["tracer_injected"]
+  },
+  "metrics": ["suv_variance", "decay_correction_accuracy"],
+  "capabilities": ["suv_calculation", "mird_dosimetry", "compartmental_kinetic_modeling"],
+  "scaling": {
+    "mode": "stateless",
+    "memory_requirement": "low"
+  }
+}

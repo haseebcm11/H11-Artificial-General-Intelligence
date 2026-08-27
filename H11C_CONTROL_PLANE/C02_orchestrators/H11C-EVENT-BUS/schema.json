@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-EVENT-BUS",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "In-process pub/sub for control-plane events.",
+  "category": "orchestrator",
+  "handler": "fuse_events",
+  "inputs": [
+    {
+      "name": "events",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "events",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-OBSERVABILITY-INTEGRATOR"
+    ],
+    "downstream": [
+      "H11C-STREAM-INTEGRATOR"
+    ]
+  },
+  "capabilities": [
+    "fuse_events"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

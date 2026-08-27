@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-CARBON Agent Schema",
+  "type": "object",
+  "properties": {
+    "entity_id": {
+      "type": "string"
+    },
+    "reporting_period": {
+      "type": "string"
+    },
+    "emissions_data": {
+      "type": "object",
+      "properties": {
+        "scope_1": {"type": "number", "description": "Direct emissions in tCO2e"},
+        "scope_2": {"type": "number", "description": "Indirect energy emissions in tCO2e"},
+        "scope_3": {"type": "number", "description": "Value chain emissions in tCO2e"}
+      },
+      "required": ["scope_1", "scope_2", "scope_3"]
+    },
+    "reduction_target_pct": {
+      "type": "number"
+    }
+  },
+  "required": ["entity_id", "emissions_data"]
+}

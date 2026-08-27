@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-CNC State Schema",
+  "type": "object",
+  "properties": {
+    "agent_id": {
+      "type": "string"
+    },
+    "machines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "machine_id": { "type": "string" },
+          "axes": { "type": "integer", "enum": [3, 4, 5] },
+          "state": { "type": "string", "enum": ["IDLE", "RUNNING", "TOOL_CHANGE", "ALARM"] },
+          "active_program": { "type": ["string", "null"] },
+          "spindle_speed_rpm": { "type": "number" },
+          "feed_rate_ipm": { "type": "number" },
+          "spindle_load_percent": { "type": "number" }
+        },
+        "required": ["machine_id", "state"]
+      }
+    },
+    "tool_library": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "tool_type": { "type": "string" },
+          "wear_level": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+          "remaining_life_mins": { "type": "number" }
+        }
+      }
+    }
+  },
+  "required": ["agent_id", "machines", "tool_library"]
+}

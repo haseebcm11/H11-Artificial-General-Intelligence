@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-RECURRENT Schema",
+  "type": "object",
+  "properties": {
+    "cell_type": {
+      "type": "string",
+      "enum": ["lstm", "gru", "rnn", "linear_rnn"]
+    },
+    "input_size": {
+      "type": "integer"
+    },
+    "hidden_size": {
+      "type": "integer"
+    },
+    "num_layers": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "bidirectional": {
+      "type": "boolean"
+    },
+    "bptt_horizon": {
+      "type": "integer"
+    },
+    "dropout": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "required": [
+    "cell_type",
+    "input_size",
+    "hidden_size"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-MODE-SWITCH",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Switches fast/slow thinking modes; slow mode is mandatory for medical/legal.",
+  "category": "orchestrator",
+  "handler": "state_machine",
+  "inputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    },
+    {
+      "name": "event",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-HIGH-STAKES"
+    ],
+    "downstream": [
+      "H11C-COGNITIVE-LOOP"
+    ]
+  },
+  "capabilities": [
+    "state_machine"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

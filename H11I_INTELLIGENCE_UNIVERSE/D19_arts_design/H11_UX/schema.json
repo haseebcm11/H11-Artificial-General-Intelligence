@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-UX",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "User Experience Agent",
+  "category": "Design",
+  "inputs": [{"name": "user_flows", "type": "array", "description": "Flows"}],
+  "outputs": [{"name": "journey_map", "type": "object", "description": "Map"}],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": [], "downstream": ["H11-UI"]},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": true, "gpu_required": false, "memory_class": "low"}
+}

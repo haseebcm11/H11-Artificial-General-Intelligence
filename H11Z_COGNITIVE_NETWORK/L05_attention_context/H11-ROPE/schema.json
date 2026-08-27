@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ROPE",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Applies Rotary Position Embeddings (RoPE) and manages context extension via dynamic NTK-aware interpolation.",
+  "inputs": [{"name": "states", "type": "Any", "description": "Q/K states"}, {"name": "position_ids", "type": "List[int]", "description": "Absolute positions"}, {"name": "seq_len", "type": "int", "description": "Current length"}],
+  "outputs": [{"name": "rotated_states", "type": "Any", "description": "Position-encoded states"}],
+  "state_schema": {"current_theta": {"type": "float", "description": "Base frequency"}}
+}

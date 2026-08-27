@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CARDIOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Simulates cardiac electrophysiology, hemodynamics, and vascular fluid dynamics.",
+  "category": "Cardiology",
+  "inputs": [
+    {"name": "ecg_leads", "type": "Matrix"},
+    {"name": "echo_params", "type": "EchoMetrics"}
+  ],
+  "outputs": [
+    {"name": "arrhythmia_map", "type": "ActivationMap"},
+    {"name": "pv_loop", "type": "PressureVolumeLoop"}
+  ],
+  "config": {},
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "remodeling_metrics": {"type": "object"}
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-HEMATOLOGIA", "H11-ENDOCRINOLOGIA"],
+    "downstream": ["H11-PNEUMOLOGIA", "H11-NEUROLOGIA"]
+  },
+  "events": {"emits": ["ischemia_alert", "arrhythmia_detected"], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {}
+}

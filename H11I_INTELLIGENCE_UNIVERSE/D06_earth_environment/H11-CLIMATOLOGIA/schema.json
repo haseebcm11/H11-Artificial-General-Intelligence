@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-CLIMATOLOGIA Schema",
+  "type": "object",
+  "properties": {
+    "agent_id": {
+      "type": "string",
+      "description": "Unique identifier for the climatology agent instance."
+    },
+    "simulation_scenario": {
+      "type": "string",
+      "enum": ["SSP1-1.9", "SSP2-4.5", "SSP3-7.0", "SSP5-8.5", "HISTORICAL"],
+      "description": "The shared socioeconomic pathway or historical scenario being modeled."
+    },
+    "time_horizon": {
+      "type": "object",
+      "properties": {
+        "start_year": { "type": "integer" },
+        "end_year": { "type": "integer" }
+      },
+      "required": ["start_year", "end_year"]
+    },
+    "variables": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["temperature_anomaly", "precipitation_change", "sea_level_rise", "co2_concentration", "ocean_acidification"]
+      },
+      "description": "Climatological variables to forecast or analyze."
+    }
+  },
+  "required": ["agent_id", "simulation_scenario", "time_horizon", "variables"]
+}

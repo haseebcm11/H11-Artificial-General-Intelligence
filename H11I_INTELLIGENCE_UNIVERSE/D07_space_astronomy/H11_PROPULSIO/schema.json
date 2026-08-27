@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PROPULSIO",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Spacecraft propulsion system modeling and optimization",
+  "category": "Aerospace Engineering",
+  "inputs": [
+    {
+      "name": "propellant_type",
+      "type": "object",
+      "description": "Chemical or electrical propellant properties",
+      "required": true
+    },
+    {
+      "name": "burn_requirements",
+      "type": "object",
+      "description": "Required Delta-V and thrust profile",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "performance_metrics",
+      "type": "object",
+      "description": "Calculated Isp, thrust, and efficiency"
+    },
+    {
+      "name": "propellant_budget",
+      "type": "object",
+      "description": "Mass consumed and remaining"
+    }
+  ],
+  "config": {
+    "simulation_fidelity": {
+      "type": "string",
+      "default": "IDEAL_ROCKET_EQ",
+      "description": "Fidelity level of the thermodynamic simulation"
+    },
+    "ambient_pressure_pa": {
+      "type": "number",
+      "default": 0.0,
+      "description": "Ambient pressure for nozzle expansion calculations"
+    }
+  },
+  "state_schema": {
+    "engine_wear_percent": {
+      "type": "number",
+      "description": "Cumulative degradation of engine components"
+    },
+    "tank_pressure_pa": {
+      "type": "number",
+      "description": "Current pressure in the main propellant tanks"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ORBITALIS"],
+    "downstream": ["H11-SPACECRAFT", "H11-DEEPSPACE"]
+  },
+  "events": {
+    "emits": ["BurnSimulated", "EngineDegradationUpdated"],
+    "consumes": ["ManeuverRequested", "TankVented"]
+  },
+  "metrics": [
+    {
+      "name": "combustion_efficiency",
+      "type": "gauge",
+      "description": "C-star efficiency of the combustion process"
+    }
+  ],
+  "capabilities": ["Thermodynamic Modeling", "Thrust Optimization", "Cryogenic Fluid Management"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

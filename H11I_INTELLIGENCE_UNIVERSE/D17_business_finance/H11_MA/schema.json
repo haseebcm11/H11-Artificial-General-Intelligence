@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MA",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Models M&A transactions and synergies.",
+  "category": "Finance",
+  "inputs": [{"name": "acquirer_eps", "type": "number", "required": true}],
+  "outputs": [{"name": "accretion", "type": "number"}],
+  "config": {"tax_rate": {"type": "number", "default": 0.21}},
+  "state_schema": {"deals": {"type": "array"}},
+  "dependencies": {"upstream": ["H11-FINANCIA"], "downstream": []}
+}

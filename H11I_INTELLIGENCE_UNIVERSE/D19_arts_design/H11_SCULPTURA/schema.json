@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SCULPTURA",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "3D Sculpting and Mesh Manipulation Agent",
+  "category": "3D Arts",
+  "inputs": [
+    {
+      "name": "base_mesh_vertices",
+      "type": "array of float tuples",
+      "description": "Input mesh geometry",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "final_mesh_vertices",
+      "type": "array of float tuples",
+      "description": "Output sculpted geometry"
+    }
+  ],
+  "config": {
+    "enable_dynamic_topology": {
+      "type": "boolean",
+      "default": true,
+      "description": "Dynamic mesh resolution"
+    }
+  },
+  "state_schema": {
+    "is_manifold": {
+      "type": "boolean",
+      "description": "Mesh validity flag"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-GEOMETRY"],
+    "downstream": ["H11-ANIMATIO", "H11-GAMEDESIGN"]
+  },
+  "events": {
+    "emits": ["mesh_updated", "topology_changed"],
+    "consumes": ["stroke_received"]
+  },
+  "metrics": [
+    {
+      "name": "vertex_count",
+      "type": "gauge",
+      "description": "Current number of vertices"
+    }
+  ],
+  "capabilities": ["boolean_operations", "voxel_remeshing", "dynamic_topology"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

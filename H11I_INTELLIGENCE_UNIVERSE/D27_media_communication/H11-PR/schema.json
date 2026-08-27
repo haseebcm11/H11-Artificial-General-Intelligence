@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PR",
+  "version": "1.0.0",
+  "layer": "6",
+  "layer_name": "Network Resonance",
+  "description": "Manages external reputation, narrative distribution, and sentiment state.",
+  "category": "External Communications",
+  "inputs": ["core_message", "target_demographic", "sentiment_baseline"],
+  "outputs": ["distribution_plan", "generated_assets", "expected_reach"],
+  "config": {
+    "crisis_threshold": -0.4,
+    "max_distribution_channels": 10
+  },
+  "state_schema": {
+    "perception_graph": "NetworkGraph",
+    "crisis_level": "Enum(NORMAL, ELEVATED, CRITICAL)"
+  },
+  "dependencies": {
+    "upstream": ["H11-BRANDING", "H11-CONTENT"],
+    "downstream": ["ExternalPublishingAPIs"]
+  },
+  "events": {
+    "emits": ["NarrativeDistributed", "CrisisDetected"],
+    "consumes": ["MarketSignal", "ContentReady"]
+  },
+  "metrics": ["sentiment_score", "R0_coefficient", "reach"],
+  "capabilities": ["narrative_generation", "sentiment_analysis", "crisis_management"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

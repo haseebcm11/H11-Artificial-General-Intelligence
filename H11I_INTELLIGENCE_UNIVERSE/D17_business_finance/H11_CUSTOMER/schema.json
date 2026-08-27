@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CUSTOMER",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Models customer lifetime value and churn.",
+  "category": "Business",
+  "inputs": [{"name": "recency", "type": "number", "required": true}],
+  "outputs": [{"name": "clv", "type": "number"}],
+  "config": {"discount_rate": {"type": "number", "default": 0.1}},
+  "state_schema": {"churned": {"type": "integer"}},
+  "dependencies": {"upstream": ["H11-MARKETING"], "downstream": ["H11-SALES"]}
+}

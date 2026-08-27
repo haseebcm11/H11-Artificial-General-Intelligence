@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-BLUETOOTH",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Telecommunications",
+  "description": "Short-range PAN and BLE mesh modeling.",
+  "category": "PAN",
+  "inputs": [
+    {
+      "name": "device_role",
+      "type": "string",
+      "description": "BLE role",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "avg_power_mw",
+      "type": "number",
+      "description": "Power consumption"
+    }
+  ],
+  "config": {
+    "enable_mesh": {
+      "type": "boolean",
+      "default": false,
+      "description": "Simulate BLE mesh"
+    }
+  },
+  "state_schema": {
+    "active_piconets": {
+      "type": "integer",
+      "description": "Number of active networks"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-NETWORKING"]
+  },
+  "events": {
+    "emits": ["DevicePaired", "ConnectionLost"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "energy_joules",
+      "type": "counter",
+      "description": "Total energy consumed"
+    }
+  ],
+  "capabilities": ["ble_power_modeling", "mesh_flooding"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

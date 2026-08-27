@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_VETPHARMACOLOGIA_Schema",
+  "type": "object",
+  "properties": {
+    "AllometricScalingRequest": {
+      "type": "object",
+      "properties": {
+        "drug_id": { "type": "string" },
+        "source_species": { "type": "string" },
+        "target_species": { "type": "string" },
+        "source_weight_kg": { "type": "number" },
+        "target_weight_kg": { "type": "number" },
+        "scaling_exponent": { "type": "number", "default": 0.75 }
+      },
+      "required": ["drug_id", "source_species", "target_species", "source_weight_kg", "target_weight_kg"]
+    },
+    "WithdrawalTimeCalculation": {
+      "type": "object",
+      "properties": {
+        "animal_id": { "type": "string" },
+        "species": { "type": "string" },
+        "product_type": { "type": "string", "enum": ["meat", "milk", "eggs", "honey"] },
+        "drug_administered": { "type": "string" },
+        "dosage_mg_per_kg": { "type": "number" },
+        "administration_route": { "type": "string" },
+        "target_mrl_ppb": { "type": "number" }
+      },
+      "required": ["animal_id", "species", "product_type", "drug_administered", "dosage_mg_per_kg", "target_mrl_ppb"]
+    }
+  }
+}

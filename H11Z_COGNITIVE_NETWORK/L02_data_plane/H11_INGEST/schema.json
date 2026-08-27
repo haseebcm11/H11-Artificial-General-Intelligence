@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-INGEST",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Multi-source raw data ingestion with backpressure and schema inference.",
+  "category": "Data Gateway",
+  "inputs": [
+    {
+      "name": "source_uri",
+      "type": "string",
+      "description": "URI defining the source protocol and location.",
+      "required": true
+    },
+    {
+      "name": "format_hint",
+      "type": "enum",
+      "description": "Hint for data format (json, parquet, protobuf).",
+      "required": false
+    },
+    {
+      "name": "guarantees",
+      "type": "enum",
+      "description": "Delivery semantics.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "transaction_id",
+      "type": "string",
+      "description": "UUID of the ingestion transaction."
+    },
+    {
+      "name": "schema_def",
+      "type": "object",
+      "description": "Inferred AST/schema of the data."
+    }
+  ],
+  "config": {
+    "token_bucket_capacity": {
+      "type": "integer",
+      "default": 1000000,
+      "description": "Max bytes per interval for rate limiting."
+    },
+    "wal_sync_mode": {
+      "type": "string",
+      "default": "fsync_batch",
+      "description": "Write-Ahead Log sync strategy."
+    }
+  },
+  "state_schema": {
+    "source_offsets": {
+      "type": "map[string, integer]",
+      "description": "Consumer group offsets per source."
+    },
+    "aimd_window_size": {
+      "type": "float",
+      "description": "Current congestion window size."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-AUTH"],
+    "downstream": ["H11-CLEANSER", "H11-METASTORE"]
+  },
+  "events": {
+    "emits": ["IngestionBatchCommitted", "SchemaDriftDetected"],
+    "consumes": ["BackpressureThresholdExceeded"]
+  },
+  "metrics": [
+    {
+      "name": "ingest_bytes_sec",
+      "type": "histogram",
+      "description": "Throughput in bytes per second."
+    }
+  ],
+  "capabilities": ["DynamicSchemaInference", "ExactlyOnceDelivery", "AIMD_Backpressure"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

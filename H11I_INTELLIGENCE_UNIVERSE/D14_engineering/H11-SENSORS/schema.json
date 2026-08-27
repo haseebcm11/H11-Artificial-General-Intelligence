@@ -1,0 +1,6 @@
+{
+  "name": "H11-SENSORS",
+  "description": "Sensors Engineering Agent for hardware sensor integration and signal conditioning.",
+  "version": "1.0.0",
+  "capabilities": ["bridge_design", "temperature_characterization", "sampling_optimization", "power_estimation"]
+}

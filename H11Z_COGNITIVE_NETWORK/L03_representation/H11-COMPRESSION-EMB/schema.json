@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-COMPRESSION-EMB",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Truncates a vector to the first k dimensions and renormalises (Matryoshka-style prefix).",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "vector",
+      "type": "List[float]"
+    },
+    {
+      "name": "k",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "compressed",
+      "type": "List[float]"
+    },
+    {
+      "name": "kept",
+      "type": "int"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-EMBEDDER"
+    ],
+    "downstream": [
+      "H11-VECTORDb"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "matryoshka-prefix"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

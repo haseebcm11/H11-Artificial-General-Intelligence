@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DIGITALART",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "Compositing Agent",
+  "category": "Digital Arts",
+  "inputs": [{"name": "elements", "type": "array", "description": "Layers"}],
+  "outputs": [{"name": "composited_image", "type": "bytes", "description": "Result"}],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": [], "downstream": []},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": true, "gpu_required": true, "memory_class": "high"}
+}

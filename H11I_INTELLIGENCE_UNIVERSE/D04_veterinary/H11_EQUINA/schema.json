@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EQUINA",
+  "version": "1.0.0",
+  "layer": 4,
+  "layer_name": "Veterinary Sciences",
+  "description": "Equine sports medicine and critical care logic.",
+  "category": "Equine",
+  "inputs": [
+    {
+      "name": "equine_profile",
+      "type": "EquineData",
+      "description": "Patient and discipline data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "surgical_index",
+      "type": "float",
+      "description": "Probability of needing colic surgery"
+    }
+  ],
+  "config": {
+    "strict_doping_rules": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce FEI or strict medication withdrawal rules"
+    }
+  },
+  "state_schema": {
+    "athlete_records": {
+      "type": "dict",
+      "description": "Longitudinal performance and therapy logs"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-VETCHIRURGIA"],
+    "downstream": ["H11-VETPHARMACOLOGIA"]
+  },
+  "events": {
+    "emits": ["ColicSurgicalAlert", "LamenessLocalized"],
+    "consumes": ["CompetitionScheduleUpdated"]
+  },
+  "metrics": [
+    {
+      "name": "colic_surgery_accuracy",
+      "type": "gauge",
+      "description": "Accuracy of the surgical index prediction"
+    }
+  ],
+  "capabilities": ["lameness_diagnostics", "colic_triage", "sports_medicine"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

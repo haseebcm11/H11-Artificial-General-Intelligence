@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MENTAL-SIM",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Unrolls a list of step rewards and returns their discounted sum as plan value.",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "rewards",
+      "type": "List[float]"
+    },
+    {
+      "name": "gamma",
+      "type": "float"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "expected_value",
+      "type": "float"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-WORLDMODEL",
+      "H11-IMAGINATION"
+    ],
+    "downstream": [
+      "H11-SCENARIO"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "discounted-return"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

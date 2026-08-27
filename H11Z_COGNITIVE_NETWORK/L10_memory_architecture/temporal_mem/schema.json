@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TEMPORAL-MEM",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Time-aware memory with Ebbinghaus decay and temporal logic.",
+  "category": "Temporal Memory",
+  "inputs": [
+    {"name": "query_interval", "type": "object", "description": "Start and end times", "required": true},
+    {"name": "event_tags", "type": "array", "description": "Semantic filters", "required": false}
+  ],
+  "outputs": [
+    {"name": "timeline", "type": "array", "description": "Chronological events"},
+    {"name": "temporal_conflicts", "type": "array", "description": "Fact overwrites"}
+  ],
+  "config": {
+    "default_decay_rate": {"type": "number", "default": 0.05, "description": "Lambda for forgetting curve"},
+    "enable_allens_algebra": {"type": "boolean", "default": true, "description": "Complex interval math"}
+  },
+  "state_schema": {
+    "timeseries_index": {"type": "object", "description": "B-Tree of events"}
+  },
+  "dependencies": {"upstream": ["H11-SENSOR-FUSION"], "downstream": ["H11-EPISODIC-MEM"]},
+  "capabilities": ["time-decay", "allens-interval-algebra", "chronological-sorting"],
+  "scaling": {"horizontal": false, "gpu_required": false, "memory_class": "high"}
+}

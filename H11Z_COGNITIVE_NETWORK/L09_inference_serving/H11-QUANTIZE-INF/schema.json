@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-QUANTIZE-INF",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Weight-only and weight-activation quantization techniques.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "model_weights",
+      "type": "Any",
+      "desc": "FP16 model weights"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "quantized_weights",
+      "type": "Any",
+      "desc": "INT8/INT4 weights"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "calibration_loss": {
+      "type": "float",
+      "description": "Loss observed during quant calibration"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

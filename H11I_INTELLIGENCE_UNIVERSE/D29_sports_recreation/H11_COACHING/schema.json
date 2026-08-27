@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-COACHING",
+  "version": "1.0.0",
+  "layer": 29,
+  "layer_name": "Sports & Recreation",
+  "description": "Coaching and Strategy Agent",
+  "category": "Pedagogy",
+  "inputs": [
+    {
+      "name": "performance_metrics",
+      "type": "object",
+      "description": "Data from other domain agents",
+      "required": true
+    },
+    {
+      "name": "psych_profile",
+      "type": "object",
+      "description": "Athlete's psychological state",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "intervention_plan",
+      "type": "object",
+      "description": "Recommended coaching action"
+    }
+  ],
+  "config": {
+    "feedback_frequency_cap": {
+      "type": "integer",
+      "default": 3,
+      "description": "Max cues per minute"
+    }
+  },
+  "state_schema": {
+    "knowledge_tracing_probs": {
+      "type": "object",
+      "description": "Probability of skill mastery"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ATHLETICA", "H11-SPORTSCI"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["intervention_recommended", "drill_completed"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "interventions_delivered",
+      "type": "counter",
+      "description": "Total cues given"
+    }
+  ],
+  "capabilities": ["bayesian_knowledge_tracing", "feedback_scheduling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

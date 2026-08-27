@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-WORKING",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Active processing buffer managing a limited set of high-salience cognitive items.",
+  "category": "Active Buffer",
+  "inputs": [
+    {"name": "stimulus_id", "type": "string", "description": "UUID of stimulus", "required": true},
+    {"name": "modality", "type": "string", "description": "LINGUISTIC, SPATIAL, SYMBOLIC", "required": true},
+    {"name": "payload", "type": "object", "description": "Semantic content", "required": true},
+    {"name": "initial_salience", "type": "number", "description": "Initial attention score", "required": true}
+  ],
+  "outputs": [
+    {"name": "active_set", "type": "array", "description": "Current buffer contents"},
+    {"name": "evicted_items", "type": "array", "description": "Items dropped this cycle"},
+    {"name": "capacity_load", "type": "number", "description": "Buffer utilization"}
+  ],
+  "config": {
+    "max_capacity": {"type": "integer", "default": 7, "description": "Miller's magic number limit"},
+    "decay_rate": {"type": "number", "default": 0.05, "description": "Rate of salience decay per cycle"},
+    "softmax_temperature": {"type": "number", "default": 1.5, "description": "Controls stochasticity of eviction"}
+  },
+  "state_schema": {
+    "buffer": {"type": "array", "description": "Items in working memory"},
+    "biasing_vector": {"type": "array", "description": "Goal-directed attention bias"}
+  },
+  "dependencies": {
+    "upstream": ["H11-SENSORY", "H11-ATTENTION"],
+    "downstream": ["H11-SHORTTERM", "H11-REASONING"]
+  },
+  "events": {
+    "emits": ["buffer_overflow", "item_rehearsed"],
+    "consumes": ["stimulus_arrival", "goal_change"]
+  },
+  "metrics": [
+    {"name": "eviction_rate", "type": "counter", "description": "Items evicted per second"},
+    {"name": "mean_residence_time", "type": "histogram", "description": "Time items spend in buffer"}
+  ],
+  "capabilities": ["active-maintenance", "salience-filtering", "modal-partitioning"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "micro"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MIXEDPRECISION",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Mixed-Precision Training",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "fp32_weights",
+      "type": "Dict[str, List[float]]",
+      "description": "fp32_weights input",
+      "required": true
+    },
+    {
+      "name": "loss_value",
+      "type": "float",
+      "description": "loss_value input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "bf16_weights",
+      "type": "Dict[str, List[float]]",
+      "description": "bf16_weights output"
+    },
+    {
+      "name": "scaled_loss",
+      "type": "float",
+      "description": "scaled_loss output"
+    }
+  ],
+  "config": {
+    "mixedprecision_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "mixedprecision_completed"
+    ],
+    "consumes": [
+      "mixedprecision_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "mixedprecision_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_mixedprecision"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

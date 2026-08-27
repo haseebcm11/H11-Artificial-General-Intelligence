@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ONCOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Simulates cancer biology, oncogenomics, TNM staging, Gompertzian tumor growth kinetics, RECIST 1.1 response evaluation, and virtual tumor board regimen stratification.",
+  "category": "Oncology & Cancer Biology",
+  "inputs": [
+    {
+      "name": "cancer_type",
+      "type": "string",
+      "description": "Primary cancer type (e.g., NSCLC, BREAST, COLORECTAL, MELANOMA)"
+    },
+    {
+      "name": "tnm_raw",
+      "type": "object",
+      "description": "Anatomical T, N, M categories and site-specific biological modifiers"
+    },
+    {
+      "name": "genomic_variants",
+      "type": "array",
+      "description": "List of somatic genomic variants with VAF and actionability tier"
+    },
+    {
+      "name": "serial_lesions",
+      "type": "array",
+      "description": "Longitudinal target and non-target lesion measurements in mm"
+    },
+    {
+      "name": "treatment_history",
+      "type": "array",
+      "description": "Historical cancer therapy regimens, lines, and prior nadirs"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "staging_result",
+      "type": "object",
+      "description": "AJCC 8th Edition stage group and risk classification"
+    },
+    {
+      "name": "recist_assessment",
+      "type": "object",
+      "description": "RECIST 1.1 response classification, SLD delta, and nadir change"
+    },
+    {
+      "name": "kinetic_projection",
+      "type": "object",
+      "description": "Gompertzian tumor volume trajectory under candidate therapies"
+    },
+    {
+      "name": "stratified_regimens",
+      "type": "array",
+      "description": "Ranked multi-modality treatment regimens with evidence tier and predicted PFS"
+    },
+    {
+      "name": "vtb_consensus",
+      "type": "object",
+      "description": "Multidisciplinary virtual tumor board consensus and monitoring plan"
+    }
+  ],
+  "config": {
+    "staging_edition": "AJCC_8TH",
+    "recist_version": "1.1",
+    "ode_solver_step_days": 0.5,
+    "simulation_horizon_days": 180,
+    "resistance_mutation_rate": 1e-6
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "patient_id": { "type": "string" },
+      "primary_cancer_type": { "type": "string" },
+      "tnm_stage": { "type": "object" },
+      "clones": { "type": "array" },
+      "longitudinal_lesions": { "type": "array" },
+      "treatment_line": { "type": "integer" }
+    },
+    "required": ["patient_id", "primary_cancer_type", "tnm_stage"]
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-PATHOLOGIA",
+      "H11-GENETICA-MED",
+      "H11-PHARMACOGENOMICA",
+      "H11-RADIOLOGIA"
+    ],
+    "downstream": [
+      "H11-IMMUNOTHERAPIA",
+      "H11-CHIRURGIA",
+      "H11-NUCLEARIS-MED",
+      "H11-PALLIATIVA"
+    ]
+  },
+  "events": {
+    "emits": [
+      "oncology_staging_completed",
+      "recist_progression_detected",
+      "synthetic_lethality_identified",
+      "vtb_plan_generated"
+    ],
+    "consumes": [
+      "pathology_biopsy_reported",
+      "genomic_panel_sequenced",
+      "radiology_measurements_updated"
+    ]
+  },
+  "metrics": [
+    "staging_accuracy_rate",
+    "recist_classification_f1",
+    "pfs_prediction_mae_months"
+  ],
+  "capabilities": [
+    "AJCC 8th Edition TNM staging and prognostic grouping",
+    "Gompertzian tumor volume dynamics with Norton-Simon cell kill",
+    "RECIST 1.1 longitudinal quantitative response tracking",
+    "Clonal subpopulation evolution and drug resistance modeling",
+    "Precision oncology genomic tiering and synthetic lethality scoring",
+    "Multidisciplinary virtual tumor board consensus generation"
+  ],
+  "scaling": {
+    "compute_intensity": "moderate_high",
+    "memory_intensity": "moderate"
+  }
+}

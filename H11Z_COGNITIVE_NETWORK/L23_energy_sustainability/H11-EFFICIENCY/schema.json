@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EFFICIENCY",
+  "version": "1.0.0",
+  "layer": 23,
+  "layer_name": "Energy, Thermal & Sustainability",
+  "description": "FLOPs-per-watt and tokens-per-joule tracking.",
+  "category": "Compute Efficiency",
+  "inputs": [
+    {"name": "kernel_traces", "type": "ExecutionTrace", "description": "Kernel execution times.", "required": true}
+  ],
+  "outputs": [
+    {"name": "efficiency_report", "type": "EfficiencyMetrics", "description": "Hardware efficiency."}
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": ["H11-ENERGY"], "downstream": []},
+  "events": {"emits": ["EfficiencyDegraded"], "consumes": []},
+  "metrics": [{"name": "tokens_per_joule", "type": "histogram", "description": "Efficiency metric"}],
+  "capabilities": ["roofline_analysis"],
+  "scaling": {"horizontal": true, "gpu_required": false, "memory_class": "low"}
+}

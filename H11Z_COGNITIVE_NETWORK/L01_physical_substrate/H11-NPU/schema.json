@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-NPU Configuration",
+  "type": "object",
+  "properties": {
+    "mac_arrays": {
+      "type": "integer",
+      "minimum": 64
+    },
+    "sram_size_mb": {
+      "type": "number",
+      "minimum": 1
+    },
+    "power_budget_watts": {
+      "type": "number",
+      "minimum": 0.1
+    }
+  },
+  "required": ["mac_arrays", "sram_size_mb"]
+}

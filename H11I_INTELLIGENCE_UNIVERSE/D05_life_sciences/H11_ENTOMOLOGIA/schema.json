@@ -1,0 +1,20 @@
+{
+  "name": "H11-ENTOMOLOGIA",
+  "version": "1.0.0",
+  "config": {
+    "grid_resolution_cm": 10.0,
+    "pheromone_evaporation_rate": 0.05
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "colonies": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "capabilities": ["swarm_intelligence", "phenology_modeling", "vector_transmission"]
+}

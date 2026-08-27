@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WeightConfiguration",
+  "type": "object",
+  "properties": {
+    "init_strategy": {
+      "type": "string",
+      "enum": ["xavier_uniform", "kaiming_normal", "orthogonal", "sparse"],
+      "default": "kaiming_normal"
+    },
+    "lottery_ticket_pruning_rate": {
+      "type": "number",
+      "default": 0.2
+    },
+    "soup_strategy": {
+      "type": "string",
+      "enum": ["uniform", "greedy"],
+      "default": "uniform"
+    }
+  },
+  "required": ["init_strategy"]
+}

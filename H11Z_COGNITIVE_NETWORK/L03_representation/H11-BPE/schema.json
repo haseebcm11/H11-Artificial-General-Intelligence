@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-BPE",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Learns a merge table from a corpus by iteratively pairing the most frequent adjacent symbols.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "corpus",
+      "type": "List[str]"
+    },
+    {
+      "name": "num_merges",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "merges",
+      "type": "List[Tuple[str,str]]"
+    },
+    {
+      "name": "vocab_size",
+      "type": "int"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [],
+    "downstream": [
+      "H11-TOKENIZER",
+      "H11-SUBWORD"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "bpe-train"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

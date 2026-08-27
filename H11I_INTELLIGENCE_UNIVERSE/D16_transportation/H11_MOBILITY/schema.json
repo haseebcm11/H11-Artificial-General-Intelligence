@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MOBILITY",
+  "version": "1.0.0",
+  "layer": 16,
+  "layer_name": "Transportation",
+  "description": "Urban MaaS fleet orchestration",
+  "category": "Logistics",
+  "inputs": [
+    {
+      "name": "requests",
+      "type": "array",
+      "description": "List of ride requests",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "dispatch_plan",
+      "type": "object",
+      "description": "Vehicle assignments"
+    }
+  ],
+  "config": {
+    "max_wait_time": {
+      "type": "integer",
+      "default": "600",
+      "description": "Maximum rider wait time (s)"
+    }
+  },
+  "state_schema": {
+    "active_vehicles": {
+      "type": "integer",
+      "description": "Number of vehicles online"
+    }
+  }
+}

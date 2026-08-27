@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-CONTRACT-CHECKER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Validates that an envelope payload contains required keys before a hop.",
+  "category": "integrator",
+  "handler": "check_contract",
+  "inputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    },
+    {
+      "name": "required",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-SCHEMA-FIREWALL"
+    ],
+    "downstream": [
+      "H11C-TYPE-COERCER"
+    ]
+  },
+  "capabilities": [
+    "check_contract"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

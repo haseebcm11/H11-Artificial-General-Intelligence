@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-HARMONIA",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Harmonic progression and music theory.",
+  "category": "Harmony",
+  "inputs": [
+    {
+      "name": "melody",
+      "type": "array",
+      "description": "Notes to harmonize",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "chord_progression",
+      "type": "array",
+      "description": "Sequence of chords"
+    }
+  ],
+  "config": {
+    "voice_leading_strictness": {
+      "type": "number",
+      "default": 0.8,
+      "description": "How strictly to follow traditional counterpoint"
+    }
+  },
+  "state_schema": {
+    "current_tonality": {
+      "type": "string",
+      "description": "Active key"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPOSITIO"],
+    "downstream": ["H11-ORCHESTRATIO"]
+  },
+  "events": {
+    "emits": ["harmony_resolved"],
+    "consumes": ["harmonize_melody"]
+  },
+  "metrics": [
+    {
+      "name": "voice_leading_cost",
+      "type": "histogram",
+      "description": "Cost metric of voice leading transitions"
+    }
+  ],
+  "capabilities": ["harmonization", "voice_leading", "modulation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

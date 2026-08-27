@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GRAVITATIO",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "N-body and hierarchical gravity simulation agent",
+  "category": "Astrophysics",
+  "inputs": [
+    {
+      "name": "bodies",
+      "type": "List[CelestialBody]",
+      "description": "List of massive bodies to simulate",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "updated_bodies",
+      "type": "List[CelestialBody]",
+      "description": "Updated positions and velocities"
+    }
+  ],
+  "config": {
+    "gravitational_constant": {
+      "type": "float",
+      "default": 6.67430e-11,
+      "description": "Newtonian G"
+    }
+  },
+  "state_schema": {
+    "collision_count": {
+      "type": "int",
+      "description": "Number of detected collisions"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-RELATIVITAS"]
+  },
+  "events": {
+    "emits": ["system_evolved", "collision_occurred"],
+    "consumes": ["mass_injected"]
+  },
+  "metrics": [
+    {
+      "name": "force_evaluations",
+      "type": "counter",
+      "description": "Number of pairwise force calculations"
+    }
+  ],
+  "capabilities": ["n_body_integration", "barnes_hut_tree"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

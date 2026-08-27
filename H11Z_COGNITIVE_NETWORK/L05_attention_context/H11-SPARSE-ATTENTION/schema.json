@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPARSE-ATTENTION",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Implements sub-quadratic attention approximations using local windows, global tokens, and learned block-sparse masks.",
+  "inputs": [{"name": "sequence", "type": "Any", "description": "Input seq"}, {"name": "sparsity_pattern", "type": "str", "description": "Pattern config"}],
+  "outputs": [{"name": "sparse_context", "type": "Any", "description": "Approximated attention"}],
+  "state_schema": {"sparsity_density": {"type": "float", "description": "Percentage of computed dots"}}
+}

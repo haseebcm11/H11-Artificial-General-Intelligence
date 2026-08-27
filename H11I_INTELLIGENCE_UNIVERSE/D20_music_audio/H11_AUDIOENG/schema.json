@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AUDIOENG",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Audio engineering, acoustics, and mastering.",
+  "category": "Engineering",
+  "inputs": [
+    {
+      "name": "mix_buffer",
+      "type": "object",
+      "description": "Mixed audio ready for mastering",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "compliance_report",
+      "type": "object",
+      "description": "LUFS and True Peak metrics"
+    }
+  ],
+  "config": {
+    "oversampling_factor": {
+      "type": "integer",
+      "default": 4,
+      "description": "Oversampling for True Peak detection"
+    }
+  },
+  "state_schema": {
+    "integrated_lufs": {
+      "type": "number",
+      "description": "Current measured loudness"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-MUSICPROD"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["mastering_complete"],
+    "consumes": ["process_master"]
+  },
+  "metrics": [
+    {
+      "name": "true_peak_max",
+      "type": "gauge",
+      "description": "Highest inter-sample peak detected"
+    }
+  ],
+  "capabilities": ["loudness_normalization", "dithering", "limiting"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

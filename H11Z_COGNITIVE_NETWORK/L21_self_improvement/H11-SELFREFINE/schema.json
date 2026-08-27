@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SELFREFINE Schema",
+  "type": "object",
+  "properties": {
+    "RefinementTask": {
+      "type": "object",
+      "properties": {
+        "initial_content": { "type": "string" },
+        "constraints": { 
+          "type": "array", 
+          "items": { "type": "string" } 
+        },
+        "max_iterations": { "type": "integer", "default": 3 },
+        "modality": { "type": "string", "enum": ["text", "code", "logic"] }
+      },
+      "required": ["initial_content", "constraints"]
+    },
+    "RefinementResult": {
+      "type": "object",
+      "properties": {
+        "final_content": { "type": "string" },
+        "iterations_used": { "type": "integer" },
+        "convergence_achieved": { "type": "boolean" },
+        "trace": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "iteration": { "type": "integer" },
+              "critique": { "type": "string" },
+              "diff": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

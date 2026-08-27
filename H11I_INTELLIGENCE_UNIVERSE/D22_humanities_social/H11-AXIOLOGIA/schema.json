@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AXIOLOGIA",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Evaluates entities via multidimensional value theory.",
+  "category": "Philosophy",
+  "inputs": [
+    {
+      "name": "entities",
+      "type": "array",
+      "description": "List of strings representing entities to evaluate",
+      "required": true
+    },
+    {
+      "name": "value_context",
+      "type": "string",
+      "description": "The prevailing paradigm",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "value_vectors",
+      "type": "object",
+      "description": "Dictionary of entity to value vectors"
+    },
+    {
+      "name": "dominant_axis",
+      "type": "string",
+      "description": "Primary axis of value detected"
+    }
+  ],
+  "config": {
+    "dimensions": {
+      "type": "integer",
+      "default": 5,
+      "description": "Number of dimensions in value vector space"
+    }
+  },
+  "state_schema": {
+    "active_transforms": {
+      "type": "integer",
+      "description": "Number of active tensor transforms"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ONTOLOGIA", "H11-CULTURAL"],
+    "downstream": ["H11-ETHICA-APPLIED", "H11-AESTHETICA"]
+  },
+  "events": {
+    "emits": ["value_shift_detected"],
+    "consumes": ["paradigm_update"]
+  },
+  "metrics": [
+    {
+      "name": "tensor_compute_time",
+      "type": "histogram",
+      "description": "Latency for tensor transformation computations"
+    }
+  ],
+  "capabilities": ["multi_dimensional_value_mapping", "paradigm_transformation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "medium"
+  }
+}

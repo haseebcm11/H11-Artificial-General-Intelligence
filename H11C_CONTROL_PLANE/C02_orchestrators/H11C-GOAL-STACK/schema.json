@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-GOAL-STACK",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Push/pop/peek goals. Nested goals cannot skip the parent's safety gates.",
+  "category": "orchestrator",
+  "handler": "goal_stack",
+  "inputs": [
+    {
+      "name": "op",
+      "type": "Any"
+    },
+    {
+      "name": "goal",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "stack",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-NESTED-GOAL"
+    ],
+    "downstream": [
+      "H11C-TASK-DECOMPOSER"
+    ]
+  },
+  "capabilities": [
+    "goal_stack"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

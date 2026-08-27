@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GAMIFICATION",
+  "version": "1.0.0",
+  "layer": "28",
+  "layer_name": "Education & Learning",
+  "description": "Motivational systems and dynamic difficulty using Elo ratings.",
+  "category": "Engagement",
+  "inputs": [
+    {
+      "name": "learner_profiles",
+      "type": "object"
+    },
+    {
+      "name": "engagement_metrics",
+      "type": "array"
+    },
+    {
+      "name": "assessment_outcomes",
+      "type": "array"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "reward_triggers",
+      "type": "array"
+    },
+    {
+      "name": "dynamic_difficulty",
+      "type": "object"
+    },
+    {
+      "name": "social_groupings",
+      "type": "array"
+    }
+  ],
+  "config": {
+    "elo_k_factor": 32,
+    "streak_decay_hours": 48
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "user_ratings": { "type": "object" },
+      "content_ratings": { "type": "object" },
+      "achievement_ledgers": { "type": "object" }
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-EDTECH", "H11-HIGHED"],
+    "downstream": ["H11-EDTECH"]
+  },
+  "events": {
+    "emits": ["badge_awarded", "leaderboard_updated"],
+    "consumes": ["module_completed", "login_event"]
+  },
+  "metrics": [
+    "daily_active_learners",
+    "reward_redemption_rate",
+    "average_streak_length"
+  ],
+  "capabilities": [
+    "elo_calibration",
+    "variable_ratio_rewards",
+    "social_graph_clustering"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-CAPABILITY-TOKEN",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Mints HMAC-style capability tokens. Scopes are explicit; absence is deny.",
+  "category": "security",
+  "handler": "capability",
+  "inputs": [
+    {
+      "name": "identity",
+      "type": "Any"
+    },
+    {
+      "name": "scopes",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "token",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-IDENTITY"
+    ],
+    "downstream": [
+      "H11C-LEAST-PRIVILEGE"
+    ]
+  },
+  "capabilities": [
+    "capability"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

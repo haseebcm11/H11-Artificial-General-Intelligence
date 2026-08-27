@@ -1,0 +1,32 @@
+{
+  "name": "H11-AB",
+  "description": "A/B testing and experimentation analysis agent.",
+  "version": "1.0.0",
+  "capabilities": [
+    "frequentist_testing",
+    "bayesian_testing",
+    "sample_size_calculation"
+  ],
+  "inputs": {
+    "control_data": {
+      "type": "object",
+      "properties": {
+        "visitors": {"type": "integer"},
+        "conversions": {"type": "integer"}
+      }
+    },
+    "variant_data": {
+      "type": "object",
+      "properties": {
+        "visitors": {"type": "integer"},
+        "conversions": {"type": "integer"}
+      }
+    }
+  },
+  "outputs": {
+    "significance": {"type": "number"},
+    "lift": {"type": "number"},
+    "is_significant": {"type": "boolean"},
+    "winner": {"type": "string"}
+  }
+}

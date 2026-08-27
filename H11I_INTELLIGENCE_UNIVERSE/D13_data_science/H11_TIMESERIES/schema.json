@@ -1,0 +1,40 @@
+{
+  "name": "H11-TIMESERIES",
+  "description": "Time series analysis and forecasting agent.",
+  "version": "1.0.0",
+  "capabilities": [
+    "forecasting",
+    "anomaly_detection",
+    "trend_analysis"
+  ],
+  "inputs": {
+    "time_series_data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": {"type": "string", "format": "date-time"},
+          "value": {"type": "number"}
+        }
+      }
+    },
+    "forecast_horizon": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "outputs": {
+    "forecast": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": {"type": "string", "format": "date-time"},
+          "predicted_value": {"type": "number"},
+          "lower_bound": {"type": "number"},
+          "upper_bound": {"type": "number"}
+        }
+      }
+    }
+  }
+}

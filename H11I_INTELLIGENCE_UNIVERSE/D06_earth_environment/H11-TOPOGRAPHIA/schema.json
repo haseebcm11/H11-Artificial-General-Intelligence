@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-TOPOGRAPHIA Agent Schema",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "survey_data": {
+      "type": "object",
+      "properties": {
+        "crs": {
+          "type": "string"
+        },
+        "target_elevation": {
+          "type": "number"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "x": {"type": "number"},
+              "y": {"type": "number"},
+              "z": {"type": "number"}
+            },
+            "required": ["x", "y", "z"]
+          }
+        }
+      },
+      "required": ["crs", "points"]
+    },
+    "analysis_type": {
+      "type": "string",
+      "enum": ["elevation_model", "slope_analysis", "volume_calculation", "contour_extraction"]
+    }
+  },
+  "required": ["task_id", "survey_data", "analysis_type"]
+}

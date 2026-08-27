@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AESTHETICA",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Evaluates aesthetic qualities and experiential resonance.",
+  "category": "Philosophy",
+  "inputs": [
+    {
+      "name": "artifact_id",
+      "type": "string",
+      "description": "Identifier of the artifact",
+      "required": true
+    },
+    {
+      "name": "feature_map",
+      "type": "object",
+      "description": "Extracted perceptual features",
+      "required": true
+    },
+    {
+      "name": "style_target",
+      "type": "string",
+      "description": "Intended aesthetic style",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "aesthetic_score",
+      "type": "number",
+      "description": "Normalized score [0, 1]"
+    },
+    {
+      "name": "gestalt_coherence",
+      "type": "number",
+      "description": "Measure of emergent whole vs parts"
+    },
+    {
+      "name": "critique",
+      "type": "array",
+      "description": "List of textual critiques"
+    }
+  ],
+  "config": {
+    "complexity_weight": {
+      "type": "number",
+      "default": 1.0,
+      "description": "Weighting for the complexity factor"
+    }
+  },
+  "state_schema": {
+    "evaluations_performed": {
+      "type": "integer",
+      "description": "Total number of artifacts evaluated"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-AXIOLOGIA", "H11-CULTURAL"],
+    "downstream": ["H11-MEDIASTUDIES"]
+  },
+  "events": {
+    "emits": ["aesthetic_judgment_completed"],
+    "consumes": ["artifact_generated"]
+  },
+  "metrics": [
+    {
+      "name": "mean_aesthetic_score",
+      "type": "gauge",
+      "description": "Moving average of aesthetic scores"
+    }
+  ],
+  "capabilities": ["gestalt_evaluation", "birkhoff_measurement"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

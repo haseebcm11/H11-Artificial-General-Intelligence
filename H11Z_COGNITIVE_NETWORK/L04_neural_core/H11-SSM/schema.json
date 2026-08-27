@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SSM Schema",
+  "type": "object",
+  "properties": {
+    "d_model": {
+      "type": "integer"
+    },
+    "d_state": {
+      "type": "integer",
+      "default": 16
+    },
+    "d_conv": {
+      "type": "integer",
+      "default": 4
+    },
+    "expand": {
+      "type": "integer",
+      "default": 2
+    },
+    "dt_rank": {
+      "type": "integer"
+    },
+    "ssm_type": {
+      "type": "string",
+      "enum": ["s4", "mamba", "mamba2"]
+    }
+  },
+  "required": [
+    "d_model"
+  ]
+}

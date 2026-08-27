@@ -1,0 +1,7 @@
+{
+  "name": "H11_GREENCHEMIA",
+  "version": "1.0.0",
+  "domain": "Chemistry",
+  "description": "Green Chemistry Agent",
+  "capabilities": ["EnvironmentalImpactAnalysis", "SolventRecommendation", "AtomEconomyCalculation"]
+}

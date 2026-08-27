@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-COSMOLOGIA",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Cosmological modeling and large-scale structure analysis",
+  "category": "Astrophysics & Cosmology",
+  "inputs": [
+    {
+      "name": "cmb_maps",
+      "type": "array",
+      "description": "Cosmic Microwave Background data",
+      "required": true
+    },
+    {
+      "name": "galaxy_surveys",
+      "type": "object",
+      "description": "Redshift data of large-scale structures",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "cosmological_parameters",
+      "type": "object",
+      "description": "Derived parameters of the universe"
+    },
+    {
+      "name": "large_scale_structure",
+      "type": "object",
+      "description": "Modeled distribution of the cosmic web"
+    }
+  ],
+  "config": {
+    "resolution_nside": {
+      "type": "integer",
+      "default": 2048,
+      "description": "HEALPix resolution parameter for CMB maps"
+    },
+    "simulation_box_size_mpc": {
+      "type": "number",
+      "default": 1000.0,
+      "description": "Size of the N-body simulation box in Megaparsecs"
+    }
+  },
+  "state_schema": {
+    "current_epoch_redshift": {
+      "type": "number",
+      "description": "The cosmic redshift currently being analyzed"
+    },
+    "hubble_tension_metric": {
+      "type": "number",
+      "description": "Calculated discrepancy between local and global H0"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-GALACTICA", "H11-ASTROPHYSICA"],
+    "downstream": ["H11-DEEPSPACE"]
+  },
+  "events": {
+    "emits": ["CosmologicalParametersUpdated", "StructureSimulationCompleted"],
+    "consumes": ["GalaxyCatalogReleased", "SupernovaDataIngested"]
+  },
+  "metrics": [
+    {
+      "name": "mcmc_convergence_ratio",
+      "type": "gauge",
+      "description": "Gelman-Rubin diagnostic for parameter sampling"
+    }
+  ],
+  "capabilities": ["CMB Analysis", "Dark Matter Simulation", "Expansion Modeling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

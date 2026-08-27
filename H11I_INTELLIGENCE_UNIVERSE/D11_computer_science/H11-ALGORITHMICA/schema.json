@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ALGORITHMICA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Fundamentals",
+  "description": "Analyzes computational problems to synthesize optimal algorithmic strategies and complexity bounds.",
+  "category": "Theoretical Computer Science",
+  "inputs": [
+    {
+      "name": "problem_statement",
+      "type": "string",
+      "description": "Formal description of the computational problem",
+      "required": true
+    },
+    {
+      "name": "constraints",
+      "type": "array",
+      "description": "Time and space limits",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "recommended_algorithm",
+      "type": "string",
+      "description": "Name or synthesis of the optimal algorithm"
+    },
+    {
+      "name": "time_complexity",
+      "type": "object",
+      "description": "Asymptotic bounds"
+    }
+  ],
+  "config": {
+    "max_synthesis_depth": {
+      "type": "integer",
+      "default": 10,
+      "description": "Maximum depth for synthesis search"
+    }
+  },
+  "state_schema": {
+    "active_problems": {
+      "type": "integer",
+      "description": "Number of problems currently being analyzed"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DATASTRUCTURA", "H11-COMPUTABILITAS"],
+    "downstream": ["H11-COMPILER", "H11-SRE"]
+  },
+  "events": {
+    "emits": ["algorithm_synthesized", "complexity_bound_updated"],
+    "consumes": ["problem_discovered"]
+  },
+  "metrics": [
+    {
+      "name": "synthesis_time_ms",
+      "type": "histogram",
+      "description": "Time taken to synthesize an algorithm"
+    }
+  ],
+  "capabilities": ["complexity_analysis", "algorithm_selection"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

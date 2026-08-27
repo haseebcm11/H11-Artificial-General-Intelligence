@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-RECURSIVE Output Schema",
+  "type": "object",
+  "properties": {
+    "patch_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "original_hash": {
+      "type": "string"
+    },
+    "mutated_source": {
+      "type": "string"
+    },
+    "fitness_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "mutation_type": {
+      "type": "string",
+      "enum": ["heuristic_tweak", "algorithmic_substitution", "loop_optimization"]
+    }
+  },
+  "required": ["patch_id", "original_hash", "mutated_source", "fitness_score"]
+}

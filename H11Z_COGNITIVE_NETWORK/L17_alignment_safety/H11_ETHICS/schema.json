@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-ETHICS Schema",
+  "type": "object",
+  "properties": {
+    "ltl_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "formula": { "type": "string" },
+          "severity": { "type": "number", "minimum": 0, "maximum": 1 }
+        },
+        "required": ["id", "formula", "severity"]
+      }
+    },
+    "stakeholders": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["ltl_rules", "stakeholders"]
+}

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RESPIRATORY",
+  "version": "1.0.0",
+  "layer": 23,
+  "layer_name": "Allied Health",
+  "description": "Respiratory Therapy and Airway Management",
+  "category": "Respiratory Therapy",
+  "inputs": [
+    {
+      "name": "vent_telemetry",
+      "type": "array",
+      "description": "Breath-by-breath waveforms",
+      "required": false
+    },
+    {
+      "name": "abg_panel",
+      "type": "object",
+      "description": "Arterial blood gases",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "vent_adjustments",
+      "type": "object",
+      "description": "Recommended ventilator settings"
+    }
+  ],
+  "config": {
+    "ardsnet_strict": {
+      "type": "boolean",
+      "default": true,
+      "description": "Adhere strictly to ARDSNet low tidal volume strategy"
+    }
+  },
+  "state_schema": {
+    "auto_peep_detected": {
+      "type": "boolean",
+      "description": "Flag for gas trapping"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PULMONOLOGIA"],
+    "downstream": ["H11-INTENSIVIST"]
+  },
+  "events": {
+    "emits": ["VentSettingsAdjusted", "WeaningReady"],
+    "consumes": ["VentilatorBreath"]
+  },
+  "metrics": [
+    {
+      "name": "rsbi_value",
+      "type": "gauge",
+      "description": "Rapid Shallow Breathing Index"
+    }
+  ],
+  "capabilities": ["mechanical_ventilation", "abg_interpretation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

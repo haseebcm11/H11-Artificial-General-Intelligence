@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-DATALAKE Configuration",
+  "type": "object",
+  "properties": {
+    "lake_name": {
+      "type": "string"
+    },
+    "storage_provider": {
+      "type": "string",
+      "enum": ["s3", "gcs", "abfs"]
+    },
+    "default_format": {
+      "type": "string",
+      "enum": ["parquet", "delta", "iceberg", "hudi"]
+    },
+    "enable_auto_compaction": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": ["lake_name", "storage_provider"]
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TOKENIZER",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Splits raw text into tokens using a Unicode-aware word/punct scanner, optionally applying a supplied BPE merge table.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "text",
+      "type": "str"
+    },
+    {
+      "name": "merges",
+      "type": "List[Tuple[str,str]]"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "tokens",
+      "type": "List[str]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-BPE"
+    ],
+    "downstream": [
+      "H11-EMBEDDER",
+      "H11-SUBWORD",
+      "H11-POSITIONAL-ENC",
+      "H11-FEATURE"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "unicode-scan",
+    "bpe-apply"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-VIDEO",
+  "version": "1.0.0",
+  "layer": "7",
+  "layer_name": "Audiovisual Synthesis",
+  "description": "Synthesizes textual narratives into temporally coherent audiovisual media using diffusion models.",
+  "category": "Media Production",
+  "inputs": ["script_draft", "brand_constraints", "duration_target"],
+  "outputs": ["video_asset", "scene_metadata", "audio_stems"],
+  "config": {
+    "resolution": "1920x1080",
+    "framerate": 30,
+    "max_render_timeout_sec": 3600
+  },
+  "state_schema": {
+    "render_queue": "Queue[RenderJob]",
+    "temporal_coherence_cache": "Dict[str, LatentVector]"
+  },
+  "dependencies": {
+    "upstream": ["H11-CONTENT", "H11-BRANDING"],
+    "downstream": ["H11-PR"]
+  },
+  "events": {
+    "emits": ["RenderComplete", "RenderFailed"],
+    "consumes": ["ScriptApproved"]
+  },
+  "metrics": ["render_time", "vram_usage", "temporal_consistency_score"],
+  "capabilities": ["scene_graph_generation", "latent_video_diffusion", "audio_kinematic_sync"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

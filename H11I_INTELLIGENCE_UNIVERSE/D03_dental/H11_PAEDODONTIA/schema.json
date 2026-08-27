@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PAEDODONTIA",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Dental Sciences",
+  "description": "Pediatric dentistry, growth tracking, and behavior management.",
+  "category": "Pediatric Dentistry",
+  "inputs": [
+    {
+      "name": "child_demographics",
+      "type": "object",
+      "description": "Age, weight, and behavioral score",
+      "required": true
+    },
+    {
+      "name": "mixed_dentition_chart",
+      "type": "array",
+      "description": "Status of primary and erupting permanent teeth",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "developmental_analysis",
+      "type": "object",
+      "description": "Eruption tracking and space analysis"
+    },
+    {
+      "name": "pedo_treatment_plan",
+      "type": "array",
+      "description": "Procedures including sedation and space maintenance"
+    }
+  ],
+  "config": {
+    "lidocaine_max_mg_per_kg": {
+      "type": "number",
+      "default": 4.4,
+      "description": "Maximum safe dosage of lidocaine"
+    }
+  },
+  "state_schema": {
+    "growth_timeline": {
+      "type": "object",
+      "description": "Predicted eruption/exfoliation dates"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-ORTHODONTIA"]
+  },
+  "events": {
+    "emits": ["space_maintainer_needed", "overdose_warning"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "pulpotomies_planned",
+      "type": "counter",
+      "description": "Number of vital pulp therapies planned for primary teeth"
+    }
+  ],
+  "capabilities": ["dosage_calculation", "space_analysis", "behavioral_triage"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-ENGINEERING-INTEGRATOR",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Routes engineering design cases onto CS/engineering specialists.",
+  "category": "integrator",
+  "handler": "route_domain",
+  "inputs": [
+    {
+      "name": "case",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "pipeline_id",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-CROSS-DOMAIN-ROUTER"
+    ],
+    "downstream": [
+      "H11C-PIPELINE-COMPOSER"
+    ]
+  },
+  "capabilities": [
+    "route_domain"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

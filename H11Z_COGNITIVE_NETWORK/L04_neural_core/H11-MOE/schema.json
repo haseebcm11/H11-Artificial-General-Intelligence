@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-MOE Schema",
+  "type": "object",
+  "properties": {
+    "num_experts": {
+      "type": "integer",
+      "minimum": 2
+    },
+    "top_k": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "hidden_size": {
+      "type": "integer"
+    },
+    "intermediate_size": {
+      "type": "integer"
+    },
+    "capacity_factor": {
+      "type": "number",
+      "minimum": 1.0
+    },
+    "router_jitter_noise": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "num_experts",
+    "top_k",
+    "hidden_size",
+    "intermediate_size"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FeedbackLoopSchema",
+  "description": "Schema for the Feedback Loop processing cycle.",
+  "type": "object",
+  "properties": {
+    "cycle_id": {
+      "type": "string",
+      "description": "Unique identifier for the observation-action cycle."
+    },
+    "observation_state": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Vector representation of the observed state."
+    },
+    "action_command": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Vector representation of the executed action."
+    },
+    "feedbacks_received": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": ["ENVIRONMENT", "HUMAN_IN_THE_LOOP", "AUTOMATED_HEURISTIC", "PEER_AGENT"]
+          },
+          "feedback_type": {
+            "type": "string",
+            "enum": ["POSITIVE_REINFORCEMENT", "NEGATIVE_CORRECTION", "NEUTRAL_OBSERVATION"]
+          },
+          "score": {
+            "type": "number",
+            "minimum": -1.0,
+            "maximum": 1.0
+          },
+          "delay_ms": {
+            "type": "number"
+          }
+        },
+        "required": ["source", "feedback_type", "score", "delay_ms"]
+      }
+    },
+    "resolved": {
+      "type": "boolean"
+    }
+  },
+  "required": ["cycle_id", "observation_state", "action_command", "resolved"]
+}

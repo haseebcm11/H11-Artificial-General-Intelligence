@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-THROUGHPUT",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Tokens-per-second optimization and prefill-decode disaggregation.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "workload_profile",
+      "type": "Dict[str, float]",
+      "desc": "Traffic pattern"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "resource_allocation",
+      "type": "Dict[str, int]",
+      "desc": "Hardware mapping"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "tps_history": {
+      "type": "List[float]",
+      "description": "Tokens per second metrics"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

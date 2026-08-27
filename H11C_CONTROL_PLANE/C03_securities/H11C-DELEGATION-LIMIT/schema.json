@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-DELEGATION-LIMIT",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Caps how far a capability may be delegated.",
+  "category": "security",
+  "handler": "privilege",
+  "inputs": [
+    {
+      "name": "scopes",
+      "type": "Any"
+    },
+    {
+      "name": "drop",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scopes",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-CONFUSED-DEPUTY"
+    ],
+    "downstream": [
+      "H11C-LEAST-PRIVILEGE"
+    ]
+  },
+  "capabilities": [
+    "privilege"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

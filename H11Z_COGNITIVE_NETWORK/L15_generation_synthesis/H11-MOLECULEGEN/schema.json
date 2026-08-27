@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MOLECULEGEN",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Designs novel molecular structures for drug discovery and material science.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "target_properties", "type": "Dict[str, float]"}, {"name": "scaffold", "type": "str"}
+  ],
+  "outputs": [
+    {"name": "smiles", "type": "str"}, {"name": "qed_score", "type": "float"}, {"name": "conformers", "type": "List[List[float]]"}
+  ]
+}

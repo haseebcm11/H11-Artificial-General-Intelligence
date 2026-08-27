@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-POWER Configuration",
+  "type": "object",
+  "properties": {
+    "grid_frequency_hz": {
+      "type": "number",
+      "default": 60.0
+    },
+    "voltage_level_kv": {
+      "type": "number",
+      "default": 13.8
+    },
+    "battery_chemistry_default": {
+      "type": "string",
+      "enum": ["Li-Ion", "LFP", "NMC", "Lead-Acid"]
+    }
+  },
+  "required": ["grid_frequency_hz", "voltage_level_kv"]
+}

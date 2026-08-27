@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Epigenetica Agent Schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "assay_type": {
+          "type": "string",
+          "enum": ["WGBS", "ChIP-seq", "ATAC-seq", "Hi-C"]
+        },
+        "reference_genome": {
+          "type": "string"
+        },
+        "p_value_threshold": {
+          "type": "number",
+          "default": 0.01
+        }
+      },
+      "required": ["assay_type", "reference_genome"]
+    },
+    "state_schema": {
+      "type": "object",
+      "properties": {
+        "total_regions_analyzed": {
+          "type": "integer"
+        },
+        "differentially_methylated_regions": {
+          "type": "integer"
+        },
+        "chromatin_states": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

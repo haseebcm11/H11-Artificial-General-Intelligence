@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DPO",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Direct Preference Optimization",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "chosen_responses",
+      "type": "List[str]",
+      "description": "chosen_responses input",
+      "required": true
+    },
+    {
+      "name": "rejected_responses",
+      "type": "List[str]",
+      "description": "rejected_responses input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "dpo_loss",
+      "type": "float",
+      "description": "dpo_loss output"
+    },
+    {
+      "name": "implicit_rewards",
+      "type": "List[float]",
+      "description": "implicit_rewards output"
+    }
+  ],
+  "config": {
+    "dpo_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "dpo_completed"
+    ],
+    "consumes": [
+      "dpo_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "dpo_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_dpo"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

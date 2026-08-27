@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FUSIO",
+  "version": "1.0.0",
+  "layer": 25,
+  "layer_name": "Energy & Resources",
+  "description": "Nuclear Fusion Control Agent",
+  "category": "Energy Generation",
+  "inputs": [
+    {
+      "name": "electron_temp_kev",
+      "type": "float",
+      "description": "Core electron temperature in keV",
+      "required": true
+    },
+    {
+      "name": "ntm_island_width",
+      "type": "float",
+      "description": "Size of tearing mode islands",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "coil_currents",
+      "type": "array",
+      "description": "Requested coil currents in kA"
+    }
+  ],
+  "config": {
+    "reactor_type": {
+      "type": "string",
+      "default": "TOKAMAK",
+      "description": "Tokamak or Stellarator"
+    }
+  },
+  "state_schema": {
+    "plasma_current_ma": {
+      "type": "float",
+      "description": "Current flowing through plasma"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-GRID"]
+  },
+  "events": {
+    "emits": ["fusio.disruption_warning"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "fusion_triple_product",
+      "type": "gauge",
+      "description": "Density * Temp * Time"
+    }
+  ],
+  "capabilities": ["plasma_shape_control", "ntm_mitigation"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

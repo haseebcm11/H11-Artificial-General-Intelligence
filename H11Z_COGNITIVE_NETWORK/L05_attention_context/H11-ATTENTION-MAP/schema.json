@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ATTENTION-MAP",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Extracts, analyzes, and visualizes attention patterns to interpret model behavior, rollout paths, and head specialization.",
+  "inputs": [{"name": "attention_probs", "type": "Any", "description": "Probabilities from all layers/heads"}, {"name": "tokens", "type": "List[str]", "description": "Input string tokens"}],
+  "outputs": [{"name": "rollout_graph", "type": "dict", "description": "Information flow graph"}],
+  "state_schema": {"induction_heads_detected": {"type": "int", "description": "Number of induction heads"}}
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-BIAS-DETECT Schema",
+  "type": "object",
+  "properties": {
+    "audit_id": {
+      "type": "string"
+    },
+    "sensitive_attribute": {
+      "type": "string"
+    },
+    "samples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "embedding": { "type": "array", "items": { "type": "number" } },
+          "label": { "type": "number" },
+          "sensitive_value": { "type": "number" }
+        }
+      }
+    }
+  },
+  "required": ["audit_id", "sensitive_attribute", "samples"]
+}

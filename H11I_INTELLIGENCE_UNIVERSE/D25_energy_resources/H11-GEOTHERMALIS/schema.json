@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GEOTHERMALIS",
+  "version": "1.0.0",
+  "layer": 25,
+  "layer_name": "Energy & Resources",
+  "description": "Geothermal Energy Agent",
+  "category": "Energy Generation",
+  "inputs": [
+    {
+      "name": "production_temp",
+      "type": "float",
+      "description": "Brine temperature (C)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "orc_power",
+      "type": "float",
+      "description": "Electrical power output (MW)"
+    }
+  ],
+  "config": {
+    "reservoir_type": {
+      "type": "string",
+      "default": "EGS",
+      "description": "EGS or Hydrothermal"
+    }
+  },
+  "state_schema": {
+    "reservoir_pressure_bar": {
+      "type": "float",
+      "description": "Current downhole pressure"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-METEO"],
+    "downstream": ["H11-GRID"]
+  },
+  "events": {
+    "emits": ["geothermal.seismic_warning"],
+    "consumes": ["grid.dispatch_request"]
+  },
+  "metrics": [
+    {
+      "name": "exergy_destruction",
+      "type": "gauge",
+      "description": "Thermodynamic loss"
+    }
+  ],
+  "capabilities": ["reservoir_modeling", "orc_optimization"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "medium"
+  }
+}

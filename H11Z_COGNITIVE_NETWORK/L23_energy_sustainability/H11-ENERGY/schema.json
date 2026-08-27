@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ENERGY",
+  "version": "1.0.0",
+  "layer": 23,
+  "layer_name": "Energy, Thermal & Sustainability",
+  "description": "Dynamic energy budgeting and power capping.",
+  "category": "Energy Management",
+  "inputs": [
+    {"name": "telemetry_stream", "type": "NodePowerTelemetry", "description": "Raw power readings.", "required": true}
+  ],
+  "outputs": [
+    {"name": "power_allocations", "type": "Dict[str, float]", "description": "Assigned power caps in watts."}
+  ],
+  "config": {
+    "control_loop_ms": {"type": "integer", "default": 500, "description": "Optimization interval"}
+  },
+  "state_schema": {
+    "power_history": {"type": "array", "description": "Time series of cluster power."}
+  },
+  "dependencies": {"upstream": [], "downstream": ["H11-THERMAL-AI"]},
+  "events": {"emits": ["PowerCapAdjusted"], "consumes": ["JobStarted"]},
+  "metrics": [{"name": "total_wattage", "type": "gauge", "description": "Current power draw"}],
+  "capabilities": ["power_capping", "mpc_optimization"],
+  "scaling": {"horizontal": false, "gpu_required": false, "memory_class": "medium"}
+}

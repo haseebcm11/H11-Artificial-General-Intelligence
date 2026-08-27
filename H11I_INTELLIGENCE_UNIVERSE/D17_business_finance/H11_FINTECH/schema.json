@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FINTECH",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Models fintech payment and advisory systems.",
+  "category": "Finance",
+  "inputs": [{"name": "transaction_volume", "type": "number", "required": true}],
+  "outputs": [{"name": "efficiency", "type": "number"}],
+  "config": {"api_latency_ms": {"type": "number", "default": 50}},
+  "state_schema": {"ledgers": {"type": "object"}},
+  "dependencies": {"upstream": ["H11-BANKING"], "downstream": ["H11-CUSTOMER"]}
+}

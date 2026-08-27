@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FINANCIA",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Handles corporate finance operations and valuation.",
+  "category": "Finance",
+  "inputs": [
+    {
+      "name": "cash_flows",
+      "type": "array",
+      "description": "Projected future cash flows",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "valuation_metrics",
+      "type": "object",
+      "description": "EV, Equity Value, WACC"
+    }
+  ],
+  "config": {
+    "tax_rate": {
+      "type": "number",
+      "default": 0.21,
+      "description": "Corporate tax rate"
+    }
+  },
+  "state_schema": {
+    "past_valuations": {
+      "type": "array",
+      "description": "History of DCF runs"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-MACROECON"],
+    "downstream": ["H11-MA"]
+  }
+}

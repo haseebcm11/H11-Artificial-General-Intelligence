@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SOLARIS",
+  "version": "1.0.0",
+  "layer": 25,
+  "layer_name": "Energy & Resources",
+  "description": "Solar PV Optimization Agent",
+  "category": "Energy Generation",
+  "inputs": [
+    {
+      "name": "irradiance_dni",
+      "type": "float",
+      "description": "Direct Normal Irradiance (W/m^2)",
+      "required": true
+    },
+    {
+      "name": "shading_matrix",
+      "type": "array",
+      "description": "Shading levels across the array",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "power_output",
+      "type": "float",
+      "description": "Output power in Watts"
+    }
+  ],
+  "config": {
+    "cell_type": {
+      "type": "string",
+      "default": "monocrystalline",
+      "description": "PV cell technology"
+    }
+  },
+  "state_schema": {
+    "array_temperature": {
+      "type": "float",
+      "description": "Current cell temperature"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-METEO"],
+    "downstream": ["H11-GRID", "H11-BATTERIA"]
+  },
+  "events": {
+    "emits": ["solaris.power_updated"],
+    "consumes": ["meteo.forecast"]
+  },
+  "metrics": [
+    {
+      "name": "yield_kwh",
+      "type": "counter",
+      "description": "Cumulative yield"
+    }
+  ],
+  "capabilities": ["mppt_tracking", "thermal_modeling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

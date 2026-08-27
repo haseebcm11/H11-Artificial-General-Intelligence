@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CULTURAL",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Models cultural transmission and memetic evolution.",
+  "category": "Anthropology",
+  "inputs": [
+    {
+      "name": "memes",
+      "type": "array",
+      "description": "Cultural units to simulate",
+      "required": true
+    },
+    {
+      "name": "social_graph",
+      "type": "object",
+      "description": "Network of population",
+      "required": true
+    },
+    {
+      "name": "current_zeitgeist",
+      "type": "object",
+      "description": "Prevailing cultural mood",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "meme_penetration",
+      "type": "object",
+      "description": "Adoption rate of memes"
+    },
+    {
+      "name": "subcultures",
+      "type": "array",
+      "description": "Stable cultural pockets"
+    },
+    {
+      "name": "zeitgeist_shift",
+      "type": "object",
+      "description": "New cultural mood"
+    }
+  ],
+  "config": {
+    "mutation_rate": {
+      "type": "number",
+      "default": 0.05,
+      "description": "Base rate of memetic mutation"
+    }
+  },
+  "state_schema": {
+    "dominant_memes": {
+      "type": "integer",
+      "description": "Number of memes above 50% penetration"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-MEDIASTUDIES", "H11-PSYCHOLOGIA"],
+    "downstream": ["H11-GENDER", "H11-AXIOLOGIA"]
+  },
+  "events": {
+    "emits": ["subculture_formed", "meme_extinct"],
+    "consumes": ["media_broadcast", "generational_shift"]
+  },
+  "metrics": [
+    {
+      "name": "cultural_entropy",
+      "type": "gauge",
+      "description": "Measure of cultural diversity/chaos"
+    }
+  ],
+  "capabilities": ["memetic_epidemiology", "cultural_thermodynamics"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

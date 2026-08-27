@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-REFLECTION-MEM",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Meta-cognitive evaluations and heuristic rule extraction.",
+  "category": "Meta Memory",
+  "inputs": [
+    {"name": "episode_trajectory", "type": "array", "description": "Action-observation pairs", "required": true},
+    {"name": "outcome_metric", "type": "number", "description": "Success score", "required": true}
+  ],
+  "outputs": [
+    {"name": "extracted_heuristics", "type": "array", "description": "Learned rules"},
+    {"name": "critique_summary", "type": "string", "description": "Performance critique"}
+  ],
+  "config": {
+    "merge_threshold": {"type": "number", "default": 0.85, "description": "Cosine similarity to merge rules"},
+    "max_active_rules": {"type": "integer", "default": 20, "description": "Limits prompt bloat"}
+  },
+  "state_schema": {
+    "heuristics_db": {"type": "object", "description": "Vector-indexed rules"},
+    "conflict_graph": {"type": "object", "description": "Tracks contradictory rules"}
+  },
+  "dependencies": {"upstream": ["H11-EPISODIC-MEM"], "downstream": ["H11-SYSTEM-PROMPT-MANAGER"]},
+  "capabilities": ["reflexion", "counterfactual-reasoning", "rule-induction"],
+  "scaling": {"horizontal": false, "gpu_required": false, "memory_class": "low"}
+}

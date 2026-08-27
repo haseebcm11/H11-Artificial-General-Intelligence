@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TEMPORAL",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Temporal dynamics and irregularly-sampled time series.",
+  "category": "Temporal",
+  "inputs": [
+    {
+      "name": "feature_vectors",
+      "type": "List[List[float]]",
+      "description": "Features",
+      "required": true
+    },
+    {
+      "name": "timestamps",
+      "type": "List[List[float]]",
+      "description": "Absolute timestamps",
+      "required": true
+    },
+    {
+      "name": "temporal_mode",
+      "type": "str",
+      "description": "Mode of time modeling",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "temporally_embedded_features",
+      "type": "List[List[float]]",
+      "description": "Features with time context"
+    },
+    {
+      "name": "temporal_differences",
+      "type": "List[List[float]]",
+      "description": "TD vectors"
+    }
+  ],
+  "config": {
+    "base_decay_rate": {
+      "type": "float",
+      "default": 0.1,
+      "description": "Default time decay"
+    }
+  },
+  "state_schema": {
+    "last_timestamp": {
+      "type": "float",
+      "description": "Highest timestamp seen"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-SEQUENCE"
+    ],
+    "downstream": [
+      "H11-SSM-CORE"
+    ]
+  },
+  "events": {
+    "emits": [
+      "TemporalFeaturesReady"
+    ],
+    "consumes": [
+      "SequenceBatchReady"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "average_delta_t",
+      "type": "histogram",
+      "description": "Time gap distribution"
+    }
+  ],
+  "capabilities": [
+    "Time-aware attention masking",
+    "TD learning computation"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "medium"
+  }
+}

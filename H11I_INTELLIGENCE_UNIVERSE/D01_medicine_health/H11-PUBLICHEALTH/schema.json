@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PUBLICHEALTH",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Population-scale health surveillance, outbreak anomaly detection, metapopulation transmission dynamics (SEIR/Rt), Global Burden of Disease (DALY/PAF) quantification, SDOH vulnerability mapping, and non-pharmaceutical intervention policy optimization.",
+  "category": "Public Health & Epidemiology",
+  "inputs": [
+    {
+      "name": "surveillance_feed",
+      "type": "List[SurveillanceRecord]",
+      "description": "Multi-stream syndromic encounters, clinical lab positives, and wastewater biosensor logs by geocode."
+    },
+    {
+      "name": "demographic_census",
+      "type": "DemographicProfile",
+      "description": "Census age pyramid, population density, stratified contact matrices, and baseline comorbidities."
+    },
+    {
+      "name": "environmental_telemetry",
+      "type": "EnvironmentalData",
+      "description": "Air quality index (PM2.5, NO2, O3), heat wave indices, and municipal waterborne pathogen counts."
+    },
+    {
+      "name": "sdoh_indicators",
+      "type": "SDOHProfile",
+      "description": "Area Deprivation Index, poverty thresholds, crowding, housing type, and transit access metrics."
+    },
+    {
+      "name": "pathogen_parameters",
+      "type": "PathogenProfile",
+      "description": "Basic reproduction number R0, serial interval, latent/infectious periods, CFR, and IFR."
+    },
+    {
+      "name": "intervention_state",
+      "type": "List[InterventionPolicy]",
+      "description": "Active non-pharmaceutical interventions, mask mandates, contact tracing, and vaccination tiers."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outbreak_alerts",
+      "type": "List[SyndromicCluster]",
+      "description": "Spatiotemporal anomaly clusters exceeding statistical alert thresholds with geocodes."
+    },
+    {
+      "name": "reproduction_metrics",
+      "type": "ReproductionMetrics",
+      "description": "Time-varying effective reproduction number (Rt) with 95% credible intervals."
+    },
+    {
+      "name": "transmission_forecast",
+      "type": "List[SEIRState]",
+      "description": "Projected compartmental trajectory (Susceptible, Exposed, Infectious, Recovered, Hospitalized, ICU)."
+    },
+    {
+      "name": "burden_assessment",
+      "type": "BurdenMetrics",
+      "description": "Global Burden of Disease metrics: Years of Life Lost (YLL), Years Lived with Disability (YLD), DALYs, and PAF."
+    },
+    {
+      "name": "sdoh_vulnerability",
+      "type": "VulnerabilityReport",
+      "description": "CDC SVI composite scores, localized health disparity indices, and high-risk demographic clusters."
+    },
+    {
+      "name": "public_health_advisory",
+      "type": "PublicHealthAdvisory",
+      "description": "Actionable containment guidance, resource allocation orders, and targeted vaccination directives."
+    }
+  ],
+  "config": {
+    "anomaly_detection_algorithm": "Farrington_Modified",
+    "r_eff_window_days": 7,
+    "seir_integration_method": "Euler_Stochastic",
+    "life_expectancy_standard": "WHO_GBD_2020",
+    "sdoh_index_version": "CDC_SVI_2022",
+    "alert_sigma_threshold": 2.5
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "region_id": {
+        "type": "string"
+      },
+      "active_pathogens": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "effective_reproduction_numbers": {
+        "type": "object"
+      },
+      "current_syndromic_clusters": {
+        "type": "array"
+      },
+      "sdoh_vulnerability_index": {
+        "type": "number"
+      },
+      "hospital_capacity_utilization": {
+        "type": "number"
+      },
+      "cumulative_daly_burden": {
+        "type": "number"
+      }
+    },
+    "required": ["region_id", "active_pathogens"]
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-HEALTHINFORMATICA",
+      "H11-VIROLOGIA",
+      "H11-BACTERIOLOGIA",
+      "H11-TOXICOLOGIA",
+      "H11-TELEMEDICINA"
+    ],
+    "downstream": [
+      "H11-PREVENTIVA",
+      "H11-PNEUMOLOGIA",
+      "H11-CARDIOLOGIA",
+      "H11-IMMUNOTHERAPIA"
+    ]
+  },
+  "events": {
+    "emits": [
+      "epidemic_outbreak_notice",
+      "surge_capacity_warning",
+      "environmental_health_hazard_alert",
+      "vaccine_allocation_directive",
+      "sdoh_equity_gap_flagged"
+    ],
+    "consumes": [
+      "clinical_positivity_feed",
+      "wastewater_viral_spike",
+      "syndromic_ambulatory_surge",
+      "air_quality_crisis_event"
+    ]
+  },
+  "metrics": [
+    "effective_reproduction_number_rt",
+    "syndromic_anomaly_z_score",
+    "daly_rate_per_100k",
+    "sdoh_social_vulnerability_index",
+    "population_attributable_fraction",
+    "hospital_icu_surge_ratio"
+  ],
+  "capabilities": [
+    "syndromic_surveillance_anomaly_detection",
+    "time_varying_reproduction_number_estimation",
+    "seir_metapopulation_transmission_modeling",
+    "global_burden_of_disease_daly_computation",
+    "population_attributable_fraction_quantification",
+    "social_determinants_of_health_indexing",
+    "non_pharmaceutical_intervention_optimization",
+    "wastewater_epidemiology_triangulation"
+  ],
+  "scaling": {
+    "max_concurrent_regions": 5000,
+    "batch_processing_support": true,
+    "target_latency_ms": 30
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-DECISION Schema",
+  "type": "object",
+  "properties": {
+    "problem_type": {
+      "type": "string",
+      "enum": ["MCDA", "MDP", "LOTTERY"]
+    },
+    "mcda_inputs": {
+      "type": "object",
+      "properties": {
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "weight": {"type": "number"},
+              "is_benefit": {"type": "boolean"}
+            }
+          }
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "attributes": {
+                "type": "object",
+                "additionalProperties": {"type": "number"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

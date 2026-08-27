@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-GRAPH-INTEGRATOR",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Builds the live dependency graph of agents involved in a case.",
+  "category": "integrator",
+  "handler": "resolve_deps",
+  "inputs": [
+    {
+      "name": "nodes",
+      "type": "Any"
+    },
+    {
+      "name": "edges",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "order",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-SPINE-REGISTRAR"
+    ],
+    "downstream": [
+      "H11C-DEPENDENCY-RESOLVER"
+    ]
+  },
+  "capabilities": [
+    "resolve_deps"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

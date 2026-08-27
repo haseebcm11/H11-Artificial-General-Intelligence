@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-GOAL Goal Structure",
+  "type": "object",
+  "properties": {
+    "goal_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "description": {
+      "type": "string"
+    },
+    "goal_type": {
+      "type": "string",
+      "enum": ["terminal", "instrumental"]
+    },
+    "state": {
+      "type": "string",
+      "enum": ["pending", "active", "suspended", "completed", "failed", "abandoned"]
+    },
+    "intrinsic_utility": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "deadline_timestamp": {
+      "type": "number",
+      "description": "Unix timestamp"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "goal_id of prerequisite goals"
+      }
+    },
+    "smart_metrics": {
+      "type": "object",
+      "properties": {
+        "specific_score": { "type": "number" },
+        "measurable_score": { "type": "number" },
+        "achievable_score": { "type": "number" },
+        "relevant_score": { "type": "number" },
+        "time_bound_score": { "type": "number" }
+      }
+    }
+  },
+  "required": ["goal_id", "description", "goal_type", "state", "intrinsic_utility"]
+}

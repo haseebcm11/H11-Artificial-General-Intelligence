@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MUSICGEN",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Generates structured music tracks with melody, harmony, and rhythm control.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "genre_prompt", "type": "str"}, {"name": "bpm", "type": "int"}, {"name": "key", "type": "str"}
+  ],
+  "outputs": [
+    {"name": "midi_data", "type": "bytes"}, {"name": "audio_stems", "type": "Dict[str, List[float]]"}
+  ]
+}

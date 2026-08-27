@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SCENE",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "name": "Scene Understanding Agent",
+  "description": "Extracts scene graphs, captions, and performs visual question answering.",
+  "type": "perception_module",
+  "capabilities": [
+    "scene_graph_generation",
+    "image_captioning",
+    "visual_question_answering",
+    "visual_grounding"
+  ],
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "image": { "type": "object" },
+      "task_query": { "type": "object" },
+      "text_prompt": { "type": "string" }
+    }
+  },
+  "outputs": {
+    "type": "object",
+    "properties": {
+      "scene_graph": { "type": "object" },
+      "caption": { "type": "string" },
+      "vqa_answer": { "type": "string" }
+    }
+  }
+}

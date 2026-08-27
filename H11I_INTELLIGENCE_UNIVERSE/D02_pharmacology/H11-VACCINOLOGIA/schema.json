@@ -1,0 +1,50 @@
+{
+  "agent_id": "H11-VACCINOLOGIA",
+  "domain": "Pharmacology & Drug Sciences",
+  "subdomain": "Vaccinology",
+  "capabilities": [
+    "mRNA_platform_design",
+    "viral_vector_optimization",
+    "subunit_adjuvant_pairing",
+    "cold_chain_logistics",
+    "herd_immunity_modeling"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "pathogen_data": {
+        "type": "object",
+        "description": "Genomic and structural data of the target pathogen."
+      },
+      "target_demographic": {
+        "type": "string",
+        "description": "Population profile (e.g., elderly, pediatric, global)."
+      },
+      "platform_preference": {
+        "type": "string",
+        "enum": ["mRNA", "viral_vector", "subunit", "live_attenuated", "inactivated"]
+      }
+    },
+    "required": ["pathogen_data"]
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "recommended_platform": {
+        "type": "string"
+      },
+      "immunogenicity_score": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "formulation_details": {
+        "type": "object"
+      },
+      "herd_immunity_threshold": {
+        "type": "number",
+        "description": "Percentage of population required to be vaccinated."
+      }
+    }
+  }
+}

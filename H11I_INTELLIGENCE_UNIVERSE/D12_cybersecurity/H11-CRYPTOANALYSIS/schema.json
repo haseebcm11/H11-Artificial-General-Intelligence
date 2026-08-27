@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CRYPTOANALYSIS",
+  "version": "1.0.0",
+  "layer": 12,
+  "layer_name": "Cybersecurity",
+  "description": "Cryptographic compliance and adversarial decryption.",
+  "category": "Cryptanalysis",
+  "inputs": [
+    {
+      "name": "ciphertext",
+      "type": "bytes",
+      "description": "Encrypted blob to analyze.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "plaintext",
+      "type": "bytes",
+      "description": "Recovered data, if successful."
+    }
+  ],
+  "config": {
+    "max_bruteforce_time_sec": {
+      "type": "integer",
+      "default": 3600,
+      "description": "Timeout for decryption attempts."
+    }
+  },
+  "state_schema": {
+    "active_cracking_jobs": {
+      "type": "integer",
+      "description": "Number of GPU jobs."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-MALWARE"],
+    "downstream": ["H11-INCIDENT"]
+  },
+  "events": {
+    "emits": ["WeakCryptoDetected", "CiphertextCracked"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "hashes_per_second",
+      "type": "gauge",
+      "description": "GPU cracking speed."
+    }
+  ],
+  "capabilities": ["Entropy Analysis", "GPU Cracking"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

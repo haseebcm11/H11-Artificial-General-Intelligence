@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-STRINGTHEORIA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "String and M-theory simulation agent",
+  "category": "Theoretical Physics",
+  "inputs": [
+    {
+      "name": "string_type",
+      "type": "StringType",
+      "description": "Type of string theory",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "effective_action",
+      "type": "str",
+      "description": "Low energy effective action description"
+    }
+  ],
+  "config": {
+    "alpha_prime": {
+      "type": "float",
+      "default": 1e-19,
+      "description": "Regge slope parameter"
+    }
+  },
+  "state_schema": {
+    "current_duality_frame": {
+      "type": "str",
+      "description": "Current theoretical frame (e.g., F-theory, M-theory)"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-RELATIVITAS"],
+    "downstream": ["H11-PARTICULA"]
+  },
+  "events": {
+    "emits": ["compactification_completed"],
+    "consumes": ["metric_updated"]
+  },
+  "metrics": [
+    {
+      "name": "cft_correlators_computed",
+      "type": "counter",
+      "description": "Number of conformal field theory correlators evaluated"
+    }
+  ],
+  "capabilities": ["duality_transformation", "calabi_yau_compactification"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

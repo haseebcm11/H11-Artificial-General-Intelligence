@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CHIRURGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Calculates surgical risk stratifications, operative trajectories, and complication probabilities.",
+  "category": "Surgical Sciences",
+  "inputs": [
+    {
+      "name": "patient_preop_state",
+      "type": "object",
+      "description": "Labs, ASA class, frailty index"
+    },
+    {
+      "name": "surgical_cpt",
+      "type": "string",
+      "description": "Procedure code"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "risk_assessment",
+      "type": "object",
+      "description": "Probability of mortality, SSI, VTE"
+    },
+    {
+      "name": "kinematic_corrections",
+      "type": "array",
+      "description": "For robotic surgical systems"
+    }
+  ],
+  "config": {
+    "risk_model": "ACS_NSQIP",
+    "kinematic_smoothing_alpha": 0.15
+  },
+  "state_schema": {
+    "operative_time_elapsed": "number",
+    "estimated_blood_loss": "number"
+  },
+  "dependencies": {
+    "upstream": ["H11-RADIOLOGIA", "H11-ANAESTHESIA"],
+    "downstream": ["H11-REHABILITATIO"]
+  },
+  "events": {
+    "emits": ["critical_blood_loss", "trajectory_deviation"],
+    "consumes": ["incision_started", "vitals_update"]
+  },
+  "metrics": ["prediction_accuracy", "trajectory_smoothness"],
+  "capabilities": ["risk_stratification", "robotic_kinematic_analysis"],
+  "scaling": {
+    "mode": "vertical",
+    "compute_requirement": "high"
+  }
+}

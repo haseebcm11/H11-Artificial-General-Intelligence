@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PROVENANCE",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Tracks data lineage and transformation history via PROV-O ontology.",
+  "category": "Lineage Tracking",
+  "inputs": [
+    {
+      "name": "lineage_events",
+      "type": "array",
+      "description": "Stream of transformation events.",
+      "required": true
+    },
+    {
+      "name": "query_entity_id",
+      "type": "string",
+      "description": "ID of the entity to trace.",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "provenance_graph",
+      "type": "object",
+      "description": "DAG representing data lineage."
+    }
+  ],
+  "config": {
+    "max_traversal_depth": {
+      "type": "integer",
+      "default": 100,
+      "description": "Maximum depth for upstream/downstream traversal."
+    },
+    "enable_graph_compaction": {
+      "type": "boolean",
+      "default": true,
+      "description": "Roll up intermediate temporary datasets."
+    }
+  },
+  "state_schema": {
+    "total_nodes": {
+      "type": "integer",
+      "description": "Number of entities and activities tracked."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-CORPUS", "H11-CURATOR", "H11-VERSION"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["lineage_violation_detected"],
+    "consumes": ["transformation_applied", "dataset_versioned"]
+  },
+  "metrics": [
+    {
+      "name": "events_ingested",
+      "type": "counter",
+      "description": "Total provenance events processed."
+    },
+    {
+      "name": "graph_traversal_ms",
+      "type": "histogram",
+      "description": "Latency of lineage queries."
+    }
+  ],
+  "capabilities": ["prov_o_mapping", "dag_traversal", "lineage_visualization"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

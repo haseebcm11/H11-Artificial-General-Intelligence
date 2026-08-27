@@ -1,0 +1,12 @@
+{
+  "agent_id": "H11-CONTROL",
+  "name": "ControlAgent",
+  "description": "Control systems and automation agent.",
+  "version": "1.0.0",
+  "capabilities": [
+    "pid_tuning",
+    "state_space_modeling",
+    "stability_analysis"
+  ],
+  "dependencies": []
+}

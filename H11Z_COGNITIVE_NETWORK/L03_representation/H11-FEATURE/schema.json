@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FEATURE",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Extracts bag-of-tokens TF weights and the top-n salient types from a token sequence.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "tokens",
+      "type": "List[str]"
+    },
+    {
+      "name": "top_n",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "tf",
+      "type": "Dict[str,float]"
+    },
+    {
+      "name": "salient",
+      "type": "List[str]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-TOKENIZER"
+    ],
+    "downstream": [
+      "H11-EMBEDDER"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "tf-salience"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

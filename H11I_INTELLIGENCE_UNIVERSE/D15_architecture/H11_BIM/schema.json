@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-BIM",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Architecture & Construction",
+  "description": "Federation and coordination of building data.",
+  "category": "Coordination",
+  "inputs": [],
+  "outputs": [],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": ["H11-ARCHITECTURA", "H11-INTERIOR"], "downstream": ["H11-CONSTRUCTION"]},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": false, "gpu_required": false, "memory_class": "extreme"}
+}

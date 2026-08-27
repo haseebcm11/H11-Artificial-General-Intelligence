@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SELECTION Schema",
+  "type": "object",
+  "properties": {
+    "Population": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "fitness": { "type": "number" },
+          "behavior": { "type": "array", "items": { "type": "number" } },
+          "topology_features": {
+            "type": "object",
+            "properties": {
+              "innovation_numbers": { "type": "array", "items": { "type": "integer" } },
+              "weights": { "type": "array", "items": { "type": "number" } }
+            }
+          }
+        }
+      }
+    },
+    "SelectionConfig": {
+      "type": "object",
+      "properties": {
+        "method": { "type": "string", "enum": ["tournament", "novelty", "speciated"] },
+        "tournament_size": { "type": "integer" },
+        "survival_threshold": { "type": "number" },
+        "novelty_k": { "type": "integer" },
+        "compatibility_threshold": { "type": "number" }
+      }
+    }
+  }
+}

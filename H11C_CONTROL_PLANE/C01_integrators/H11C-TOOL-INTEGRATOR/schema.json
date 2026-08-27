@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-TOOL-INTEGRATOR",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Splices a tool result only if the tool is on the allowlist.",
+  "category": "integrator",
+  "handler": "splice_external",
+  "inputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    },
+    {
+      "name": "external",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-TOOL-ALLOWLIST"
+    ],
+    "downstream": [
+      "H11C-ACTION-BINDER"
+    ]
+  },
+  "capabilities": [
+    "splice_external"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

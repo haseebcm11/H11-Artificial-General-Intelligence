@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-POISON-DEFENSE",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "Training data poisoning: backdoor detection (Neural Cleanse, Activation Clustering), data poisoning attacks, model poisoning, federated poisoning, data sanitization, spectral signatures",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "training_batch",
+      "type": "DataBatch",
+      "description": "Batch of data intended for training",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "clean_batch",
+      "type": "DataBatch",
+      "description": "Filtered data free of detected poisons"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "spectral_profiles": {
+      "type": "dict",
+      "desc": "Baseline activation statistics"
+    },
+    "quarantine_zone": {
+      "type": "list",
+      "desc": "Suspicious samples"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "poison-defense_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "poison-defense_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

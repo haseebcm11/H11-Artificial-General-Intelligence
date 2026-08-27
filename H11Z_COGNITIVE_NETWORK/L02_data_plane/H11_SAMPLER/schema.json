@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SAMPLER",
+  "version": "1.2.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Applies statistical sampling, balancing, and curriculum strategies to data streams.",
+  "category": "Data Transformation",
+  "inputs": [
+    {
+      "name": "data_batch",
+      "type": "array",
+      "description": "Raw data items with features.",
+      "required": true
+    },
+    {
+      "name": "strategy",
+      "type": "string",
+      "description": "Sampling strategy to employ.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "sampled_data",
+      "type": "array",
+      "description": "Synthetically generated or sub-selected data items."
+    },
+    {
+      "name": "importance_weights",
+      "type": "array",
+      "description": "Corrective weights for unbiased estimators."
+    }
+  ],
+  "config": {
+    "reservoir_size": {
+      "type": "integer",
+      "default": 10000,
+      "description": "Maximum size of the reservoir buffer."
+    },
+    "smote_k_neighbors": {
+      "type": "integer",
+      "default": 5,
+      "description": "k-NN parameter for synthetic generation."
+    }
+  },
+  "state_schema": {
+    "class_counts": {
+      "type": "object",
+      "description": "Running counts of observed classes for dynamic ADASYN."
+    },
+    "curriculum_step": {
+      "type": "integer",
+      "description": "Current curriculum progression step."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-STREAMING-DATA", "H11-ETL-DATA"],
+    "downstream": ["H11-TRAINER"]
+  },
+  "events": {
+    "emits": ["SamplingCompleted", "ClassImbalanceDetected"],
+    "consumes": ["DataBatchReady", "EpochAdvanced"]
+  },
+  "metrics": [
+    {
+      "name": "sampling_latency_ms",
+      "type": "histogram",
+      "description": "Time taken to sample a batch."
+    }
+  ],
+  "capabilities": ["SMOTE", "ADASYN", "Reservoir Sampling", "Curriculum Scheduling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

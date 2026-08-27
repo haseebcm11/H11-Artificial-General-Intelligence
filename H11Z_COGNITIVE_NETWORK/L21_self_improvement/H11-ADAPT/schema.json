@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-ADAPT Output Schema",
+  "type": "object",
+  "properties": {
+    "adaptation_step": {
+      "type": "integer"
+    },
+    "shift_detected": {
+      "type": "boolean"
+    },
+    "mmd_score": {
+      "type": "number"
+    },
+    "ewc_penalty": {
+      "type": "number"
+    },
+    "buffer_size": {
+      "type": "integer"
+    }
+  },
+  "required": ["adaptation_step", "shift_detected", "ewc_penalty"]
+}

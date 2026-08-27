@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-VERSION-ALIGNER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Rejects envelopes whose schema_id is not in the accepted set.",
+  "category": "integrator",
+  "handler": "check_contract",
+  "inputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-SCHEMA-FIREWALL"
+    ],
+    "downstream": [
+      "H11C-CONTRACT-CHECKER"
+    ]
+  },
+  "capabilities": [
+    "check_contract"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ALLERGOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Agent for analyzing allergic diseases, hypersensitivity, and desensitization.",
+  "category": "Immunology & Allergy",
+  "inputs": [
+    {"name": "patient_atopy_profile", "type": "AtopyProfile"},
+    {"name": "exposure_events", "type": "array", "items": {"type": "ExposureEvent"}}
+  ],
+  "outputs": [
+    {"name": "reaction_probability", "type": "number"},
+    {"name": "immunotherapy_plan", "type": "DesensitizationProtocol"}
+  ],
+  "config": {
+    "cross_reactivity_threshold": 0.65,
+    "simulation_steps": 1000
+  },
+  "state_schema": {
+    "antibody_titers": "map<string, float>",
+    "tolerance_state": "float"
+  },
+  "dependencies": {
+    "upstream": ["H11-IMMUNOLOGIA", "H11-DERMATOLOGIA"],
+    "downstream": ["H11-PULMONOLOGIA", "H11-PHARMACOLOGIA"]
+  },
+  "events": {
+    "emits": ["AnaphylaxisWarning", "ToleranceShift"],
+    "consumes": ["AllergenExposure", "TestResultsUpdated"]
+  },
+  "metrics": ["prediction_accuracy", "cross_reactivity_hits"],
+  "capabilities": ["risk_assessment", "immunotherapy_planning"],
+  "scaling": {
+    "mode": "stateless_compute",
+    "concurrency_limit": 500
+  }
+}

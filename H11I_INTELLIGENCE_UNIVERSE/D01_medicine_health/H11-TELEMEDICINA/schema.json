@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TELEMEDICINA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Manages remote diagnostics, sensor fusion, and non-contact vital extraction.",
+  "category": "Remote Care",
+  "inputs": [
+    {"name": "video_stream", "type": "stream"},
+    {"name": "wearable_telemetry", "type": "stream"},
+    {"name": "network_qos", "type": "object"}
+  ],
+  "outputs": [
+    {"name": "vital_signs", "type": "object"},
+    {"name": "anomaly_alerts", "type": "array"},
+    {"name": "session_transcript", "type": "object"}
+  ],
+  "config": {
+    "rppg_confidence_threshold": 0.7,
+    "max_jitter_ms": 150
+  },
+  "state_schema": {
+    "telemetry_buffer": "RingBuffer",
+    "session_state": "StateMachine"
+  },
+  "dependencies": {
+    "upstream": ["H11-SIGNALPROCESS"],
+    "downstream": ["H11-DIAGNOSTICA", "H11-HEALTHINFORMATICA"]
+  },
+  "events": {
+    "emits": ["vital_anomaly_detected", "session_ended"],
+    "consumes": ["session_initiated"]
+  },
+  "metrics": ["rppg_snr", "stream_latency", "artifact_rejection_rate"],
+  "capabilities": ["rPPG", "Sensor Fusion", "Real-time Anomaly Detection"],
+  "scaling": {
+    "compute_intensity": "high",
+    "network_intensity": "very_high"
+  }
+}

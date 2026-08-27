@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-META-CONTROLLER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Chooses which orchestrator owns the next tick.",
+  "category": "orchestrator",
+  "handler": "allocate",
+  "inputs": [
+    {
+      "name": "candidates",
+      "type": "Any"
+    },
+    {
+      "name": "scores",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "chosen",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-AGI-KERNEL"
+    ],
+    "downstream": [
+      "H11C-COGNITIVE-LOOP"
+    ]
+  },
+  "capabilities": [
+    "allocate"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NeuronConfiguration",
+  "type": "object",
+  "properties": {
+    "neuron_model": {
+      "type": "string",
+      "enum": ["perceptron", "sigmoid", "relu", "leaky_integrate_fire"],
+      "default": "relu"
+    },
+    "gradient_tracking": {
+      "type": "boolean",
+      "default": true
+    },
+    "refractory_period_ms": {
+      "type": "number",
+      "minimum": 0,
+      "default": 1.0
+    },
+    "integration_mode": {
+      "type": "string",
+      "enum": ["additive", "multiplicative"],
+      "default": "additive"
+    }
+  },
+  "required": ["neuron_model"]
+}

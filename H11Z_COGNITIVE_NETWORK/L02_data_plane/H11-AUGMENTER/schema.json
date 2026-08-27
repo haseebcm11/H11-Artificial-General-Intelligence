@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AUGMENTER",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Dynamic policy-driven data perturbation and manifold mixing",
+  "category": "Data Expansion",
+  "inputs": [
+    {
+      "name": "clean_batch",
+      "type": "array",
+      "description": "Clean, deduplicated input dataset",
+      "required": true
+    },
+    {
+      "name": "policy",
+      "type": "object",
+      "description": "RandAugment style configuration (N operations, M magnitude)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "augmented_batch",
+      "type": "array",
+      "description": "Expanded dataset containing mutated inputs"
+    }
+  ],
+  "config": {
+    "num_ops": {
+      "type": "integer",
+      "default": 2,
+      "description": "Number of sequential augmentations to apply per sample (N)"
+    },
+    "magnitude": {
+      "type": "integer",
+      "default": 5,
+      "description": "Strength of transformations on a 0-10 scale (M)"
+    }
+  },
+  "state_schema": {
+    "active_schedules": {
+      "type": "object",
+      "description": "Mapping of job ID to current annealing magnitude"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-FILTER"],
+    "downstream": ["H11-TRAINER"]
+  },
+  "events": {
+    "emits": ["augmentation_cycle_complete"],
+    "consumes": ["epoch_advanced", "anneal_magnitude"]
+  },
+  "metrics": [
+    {
+      "name": "augmentation_latency",
+      "type": "histogram",
+      "description": "Time spent mutating batches"
+    },
+    {
+      "name": "ops_applied",
+      "type": "counter",
+      "description": "Count of specific operations (e.g. mixup, backtrans) executed"
+    }
+  ],
+  "capabilities": ["rand-augment", "tensor-mixup", "text-eda", "audio-warp"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

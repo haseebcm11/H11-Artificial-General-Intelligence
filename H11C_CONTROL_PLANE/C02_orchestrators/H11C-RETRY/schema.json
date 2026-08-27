@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-RETRY",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Retries a failed hop with bounded attempts; does not retry HALT.",
+  "category": "orchestrator",
+  "handler": "retry",
+  "inputs": [
+    {
+      "name": "attempts",
+      "type": "Any"
+    },
+    {
+      "name": "max_attempts",
+      "type": "Any"
+    },
+    {
+      "name": "halted",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "retry",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-HALT"
+    ],
+    "downstream": [
+      "H11C-FALLBACK"
+    ]
+  },
+  "capabilities": [
+    "retry"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

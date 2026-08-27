@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BotanicaSchema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "l_system_axiom": {"type": "string"},
+        "max_depth": {"type": "integer"}
+      }
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "current_string": {"type": "string"},
+        "biomass": {"type": "number"}
+      }
+    }
+  }
+}

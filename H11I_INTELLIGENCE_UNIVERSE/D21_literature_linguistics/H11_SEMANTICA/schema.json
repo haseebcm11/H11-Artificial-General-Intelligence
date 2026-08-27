@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SEMANTICA",
+  "version": "1.0.0",
+  "layer": 21,
+  "layer_name": "Literature & Linguistics",
+  "description": "Agent for lexical and compositional semantics.",
+  "category": "Linguistics",
+  "inputs": [
+    {
+      "name": "sentence",
+      "type": "string",
+      "description": "Input sentence"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "amr_graph",
+      "type": "object",
+      "description": "AMR representation"
+    }
+  ],
+  "config": {
+    "ontology": {
+      "type": "string",
+      "default": "wordnet",
+      "description": "Ontology to use for senses"
+    }
+  },
+  "state_schema": {
+    "discourse_referents": {
+      "type": "array",
+      "description": "Active entities in context"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-MORPHOLOGIA"],
+    "downstream": ["H11-PRAGMATICA", "H11-CRITICA-LIT"]
+  },
+  "capabilities": ["wsd", "amr-parsing", "srl"]
+}

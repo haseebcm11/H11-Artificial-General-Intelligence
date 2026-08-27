@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ATHLETICA",
+  "version": "1.0.0",
+  "layer": 29,
+  "layer_name": "Sports & Recreation",
+  "description": "Athletics and Biomechanics Agent",
+  "category": "Biomechanics",
+  "inputs": [
+    {
+      "name": "kinematic_data",
+      "type": "array",
+      "description": "Spatial coordinates of skeletal nodes",
+      "required": true
+    },
+    {
+      "name": "force_plate_data",
+      "type": "array",
+      "description": "Ground reaction forces",
+      "required": false
+    },
+    {
+      "name": "athlete_mass",
+      "type": "number",
+      "description": "Mass in kg",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "joint_torques",
+      "type": "array",
+      "description": "Torque measurements"
+    },
+    {
+      "name": "efficiency_score",
+      "type": "number",
+      "description": "Mechanical efficiency rating"
+    },
+    {
+      "name": "injury_risk_flags",
+      "type": "array",
+      "description": "Biomechanical anomaly warnings"
+    }
+  ],
+  "config": {
+    "filter_cutoff_hz": {
+      "type": "number",
+      "default": 10.0,
+      "description": "Low-pass filter cutoff frequency"
+    }
+  },
+  "state_schema": {
+    "athlete_baseline_metrics": {
+      "type": "object",
+      "description": "Historical biomechanical baselines"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SPORTSCI"],
+    "downstream": ["H11-COACHING"]
+  },
+  "events": {
+    "emits": ["biomechanics_analyzed", "injury_risk_detected"],
+    "consumes": ["session_started"]
+  },
+  "metrics": [
+    {
+      "name": "inverse_dynamics_compute_time",
+      "type": "histogram",
+      "description": "Time taken to solve ID"
+    }
+  ],
+  "capabilities": ["kinematic_smoothing", "kinetic_solving"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

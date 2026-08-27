@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SOLUM Agent Schema",
+  "type": "object",
+  "properties": {
+    "soil_profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "depth_cm": { "type": "number" },
+          "sand_pct": { "type": "number" },
+          "silt_pct": { "type": "number" },
+          "clay_pct": { "type": "number" },
+          "ph": { "type": "number" }
+        },
+        "required": ["depth_cm", "sand_pct", "silt_pct", "clay_pct"]
+      }
+    },
+    "classification_system": {
+      "type": "string",
+      "enum": ["USDA", "WRB"]
+    }
+  },
+  "required": ["soil_profiles"]
+}

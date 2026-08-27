@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FLUIDA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Fluid dynamics and CFD.",
+  "category": "Fluid Dynamics",
+  "inputs": [
+    {
+      "name": "boundary_conds",
+      "type": "List[BC]",
+      "description": "Boundary conditions",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "forces",
+      "type": "Forces",
+      "description": "Aerodynamic forces"
+    }
+  ],
+  "config": {
+    "turbulence_model": {
+      "type": "string",
+      "default": "k-epsilon",
+      "description": "RANS turbulence model"
+    }
+  },
+  "state_schema": {
+    "iteration": {
+      "type": "int",
+      "description": "Solver iteration"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-THERMODYNAMICA"],
+    "downstream": ["H11-ACOUSTICA"]
+  },
+  "events": {
+    "emits": ["FlowConverged"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "residuals",
+      "type": "gauge",
+      "description": "Solver residuals"
+    }
+  ],
+  "capabilities": ["navier_stokes", "aerodynamics"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

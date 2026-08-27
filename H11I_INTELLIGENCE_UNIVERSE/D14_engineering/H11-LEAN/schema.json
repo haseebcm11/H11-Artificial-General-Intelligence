@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-LEAN Agent Schema",
+  "type": "object",
+  "properties": {
+    "process_parameters": {
+      "type": "object",
+      "properties": {
+        "takt_time_seconds": { "type": "number" },
+        "available_time_seconds": { "type": "number" },
+        "customer_demand_rate": { "type": "number" }
+      },
+      "required": ["takt_time_seconds", "customer_demand_rate"]
+    },
+    "waste_metrics": {
+      "type": "object",
+      "properties": {
+        "defects_ppm": { "type": "integer" },
+        "overproduction_ratio": { "type": "number" },
+        "waiting_time_percent": { "type": "number" }
+      }
+    },
+    "value_stream": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step_id": { "type": "string" },
+          "value_added_time": { "type": "number" },
+          "non_value_added_time": { "type": "number" }
+        }
+      }
+    }
+  },
+  "required": ["process_parameters", "value_stream"]
+}

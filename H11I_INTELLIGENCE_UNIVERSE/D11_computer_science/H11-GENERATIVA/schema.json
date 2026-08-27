@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GENERATIVA",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Machine Learning",
+  "description": "Synthesizes novel data artifacts using autoregressive and diffusion models.",
+  "category": "Generative AI",
+  "inputs": [
+    {
+      "name": "conditioning_context",
+      "type": "object",
+      "description": "Multimodal embedding to guide generation",
+      "required": true
+    },
+    {
+      "name": "target_modality",
+      "type": "string",
+      "description": "Output type (Text, Image, Audio)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "generated_artifact",
+      "type": "string",
+      "description": "URI to the generated file/tensor"
+    },
+    {
+      "name": "generation_log_prob",
+      "type": "number",
+      "description": "Probability mass of the generated sequence"
+    }
+  ],
+  "config": {
+    "default_sampler": {
+      "type": "string",
+      "default": "DDIM",
+      "description": "Default diffusion sampler"
+    },
+    "enable_kv_cache": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use PagedAttention for AR models"
+    }
+  },
+  "state_schema": {
+    "token_budget": {
+      "type": "integer",
+      "description": "Track compute expenditure"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-MULTIMODALIS", "H11-DEEPLEARNING"],
+    "downstream": ["H11-MACHINA-DISCENS", "H11-ROBUSTA"]
+  },
+  "events": {
+    "emits": ["artifact_generated", "hallucination_detected"],
+    "consumes": ["prompt_received"]
+  },
+  "metrics": [
+    {
+      "name": "tokens_per_second",
+      "type": "gauge",
+      "description": "Throughput for AR generation"
+    }
+  ],
+  "capabilities": ["latent_diffusion", "autoregressive_sampling", "classifier_free_guidance"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

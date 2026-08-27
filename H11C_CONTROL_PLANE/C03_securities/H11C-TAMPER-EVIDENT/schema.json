@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-TAMPER-EVIDENT",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Verifies the audit chain head matches the last sealed event.",
+  "category": "security",
+  "handler": "audit",
+  "inputs": [
+    {
+      "name": "event",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "head",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-AUDIT-CHAIN"
+    ],
+    "downstream": [
+      "H11C-WITNESS-LOG"
+    ]
+  },
+  "capabilities": [
+    "audit"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EPIDEMIOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Simulates population disease transmission dynamics, outbreak trajectories, reproduction numbers, and intervention efficacy.",
+  "category": "Public Health & Epidemiology",
+  "inputs": [
+    {
+      "name": "pathogen_profile",
+      "type": "PathogenProfile"
+    },
+    {
+      "name": "population_patches",
+      "type": "List[MetapopulationPatch]"
+    },
+    {
+      "name": "incidence_time_series",
+      "type": "List[Integer]"
+    },
+    {
+      "name": "active_interventions",
+      "type": "List[Intervention]"
+    },
+    {
+      "name": "mobility_matrix",
+      "type": "Matrix[Float]"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "compartment_trajectories",
+      "type": "Dict[String, List[CompartmentState]]"
+    },
+    {
+      "name": "rt_trajectory",
+      "type": "List[RtEstimate]"
+    },
+    {
+      "name": "epidemic_peaks",
+      "type": "Dict[String, PeakMetric]"
+    },
+    {
+      "name": "intervention_impact",
+      "type": "InterventionImpactSummary"
+    },
+    {
+      "name": "causal_risk_metrics",
+      "type": "CausalRiskProfile"
+    }
+  ],
+  "config": {
+    "enable_waning_immunity": true,
+    "enable_superspreading_dispersion": true,
+    "default_rt_window_days": 7,
+    "integration_method": "RK4"
+  },
+  "state_schema": {
+    "population_total": "Integer",
+    "current_day": "Integer",
+    "active_outbreak": "Boolean",
+    "patch_states": "Dict[String, CompartmentState]",
+    "r_t_history": "List[RtEstimate]"
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-VIROLOGIA",
+      "H11-BACTERIOLOGIA",
+      "H11-HEALTHINFORMATICA"
+    ],
+    "downstream": [
+      "H11-HEALTHINFORMATICA",
+      "H11-IMMUNOTHERAPIA",
+      "H11-PNEUMOLOGIA",
+      "H11-CARDIOLOGIA",
+      "H11-PALLIATIVA"
+    ]
+  },
+  "events": {
+    "emits": [
+      "OutbreakThresholdExceeded",
+      "SurgeCapacityWarning",
+      "RtTrendShift",
+      "InterventionTargetMet"
+    ],
+    "consumes": [
+      "SyndromicClusterReported",
+      "PathogenEvolutionDetected",
+      "VaccineSupplyUpdated"
+    ]
+  },
+  "metrics": [
+    "effective_reproduction_number_rt",
+    "attack_rate_pct",
+    "peak_active_prevalence",
+    "case_fatality_rate",
+    "doubling_time_days",
+    "herd_immunity_threshold"
+  ],
+  "capabilities": [
+    "Stratified SEIRD Compartmental Modeling",
+    "Cori Bayesian Renewal Rt Estimation",
+    "Metapopulation Network Spatial Spread",
+    "Non-Pharmaceutical Intervention (NPI) Evaluation",
+    "Vaccine Rollout & Critical Herd Immunity Sizing",
+    "Epidemiological Causal Risk Analysis (RR, OR, PAF)",
+    "Surveillance Anomaly & Outbreak Detection"
+  ],
+  "scaling": {
+    "compute_intensive": false
+  }
+}

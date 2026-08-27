@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-HYDROPOWER",
+  "version": "1.0.0",
+  "layer": 25,
+  "layer_name": "Energy & Resources",
+  "description": "Hydro & Wave Energy Agent",
+  "category": "Energy Generation",
+  "inputs": [
+    {
+      "name": "inflow_rate",
+      "type": "float",
+      "description": "Catchment inflow rate (m^3/s)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "dispatched_power",
+      "type": "float",
+      "description": "Power delivered (MW)"
+    }
+  ],
+  "config": {
+    "max_reservoir_vol": {
+      "type": "float",
+      "default": 1000000.0,
+      "description": "Maximum reservoir capacity (m^3)"
+    }
+  },
+  "state_schema": {
+    "reservoir_volume_m3": {
+      "type": "float",
+      "description": "Current volume"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-METEO", "H11-GRID"],
+    "downstream": ["H11-GRID"]
+  },
+  "events": {
+    "emits": ["hydro.dispatch", "hydro.spill"],
+    "consumes": ["grid.dispatch_request"]
+  },
+  "metrics": [
+    {
+      "name": "water_efficiency",
+      "type": "gauge",
+      "description": "MWh per m^3 of water"
+    }
+  ],
+  "capabilities": ["cascade_optimization", "wave_hydrodynamics"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

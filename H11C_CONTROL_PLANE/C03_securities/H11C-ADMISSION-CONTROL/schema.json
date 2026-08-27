@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-ADMISSION-CONTROL",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "First gate. Unadmitted cases never reach PIPELINE-RUNNER.",
+  "category": "security",
+  "handler": "admit",
+  "inputs": [
+    {
+      "name": "case",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "admitted",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [],
+    "downstream": [
+      "H11C-IDENTITY",
+      "H11C-AGI-KERNEL"
+    ]
+  },
+  "capabilities": [
+    "admit"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

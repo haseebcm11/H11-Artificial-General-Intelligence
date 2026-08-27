@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CURRICULUM",
+  "version": "1.0.0",
+  "layer": "6",
+  "layer_name": "Educational Systems",
+  "description": "Designs and optimizes adaptive learning pathways and educational curricula.",
+  "category": "Instructional Design",
+  "inputs": [
+    {
+      "name": "target_outcomes",
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  ],
+  "outputs": [
+    {
+      "name": "curriculum_dag",
+      "type": "object"
+    }
+  ],
+  "config": {
+    "optimization_strategy": "constraint_satisfaction",
+    "nlp_model": "distilbert-base-uncased"
+  },
+  "state_schema": {
+    "taxonomy_graph": "NetworkX.DiGraph",
+    "active_curricula": "Dict[str, CurriculumState]"
+  },
+  "dependencies": {
+    "upstream": ["H11-ASSESSMENT", "H11-COGNITIVE"],
+    "downstream": ["H11-ELEARNING", "H11-TEACHER"]
+  },
+  "events": {
+    "emits": ["curriculum_generated", "standards_aligned"],
+    "consumes": ["bottleneck_detected", "cohort_progressed"]
+  },
+  "metrics": [
+    "dag_optimization_time_ms",
+    "standards_coverage_percent"
+  ],
+  "capabilities": [
+    "knowledge_graph_sequencing",
+    "standards_mapping",
+    "cognitive_load_balancing"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "large"
+  }
+}

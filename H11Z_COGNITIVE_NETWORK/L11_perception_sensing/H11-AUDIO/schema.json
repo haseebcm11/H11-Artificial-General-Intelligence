@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AUDIO",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "description": "General audio perception, STFT processing, and sound event detection.",
+  "capabilities": [
+    "spectrogram_computation",
+    "audio_feature_extraction",
+    "sound_event_detection"
+  ],
+  "interfaces": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "waveform": { "type": "array" },
+        "sample_rate": { "type": "integer" }
+      }
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "spectrogram": { "type": "array" },
+        "embeddings": { "type": "array" },
+        "events": { "type": "array" }
+      }
+    }
+  }
+}

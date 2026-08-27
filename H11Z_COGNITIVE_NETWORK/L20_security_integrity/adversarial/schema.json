@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ADVERSARIAL",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "Adversarial robustness: adversarial examples, FGSM/PGD attacks, adversarial training, certified robustness, adversarial detection, robustness benchmarks, input perturbation defense, adversarial patches",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "raw_input",
+      "type": "TensorInput",
+      "description": "Model input tensor",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "sanitized_input",
+      "type": "TensorOutput",
+      "description": "Perturbation-stripped tensor"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "attack_signatures": {
+      "type": "list",
+      "desc": "Known adversarial perturbation patterns"
+    },
+    "robustness_metrics": {
+      "type": "dict",
+      "desc": "Current model epsilon bounds"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "adversarial_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "adversarial_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

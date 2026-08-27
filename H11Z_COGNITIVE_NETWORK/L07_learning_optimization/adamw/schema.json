@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ADAMW",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "AdamW and Adaptive LR",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "gradients",
+      "type": "Dict[str, List[float]]",
+      "description": "gradients input",
+      "required": true
+    },
+    {
+      "name": "beta1",
+      "type": "float",
+      "description": "beta1 input",
+      "required": true
+    },
+    {
+      "name": "beta2",
+      "type": "float",
+      "description": "beta2 input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "weight_updates",
+      "type": "Dict[str, List[float]]",
+      "description": "weight_updates output"
+    },
+    {
+      "name": "moment_states",
+      "type": "Dict[str, float]",
+      "description": "moment_states output"
+    }
+  ],
+  "config": {
+    "adamw_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "adamw_completed"
+    ],
+    "consumes": [
+      "adamw_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "adamw_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_adamw"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NLP",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Perception & Actuation",
+  "description": "Extracts semantics, entities, and structural meaning from natural language.",
+  "category": "Perception",
+  "inputs": [
+    {
+      "name": "document",
+      "type": "string",
+      "description": "Raw text payload",
+      "required": true
+    },
+    {
+      "name": "nlp_task",
+      "type": "string",
+      "description": "NER, SENTIMENT, PARSE, EMBEDDING",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "entities",
+      "type": "array",
+      "description": "Extracted entities with ontology mappings"
+    },
+    {
+      "name": "dense_vector",
+      "type": "object",
+      "description": "Semantic embedding"
+    }
+  ],
+  "config": {
+    "embedding_model": {
+      "type": "string",
+      "default": "all-MiniLM-L6-v2",
+      "description": "Encoder model to use"
+    },
+    "chunk_size": {
+      "type": "integer",
+      "default": 512,
+      "description": "Token chunking for long documents"
+    }
+  },
+  "state_schema": {
+    "knowledge_graph_delta": {
+      "type": "array",
+      "description": "Pending triples"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SPEECH", "H11-MULTIMODALIS"],
+    "downstream": ["H11-DATABASE", "H11-GENERATIVA"]
+  },
+  "events": {
+    "emits": ["text_parsed", "entities_extracted"],
+    "consumes": ["document_ingested"]
+  },
+  "metrics": [
+    {
+      "name": "tokens_processed_sec",
+      "type": "gauge",
+      "description": "NLP throughput"
+    }
+  ],
+  "capabilities": ["ner", "relation_extraction", "dense_embedding"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

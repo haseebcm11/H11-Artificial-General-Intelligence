@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Metabolomica Agent Schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "analysis_type": {
+          "type": "string",
+          "enum": ["targeted", "untargeted", "flux_analysis"]
+        },
+        "mass_tolerance_ppm": {
+          "type": "number",
+          "default": 10.0
+        },
+        "rt_tolerance_sec": {
+          "type": "number",
+          "default": 15.0
+        }
+      },
+      "required": ["analysis_type"]
+    },
+    "state_schema": {
+      "type": "object",
+      "properties": {
+        "processed_samples": {
+          "type": "integer"
+        },
+        "identified_metabolites": {
+          "type": "integer"
+        },
+        "active_pathways": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

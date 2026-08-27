@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MOTION",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "name": "Motion Analysis Agent",
+  "description": "Extracts optical flow, recognizes actions, and estimates ego-motion from video streams.",
+  "type": "perception_module",
+  "capabilities": [
+    "optical_flow_estimation",
+    "action_recognition",
+    "egomotion_tracking",
+    "motion_segmentation"
+  ],
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "video_stream": { "type": "array", "items": { "type": "object", "description": "NDArray frame" } },
+      "timestamps": { "type": "array", "items": { "type": "number" } },
+      "task_config": {
+        "type": "object",
+        "properties": {
+          "compute_flow": { "type": "boolean" },
+          "recognize_actions": { "type": "boolean" },
+          "estimate_egomotion": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "outputs": {
+    "type": "object",
+    "properties": {
+      "optical_flow": { "type": "object", "description": "HWC array of flow vectors" },
+      "action_labels": { "type": "array", "items": { "type": "string" } },
+      "ego_motion": { "type": "object", "description": "4x4 pose matrix" }
+    }
+  }
+}

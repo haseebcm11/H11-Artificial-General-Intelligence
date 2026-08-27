@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-INCENTIVE",
+  "version": "1.0.0",
+  "layer": 16,
+  "layer_name": "Multi-Agent Society & Economy",
+  "description": "Incentive Design"
+}

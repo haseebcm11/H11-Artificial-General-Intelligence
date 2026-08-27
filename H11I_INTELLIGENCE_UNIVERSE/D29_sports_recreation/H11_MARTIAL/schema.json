@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MARTIAL",
+  "version": "1.0.0",
+  "layer": 29,
+  "layer_name": "Sports & Recreation",
+  "description": "Martial Arts and Combat Sports Agent",
+  "category": "Combat Sports",
+  "inputs": [
+    {
+      "name": "fighter_poses",
+      "type": "array",
+      "description": "Skeletal data for athletes",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "strike_metrics",
+      "type": "object",
+      "description": "Velocity, force, telegraphing"
+    },
+    {
+      "name": "grappling_base",
+      "type": "number",
+      "description": "Stability index"
+    }
+  ],
+  "config": {
+    "telegraph_detection_window_ms": {
+      "type": "integer",
+      "default": 150,
+      "description": "Window to detect pre-strike movement"
+    }
+  },
+  "state_schema": {
+    "combo_matrix": {
+      "type": "object",
+      "description": "Markov chain of strike sequences"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ATHLETICA"],
+    "downstream": ["H11-COACHING"]
+  },
+  "events": {
+    "emits": ["strike_detected", "takedown_scored"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "impact_force_joules",
+      "type": "histogram",
+      "description": "Force of strikes landed"
+    }
+  ],
+  "capabilities": ["kinetic_chain_analysis", "leverage_modeling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "medium"
+  }
+}

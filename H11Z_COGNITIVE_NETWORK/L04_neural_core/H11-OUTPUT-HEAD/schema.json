@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-OUTPUT-HEAD Configuration",
+  "type": "object",
+  "properties": {
+    "head_type": { "type": "string", "enum": ["language_modeling", "classification", "regression", "multi_task"] },
+    "in_features": { "type": "integer" },
+    "out_features": { "type": "integer" },
+    "tie_weights": { "type": "boolean" },
+    "bias": { "type": "boolean" }
+  },
+  "required": ["head_type", "in_features", "out_features"]
+}

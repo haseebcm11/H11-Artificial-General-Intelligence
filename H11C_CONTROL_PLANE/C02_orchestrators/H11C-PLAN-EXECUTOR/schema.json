@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-PLAN-EXECUTOR",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Executes an ordered plan; each step is a routed hop.",
+  "category": "orchestrator",
+  "handler": "run_workflow",
+  "inputs": [
+    {
+      "name": "nodes",
+      "type": "Any"
+    },
+    {
+      "name": "edges",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "order",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-TASK-DECOMPOSER"
+    ],
+    "downstream": [
+      "H11C-ROUTER"
+    ]
+  },
+  "capabilities": [
+    "run_workflow"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

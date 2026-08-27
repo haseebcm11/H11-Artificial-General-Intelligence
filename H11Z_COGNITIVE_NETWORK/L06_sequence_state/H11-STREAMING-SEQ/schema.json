@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-STREAMING-SEQ",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Token-by-token generation and KV cache stream management.",
+  "category": "Streaming",
+  "inputs": [
+    {
+      "name": "next_token_logits",
+      "type": "List[float]",
+      "description": "Logits",
+      "required": true
+    },
+    {
+      "name": "sequence_id",
+      "type": "str",
+      "description": "ID",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "emitted_token",
+      "type": "int",
+      "description": "Chosen ID"
+    },
+    {
+      "name": "stream_status",
+      "type": "str",
+      "description": "State of stream"
+    }
+  ],
+  "config": {
+    "max_concurrent_streams": {
+      "type": "int",
+      "default": 256,
+      "description": "Max clients"
+    }
+  },
+  "state_schema": {
+    "active_streams": {
+      "type": "int",
+      "description": "Current count"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "TokenEmitted",
+      "StreamClosed"
+    ],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "tbt_ms",
+      "type": "histogram",
+      "description": "Time between tokens"
+    }
+  ],
+  "capabilities": [
+    "KV Paging",
+    "SSE Backpressure"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LUNARIS",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Lunar surface operations and cislunar navigation",
+  "category": "Planetary Exploration",
+  "inputs": [
+    {
+      "name": "orbiter_data",
+      "type": "object",
+      "description": "Lunar Reconnaissance Orbiter DEMs and imagery",
+      "required": true
+    },
+    {
+      "name": "lander_state",
+      "type": "object",
+      "description": "State vector during powered descent",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "landing_trajectory",
+      "type": "object",
+      "description": "Throttle and pitch for safe landing"
+    },
+    {
+      "name": "hazard_map",
+      "type": "object",
+      "description": "Traversability grid for rovers"
+    }
+  ],
+  "config": {
+    "gravity_model_degree": {
+      "type": "integer",
+      "default": 600,
+      "description": "Spherical harmonic degree for GRAIL model"
+    },
+    "trn_confidence_threshold": {
+      "type": "number",
+      "default": 0.95,
+      "description": "Required confidence for Terrain Relative Nav matching"
+    }
+  },
+  "state_schema": {
+    "dust_accumulation_percent": {
+      "type": "number",
+      "description": "Solar panel degradation from lunar dust"
+    },
+    "sun_elevation_deg": {
+      "type": "number",
+      "description": "Local solar elevation affecting thermals and shadows"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ORBITALIS", "H11-PLANETOLOGIA"],
+    "downstream": ["H11-SPACECRAFT"]
+  },
+  "events": {
+    "emits": ["TouchdownConfirmed", "HazardDetected"],
+    "consumes": ["DescentInitiated", "RoverMoved"]
+  },
+  "metrics": [
+    {
+      "name": "trn_match_latency_ms",
+      "type": "histogram",
+      "description": "Time taken to correlate image with DEM"
+    }
+  ],
+  "capabilities": ["Terrain Relative Navigation", "Regolith Thermophysics", "ISRU Scouting"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

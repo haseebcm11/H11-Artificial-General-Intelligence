@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Botanical Medicine Schema",
+  "type": "object",
+  "properties": {
+    "botanical_name": { "type": "string" },
+    "plant_part": {
+      "type": "string",
+      "enum": ["root", "leaf", "stem", "flower", "fruit", "seed", "whole_plant"]
+    },
+    "extraction_solvent": { "type": "string" },
+    "marker_compounds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "concentration_mg_per_g": { "type": "number" }
+        },
+        "required": ["name", "concentration_mg_per_g"]
+      }
+    }
+  },
+  "required": ["botanical_name", "plant_part", "extraction_solvent"]
+}

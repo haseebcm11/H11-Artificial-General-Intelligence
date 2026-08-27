@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ORGANICA",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Chemistry",
+  "description": "Organic synthesis planning and reaction mechanism prediction.",
+  "category": "Synthesis",
+  "inputs": [
+    {
+      "name": "target_smiles",
+      "type": "string",
+      "description": "SMILES representation of the target organic molecule",
+      "required": true
+    },
+    {
+      "name": "max_steps",
+      "type": "integer",
+      "description": "Maximum steps for retrosynthesis",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "synthesis_routes",
+      "type": "array",
+      "description": "List of synthetic routes with intermediate SMILES and conditions"
+    }
+  ],
+  "config": {
+    "heuristic_weight": {
+      "type": "number",
+      "default": 1.5,
+      "description": "Weight for heuristic scoring in A* search"
+    }
+  },
+  "state_schema": {
+    "explored_nodes": {
+      "type": "integer",
+      "description": "Number of chemical states explored"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPUTATIONALCHEM"],
+    "downstream": ["H11-GREENCHEMIA"]
+  },
+  "events": {
+    "emits": ["route_found", "dead_end_reached"],
+    "consumes": ["target_submitted"]
+  },
+  "metrics": [
+    {
+      "name": "nodes_per_second",
+      "type": "gauge",
+      "description": "Search speed in chemical space"
+    }
+  ],
+  "capabilities": ["retrosynthesis", "mechanism_prediction"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

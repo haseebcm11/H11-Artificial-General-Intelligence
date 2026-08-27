@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-SUBSTRATE-BINDER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Attaches a case to cognitive-substrate roles (memory, reason, align).",
+  "category": "integrator",
+  "handler": "bind_role",
+  "inputs": [
+    {
+      "name": "case",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "bindings",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [],
+    "downstream": [
+      "H11C-DOMAIN-BINDER"
+    ]
+  },
+  "capabilities": [
+    "bind_role"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-WORLDMUS",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Ethnomusicology and global musical traditions.",
+  "category": "GenreSpecific",
+  "inputs": [
+    {
+      "name": "tradition",
+      "type": "string",
+      "description": "Musical tradition/region",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "tuning_map",
+      "type": "object",
+      "description": "Frequency mappings"
+    }
+  ],
+  "config": {
+    "use_mpe": {
+      "type": "boolean",
+      "default": true,
+      "description": "Output microtones via MPE"
+    }
+  },
+  "state_schema": {
+    "active_scale": {
+      "type": "array",
+      "description": "Current microtonal ratios"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPOSITIO"],
+    "downstream": ["H11-ORCHESTRATIO"]
+  },
+  "events": {
+    "emits": ["tuning_updated"],
+    "consumes": ["request_world_tuning"]
+  },
+  "metrics": [
+    {
+      "name": "pitch_bend_events",
+      "type": "counter",
+      "description": "Number of microtonal adjustments made"
+    }
+  ],
+  "capabilities": ["microtonal_tuning", "cyclical_rhythm", "modal_improvisation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

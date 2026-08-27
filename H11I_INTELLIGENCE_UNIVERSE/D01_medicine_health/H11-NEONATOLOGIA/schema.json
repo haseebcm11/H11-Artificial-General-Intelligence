@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NEONATOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Computational neonatology and perinatal transition agent simulating newborn cardiopulmonary adaptation, neonatal resuscitation, RDS surfactant kinetics, bilirubin nomograms, GIR fluid balance, sepsis risk, and therapeutic hypothermia in HIE.",
+  "category": "Neonatology & Perinatal Medicine",
+  "inputs": [
+    {
+      "name": "gestational_age_weeks",
+      "type": "number",
+      "description": "Gestational age at delivery in fractional weeks"
+    },
+    {
+      "name": "birth_weight_grams",
+      "type": "number",
+      "description": "Birth weight in grams"
+    },
+    {
+      "name": "chronological_age_hours",
+      "type": "number",
+      "description": "Postnatal chronological age in hours"
+    },
+    {
+      "name": "apgar_scores",
+      "type": "object",
+      "description": "Standardized 1, 5, and 10 minute APGAR score subcomponents"
+    },
+    {
+      "name": "respiratory_metrics",
+      "type": "object",
+      "description": "Silverman-Andersen retraction indices and ventilator parameters"
+    },
+    {
+      "name": "blood_gas",
+      "type": "object",
+      "description": "Arterial or capillary blood gas values (pH, pCO2, pO2, HCO3, Base Excess, Lactate)"
+    },
+    {
+      "name": "bilirubin_panel",
+      "type": "object",
+      "description": "Total/direct serum bilirubin with postnatal age and neurotoxicity risk factors"
+    },
+    {
+      "name": "maternal_perinatal_data",
+      "type": "object",
+      "description": "GBS status, ROM hours, intrapartum fever, and antibiotic prophylaxis"
+    },
+    {
+      "name": "hemodynamic_pda_echo",
+      "type": "object",
+      "description": "Echocardiographic patent ductus arteriosus metrics and shunt directions"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "apgar_evaluation",
+      "type": "object",
+      "description": "Resuscitation response, transition scoring, and asphyxia risk categorization"
+    },
+    {
+      "name": "respiratory_plan",
+      "type": "object",
+      "description": "RDS grading, Oxygenation Index (OI), surfactant indications, and CPAP/ventilator targets"
+    },
+    {
+      "name": "phototherapy_decision",
+      "type": "object",
+      "description": "AAP 2022 hour-specific phototherapy and exchange transfusion recommendations"
+    },
+    {
+      "name": "fluid_metabolic_plan",
+      "type": "object",
+      "description": "Total fluid rate (mL/kg/d), Glucose Infusion Rate (mg/kg/min), and electrolyte targets"
+    },
+    {
+      "name": "eos_sepsis_stratification",
+      "type": "object",
+      "description": "Early-onset sepsis risk per 1,000 live births and antimicrobial recommendations"
+    },
+    {
+      "name": "hie_cooling_protocol",
+      "type": "object",
+      "description": "Sarnat staging, therapeutic hypothermia eligibility, and cooling/rewarming timeline"
+    },
+    {
+      "name": "nec_stage_assessment",
+      "type": "object",
+      "description": "Modified Bell staging for necrotizing enterocolitis and clinical management pathway"
+    }
+  ],
+  "config": {
+    "guideline_standard": "AAP_2022_NRP_8TH_ED",
+    "cooling_target_temp_celsius": 33.5,
+    "cooling_duration_hours": 72.0,
+    "rewarming_rate_celsius_per_hour": 0.5,
+    "hypoglycemia_threshold_mg_dl": 45.0
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "patient_id": { "type": "string" },
+      "gestational_age_weeks": { "type": "number" },
+      "birth_weight_grams": { "type": "number" },
+      "current_weight_grams": { "type": "number" },
+      "postmenstrual_age_weeks": { "type": "number" },
+      "day_of_life": { "type": "integer" },
+      "ventilator_days": { "type": "integer" },
+      "phototherapy_hours": { "type": "number" },
+      "cooling_active": { "type": "boolean" },
+      "nec_bell_stage": { "type": "string" },
+      "cumulative_fluid_balance_ml": { "type": "number" }
+    },
+    "required": ["patient_id", "gestational_age_weeks", "birth_weight_grams", "current_weight_grams"]
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-GYNAECOLOGIA",
+      "H11-GENETICA-MED",
+      "H11-IMMUNOLOGIA",
+      "H11-BACTERIOLOGIA"
+    ],
+    "downstream": [
+      "H11-PNEUMOLOGIA",
+      "H11-NEUROLOGIA",
+      "H11-CARDIOLOGIA",
+      "H11-NUTRITIO"
+    ]
+  },
+  "events": {
+    "emits": [
+      "neonatal_asphyxia_alert",
+      "critical_hyperbilirubinemia_alert",
+      "severe_rds_surfactant_needed",
+      "early_onset_sepsis_warning",
+      "hypothermia_cooling_initiated",
+      "pda_hemodynamic_compromise",
+      "nec_bell_stage_escalation"
+    ],
+    "consumes": [
+      "fetal_distress_event",
+      "maternal_chorioamnionitis_reported",
+      "blood_culture_positive_alert",
+      "maternal_blood_group_incompatibility"
+    ]
+  },
+  "metrics": [
+    "apgar_5min_score",
+    "oxygenation_index",
+    "glucose_infusion_rate_mg_kg_min",
+    "total_serum_bilirubin_mg_dl",
+    "eos_risk_per_1000",
+    "target_core_temperature_celsius"
+  ],
+  "capabilities": [
+    "apgar_transition_scoring",
+    "silverman_rds_respiratory_assessment",
+    "aap_2022_hyperbilirubinemia_nomogram",
+    "gir_and_electrolyte_titration",
+    "kaiser_eos_sepsis_risk_calculation",
+    "sarnat_hie_therapeutic_hypothermia_staging",
+    "pda_echocardiographic_grading",
+    "modified_bell_nec_staging"
+  ],
+  "scaling": {
+    "stateless_evaluations": true,
+    "concurrency_safe": true,
+    "cache_nomogram_curves": true
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-DEADLINE",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Attaches absolute deadlines to hops.",
+  "category": "orchestrator",
+  "handler": "timeout",
+  "inputs": [
+    {
+      "name": "elapsed",
+      "type": "Any"
+    },
+    {
+      "name": "deadline",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "expired",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-SCHEDULER"
+    ],
+    "downstream": [
+      "H11C-TIMEOUT-GUARDIAN"
+    ]
+  },
+  "capabilities": [
+    "timeout"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

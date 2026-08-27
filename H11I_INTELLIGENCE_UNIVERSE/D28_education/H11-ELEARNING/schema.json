@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ELEARNING",
+  "version": "1.0.0",
+  "layer": "6",
+  "layer_name": "Educational Systems",
+  "description": "Manages interactive delivery of multimodal educational content.",
+  "category": "Content Delivery",
+  "inputs": [
+    {
+      "name": "curriculum_module",
+      "type": "object"
+    },
+    {
+      "name": "learner_state",
+      "type": "object"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "rendered_session",
+      "type": "object"
+    }
+  ],
+  "config": {
+    "telemetry_batch_size": 1000,
+    "scaffolding_threshold": 0.4
+  },
+  "state_schema": {
+    "active_sessions": "Dict[str, SessionState]",
+    "content_cache": "LRUCache"
+  },
+  "dependencies": {
+    "upstream": ["H11-CURRICULUM", "H11-MEDIA"],
+    "downstream": ["H11-ASSESSMENT", "H11-DATA_LAKE"]
+  },
+  "events": {
+    "emits": ["session_started", "telemetry_batch", "scaffolding_triggered"],
+    "consumes": ["asset_updated", "module_assigned"]
+  },
+  "metrics": [
+    "session_latency_ms",
+    "concurrent_learners",
+    "intervention_rate"
+  ],
+  "capabilities": [
+    "multimodal_rendering",
+    "realtime_telemetry",
+    "adaptive_pacing"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

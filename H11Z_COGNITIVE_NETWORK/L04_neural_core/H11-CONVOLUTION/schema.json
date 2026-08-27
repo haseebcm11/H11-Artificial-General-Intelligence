@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-CONVOLUTION Schema",
+  "type": "object",
+  "properties": {
+    "dimensions": {
+      "type": "integer",
+      "enum": [1, 2, 3]
+    },
+    "in_channels": {
+      "type": "integer"
+    },
+    "out_channels": {
+      "type": "integer"
+    },
+    "kernel_size": {
+      "type": "array",
+      "items": { "type": "integer" }
+    },
+    "stride": {
+      "type": "array",
+      "items": { "type": "integer" }
+    },
+    "padding": {
+      "type": "string",
+      "enum": ["valid", "same"]
+    },
+    "dilation": {
+      "type": "array",
+      "items": { "type": "integer" }
+    },
+    "groups": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "dimensions",
+    "in_channels",
+    "out_channels",
+    "kernel_size"
+  ]
+}

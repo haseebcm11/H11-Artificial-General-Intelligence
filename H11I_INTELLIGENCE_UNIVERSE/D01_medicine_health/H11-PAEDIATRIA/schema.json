@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PAEDIATRIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Simulates pediatric physiology, growth trajectory analytics, age-dependent pharmacokinetics/pharmacodynamics, neonatal APGAR scoring, Holliday-Segar fluid dynamics, and pediatric early warning systems (PEWS).",
+  "category": "Pediatrics & Child Health",
+  "inputs": [
+    {"name": "growth_measurements", "type": "GrowthMeasurement"},
+    {"name": "vital_signs", "type": "PediatricVitals"},
+    {"name": "dosing_request", "type": "PediatricDosingRequest"},
+    {"name": "apgar_params", "type": "ApgarInput"},
+    {"name": "milestone_observations", "type": "MilestoneObservation"}
+  ],
+  "outputs": [
+    {"name": "growth_assessment", "type": "GrowthPercentileResult"},
+    {"name": "pews_score", "type": "PEWSAssessment"},
+    {"name": "dose_validation", "type": "DosingSafetyResult"},
+    {"name": "fluid_prescription", "type": "FluidCalculationResult"},
+    {"name": "milestone_evaluation", "type": "DevelopmentalMilestoneReport"}
+  ],
+  "config": {
+    "growth_reference_standard": "WHO_CDC_HYBRID",
+    "pews_escalation_threshold": 4,
+    "preterm_gestational_cutoff_weeks": 37.0,
+    "max_pediatric_age_years": 18.0
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "patient_id": {"type": "string"},
+      "chronological_age_months": {"type": "number"},
+      "gestational_age_weeks": {"type": "number"},
+      "corrected_age_months": {"type": "number"},
+      "weight_kg": {"type": "number"},
+      "height_cm": {"type": "number"},
+      "head_circ_cm": {"type": "number"},
+      "bsa_m2": {"type": "number"},
+      "pews_history": {"type": "array", "items": {"type": "object"}},
+      "growth_percentiles_history": {"type": "array", "items": {"type": "object"}},
+      "active_medication_exposures": {"type": "array", "items": {"type": "object"}}
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-GENETICA-MED", "H11-NUTRITIO", "H11-HEMATOLOGIA", "H11-BACTERIOLOGIA"],
+    "downstream": ["H11-PHARMACOGENOMICA", "H11-PNEUMOLOGIA", "H11-CARDIOLOGIA", "H11-ENDOCRINOLOGIA"]
+  },
+  "events": {
+    "emits": ["PEWSCriticalAlert", "NeonatalDecompensationWarning", "ToxicDoseOverageAlert", "GrowthFalteringDetected"],
+    "consumes": ["ImmunizationRecorded", "VitalSignsLogged", "DietaryIntakeUpdated", "ApgarAssessed"]
+  },
+  "metrics": ["growth_trajectory_accuracy", "dose_verification_rate", "pews_sensitivity", "escalation_latency_ms"],
+  "capabilities": [
+    "growth_zscore_calculation",
+    "pews_risk_stratification",
+    "pediatric_weight_dosing_validation",
+    "holliday_segar_fluid_prescription",
+    "neonatal_apgar_assessment",
+    "developmental_milestone_screening"
+  ],
+  "scaling": {
+    "mode": "stateful_replicated",
+    "concurrency_limit": 400
+  }
+}

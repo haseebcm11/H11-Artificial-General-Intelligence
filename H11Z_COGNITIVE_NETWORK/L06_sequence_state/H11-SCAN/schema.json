@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SCAN",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Parallel associative scan algorithms.",
+  "category": "Operations",
+  "inputs": [
+    {
+      "name": "coefficients_A",
+      "type": "List[List[float]]",
+      "description": "A coeff",
+      "required": true
+    },
+    {
+      "name": "coefficients_B",
+      "type": "List[List[float]]",
+      "description": "B coeff",
+      "required": true
+    },
+    {
+      "name": "operator",
+      "type": "str",
+      "description": "Scan operator",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scanned_states",
+      "type": "List[List[float]]",
+      "description": "Prefix sum/prod results"
+    },
+    {
+      "name": "reduction_sum",
+      "type": "List[float]",
+      "description": "Total reduction for chunking"
+    }
+  ],
+  "config": {
+    "chunk_size": {
+      "type": "int",
+      "default": 256,
+      "description": "Parallel block size"
+    }
+  },
+  "state_schema": {
+    "scans_performed": {
+      "type": "int",
+      "description": "Metrics"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-SSM-CORE"
+    ],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "ScanCompleted"
+    ],
+    "consumes": [
+      "SSMComputed"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "scan_throughput",
+      "type": "gauge",
+      "description": "Tokens/sec scanned"
+    }
+  ],
+  "capabilities": [
+    "Blelloch parallel scan",
+    "Associative recurrence"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "low"
+  }
+}

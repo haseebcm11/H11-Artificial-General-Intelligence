@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ANIMATIO",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "Keyframe and Procedural Animation Agent",
+  "category": "Motion Arts",
+  "inputs": [{"name": "rig_data", "type": "object", "description": "Rig descriptor"}],
+  "outputs": [{"name": "baked_frames", "type": "array", "description": "Baked transform data"}],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": [], "downstream": []},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": true, "gpu_required": false, "memory_class": "medium"}
+}

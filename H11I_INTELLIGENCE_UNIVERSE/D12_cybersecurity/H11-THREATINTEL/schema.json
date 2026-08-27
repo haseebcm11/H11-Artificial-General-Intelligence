@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-THREATINTEL",
+  "version": "1.0.0",
+  "layer": 12,
+  "layer_name": "Cybersecurity",
+  "description": "Synthesizes internal and external intelligence into defensive rules.",
+  "category": "Threat Intelligence",
+  "inputs": [
+    {
+      "name": "iocs",
+      "type": "list[IOC]",
+      "description": "Indicators of compromise.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "signatures",
+      "type": "list[Rule]",
+      "description": "Generated defensive signatures."
+    }
+  ],
+  "config": {
+    "ioc_ttl_days": {
+      "type": "integer",
+      "default": 30,
+      "description": "Days before an IoC decays."
+    }
+  },
+  "state_schema": {
+    "graph_nodes": {
+      "type": "integer",
+      "description": "Total entities tracked."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-OSINT", "H11-MALWARE"],
+    "downstream": ["H11-NETSEC", "H11-APPSEC"]
+  },
+  "events": {
+    "emits": ["NewSignaturesDeployed"],
+    "consumes": ["IoCDiscovered"]
+  },
+  "metrics": [
+    {
+      "name": "active_signatures",
+      "type": "gauge",
+      "description": "Number of rules currently enforced."
+    }
+  ],
+  "capabilities": ["Graph Analysis", "Rule Generation"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

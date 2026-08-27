@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-DECOMPOSE IO Schema",
+  "type": "object",
+  "properties": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "complex_goal": {
+          "type": "string",
+          "description": "The high-level problem to decompose"
+        },
+        "max_depth": {
+          "type": "integer",
+          "default": 3
+        },
+        "strategy": {
+          "type": "string",
+          "enum": ["least_to_most", "recursive_divide", "dependency_first"]
+        }
+      },
+      "required": ["complex_goal"]
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "description": {"type": "string"},
+              "dependencies": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            }
+          }
+        },
+        "execution_order": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "is_dag": {"type": "boolean"}
+      }
+    }
+  }
+}

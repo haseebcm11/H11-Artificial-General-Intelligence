@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPACEDEBRIS",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Orbital debris tracking and conjunction assessment",
+  "category": "Space Situational Awareness",
+  "inputs": [
+    {
+      "name": "primary_ephemeris",
+      "type": "object",
+      "description": "Spacecraft state vector and covariance",
+      "required": true
+    },
+    {
+      "name": "debris_catalog",
+      "type": "array",
+      "description": "Known debris states",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "conjunction_alerts",
+      "type": "array",
+      "description": "High-risk close approach data"
+    },
+    {
+      "name": "debris_cloud_evolution",
+      "type": "object",
+      "description": "Spatial density mapping of fragments"
+    }
+  ],
+  "config": {
+    "pc_threshold": {
+      "type": "number",
+      "default": 1e-4,
+      "description": "Probability of collision threshold for alerts"
+    },
+    "screening_volume_km": {
+      "type": "number",
+      "default": 10.0,
+      "description": "Radius for initial spatial filtering"
+    }
+  },
+  "state_schema": {
+    "catalog_size": {
+      "type": "integer",
+      "description": "Number of tracked debris objects"
+    },
+    "kessler_index": {
+      "type": "number",
+      "description": "Metric of runaway collision risk in LEO"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ORBITALIS", "H11-SATELLITIS"],
+    "downstream": ["H11-SPACECRAFT"]
+  },
+  "events": {
+    "emits": ["ConjunctionAlert", "ManeuverRecommended"],
+    "consumes": ["FragmentationDetected", "CatalogUpdated"]
+  },
+  "metrics": [
+    {
+      "name": "cams_recommended_per_day",
+      "type": "counter",
+      "description": "Number of collision avoidance maneuvers issued"
+    }
+  ],
+  "capabilities": ["Conjunction Assessment", "Breakup Modeling", "Risk Analysis"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

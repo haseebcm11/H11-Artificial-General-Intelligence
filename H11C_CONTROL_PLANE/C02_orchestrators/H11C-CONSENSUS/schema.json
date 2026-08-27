@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-CONSENSUS",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Requires N-of-M specialist agreement before ALIGN sees a fact.",
+  "category": "orchestrator",
+  "handler": "join",
+  "inputs": [
+    {
+      "name": "branches",
+      "type": "Any"
+    },
+    {
+      "name": "expected",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "joined",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-CONFLICT-MERGER"
+    ],
+    "downstream": [
+      "H11C-ALIGN-HOOK"
+    ]
+  },
+  "capabilities": [
+    "join"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

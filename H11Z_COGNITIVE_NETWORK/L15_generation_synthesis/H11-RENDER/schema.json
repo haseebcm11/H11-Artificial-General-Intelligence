@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RENDER",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Transforms 3D assets and materials into 2D visual outputs.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "scene_graph", "type": "Dict[str, Any]"}, {"name": "camera", "type": "Dict[str, float]"}, {"name": "lighting", "type": "Dict[str, float]"}
+  ],
+  "outputs": [
+    {"name": "rendered_image", "type": "bytes"}, {"name": "depth_map", "type": "bytes"}
+  ]
+}

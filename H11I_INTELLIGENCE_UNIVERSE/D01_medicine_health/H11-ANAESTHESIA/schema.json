@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ANAESTHESIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Calculates PK/PD multi-compartment models for target-controlled infusion and monitors depth of anesthesia.",
+  "category": "Perioperative Medicine",
+  "inputs": [
+    {
+      "name": "patient_demographics",
+      "type": "object",
+      "description": "Age, weight, height, lean body mass"
+    },
+    {
+      "name": "eeg_bis",
+      "type": "number",
+      "description": "Bispectral index data"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "predicted_effect_site_conc",
+      "type": "object",
+      "description": "Concentrations (Ce) for hypnotic and analgesic agents"
+    },
+    {
+      "name": "pump_commands",
+      "type": "array",
+      "description": "Rate adjustments for TCI pumps"
+    }
+  ],
+  "config": {
+    "pk_model_propofol": "Schnider",
+    "pk_model_remifentanil": "Minto"
+  },
+  "state_schema": {
+    "compartment_masses": "object",
+    "infusion_history": "array"
+  },
+  "dependencies": {
+    "upstream": ["H11-PHARMACOLOGIA"],
+    "downstream": ["H11-CHIRURGIA"]
+  },
+  "events": {
+    "emits": ["awareness_risk_alert", "hemodynamic_instability_warning"],
+    "consumes": ["surgical_stimulus_event"]
+  },
+  "metrics": ["time_in_target_bis_range", "ce_prediction_error"],
+  "capabilities": ["target_controlled_infusion", "nociception_monitoring"],
+  "scaling": {
+    "mode": "stateful",
+    "max_concurrent_patients": 50
+  }
+}

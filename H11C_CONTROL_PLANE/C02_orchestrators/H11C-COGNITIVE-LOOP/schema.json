@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-COGNITIVE-LOOP",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Advances the perceive-retrieve-reason-align-act-remember cycle. ACT is illegal before ALIGN.",
+  "category": "orchestrator",
+  "handler": "cognitive_tick",
+  "inputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-AGI-KERNEL"
+    ],
+    "downstream": [
+      "H11C-ALIGN-ENFORCE"
+    ]
+  },
+  "capabilities": [
+    "cognitive_tick"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

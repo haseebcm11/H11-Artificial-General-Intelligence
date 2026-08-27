@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-016",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "agent_name": "Multimodal Fusion Agent",
+  "capabilities": [
+    "cross_modal_attention",
+    "modality_alignment",
+    "missing_modality_imputation"
+  ],
+  "input_types": ["visual", "auditory", "textual", "proprioceptive"],
+  "output_types": ["joint_latent_vector", "attention_map"]
+}

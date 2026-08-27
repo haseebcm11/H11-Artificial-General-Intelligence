@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-IMMUNOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Simulates innate and adaptive immune responses and clonal selection.",
+  "category": "Immune System",
+  "inputs": [
+    {"name": "antigen_profile", "type": "AntigenData"},
+    {"name": "site_of_infection", "type": "LocationID"},
+    {"name": "local_cytokines", "type": "CytokineProfile"}
+  ],
+  "outputs": [
+    {"name": "immune_response", "type": "ResponseVector"},
+    {"name": "memory_generated", "type": "ImmuneMemory"}
+  ],
+  "config": {
+    "autoimmunity_threshold": 0.95
+  },
+  "state_schema": {
+    "repertoire": "Dict[str, CloneData]",
+    "inflammation_level": "Float"
+  },
+  "dependencies": {
+    "upstream": ["H11-PATHOLOGIA", "H11-VIROLOGIA", "H11-BACTERIOLOGIA"],
+    "downstream": ["H11-PHYSIOLOGIA"]
+  },
+  "events": {
+    "emits": ["InflammationSpike", "PathogenCleared", "AutoimmuneReaction"],
+    "consumes": ["PathogenInvasion"]
+  },
+  "metrics": ["clonal_diversity", "response_time"],
+  "capabilities": ["Antigen Recognition", "Clonal Expansion", "Cytokine Signaling"],
+  "scaling": {
+    "memory_intensive": true
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPORTSCI",
+  "version": "1.0.0",
+  "layer": 29,
+  "layer_name": "Sports & Recreation",
+  "description": "Sports Science and Physiology Agent",
+  "category": "Physiology",
+  "inputs": [
+    {
+      "name": "heart_rate_series",
+      "type": "array",
+      "description": "Heart rate telemetry",
+      "required": true
+    },
+    {
+      "name": "power_output_series",
+      "type": "array",
+      "description": "Mechanical power telemetry",
+      "required": false
+    },
+    {
+      "name": "physio_profile",
+      "type": "object",
+      "description": "Baseline physiological markers",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "fatigue_index",
+      "type": "number",
+      "description": "Current strain state"
+    },
+    {
+      "name": "recovery_time_hrs",
+      "type": "number",
+      "description": "Hours to homeostasis"
+    }
+  ],
+  "config": {
+    "trimp_weighting_factor": {
+      "type": "number",
+      "default": 1.92,
+      "description": "Weighting for high intensity HR zones"
+    }
+  },
+  "state_schema": {
+    "chronic_training_load": {
+      "type": "number",
+      "description": "42-day moving average"
+    },
+    "acute_training_load": {
+      "type": "number",
+      "description": "7-day moving average"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ATHLETICA"],
+    "downstream": ["H11-COACHING"]
+  },
+  "events": {
+    "emits": ["exhaustion_imminent", "overtraining_risk"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "w_prime_depletion",
+      "type": "gauge",
+      "description": "Current anaerobic reserve"
+    }
+  ],
+  "capabilities": ["trimp_modeling", "critical_power_estimation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

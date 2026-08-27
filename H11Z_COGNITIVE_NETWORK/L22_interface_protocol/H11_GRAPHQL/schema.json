@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-GRAPHQL Schema",
+  "type": "object",
+  "definitions": {
+    "ComplexityReport": {
+      "type": "object",
+      "properties": {
+        "maxDepth": { "type": "integer" },
+        "totalCost": { "type": "number" },
+        "rejected": { "type": "boolean" }
+      },
+      "required": ["maxDepth", "totalCost", "rejected"]
+    },
+    "FieldDefinition": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "isList": { "type": "boolean" },
+        "cost": { "type": "number" }
+      },
+      "required": ["name", "type"]
+    }
+  },
+  "properties": {
+    "queryId": { "type": "string", "format": "uuid" },
+    "rawQuery": { "type": "string" },
+    "variables": { "type": "object" },
+    "complexity": { "$ref": "#/definitions/ComplexityReport" }
+  },
+  "required": ["queryId", "rawQuery", "complexity"]
+}

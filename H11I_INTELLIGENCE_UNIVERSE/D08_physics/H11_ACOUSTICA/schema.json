@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ACOUSTICA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Acoustics and wave propagation.",
+  "category": "Acoustics",
+  "inputs": [
+    {
+      "name": "sources",
+      "type": "List[AudioSource]",
+      "description": "Sound sources",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "rt60",
+      "type": "float",
+      "description": "Reverberation time"
+    }
+  ],
+  "config": {
+    "speed_of_sound": {
+      "type": "float",
+      "default": 343.0,
+      "description": "Speed of sound in m/s"
+    }
+  },
+  "state_schema": {
+    "step": {
+      "type": "int",
+      "description": "Time step"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-FLUIDA"],
+    "downstream": ["H11-BIOPHYSICA"]
+  },
+  "events": {
+    "emits": ["AcousticSimulationDone"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "fdtd_steps",
+      "type": "counter",
+      "description": "Steps completed"
+    }
+  ],
+  "capabilities": ["room_acoustics", "fdtd"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

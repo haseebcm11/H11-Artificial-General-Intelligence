@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-IOTSEC",
+  "version": "1.0.0",
+  "layer": 12,
+  "layer_name": "Cybersecurity",
+  "description": "Secures edge devices via RF fingerprinting and attestation.",
+  "category": "IoT Security",
+  "inputs": [
+    {
+      "name": "device_profile",
+      "type": "DeviceProfile",
+      "description": "Hardware and timing signature.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "trust_level",
+      "type": "float",
+      "description": "Trust score for the device."
+    }
+  ],
+  "config": {
+    "strict_attestation": {
+      "type": "boolean",
+      "default": true,
+      "description": "Require hardware root of trust."
+    }
+  },
+  "state_schema": {
+    "registered_devices": {
+      "type": "integer",
+      "description": "Total tracked edge devices."
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-NETSEC", "H11-ZERO-TRUST"]
+  },
+  "events": {
+    "emits": ["DeviceQuarantined"],
+    "consumes": ["EdgeNodeConnected"]
+  },
+  "metrics": [
+    {
+      "name": "active_edge_nodes",
+      "type": "gauge",
+      "description": "Number of active trusted devices."
+    }
+  ],
+  "capabilities": ["Hardware Attestation", "RF Fingerprinting"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

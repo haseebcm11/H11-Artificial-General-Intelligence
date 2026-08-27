@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-MEMS Configuration",
+  "type": "object",
+  "properties": {
+    "fabrication_process": {
+      "type": "string"
+    },
+    "mesh_resolution_um": {
+      "type": "number",
+      "minimum": 0.001
+    },
+    "environmental_conditions": {
+      "type": "object",
+      "properties": {
+        "pressure_pa": { "type": "number" },
+        "temperature_k": { "type": "number" }
+      }
+    }
+  },
+  "required": ["fabrication_process", "mesh_resolution_um"]
+}

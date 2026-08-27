@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-BIOMATERIAL Agent Schema",
+  "type": "object",
+  "properties": {
+    "material_class": {
+      "type": "string",
+      "enum": ["Metallic", "Ceramic", "Polymeric", "Composite", "Hydrogel"]
+    },
+    "degradation_profile": {
+      "type": "object",
+      "properties": {
+        "is_bioresorbable": { "type": "boolean" },
+        "half_life_days": { "type": "number" },
+        "byproducts": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "iso10993_tests": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["material_class"]
+}

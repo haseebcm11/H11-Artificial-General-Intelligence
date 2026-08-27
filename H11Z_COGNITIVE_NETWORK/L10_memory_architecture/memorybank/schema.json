@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MEMORYBANK",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Differentiable Neural Computer (DNC) external memory bank.",
+  "category": "Neural Memory",
+  "inputs": [
+    {"name": "operation", "type": "string", "enum": ["READ", "WRITE", "CLEAR"], "required": true},
+    {"name": "key_vector", "type": "array", "items": {"type": "number"}, "description": "Content query", "required": true},
+    {"name": "add_vector", "type": "array", "items": {"type": "number"}, "description": "Data to write", "required": false},
+    {"name": "erase_vector", "type": "array", "items": {"type": "number"}, "description": "Mask to erase", "required": false}
+  ],
+  "outputs": [
+    {"name": "read_vector", "type": "array", "items": {"type": "number"}, "description": "Retrieved data"},
+    {"name": "usage_profile", "type": "array", "items": {"type": "number"}, "description": "Memory allocation state"},
+    {"name": "max_address_weight", "type": "number", "description": "Addressing confidence"}
+  ],
+  "config": {
+    "memory_slots_n": {"type": "integer", "default": 128, "description": "Number of locations"},
+    "word_size_w": {"type": "integer", "default": 256, "description": "Dimension of each location"},
+    "key_strength_beta": {"type": "number", "default": 5.0, "description": "Addressing sharpness"}
+  },
+  "state_schema": {
+    "memory_matrix": {"type": "array", "description": "N x W tensor"},
+    "usage_vector": {"type": "array", "description": "N-dim allocation state"}
+  },
+  "dependencies": {
+    "upstream": ["H11-CONTROLLER"],
+    "downstream": ["H11-CONTROLLER"]
+  },
+  "events": {
+    "emits": ["memory_capacity_warning"],
+    "consumes": []
+  },
+  "metrics": [
+    {"name": "memory_utilization", "type": "gauge", "description": "Percentage of slots used"},
+    {"name": "addressing_entropy", "type": "histogram", "description": "Spread of read weights"}
+  ],
+  "capabilities": ["differentiable_read_write", "content_addressing", "dynamic_allocation"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

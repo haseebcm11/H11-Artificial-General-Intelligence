@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NETWORKING",
+  "version": "1.0.0",
+  "layer": 4,
+  "layer_name": "Telecommunications",
+  "description": "L3/L4 IP routing, congestion, and traffic engineering.",
+  "category": "Core Network",
+  "inputs": [
+    {
+      "name": "flow_rate_bps",
+      "type": "number",
+      "description": "Requested flow rate",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "achieved_bps",
+      "type": "number",
+      "description": "Actual delivered rate"
+    }
+  ],
+  "config": {
+    "enable_bgp": {
+      "type": "boolean",
+      "default": true,
+      "description": "Simulate BGP convergence"
+    }
+  },
+  "state_schema": {
+    "active_flows": {
+      "type": "integer",
+      "description": "Tracked L4 flows"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-FIBER", "H11-5G", "H11-WIFI", "H11-SATCOM"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["RouteFlap", "CongestionEvent"],
+    "consumes": ["LinkFailure"]
+  },
+  "metrics": [
+    {
+      "name": "queue_depth",
+      "type": "gauge",
+      "description": "Average router queue depth"
+    }
+  ],
+  "capabilities": ["tcp_aimd", "queue_management"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

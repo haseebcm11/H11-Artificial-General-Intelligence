@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-CAUSAL Agent Schema",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["analyze_graph", "compute_intervention", "find_backdoor"]
+    },
+    "graph": {
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source": { "type": "string" },
+              "target": { "type": "string" }
+            },
+            "required": ["source", "target"]
+          }
+        }
+      },
+      "required": ["nodes", "edges"]
+    },
+    "intervention": {
+      "type": "object",
+      "properties": {
+        "treatment": { "type": "string" },
+        "outcome": { "type": "string" }
+      }
+    }
+  },
+  "required": ["action", "graph"]
+}

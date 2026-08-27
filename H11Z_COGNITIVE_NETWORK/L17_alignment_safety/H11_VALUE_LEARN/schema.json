@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-VALUE-LEARN Schema",
+  "type": "object",
+  "properties": {
+    "reward_model": {
+      "type": "object",
+      "properties": {
+        "dimensionality": { "type": "integer" },
+        "prior_covariance": { "type": "array", "items": { "type": "number" } },
+        "rationality_beta": { "type": "number", "minimum": 0 }
+      },
+      "required": ["dimensionality", "prior_covariance", "rationality_beta"]
+    },
+    "preference_dataset": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "trajectory_a": { "type": "array", "items": { "type": "string" } },
+          "trajectory_b": { "type": "array", "items": { "type": "string" } },
+          "preference": { "type": "number", "enum": [0.0, 0.5, 1.0] }
+        },
+        "required": ["trajectory_a", "trajectory_b", "preference"]
+      }
+    }
+  },
+  "required": ["reward_model"]
+}

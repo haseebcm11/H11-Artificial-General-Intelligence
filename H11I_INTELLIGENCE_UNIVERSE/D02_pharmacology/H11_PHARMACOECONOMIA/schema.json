@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Pharmacoeconomics Model Schema",
+  "type": "object",
+  "properties": {
+    "intervention": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "cost_per_cycle": { "type": "number" }
+      },
+      "required": ["name", "cost_per_cycle"]
+    },
+    "comparator": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "cost_per_cycle": { "type": "number" }
+      },
+      "required": ["name", "cost_per_cycle"]
+    },
+    "markov_states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "state_id": { "type": "string" },
+          "utility": { "type": "number" }
+        },
+        "required": ["state_id", "utility"]
+      }
+    },
+    "discount_rate": {
+      "type": "number",
+      "default": 0.03
+    }
+  },
+  "required": ["intervention", "comparator", "markov_states"]
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SEMANTIC",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Probabilistic knowledge graph and factual taxonomy representation.",
+  "category": "Factual Store",
+  "inputs": [
+    {"name": "extracted_triples", "type": "array", "description": "Subject-Predicate-Object facts", "required": false},
+    {"name": "source_confidence", "type": "number", "description": "Reliability of new facts", "required": false},
+    {"name": "query_entity", "type": "string", "description": "Entity to lookup", "required": false}
+  ],
+  "outputs": [
+    {"name": "inferred_relations", "type": "array", "description": "Deduced facts"},
+    {"name": "subgraph", "type": "object", "description": "Local neighborhood"},
+    {"name": "contradictions", "type": "array", "description": "Conflicting facts detected"}
+  ],
+  "config": {
+    "update_learning_rate": {"type": "number", "default": 0.1, "description": "Bayesian update speed"},
+    "contradiction_threshold": {"type": "number", "default": 0.8, "description": "Confidence required to flag conflict"},
+    "max_traversal_depth": {"type": "integer", "default": 3, "description": "Depth of subgraph retrieval"}
+  },
+  "state_schema": {
+    "entity_registry": {"type": "object", "description": "Dictionary of known entities"},
+    "relation_graph": {"type": "object", "description": "Edges with probabilistic weights"}
+  },
+  "dependencies": {
+    "upstream": ["H11-EPISODIC", "H11-PERCEPTION"],
+    "downstream": ["H11-REASONING", "H11-WORKING"]
+  },
+  "events": {
+    "emits": ["ontology_merged", "contradiction_alert"],
+    "consumes": ["fact_extracted"]
+  },
+  "metrics": [
+    {"name": "graph_density", "type": "gauge", "description": "Edges per node"},
+    {"name": "inference_accuracy", "type": "histogram", "description": "Success rate of link prediction"}
+  ],
+  "capabilities": ["graph-traversal", "link-prediction", "probabilistic-reasoning"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "large"
+  }
+}

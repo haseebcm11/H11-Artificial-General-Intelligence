@@ -1,0 +1,6 @@
+{
+  "name": "H11-TEXTILIA-ENG",
+  "description": "Textiles Engineering Agent for fabric design and smart textiles.",
+  "version": "1.0.0",
+  "capabilities": ["weave_design", "smart_fabric", "tensile_prediction"]
+}

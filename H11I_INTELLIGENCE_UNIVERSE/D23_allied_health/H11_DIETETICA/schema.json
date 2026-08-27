@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DIETETICA",
+  "version": "1.0.0",
+  "layer": 23,
+  "layer_name": "Allied Health",
+  "description": "Clinical Dietetics and Nutritional Biochemistry",
+  "category": "Dietetics",
+  "inputs": [
+    {
+      "name": "labs",
+      "type": "object",
+      "description": "Metabolic panel results",
+      "required": true
+    },
+    {
+      "name": "anthropometrics",
+      "type": "object",
+      "description": "Weight, height, age, sex",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "nutritional_prescription",
+      "type": "object",
+      "description": "Macronutrient and fluid formulation"
+    }
+  ],
+  "config": {
+    "refeeding_risk_protocol": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable strict scaling for malnourished patients"
+    }
+  },
+  "state_schema": {
+    "cumulative_deficit": {
+      "type": "float",
+      "description": "Running total of caloric deficit/surplus"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SPEECH", "H11-ENDOCRINOLOGIA"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["NutritionPlanUpdated"],
+    "consumes": ["LabsResulted"]
+  },
+  "metrics": [
+    {
+      "name": "tpn_calculation_latency",
+      "type": "histogram",
+      "description": "Time to optimize parenteral formulation"
+    }
+  ],
+  "capabilities": ["enteral_nutrition", "parenteral_nutrition", "metabolic_calculation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

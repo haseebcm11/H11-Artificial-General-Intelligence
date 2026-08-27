@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-WORKER-POOL",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Pool of identical workers for fanout hops.",
+  "category": "orchestrator",
+  "handler": "fanout",
+  "inputs": [
+    {
+      "name": "n",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "branches",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-SCHEDULER"
+    ],
+    "downstream": [
+      "H11C-PARALLEL-FANOUT"
+    ]
+  },
+  "capabilities": [
+    "fanout"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

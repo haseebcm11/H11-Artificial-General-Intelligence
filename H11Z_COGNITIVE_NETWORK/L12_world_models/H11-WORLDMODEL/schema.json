@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-WORLDMODEL",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Maintains a latent world state by exponentially smoothing observations: h_t = (1-\u03b1) h_{t-1} + \u03b1 x_t.",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "obs",
+      "type": "List[float]"
+    },
+    {
+      "name": "alpha",
+      "type": "float"
+    },
+    {
+      "name": "noise",
+      "type": "List[float]"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "latent",
+      "type": "List[float]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [],
+    "downstream": [
+      "H11-PREDICT",
+      "H11-SIMULATE",
+      "H11-MENTAL-SIM",
+      "H11-DREAM",
+      "H11-IMAGINATION"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "latent-smooth"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

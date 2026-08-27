@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_WILDLIFE_VET_Schema",
+  "description": "Schema for the Wildlife Veterinary Sciences Agent",
+  "type": "object",
+  "properties": {
+    "ImmobilizationRequest": {
+      "type": "object",
+      "properties": {
+        "species_name": { "type": "string" },
+        "estimated_weight_kg": { "type": "number" },
+        "stress_level": { "type": "string", "enum": ["LOW", "MODERATE", "HIGH", "EXTREME"] },
+        "terrain_type": { "type": "string" }
+      },
+      "required": ["species_name", "estimated_weight_kg", "stress_level"]
+    },
+    "ImmobilizationProtocol": {
+      "type": "object",
+      "properties": {
+        "primary_agent": { "type": "string" },
+        "primary_dose_mg": { "type": "number" },
+        "sedative": { "type": "string" },
+        "sedative_dose_mg": { "type": "number" },
+        "antagonists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "drug_name": { "type": "string" },
+              "dose_mg": { "type": "number" }
+            },
+            "required": ["drug_name", "dose_mg"]
+          }
+        },
+        "capture_myopathy_risk": { "type": "string", "enum": ["LOW", "MODERATE", "HIGH"] }
+      },
+      "required": ["primary_agent", "primary_dose_mg", "antagonists", "capture_myopathy_risk"]
+    },
+    "PopulationHealthAssessment": {
+      "type": "object",
+      "properties": {
+        "population_id": { "type": "string" },
+        "disease_agent": { "type": "string" },
+        "r0_estimate": { "type": "number" },
+        "intervention_strategy": { "type": "string" }
+      },
+      "required": ["population_id", "disease_agent", "r0_estimate"]
+    }
+  }
+}

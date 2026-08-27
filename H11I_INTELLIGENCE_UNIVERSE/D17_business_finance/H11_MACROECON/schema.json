@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MACROECON",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Models aggregate economic phenomena and policy.",
+  "category": "Economics",
+  "inputs": [
+    {
+      "name": "gdp_current",
+      "type": "number",
+      "description": "Current GDP",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "forecasts",
+      "type": "object",
+      "description": "Macro forecasts"
+    }
+  ],
+  "config": {
+    "taylor_rule_inflation_weight": {
+      "type": "number",
+      "default": 1.5,
+      "description": "Weight on inflation in Taylor rule"
+    }
+  },
+  "state_schema": {
+    "historical_data": {
+      "type": "array",
+      "description": "Time series macro data"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-MICROECON"],
+    "downstream": ["H11-BANKING", "H11-TRADE"]
+  }
+}

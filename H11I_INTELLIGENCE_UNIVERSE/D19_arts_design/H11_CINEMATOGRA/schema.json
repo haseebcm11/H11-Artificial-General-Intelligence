@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CINEMATOGRA",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "Cinematography and Frame Sequence Agent",
+  "category": "Motion Arts",
+  "inputs": [
+    {
+      "name": "frame_sequence",
+      "type": "array of bytes",
+      "description": "Unprocessed frame data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "rendered_video_stream",
+      "type": "bytes",
+      "description": "Final video file/stream"
+    }
+  ],
+  "config": {
+    "simulate_rolling_shutter": {
+      "type": "boolean",
+      "default": true,
+      "description": "Simulate CMOS rolling shutter jello effect"
+    }
+  },
+  "state_schema": {
+    "current_frame": {
+      "type": "integer",
+      "description": "Playhead position"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PHOTOGRAPHIA"],
+    "downstream": ["H11-VIDEOEDITING"]
+  },
+  "events": {
+    "emits": ["clip_rendered", "frame_dropped"],
+    "consumes": ["timeline_scrub"]
+  },
+  "metrics": [
+    {
+      "name": "dropped_frames",
+      "type": "counter",
+      "description": "Frames dropped due to processing limits"
+    }
+  ],
+  "capabilities": ["motion_blur_simulation", "rig_procedural_animation", "aces_pipeline"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

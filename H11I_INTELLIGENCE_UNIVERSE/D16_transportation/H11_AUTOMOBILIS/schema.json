@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AUTOMOBILIS",
+  "version": "1.0.0",
+  "layer": 16,
+  "layer_name": "Transportation",
+  "description": "General automotive dynamics and ICE powertrain",
+  "category": "Automotive",
+  "inputs": [
+    {
+      "name": "throttle",
+      "type": "float",
+      "description": "Throttle position [0, 1]",
+      "required": true
+    },
+    {
+      "name": "steering_angle",
+      "type": "float",
+      "description": "Front wheel steering angle (radians)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "velocity_vector",
+      "type": "array",
+      "description": "[vx, vy, vz]"
+    }
+  ],
+  "config": {
+    "dt": {
+      "type": "float",
+      "default": "0.01",
+      "description": "Integration timestep"
+    }
+  },
+  "state_schema": {
+    "rpm": {
+      "type": "float",
+      "description": "Engine revolutions per minute"
+    }
+  }
+}

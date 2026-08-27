@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-METEOROLOGIA Schema",
+  "type": "object",
+  "properties": {
+    "forecast_id": {
+      "type": "string"
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lon": { "type": "number", "minimum": -180, "maximum": 180 }
+      },
+      "required": ["lat", "lon"]
+    },
+    "lead_time_hours": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 240
+    },
+    "prediction_type": {
+      "type": "string",
+      "enum": ["nowcast", "short_range", "medium_range"]
+    }
+  },
+  "required": ["forecast_id", "location", "lead_time_hours", "prediction_type"]
+}

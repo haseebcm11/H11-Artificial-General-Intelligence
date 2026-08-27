@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CLEANSER",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "LSH Deduplication and Anomaly Detection for raw pipelines.",
+  "category": "Data Hygiene",
+  "inputs": [
+    {
+      "name": "records",
+      "type": "array[object]",
+      "description": "Raw data records.",
+      "required": true
+    },
+    {
+      "name": "dedup_threshold",
+      "type": "float",
+      "description": "Similarity threshold (0-1)."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "cleaned_records",
+      "type": "array[object]",
+      "description": "Validated and deduplicated records."
+    },
+    {
+      "name": "metrics",
+      "type": "object",
+      "description": "Statistics of the cleansing run."
+    }
+  ],
+  "config": {
+    "num_hash_functions": {
+      "type": "integer",
+      "default": 128,
+      "description": "Number of hashes for MinHash."
+    },
+    "anomaly_contamination": {
+      "type": "float",
+      "default": 0.01,
+      "description": "Expected proportion of outliers."
+    }
+  },
+  "state_schema": {
+    "lsh_buckets": {
+      "type": "map[string, array[string]]",
+      "description": "Band hashes to record IDs."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-INGEST", "H11-CRAWLER"],
+    "downstream": ["H11-LABELER"]
+  },
+  "events": {
+    "emits": ["DataQuarantined", "CleansingPipelineFinished"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "records_dropped",
+      "type": "counter",
+      "description": "Number of records purged."
+    }
+  ],
+  "capabilities": ["MinHashLSH", "IsolationForest", "EncodingNormalization"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

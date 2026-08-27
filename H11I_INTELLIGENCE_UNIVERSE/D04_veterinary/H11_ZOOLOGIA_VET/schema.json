@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_ZOOLOGIA_VET_Schema",
+  "type": "object",
+  "properties": {
+    "PatientProfile": {
+      "type": "object",
+      "properties": {
+        "species_id": { "type": "string" },
+        "taxonomic_class": { "type": "string" },
+        "age_years": { "type": "number" },
+        "body_mass_kg": { "type": "number" },
+        "enclosure_id": { "type": "string" }
+      },
+      "required": ["species_id", "taxonomic_class", "age_years", "body_mass_kg"]
+    },
+    "BiosecurityAudit": {
+      "type": "object",
+      "properties": {
+        "enclosure_id": { "type": "string" },
+        "pathogen_load_score": { "type": "number" },
+        "identified_vectors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "quarantine_recommended": { "type": "boolean" }
+      },
+      "required": ["enclosure_id", "pathogen_load_score"]
+    },
+    "GeriatricCarePlan": {
+      "type": "object",
+      "properties": {
+        "patient_id": { "type": "string" },
+        "chronic_conditions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "palliative_interventions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "quality_of_life_score": { "type": "number" }
+      },
+      "required": ["patient_id", "chronic_conditions", "quality_of_life_score"]
+    }
+  }
+}

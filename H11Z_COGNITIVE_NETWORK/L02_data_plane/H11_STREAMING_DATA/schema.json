@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-STREAMING-DATA",
+  "version": "2.1.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Ingests, windows, and temporally aligns high-velocity streams.",
+  "category": "Ingestion",
+  "inputs": [
+    {
+      "name": "stream_event",
+      "type": "object",
+      "description": "Individual event payload with timestamp.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "window_batch",
+      "type": "object",
+      "description": "Coalesced events bound by temporal windows."
+    }
+  ],
+  "config": {
+    "window_type": {
+      "type": "string",
+      "default": "tumbling",
+      "description": "tumbling, sliding, or session"
+    },
+    "window_size_ms": {
+      "type": "integer",
+      "default": 60000,
+      "description": "Size of the window."
+    },
+    "max_out_of_order_ms": {
+      "type": "integer",
+      "default": 5000,
+      "description": "Tolerance for late arriving data to update watermark."
+    }
+  },
+  "state_schema": {
+    "active_windows": {
+      "type": "object",
+      "description": "In-memory state of unclosed windows."
+    },
+    "current_watermark": {
+      "type": "integer",
+      "description": "Global event-time watermark."
+    }
+  },
+  "dependencies": {
+    "upstream": ["External_Kafka"],
+    "downstream": ["H11-SAMPLER", "H11-FEATURE-STORE"]
+  },
+  "events": {
+    "emits": ["WindowClosed", "LateDataDropped"],
+    "consumes": ["RawEventArrival"]
+  },
+  "metrics": [
+    {
+      "name": "watermark_lag_ms",
+      "type": "gauge",
+      "description": "Difference between system time and watermark time."
+    }
+  ],
+  "capabilities": ["Event-time Processing", "Exactly-once Semantics", "Stateful Windowing"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "H11_SUPRAMOLECULARIS",
+  "version": "1.0.0",
+  "domain": "Chemistry",
+  "description": "Supramolecular Chemistry Agent",
+  "capabilities": ["SelfAssemblyModeling", "HostGuestAnalysis"]
+}

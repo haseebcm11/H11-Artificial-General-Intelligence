@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-HYDROLOGIA Schema",
+  "type": "object",
+  "properties": {
+    "basin_id": {
+      "type": "string"
+    },
+    "simulation_mode": {
+      "type": "string",
+      "enum": ["surface_flow", "groundwater_recharge", "coupled", "flood_routing"]
+    },
+    "inputs": {
+      "type": "object",
+      "properties": {
+        "precipitation_mm": { "type": "number", "minimum": 0 },
+        "evapotranspiration_mm": { "type": "number", "minimum": 0 }
+      },
+      "required": ["precipitation_mm"]
+    }
+  },
+  "required": ["basin_id", "simulation_mode", "inputs"]
+}

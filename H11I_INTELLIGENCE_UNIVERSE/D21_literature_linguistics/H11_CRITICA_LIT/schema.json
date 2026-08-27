@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CRITICA-LIT",
+  "version": "1.0.0",
+  "layer": 21,
+  "layer_name": "Literature & Linguistics",
+  "description": "Agent for literary criticism and theoretical analysis.",
+  "category": "Literature",
+  "inputs": [
+    {
+      "name": "text",
+      "type": "string",
+      "description": "Source text"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "critique",
+      "type": "string",
+      "description": "Generated analysis"
+    }
+  ],
+  "config": {
+    "strict_evidence": {
+      "type": "boolean",
+      "default": true,
+      "description": "Require explicit textual quotes for arguments"
+    }
+  },
+  "state_schema": {
+    "argument_tree": {
+      "type": "object",
+      "description": "Logical structure of the critique"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SEMANTICA", "H11-NARRATIO"],
+    "downstream": []
+  },
+  "capabilities": ["thematic-extraction", "argument-mining"]
+}

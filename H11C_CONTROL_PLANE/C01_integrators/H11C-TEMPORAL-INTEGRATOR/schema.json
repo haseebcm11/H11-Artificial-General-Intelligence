@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-TEMPORAL-INTEGRATOR",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Orders hops by timestamp so later hops cannot rewrite earlier ones.",
+  "category": "integrator",
+  "handler": "join_traces",
+  "inputs": [
+    {
+      "name": "traces",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "trace",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-TRACE-JOINER"
+    ],
+    "downstream": [
+      "H11C-WORLD-BINDER"
+    ]
+  },
+  "capabilities": [
+    "join_traces"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

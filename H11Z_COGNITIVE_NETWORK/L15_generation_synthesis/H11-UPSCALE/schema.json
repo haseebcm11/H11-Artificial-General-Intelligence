@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-UPSCALE",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Enhances resolution and restores details in generated images/videos.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "low_res", "type": "bytes"}, {"name": "scale_factor", "type": "int"}, {"name": "enhance_faces", "type": "bool"}
+  ],
+  "outputs": [
+    {"name": "high_res", "type": "bytes"}, {"name": "perceptual_quality", "type": "float"}
+  ]
+}

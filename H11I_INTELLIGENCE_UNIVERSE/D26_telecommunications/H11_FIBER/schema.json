@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-FIBER",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Telecommunications",
+  "description": "Fiber optic transmission modeling.",
+  "category": "Optical",
+  "inputs": [
+    {
+      "name": "wavelength_nm",
+      "type": "number",
+      "description": "Carrier wavelength",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "osnr_db",
+      "type": "number",
+      "description": "Optical SNR"
+    }
+  ],
+  "config": {
+    "default_attenuation_db_km": {
+      "type": "number",
+      "default": 0.2,
+      "description": "Fiber loss per km"
+    }
+  },
+  "state_schema": {
+    "active_channels": {
+      "type": "number",
+      "description": "WDM channels in use"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-NETWORKING"]
+  },
+  "events": {
+    "emits": ["FiberCut", "Degradation"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "optical_loss",
+      "type": "histogram",
+      "description": "Distribution of link losses"
+    }
+  ],
+  "capabilities": ["dwdm_modeling", "dispersion_compensation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

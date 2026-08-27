@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-QUARANTINE",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Quarantines a case: no ACT, no external emit, memory write allowed.",
+  "category": "security",
+  "handler": "halt",
+  "inputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-INJECTION-GATE"
+    ],
+    "downstream": [
+      "H11C-HALT"
+    ]
+  },
+  "capabilities": [
+    "halt"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

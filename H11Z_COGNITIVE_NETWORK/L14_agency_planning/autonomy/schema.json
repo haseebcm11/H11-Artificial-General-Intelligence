@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-AUTONOMY Schema",
+  "type": "object",
+  "properties": {
+    "ActionProposal": {
+      "type": "object",
+      "properties": {
+        "action_id": { "type": "string" },
+        "domain": { "type": "string" },
+        "impact_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "irreversibility": { "type": "number", "minimum": 0, "maximum": 1 },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "cost_estimate": { "type": "number" },
+        "description": { "type": "string" }
+      },
+      "required": ["action_id", "domain", "impact_score", "irreversibility", "confidence"]
+    },
+    "AutonomyDecision": {
+      "type": "object",
+      "properties": {
+        "decision_type": { "type": "string", "enum": ["APPROVED", "ESCALATED", "DENIED"] },
+        "gate_id": { "type": ["string", "null"] },
+        "reason": { "type": "string" },
+        "risk_score": { "type": "number" },
+        "trust_margin": { "type": "number" }
+      },
+      "required": ["decision_type", "reason", "risk_score", "trust_margin"]
+    }
+  }
+}

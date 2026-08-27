@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SCRATCHPAD",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Working scratch space and Tree-of-Thought execution environment.",
+  "category": "Working Memory",
+  "inputs": [
+    {"name": "task_context", "type": "string", "description": "Goal context", "required": true},
+    {"name": "initial_propositions", "type": "array", "description": "Seed facts", "required": false},
+    {"name": "branching_factor", "type": "integer", "description": "Parallel paths", "required": false}
+  ],
+  "outputs": [
+    {"name": "synthesized_conclusion", "type": "string", "description": "Final derived answer"},
+    {"name": "reasoning_trace", "type": "array", "description": "Winning path"}
+  ],
+  "config": {
+    "pruning_threshold": {"type": "number", "default": 0.5, "description": "Score below which to prune"},
+    "max_depth": {"type": "integer", "default": 10, "description": "Max steps in CoT"}
+  },
+  "state_schema": {
+    "tree_nodes": {"type": "object", "description": "DAG of thoughts"},
+    "variables": {"type": "object", "description": "Temporary bindings"}
+  },
+  "dependencies": {"upstream": ["H11-ROUTER"], "downstream": ["H11-REFLECTION-MEM"]},
+  "capabilities": ["tree-of-thought", "hidden-reasoning", "heuristic-pruning"],
+  "scaling": {"horizontal": true, "gpu_required": false, "memory_class": "high"}
+}

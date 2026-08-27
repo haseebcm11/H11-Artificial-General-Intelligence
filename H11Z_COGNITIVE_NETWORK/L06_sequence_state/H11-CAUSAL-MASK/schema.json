@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CAUSAL-MASK",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Autoregressive and Prefix-LM attention masking.",
+  "category": "Causality",
+  "inputs": [
+    {
+      "name": "sequence_length",
+      "type": "int",
+      "description": "N",
+      "required": true
+    },
+    {
+      "name": "mask_type",
+      "type": "str",
+      "description": "Type",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "boolean_mask",
+      "type": "List[List[bool]]",
+      "description": "Dense mask"
+    },
+    {
+      "name": "sparse_indices",
+      "type": "List[Tuple[int, int]]",
+      "description": "Sparse format"
+    }
+  ],
+  "config": {
+    "cache_masks": {
+      "type": "bool",
+      "default": true,
+      "description": "Keep in memory"
+    }
+  },
+  "state_schema": {
+    "cache_hits": {
+      "type": "int",
+      "description": "Optimization metric"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-SEQUENCE"
+    ],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "MaskGenerated"
+    ],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "mask_generation_ms",
+      "type": "histogram",
+      "description": "Latency"
+    }
+  ],
+  "capabilities": [
+    "Prefix-LM masking",
+    "Sparse index generation"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

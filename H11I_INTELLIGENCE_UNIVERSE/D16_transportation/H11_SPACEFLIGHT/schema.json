@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPACEFLIGHT",
+  "version": "1.0.0",
+  "layer": 16,
+  "layer_name": "Transportation",
+  "description": "Orbital mechanics and launch dynamics",
+  "category": "Space",
+  "inputs": [
+    {
+      "name": "throttle",
+      "type": "float",
+      "description": "Engine throttle",
+      "required": true
+    },
+    {
+      "name": "pitch_cmd",
+      "type": "float",
+      "description": "Vehicle pitch attitude",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "altitude_km",
+      "type": "float",
+      "description": "Altitude above Earth"
+    },
+    {
+      "name": "velocity_ms",
+      "type": "float",
+      "description": "Orbital velocity"
+    }
+  ],
+  "config": {
+    "isp": {
+      "type": "float",
+      "default": "311.0",
+      "description": "Specific Impulse (s)"
+    }
+  },
+  "state_schema": {
+    "propellant_mass": {
+      "type": "float",
+      "description": "Remaining fuel in kg"
+    }
+  }
+}

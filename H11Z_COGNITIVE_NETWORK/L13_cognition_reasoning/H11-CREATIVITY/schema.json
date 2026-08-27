@@ -1,0 +1,17 @@
+{
+  "agent_id": "H11-CREATIVITY",
+  "layer": 13,
+  "type": "cognitive_reasoning",
+  "capabilities": [
+    "divergent_thinking",
+    "scamper",
+    "combinational_creativity",
+    "transformational_creativity"
+  ],
+  "configuration": {
+    "divergent_branching_factor": 5,
+    "novelty_weight": 0.6,
+    "value_weight": 0.4,
+    "mutation_rate": 0.1
+  }
+}

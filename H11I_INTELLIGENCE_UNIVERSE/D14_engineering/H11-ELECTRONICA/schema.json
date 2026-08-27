@@ -1,0 +1,12 @@
+{
+  "agent_id": "H11-ELECTRONICA",
+  "name": "ElectronicaAgent",
+  "description": "Micro-electronics, PCB, and circuit design agent.",
+  "version": "1.0.0",
+  "capabilities": [
+    "circuit_simulation",
+    "pcb_routing_analysis",
+    "signal_integrity"
+  ],
+  "dependencies": []
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ETHICA-APPLIED",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Normative rule-engine and moral decision simulator.",
+  "category": "Philosophy",
+  "inputs": [
+    {
+      "name": "action_proposal",
+      "type": "object",
+      "description": "The proposed action to evaluate",
+      "required": true
+    },
+    {
+      "name": "context_state",
+      "type": "object",
+      "description": "Environmental context",
+      "required": true
+    },
+    {
+      "name": "actor_profile",
+      "type": "object",
+      "description": "Historical context of the actor",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ethical_verdict",
+      "type": "boolean",
+      "description": "Whether the action is ethically sound"
+    },
+    {
+      "name": "framework_scores",
+      "type": "object",
+      "description": "Deontology, Consequentialism, Virtue scores"
+    },
+    {
+      "name": "required_modifications",
+      "type": "array",
+      "description": "Suggested mitigations"
+    }
+  ],
+  "config": {
+    "framework_weights": {
+      "type": "object",
+      "default": {"deontology": 1.0, "consequentialism": 1.0, "virtue": 1.0},
+      "description": "Weight distribution for the solver"
+    }
+  },
+  "state_schema": {
+    "active_constraints": {
+      "type": "integer",
+      "description": "Number of loaded moral constraints"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-AXIOLOGIA", "H11-PUBLICPOLICY"],
+    "downstream": ["H11-POLITICALSCI"]
+  },
+  "events": {
+    "emits": ["ethical_violation_flagged"],
+    "consumes": ["law_enacted", "cultural_shift"]
+  },
+  "metrics": [
+    {
+      "name": "mcts_rollout_depth",
+      "type": "histogram",
+      "description": "Depth of consequentialist rollouts"
+    }
+  ],
+  "capabilities": ["multi_framework_moral_solving", "mcts_utility_projection"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-HIGH-STAKES",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Legal, medical, and financial ACT are high-stakes by default.",
+  "category": "security",
+  "handler": "dual",
+  "inputs": [
+    {
+      "name": "approvals",
+      "type": "Any"
+    },
+    {
+      "name": "need",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-MODE-SWITCH"
+    ],
+    "downstream": [
+      "H11C-DUAL-CONTROL"
+    ]
+  },
+  "capabilities": [
+    "dual"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

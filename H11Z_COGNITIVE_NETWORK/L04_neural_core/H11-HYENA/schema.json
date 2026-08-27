@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-HYENA Schema",
+  "type": "object",
+  "properties": {
+    "d_model": {
+      "type": "integer"
+    },
+    "l_max": {
+      "type": "integer",
+      "description": "Maximum sequence length"
+    },
+    "order": {
+      "type": "integer",
+      "default": 2,
+      "description": "Order of the Hyena recurrence"
+    },
+    "filter_order": {
+      "type": "integer",
+      "default": 64,
+      "description": "Width of the implicit filter MLP"
+    }
+  },
+  "required": [
+    "d_model",
+    "l_max"
+  ]
+}

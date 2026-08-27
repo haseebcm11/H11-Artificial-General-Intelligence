@@ -1,0 +1,24 @@
+{
+  "name": "H11-ABDUCTION",
+  "description": "Agent for abductive reasoning and inference to the best explanation.",
+  "inputs": {
+    "observations": ["string"],
+    "causal_network": [
+      {
+        "cause": "string",
+        "effect": "string",
+        "probability": "number"
+      }
+    ],
+    "priors": "object"
+  },
+  "outputs": {
+    "best_explanations": [
+      {
+        "hypotheses": ["string"],
+        "score": "number",
+        "coverage": ["string"]
+      }
+    ]
+  }
+}

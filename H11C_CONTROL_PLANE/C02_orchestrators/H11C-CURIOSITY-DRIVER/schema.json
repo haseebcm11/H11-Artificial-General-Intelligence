@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-CURIOSITY-DRIVER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Pushes an epistemic goal only when budget remains after safety hops.",
+  "category": "orchestrator",
+  "handler": "goal_stack",
+  "inputs": [
+    {
+      "name": "op",
+      "type": "Any"
+    },
+    {
+      "name": "goal",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "stack",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-BUDGET-CONTROLLER"
+    ],
+    "downstream": [
+      "H11C-GOAL-STACK"
+    ]
+  },
+  "capabilities": [
+    "goal_stack"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

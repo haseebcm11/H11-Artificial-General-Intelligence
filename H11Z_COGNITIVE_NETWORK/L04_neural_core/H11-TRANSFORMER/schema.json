@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-TRANSFORMER Schema",
+  "type": "object",
+  "properties": {
+    "arch_type": {
+      "type": "string",
+      "enum": ["decoder_only", "encoder_only", "encoder_decoder"]
+    },
+    "num_layers": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "d_model": {
+      "type": "integer",
+      "minimum": 16
+    },
+    "parallel_block": {
+      "type": "boolean",
+      "default": false
+    },
+    "norm_placement": {
+      "type": "string",
+      "enum": ["pre_norm", "post_norm"],
+      "default": "pre_norm"
+    }
+  },
+  "required": ["arch_type", "num_layers", "d_model"]
+}

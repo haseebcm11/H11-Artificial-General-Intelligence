@@ -1,0 +1,37 @@
+{
+  "name": "H11-TEXTMINING",
+  "description": "Text mining and sentiment analysis agent.",
+  "version": "1.0.0",
+  "capabilities": [
+    "sentiment_analysis",
+    "named_entity_recognition",
+    "topic_modeling"
+  ],
+  "inputs": {
+    "documents": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "outputs": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sentiment_score": {"type": "number"},
+          "entities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {"type": "string"},
+                "type": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-VALUE",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Projects inputs into the value space and manages value aggregation and quantization for memory-efficient attention.",
+  "inputs": [{"name": "embedding_tensor", "type": "Any", "description": "Input tokens"}, {"name": "attention_weights", "type": "Any", "description": "Computed probabilities"}],
+  "outputs": [{"name": "aggregated_values", "type": "Any", "description": "Contextualized representations"}],
+  "state_schema": {"quantization_error": {"type": "float", "description": "Tracked error from FP8 conversion"}}
+}

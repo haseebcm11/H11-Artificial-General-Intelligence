@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-STATE-MACHINE",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Case lifecycle: admitted \u2192 bound \u2192 running \u2192 aligned \u2192 acted \u2192 sealed.",
+  "category": "orchestrator",
+  "handler": "state_machine",
+  "inputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    },
+    {
+      "name": "event",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-ADMISSION-CONTROL"
+    ],
+    "downstream": [
+      "H11C-COGNITIVE-LOOP"
+    ]
+  },
+  "capabilities": [
+    "state_machine"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

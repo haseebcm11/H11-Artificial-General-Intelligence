@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-QUANTUMOPTICA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Quantum optics and Cavity QED agent",
+  "category": "Quantum Technology",
+  "inputs": [
+    {
+      "name": "light_state",
+      "type": "LightState",
+      "description": "Initial quantum state of the light field",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "wigner_function_negativity",
+      "type": "float",
+      "description": "Measure of non-classicality"
+    }
+  ],
+  "config": {
+    "cavity_q_factor": {
+      "type": "float",
+      "default": 1e8,
+      "description": "Quality factor of the optical cavity"
+    }
+  },
+  "state_schema": {
+    "emitted_photons": {
+      "type": "int",
+      "description": "Total photons leaked or emitted"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-QUANTUMINFO", "H11-OPTICA"],
+    "downstream": ["H11-BIOPHYSICA"]
+  },
+  "events": {
+    "emits": ["photon_emitted", "atom_excited"],
+    "consumes": ["laser_pulse_applied"]
+  },
+  "metrics": [
+    {
+      "name": "rabi_oscillations_tracked",
+      "type": "counter",
+      "description": "Number of simulated coherent exchanges"
+    }
+  ],
+  "capabilities": ["jaynes_cummings_solver", "wigner_tomography"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

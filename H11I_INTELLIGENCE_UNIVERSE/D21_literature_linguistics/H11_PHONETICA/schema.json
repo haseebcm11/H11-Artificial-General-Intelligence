@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PHONETICA",
+  "version": "1.0.0",
+  "layer": 21,
+  "layer_name": "Literature & Linguistics",
+  "description": "Agent for phonetic and phonological analysis.",
+  "category": "Linguistics",
+  "inputs": [
+    {
+      "name": "text",
+      "type": "string",
+      "description": "Orthographic text"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "phonemes",
+      "type": "array",
+      "description": "IPA transcription"
+    }
+  ],
+  "config": {
+    "use_neural_g2p": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use neural model for out-of-vocabulary words"
+    }
+  },
+  "state_schema": {
+    "dialect_cache": {
+      "type": "object",
+      "description": "Cached dialect rule weights"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-POESIS"]
+  },
+  "capabilities": ["g2p", "prosody-modeling"]
+}

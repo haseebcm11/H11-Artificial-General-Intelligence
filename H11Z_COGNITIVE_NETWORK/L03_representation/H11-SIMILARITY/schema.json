@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SIMILARITY",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Computes cosine, dot, or Euclidean distance between two equal-length vectors.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "a",
+      "type": "List[float]"
+    },
+    {
+      "name": "b",
+      "type": "List[float]"
+    },
+    {
+      "name": "metric",
+      "type": "str"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "score",
+      "type": "float"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-EMBEDDER",
+      "H11-INDEX"
+    ],
+    "downstream": [
+      "H11-HASH"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "cosine",
+    "dot",
+    "euclidean"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

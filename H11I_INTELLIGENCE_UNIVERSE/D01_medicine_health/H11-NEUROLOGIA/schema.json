@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NEUROLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Models neurophysiology, analyzes EEG, and maps brain connectome topology.",
+  "category": "Neurology",
+  "inputs": [
+    {"name": "eeg_data", "type": "TimeSeries"},
+    {"name": "dti_tracts", "type": "TractographyMap"}
+  ],
+  "outputs": [
+    {"name": "seizure_focus", "type": "SpatialCoordinate"},
+    {"name": "network_topology", "type": "GraphMetrics"}
+  ],
+  "config": {},
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "connectome": {"type": "object"}
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-CARDIOLOGIA", "H11-PSYCHIATRIA"],
+    "downstream": ["H11-PSYCHIATRIA"]
+  },
+  "events": {"emits": ["seizure_detected", "lesion_localized"], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {}
+}

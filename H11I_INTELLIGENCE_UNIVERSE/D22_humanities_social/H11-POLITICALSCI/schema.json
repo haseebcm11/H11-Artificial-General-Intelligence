@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-POLITICALSCI",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Simulates power dynamics and institutional behavior.",
+  "category": "Social Science",
+  "inputs": [
+    {
+      "name": "population_graph",
+      "type": "object",
+      "description": "Network of political actors",
+      "required": true
+    },
+    {
+      "name": "resource_allocation",
+      "type": "object",
+      "description": "Flow of political capital",
+      "required": true
+    },
+    {
+      "name": "institutional_rules",
+      "type": "object",
+      "description": "Current regime parameters",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "stability_index",
+      "type": "number",
+      "description": "Likelihood of regime survival"
+    },
+    {
+      "name": "power_distribution",
+      "type": "object",
+      "description": "Centrality of key actors"
+    },
+    {
+      "name": "predicted_shifts",
+      "type": "array",
+      "description": "Forecasted regime changes"
+    }
+  ],
+  "config": {
+    "centrality_tolerance": {
+      "type": "number",
+      "default": 1e-6,
+      "description": "Tolerance for power iteration"
+    }
+  },
+  "state_schema": {
+    "coalition_size": {
+      "type": "integer",
+      "description": "Size of the winning coalition"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ETHICA-APPLIED", "H11-PSYCHOLOGIA"],
+    "downstream": ["H11-INTERNATIONAL", "H11-PUBLICPOLICY"]
+  },
+  "events": {
+    "emits": ["regime_collapse", "coalition_formed"],
+    "consumes": ["policy_enacted", "economic_shock"]
+  },
+  "metrics": [
+    {
+      "name": "gini_coefficient_power",
+      "type": "gauge",
+      "description": "Inequality of power distribution"
+    }
+  ],
+  "capabilities": ["selectorate_theory_simulation", "network_centrality_analysis"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

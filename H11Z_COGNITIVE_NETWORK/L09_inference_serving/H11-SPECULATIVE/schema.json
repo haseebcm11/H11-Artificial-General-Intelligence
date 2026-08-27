@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPECULATIVE",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Acceleration via draft models and target model verification.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "draft_tokens",
+      "type": "List[int]",
+      "desc": "Tokens from draft model"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "accepted_tokens",
+      "type": "List[int]",
+      "desc": "Tokens verified by target"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "acceptance_rate": {
+      "type": "float",
+      "description": "Running average of token acceptance"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

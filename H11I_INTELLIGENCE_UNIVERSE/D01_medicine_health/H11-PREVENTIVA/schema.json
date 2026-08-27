@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PREVENTIVA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Orchestrates primary, secondary, and quaternary preventive medicine, screening optimization, multi-morbidity risk stratification, biological age modeling, and immunization kinetics.",
+  "category": "Preventive Medicine",
+  "inputs": [
+    {
+      "name": "profile",
+      "type": "PatientProfile",
+      "description": "Demographic, clinical baseline, and pedigree data."
+    },
+    {
+      "name": "biomarkers",
+      "type": "PhenotypicBiomarkers",
+      "description": "Routine clinical laboratory chemistry, hematology, and metabolic parameters."
+    },
+    {
+      "name": "screening_history",
+      "type": "List[ScreeningRecord]",
+      "description": "Historical screening exams, intervals, and biopsy findings."
+    },
+    {
+      "name": "vaccination_ledger",
+      "type": "List[VaccineRecord]",
+      "description": "Longitudinal immunization and antigen exposure records."
+    },
+    {
+      "name": "lifestyle_metrics",
+      "type": "LifestyleData",
+      "description": "Cardiorespiratory fitness, sleep architecture, and dietary pattern indices."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "risk_stratification",
+      "type": "RiskStratificationReport",
+      "description": "ASCVD 10-year risk score, CKM stage, and multi-cancer risk assessment."
+    },
+    {
+      "name": "biological_age",
+      "type": "BiologicalAgeResult",
+      "description": "PhenoAge computation, chronological age delta, and physiological aging velocity."
+    },
+    {
+      "name": "screening_schedule",
+      "type": "List[ScreeningRecommendation]",
+      "description": "USPSTF/guideline-aligned screening directives with individualized intervals."
+    },
+    {
+      "name": "immunization_audit",
+      "type": "ImmunizationScheduleAudit",
+      "description": "Vaccination gaps, booster alerts, and contraindication verifications."
+    },
+    {
+      "name": "quaternary_alerts",
+      "type": "List[QuaternaryAlert]",
+      "description": "Warnings against low-value testing, overdiagnosis cascades, and overtreatment."
+    },
+    {
+      "name": "prevention_plan",
+      "type": "ComprehensivePreventivePlan",
+      "description": "Integrated personalized roadmap for primary, secondary, and quaternary healthspan optimization."
+    }
+  ],
+  "config": {
+    "guideline_framework": "USPSTF_2024",
+    "biological_clock_model": "PhenoAge_Levine2018",
+    "ckm_framework_version": "AHA_2023",
+    "enable_quaternary_filtering": true
+  },
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "patient_id": {
+        "type": "string"
+      },
+      "current_ckm_stage": {
+        "type": "string",
+        "enum": ["STAGE_0", "STAGE_1", "STAGE_2", "STAGE_3", "STAGE_4"]
+      },
+      "phenotypic_age": {
+        "type": "number"
+      },
+      "ascvd_10yr_risk_pct": {
+        "type": "number"
+      },
+      "active_screening_intervals": {
+        "type": "object"
+      },
+      "vaccine_adherence_ledger": {
+        "type": "array"
+      }
+    },
+    "required": ["patient_id", "current_ckm_stage"]
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-EPIDEMIOLOGIA",
+      "H11-GENETICA-MED",
+      "H11-HEALTHINFORMATICA",
+      "H11-NUTRITIO"
+    ],
+    "downstream": [
+      "H11-CARDIOLOGIA",
+      "H11-ENDOCRINOLOGIA",
+      "H11-PNEUMOLOGIA",
+      "H11-PALLIATIVA"
+    ]
+  },
+  "events": {
+    "emits": [
+      "screening_due_alert",
+      "high_ascvd_risk_detected",
+      "accelerated_aging_warning",
+      "immunization_gap_identified",
+      "quaternary_prevention_flag"
+    ],
+    "consumes": [
+      "epidemic_outbreak_notice",
+      "prs_risk_updated",
+      "biomarker_panel_ingested"
+    ]
+  },
+  "metrics": [
+    "ascvd_10yr_risk",
+    "pheno_age_delta",
+    "screening_compliance_rate",
+    "ckm_stage_score",
+    "quaternary_overdiagnosis_prevented"
+  ],
+  "capabilities": [
+    "phenotypic_biological_age_calculation",
+    "ckm_syndrome_staging",
+    "uspstf_guideline_scheduling",
+    "ascvd_pooled_cohort_scoring",
+    "immunization_schedule_auditing",
+    "quaternary_prevention_evaluation",
+    "lifestyle_longevity_forecasting"
+  ],
+  "scaling": {
+    "max_concurrent_profiles": 10000,
+    "batch_processing_support": true,
+    "target_latency_ms": 25
+  }
+}

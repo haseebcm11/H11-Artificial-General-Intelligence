@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-TREE schema",
+  "type": "object",
+  "properties": {
+    "problem_statement": {
+      "type": "string",
+      "description": "The problem requiring deliberate search."
+    },
+    "search_strategy": {
+      "type": "string",
+      "enum": ["bfs", "dfs"],
+      "default": "bfs"
+    },
+    "max_depth": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "default": 3
+    },
+    "breadth_k": {
+      "type": "integer",
+      "description": "Number of branches to expand at each step",
+      "default": 3
+    }
+  },
+  "required": ["problem_statement"]
+}

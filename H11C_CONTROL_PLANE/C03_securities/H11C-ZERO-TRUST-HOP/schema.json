@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-ZERO-TRUST-HOP",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Re-verifies identity, token, sandbox, and schema on every hop.",
+  "category": "security",
+  "handler": "zero_trust",
+  "inputs": [
+    {
+      "name": "identity",
+      "type": "Any"
+    },
+    {
+      "name": "token",
+      "type": "Any"
+    },
+    {
+      "name": "sandboxed",
+      "type": "Any"
+    },
+    {
+      "name": "schema_ok",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-IDENTITY",
+      "H11C-CAPABILITY-TOKEN",
+      "H11C-SANDBOX-GATE"
+    ],
+    "downstream": [
+      "H11C-ROUTER"
+    ]
+  },
+  "capabilities": [
+    "zero_trust"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

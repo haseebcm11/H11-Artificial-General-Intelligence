@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DREAM",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Hindsight replay: copies transitions and replaces the goal with the achieved state.",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "buffer",
+      "type": "List[dict]"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "synthetic_batch",
+      "type": "List[dict]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-WORLDMODEL"
+    ],
+    "downstream": [
+      "H11-PREDICT"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "her-relabel"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

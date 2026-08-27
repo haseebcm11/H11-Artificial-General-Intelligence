@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PROBABILITAS",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Probability and Stochastic Processes Agent",
+  "category": "Probability",
+  "inputs": [
+    {
+      "name": "random_variables",
+      "type": "array[object]",
+      "description": "Distributions of random variables",
+      "required": true
+    },
+    {
+      "name": "stochastic_params",
+      "type": "object",
+      "description": "Parameters for stochastic modeling",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "expected_values",
+      "type": "map[string, number]",
+      "description": "Computed expectations"
+    },
+    {
+      "name": "markov_chains",
+      "type": "object",
+      "description": "Transition matrices and steady states"
+    }
+  ],
+  "config": {
+    "monte_carlo_simulations": {
+      "type": "integer",
+      "default": 10000,
+      "description": "Number of iterations for MC simulations"
+    }
+  },
+  "state_schema": {
+    "sampled_distributions": {
+      "type": "array[object]",
+      "description": "Cached historical samples"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ANALYSIS"],
+    "downstream": ["H11-GAMETHEORIA", "H11-OPTIMIZATIO"]
+  },
+  "events": {
+    "emits": ["distribution_converged", "outlier_detected"],
+    "consumes": ["data_stream_updated"]
+  },
+  "metrics": [
+    {
+      "name": "simulations_run",
+      "type": "counter",
+      "description": "Total monte carlo sims completed"
+    }
+  ],
+  "capabilities": ["markov_chain_analysis", "bayesian_inference", "monte_carlo"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-HUMAN-OVER Schema",
+  "type": "object",
+  "properties": {
+    "action_id": {
+      "type": "string"
+    },
+    "risk_score": {
+      "type": "number"
+    },
+    "proposed_action": {
+      "type": "string"
+    },
+    "required_signatures": {
+      "type": "integer"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PENDING", "APPROVED", "REJECTED"]
+    }
+  },
+  "required": ["action_id", "risk_score", "proposed_action", "required_signatures", "status"]
+}

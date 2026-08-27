@@ -1,0 +1,25 @@
+{
+  "name": "H11-ABSTRACTION",
+  "description": "Agent for concept formation, prototype extraction, and hierarchical abstraction.",
+  "inputs": {
+    "exemplars": [
+      {
+        "id": "string",
+        "features": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        }
+      }
+    ],
+    "target_clusters": "number"
+  },
+  "outputs": {
+    "prototypes": [
+      {
+        "id": "string",
+        "members": ["string"],
+        "mean_features": "object"
+      }
+    ]
+  }
+}

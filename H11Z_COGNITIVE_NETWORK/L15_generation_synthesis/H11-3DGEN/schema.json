@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-3DGEN",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Creates 3D models and point clouds from text or images.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "prompt", "type": "str"}, {"name": "viewing_angle", "type": "float"}, {"name": "resolution", "type": "int"}
+  ],
+  "outputs": [
+    {"name": "mesh_obj", "type": "bytes"}, {"name": "point_cloud", "type": "List[List[float]]"}
+  ]
+}

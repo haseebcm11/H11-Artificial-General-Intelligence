@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-INPUT-SANITIZER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Strips control characters and wrapper tags from user strings.",
+  "category": "security",
+  "handler": "sanitize",
+  "inputs": [
+    {
+      "name": "text",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "text",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-INJECTION-GATE"
+    ],
+    "downstream": [
+      "H11C-SCHEMA-BRIDGE"
+    ]
+  },
+  "capabilities": [
+    "sanitize"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

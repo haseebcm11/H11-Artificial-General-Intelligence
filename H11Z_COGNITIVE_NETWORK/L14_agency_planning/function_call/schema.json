@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FunctionCallState",
+  "type": "object",
+  "properties": {
+    "available_functions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "parameters": { "type": "object" }
+        },
+        "required": ["name", "parameters"]
+      }
+    },
+    "utterance": { "type": "string" },
+    "max_retries": { "type": "integer", "default": 3 },
+    "parallel_execution": { "type": "boolean", "default": true }
+  },
+  "required": ["available_functions", "utterance"]
+}

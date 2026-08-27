@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MICROECON",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Analyzes individual and firm-level decision making.",
+  "category": "Economics",
+  "inputs": [
+    {
+      "name": "market_structure",
+      "type": "string",
+      "description": "Structure of the market",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "equilibrium",
+      "type": "object",
+      "description": "Market equilibrium details"
+    }
+  ],
+  "config": {
+    "solver_tolerance": {
+      "type": "number",
+      "default": 1e-6,
+      "description": "Tolerance for equilibrium solver"
+    }
+  },
+  "state_schema": {
+    "price_history": {
+      "type": "array",
+      "description": "Historical price points"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-BEHAVIORALECON"],
+    "downstream": ["H11-MACROECON"]
+  }
+}

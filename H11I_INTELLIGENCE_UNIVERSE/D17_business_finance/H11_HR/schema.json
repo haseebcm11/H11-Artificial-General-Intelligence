@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-HR",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Models workforce economics and management.",
+  "category": "Business",
+  "inputs": [{"name": "wage_offer", "type": "number", "required": true}],
+  "outputs": [{"name": "fill_rate", "type": "number"}],
+  "config": {"attrition_rate": {"type": "number", "default": 0.1}},
+  "state_schema": {"headcount": {"type": "integer"}},
+  "dependencies": {"upstream": ["H11-MICROECON"], "downstream": []}
+}

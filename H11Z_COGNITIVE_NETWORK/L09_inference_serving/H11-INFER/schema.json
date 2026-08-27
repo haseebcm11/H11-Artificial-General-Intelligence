@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-INFER",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Core inference pipeline, model loading, and forward pass execution.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "input_ids",
+      "type": "List[int]",
+      "desc": "Tokenized input"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "logits",
+      "type": "List[float]",
+      "desc": "Raw output logits"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "loaded_models": {
+      "type": "List[str]",
+      "description": "Models currently in VRAM"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

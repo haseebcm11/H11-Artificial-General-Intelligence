@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GALACTICA",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Galactic structure, dark matter, and dynamics.",
+  "category": "Galactic Dynamics",
+  "inputs": [
+    {
+      "name": "galaxy_params",
+      "type": "GalaxyParameters",
+      "description": "Mass and structural parameters",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "dynamics_model",
+      "type": "GalacticDynamics",
+      "description": "Rotation curve and structure"
+    }
+  ],
+  "config": {
+    "theta_barnes_hut": {
+      "type": "float",
+      "default": 0.5,
+      "description": "Opening angle for Tree code"
+    }
+  },
+  "state_schema": {
+    "particle_count": {
+      "type": "int",
+      "description": "Number of simulated particles"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ASTROPHYSICA"],
+    "downstream": ["H11-COSMOLOGIA"]
+  },
+  "events": {
+    "emits": ["GalacticMerger"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "tree_build_time_ms",
+      "type": "gauge",
+      "description": "Latency for tree construction"
+    }
+  ],
+  "capabilities": ["nbody", "sph"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

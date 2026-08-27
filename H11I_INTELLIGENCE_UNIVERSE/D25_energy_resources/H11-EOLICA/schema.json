@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EOLICA",
+  "version": "1.0.0",
+  "layer": 25,
+  "layer_name": "Energy & Resources",
+  "description": "Wind Power Optimization Agent",
+  "category": "Energy Generation",
+  "inputs": [
+    {
+      "name": "wind_speed",
+      "type": "float",
+      "description": "Hub-height wind speed (m/s)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "farm_power",
+      "type": "float",
+      "description": "Total generated power"
+    }
+  ],
+  "config": {
+    "num_turbines": {
+      "type": "integer",
+      "default": 10,
+      "description": "Number of turbines in farm"
+    }
+  },
+  "state_schema": {
+    "rotor_speeds": {
+      "type": "array",
+      "description": "Current RPM of all turbines"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-METEO"],
+    "downstream": ["H11-GRID"]
+  },
+  "events": {
+    "emits": ["eolica.yaw_adjusted"],
+    "consumes": ["meteo.wind_forecast"]
+  },
+  "metrics": [
+    {
+      "name": "wake_loss_pct",
+      "type": "gauge",
+      "description": "Current wake losses"
+    }
+  ],
+  "capabilities": ["wake_modeling", "yaw_optimization"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "medium"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-HEMATOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Analyzes hematopoiesis, coagulation kinetics, and flow cytometry for blood disorders.",
+  "category": "Hematology",
+  "inputs": [
+    {"name": "cbc_data", "type": "CBCPanel"},
+    {"name": "flow_cytometry", "type": "FCSData"}
+  ],
+  "outputs": [
+    {"name": "lineage_analysis", "type": "LineageTree"},
+    {"name": "mrd_status", "type": "MRDResult"}
+  ],
+  "config": {},
+  "state_schema": {
+    "type": "object",
+    "properties": {
+      "clone_tracking": {"type": "array"}
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-GENETICS", "H11-IMMUNOLOGIA"],
+    "downstream": ["H11-ONCOLOGIA", "H11-CARDIOLOGIA"]
+  },
+  "events": {"emits": ["cytopenia_alert", "mrd_positive"], "consumes": ["mutation_detected"]},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {}
+}

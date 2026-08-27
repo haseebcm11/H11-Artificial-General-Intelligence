@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DYNAMICS",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Estimates a local vector field by finite differences of a state trajectory.",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "state_traj",
+      "type": "List[float]"
+    },
+    {
+      "name": "dt",
+      "type": "float"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "vector_field",
+      "type": "List[float]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-PHYSICS-ENGINE"
+    ],
+    "downstream": [
+      "H11-WORLDMODEL"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "finite-difference"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

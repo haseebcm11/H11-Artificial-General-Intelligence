@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11 Edge Compute Specification",
+  "type": "object",
+  "properties": {
+    "target_hardware": {
+      "type": "object",
+      "properties": {
+        "soc_name": { "type": "string" },
+        "compute_tops": { "type": "number", "minimum": 0 },
+        "memory_bandwidth_gbps": { "type": "number", "minimum": 0 },
+        "shared_memory_mb": { "type": "number", "minimum": 0 },
+        "tdp_watts": { "type": "number", "minimum": 0 }
+      },
+      "required": ["soc_name", "compute_tops", "memory_bandwidth_gbps", "shared_memory_mb", "tdp_watts"]
+    },
+    "compression_pipeline": {
+      "type": "object",
+      "properties": {
+        "quantization_scheme": {
+          "type": "string",
+          "enum": ["INT8_SYMMETRIC", "INT4_ASYMMETRIC", "FP8_E4M3", "MIXED"]
+        },
+        "pruning_target_sparsity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.99
+        },
+        "use_knowledge_distillation": {
+          "type": "boolean"
+        }
+      },
+      "required": ["quantization_scheme"]
+    },
+    "performance_constraints": {
+      "type": "object",
+      "properties": {
+        "max_latency_ms": { "type": "number" },
+        "min_throughput_fps": { "type": "number" }
+      }
+    }
+  },
+  "required": ["target_hardware", "compression_pipeline"]
+}

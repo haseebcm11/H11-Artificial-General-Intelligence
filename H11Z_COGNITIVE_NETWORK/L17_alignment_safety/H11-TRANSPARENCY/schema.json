@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-TRANSPARENCY Schema",
+  "type": "object",
+  "properties": {
+    "trace_id": {
+      "type": "string",
+      "description": "Unique identifier for the cognitive trace being explained"
+    },
+    "latent_tensors": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Flattened representation of the latent state"
+    },
+    "explanation_type": {
+      "type": "string",
+      "enum": ["CAUSAL_TRACE", "TCAV", "INTEGRATED_GRADIENTS"]
+    },
+    "baseline_concepts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Concepts to anchor the explanation"
+    }
+  },
+  "required": ["trace_id", "latent_tensors", "explanation_type"]
+}

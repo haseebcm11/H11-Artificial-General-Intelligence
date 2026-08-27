@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-POESIS",
+  "version": "1.0.0",
+  "layer": 21,
+  "layer_name": "Literature & Linguistics",
+  "description": "Agent for poetic structure analysis and generation.",
+  "category": "Literature",
+  "inputs": [
+    {
+      "name": "form",
+      "type": "string",
+      "description": "The target poetic form"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "lines",
+      "type": "array",
+      "description": "Generated poetic lines"
+    }
+  ],
+  "config": {
+    "strict_meter": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to enforce strict metrical constraints"
+    }
+  },
+  "state_schema": {
+    "rhyme_cache": {
+      "type": "object",
+      "description": "Cached rhymes for fast lookup"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PHONETICA", "H11-SEMANTICA"],
+    "downstream": ["H11-CRITICA-LIT"]
+  },
+  "capabilities": ["meter-parsing", "rhyme-detection", "constrained-generation"]
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-WINTER-SPORT",
+  "version": "1.0.0",
+  "layer": 29,
+  "layer_name": "Sports & Recreation",
+  "description": "Winter Sports Agent",
+  "category": "Snow and Ice",
+  "inputs": [
+    {
+      "name": "kinematics",
+      "type": "object",
+      "description": "Athlete pose",
+      "required": true
+    },
+    {
+      "name": "surface",
+      "type": "string",
+      "description": "Snow/Ice condition",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "skid_fraction",
+      "type": "number",
+      "description": "Efficiency of turn"
+    },
+    {
+      "name": "symmetry",
+      "type": "number",
+      "description": "Left/Right balance"
+    }
+  ],
+  "config": {
+    "default_sidecut_radius_m": {
+      "type": "number",
+      "default": 13.0,
+      "description": "Slalom ski default"
+    }
+  },
+  "state_schema": {
+    "eccentric_fatigue": {
+      "type": "number",
+      "description": "Quad load tracker"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ATHLETICA"],
+    "downstream": ["H11-COACHING"]
+  },
+  "events": {
+    "emits": ["turn_completed", "chatter_detected"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "tribology_compute_time",
+      "type": "histogram",
+      "description": "Time to solve friction equations"
+    }
+  ],
+  "capabilities": ["carve_kinematics", "aero_tuck_modeling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPACECRAFT",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Spacecraft subsystems management and flight control",
+  "category": "Flight Software",
+  "inputs": [
+    {
+      "name": "environment",
+      "type": "object",
+      "description": "External thermal and lighting conditions",
+      "required": true
+    },
+    {
+      "name": "sensor_telemetry",
+      "type": "object",
+      "description": "Attitude and system health sensors",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "actuator_commands",
+      "type": "object",
+      "description": "Torque and power routing commands"
+    },
+    {
+      "name": "power_budget",
+      "type": "object",
+      "description": "Current EPS state and margins"
+    }
+  ],
+  "config": {
+    "adcs_control_rate_hz": {
+      "type": "integer",
+      "default": 10,
+      "description": "Frequency of the attitude control loop"
+    },
+    "battery_capacity_wh": {
+      "type": "number",
+      "default": 1500.0,
+      "description": "Total energy storage capacity"
+    }
+  },
+  "state_schema": {
+    "current_attitude_quat": {
+      "type": "array",
+      "description": "Quaternion representing current orientation"
+    },
+    "battery_soc": {
+      "type": "number",
+      "description": "State of Charge percentage (0-100)"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ORBITALIS", "H11-PROPULSIO", "H11-HELIOPHYSICA"],
+    "downstream": ["H11-SATELLITIS"]
+  },
+  "events": {
+    "emits": ["TelemetryDownlinked", "SafeModeTriggered"],
+    "consumes": ["TelecommandUplinked", "OrbitUpdated"]
+  },
+  "metrics": [
+    {
+      "name": "adcs_pointing_error_deg",
+      "type": "histogram",
+      "description": "Deviation from target attitude"
+    }
+  ],
+  "capabilities": ["Attitude Control", "Thermal Management", "Power Management"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

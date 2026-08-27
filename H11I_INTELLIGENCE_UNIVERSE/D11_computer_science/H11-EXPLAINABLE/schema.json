@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EXPLAINABLE",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Machine Learning",
+  "description": "Provides interpretability, feature attribution, and causal explanations for ML models.",
+  "category": "AI Safety & Interpretability",
+  "inputs": [
+    {
+      "name": "model_artifact",
+      "type": "string",
+      "description": "URI to the model to explain",
+      "required": true
+    },
+    {
+      "name": "input_data",
+      "type": "object",
+      "description": "The specific data point causing the decision",
+      "required": true
+    },
+    {
+      "name": "explanation_type",
+      "type": "string",
+      "description": "LOCAL_SHAP, GRAD_CAM, COUNTERFACTUAL, MECHANISTIC",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "feature_attributions",
+      "type": "object",
+      "description": "Importance scores for input features"
+    },
+    {
+      "name": "text_justification",
+      "type": "string",
+      "description": "Human-readable explanation text"
+    }
+  ],
+  "config": {
+    "shap_background_samples": {
+      "type": "integer",
+      "default": 100,
+      "description": "Number of background samples for expected value"
+    },
+    "integrated_gradients_steps": {
+      "type": "integer",
+      "default": 50,
+      "description": "Steps for Riemann approximation in IG"
+    }
+  },
+  "state_schema": {
+    "concept_activation_vectors": {
+      "type": "object",
+      "description": "Cached TCAVs for known concepts"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DEEPLEARNING", "H11-MACHINA-DISCENS"],
+    "downstream": ["H11-FAIRNESS", "H11-ROBUSTA"]
+  },
+  "events": {
+    "emits": ["explanation_generated", "unfaithful_surrogate_detected"],
+    "consumes": ["critical_decision_made"]
+  },
+  "metrics": [
+    {
+      "name": "explanation_latency_ms",
+      "type": "histogram",
+      "description": "Time to generate explanation"
+    }
+  ],
+  "capabilities": ["shapley_values", "saliency_mapping", "mechanistic_interpretability"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "medium"
+  }
+}

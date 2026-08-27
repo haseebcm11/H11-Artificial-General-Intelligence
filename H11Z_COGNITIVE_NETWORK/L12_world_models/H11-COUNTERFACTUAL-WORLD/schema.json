@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-COUNTERFACTUAL-WORLD",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Applies Pearl's abduction\u2013action\u2013prediction on a linear SCM y = a*x + u.",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "x_obs",
+      "type": "float"
+    },
+    {
+      "name": "y_obs",
+      "type": "float"
+    },
+    {
+      "name": "a",
+      "type": "float"
+    },
+    {
+      "name": "x_do",
+      "type": "float"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "u",
+      "type": "float"
+    },
+    {
+      "name": "y_cf",
+      "type": "float"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-CAUSAL-MODEL"
+    ],
+    "downstream": [
+      "H11-SCENARIO"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "abduction-action-prediction"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

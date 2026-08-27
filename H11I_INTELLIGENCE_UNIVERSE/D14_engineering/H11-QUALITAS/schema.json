@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-QUALITAS State Schema",
+  "type": "object",
+  "properties": {
+    "agent_id": {
+      "type": "string"
+    },
+    "inspection_stations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "station_id": { "type": "string" },
+          "type": { "type": "string", "enum": ["CMM", "OPTICAL", "LASER", "XRAY"] },
+          "status": { "type": "string", "enum": ["IDLE", "INSPECTING", "CALIBRATING", "OFFLINE"] },
+          "current_part_id": { "type": ["string", "null"] }
+        },
+        "required": ["station_id", "status"]
+      }
+    },
+    "spc_alerts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["agent_id", "inspection_stations"]
+}

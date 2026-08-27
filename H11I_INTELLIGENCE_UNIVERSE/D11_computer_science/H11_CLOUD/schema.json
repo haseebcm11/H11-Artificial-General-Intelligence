@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CLOUD",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Computer Science",
+  "description": "Cloud orchestration and distributed consensus",
+  "category": "Distributed Systems",
+  "inputs": [
+    {
+      "name": "manifest",
+      "type": "object",
+      "description": "Service deployment manifest",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "cluster_state",
+      "type": "object",
+      "description": "Current state of the cluster"
+    }
+  ],
+  "config": {
+    "consensus_timeout_ms": {
+      "type": "integer",
+      "default": 150,
+      "description": "Raft election timeout"
+    }
+  },
+  "state_schema": {
+    "term": {
+      "type": "integer",
+      "description": "Current Raft term"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["pod_scaled", "leader_elected"],
+    "consumes": ["node_failed"]
+  },
+  "metrics": [
+    {
+      "name": "commit_index",
+      "type": "gauge",
+      "description": "Highest log entry known to be committed"
+    }
+  ],
+  "capabilities": ["orchestration", "consensus", "load_balancing"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

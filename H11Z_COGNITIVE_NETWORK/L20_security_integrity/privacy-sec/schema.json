@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PRIVACY-SEC",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "Privacy engineering: data minimization, purpose limitation, consent management, privacy impact assessments, privacy by design, GDPR technical measures, right to erasure, data processing records",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "data_request",
+      "type": "DataRequest",
+      "description": "Request for potentially sensitive data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "masked_data",
+      "type": "MaskedData",
+      "description": "Data minimized according to consent"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "consent_ledger": {
+      "type": "dict",
+      "desc": "User consent mappings"
+    },
+    "data_inventory": {
+      "type": "dict",
+      "desc": "Tracked PII fields"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "privacy-sec_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "privacy-sec_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

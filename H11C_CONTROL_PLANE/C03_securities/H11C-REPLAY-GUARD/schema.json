@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-REPLAY-GUARD",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Rejects envelopes whose nonce was already seen.",
+  "category": "security",
+  "handler": "replay",
+  "inputs": [
+    {
+      "name": "nonce",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-ENVELOPE-AUTH"
+    ],
+    "downstream": [
+      "H11C-ZERO-TRUST-HOP"
+    ]
+  },
+  "capabilities": [
+    "replay"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

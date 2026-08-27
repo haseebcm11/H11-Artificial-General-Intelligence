@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-CONTEXT-PACKER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Packs working-memory slots for the next hop under a token budget.",
+  "category": "integrator",
+  "handler": "pack_context",
+  "inputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    },
+    {
+      "name": "budget",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "context",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-ATTENTION-ALLOCATOR"
+    ],
+    "downstream": [
+      "H11C-PIPELINE-RUNNER"
+    ]
+  },
+  "capabilities": [
+    "pack_context"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

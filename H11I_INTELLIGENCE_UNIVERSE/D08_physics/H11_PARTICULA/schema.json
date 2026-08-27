@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PARTICULA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Standard model particle physics agent",
+  "category": "Quantum Physics",
+  "inputs": [
+    {
+      "name": "particle_a",
+      "type": "str",
+      "description": "First colliding particle",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "cross_section",
+      "type": "float",
+      "description": "Scattering cross section in barns"
+    }
+  ],
+  "config": {
+    "higgs_vev": {
+      "type": "float",
+      "default": 246.0,
+      "description": "Higgs vacuum expectation value in GeV"
+    }
+  },
+  "state_schema": {
+    "total_events": {
+      "type": "int",
+      "description": "Total simulated collision events"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ELECTROMAGNETICA"],
+    "downstream": ["H11-QUANTUMINFO"]
+  },
+  "events": {
+    "emits": ["collision_resolved"],
+    "consumes": ["energy_injected"]
+  },
+  "metrics": [
+    {
+      "name": "feynman_evaluations",
+      "type": "counter",
+      "description": "Number of diagram evaluations"
+    }
+  ],
+  "capabilities": ["cross_section_calculation", "decay_simulation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

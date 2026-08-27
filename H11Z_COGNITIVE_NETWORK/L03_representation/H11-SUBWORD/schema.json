@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SUBWORD",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Falls back from whole-word tokens to character n-grams when a token is absent from a known vocabulary.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "tokens",
+      "type": "List[str]"
+    },
+    {
+      "name": "vocab",
+      "type": "List[str]"
+    },
+    {
+      "name": "n",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "pieces",
+      "type": "List[str]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-TOKENIZER",
+      "H11-BPE"
+    ],
+    "downstream": [
+      "H11-EMBEDDER"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "oov-ngram"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

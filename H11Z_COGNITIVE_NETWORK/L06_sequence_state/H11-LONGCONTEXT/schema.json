@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LONGCONTEXT",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Context window extension and compression.",
+  "category": "Long Context",
+  "inputs": [
+    {
+      "name": "position_ids",
+      "type": "List[int]",
+      "description": "Positions",
+      "required": true
+    },
+    {
+      "name": "scaling_factor",
+      "type": "float",
+      "description": "Multiplier",
+      "required": true
+    },
+    {
+      "name": "context_mode",
+      "type": "str",
+      "description": "Mode",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scaled_positions",
+      "type": "List[float]",
+      "description": "New frequencies"
+    },
+    {
+      "name": "compression_masks",
+      "type": "List[bool]",
+      "description": "Tokens to sink"
+    }
+  ],
+  "config": {
+    "base_freq": {
+      "type": "float",
+      "default": 10000.0,
+      "description": "RoPE base"
+    }
+  },
+  "state_schema": {
+    "associative_memory": {
+      "type": "List[List[float]]",
+      "description": "Compressed matrix"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-SEQUENCE"
+    ],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "ContextScaled"
+    ],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "effective_window",
+      "type": "gauge",
+      "description": "Current max context"
+    }
+  ],
+  "capabilities": [
+    "NTK-aware scaling",
+    "Memory augmentation"
+  ],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-API",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Computer Science",
+  "description": "API Gateway, routing, and contract validation",
+  "category": "Integration",
+  "inputs": [
+    {
+      "name": "request",
+      "type": "object",
+      "description": "Inbound API request",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "response",
+      "type": "object",
+      "description": "API response payload"
+    }
+  ],
+  "config": {
+    "rate_limit_rps": {
+      "type": "integer",
+      "default": 100,
+      "description": "Requests per second per IP"
+    }
+  },
+  "state_schema": {
+    "active_connections": {
+      "type": "integer",
+      "description": "Number of open connections"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-CLOUD"]
+  },
+  "events": {
+    "emits": ["request_routed", "rate_limit_exceeded"],
+    "consumes": ["backend_healthy", "backend_unhealthy"]
+  },
+  "metrics": [
+    {
+      "name": "gateway_latency_ms",
+      "type": "histogram",
+      "description": "Time spent in gateway processing"
+    }
+  ],
+  "capabilities": ["routing", "rate_limiting", "schema_validation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

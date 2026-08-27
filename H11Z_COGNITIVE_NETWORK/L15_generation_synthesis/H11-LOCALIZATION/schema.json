@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LOCALIZATION",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Adapts generated content for different languages, locales, and cultural norms.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "content", "type": "str"}, {"name": "target_locale", "type": "str"}, {"name": "preserve_formatting", "type": "bool"}
+  ],
+  "outputs": [
+    {"name": "localized_content", "type": "str"}, {"name": "bleu_score", "type": "float"}
+  ]
+}

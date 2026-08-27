@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-INTENT State Schema",
+  "type": "object",
+  "properties": {
+    "parsed_intents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "intent_id": { "type": "string" },
+          "primary_class": { "type": "string" },
+          "confidence": { "type": "number" },
+          "slots": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          },
+          "is_implicit": { "type": "boolean" }
+        },
+        "required": ["intent_id", "primary_class", "confidence", "slots", "is_implicit"]
+      }
+    },
+    "ambiguity_flags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "action_maps": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    }
+  },
+  "required": ["parsed_intents", "ambiguity_flags", "action_maps"]
+}

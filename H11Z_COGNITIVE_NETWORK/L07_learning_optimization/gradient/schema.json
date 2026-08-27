@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GRADIENT",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Gradient Computation",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "raw_gradients",
+      "type": "Dict[str, List[float]]",
+      "description": "raw_gradients input",
+      "required": true
+    },
+    {
+      "name": "micro_batch_id",
+      "type": "int",
+      "description": "micro_batch_id input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "processed_gradients",
+      "type": "Dict[str, List[float]]",
+      "description": "processed_gradients output"
+    },
+    {
+      "name": "is_accumulated",
+      "type": "bool",
+      "description": "is_accumulated output"
+    }
+  ],
+  "config": {
+    "gradient_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "gradient_completed"
+    ],
+    "consumes": [
+      "gradient_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "gradient_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_gradient"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

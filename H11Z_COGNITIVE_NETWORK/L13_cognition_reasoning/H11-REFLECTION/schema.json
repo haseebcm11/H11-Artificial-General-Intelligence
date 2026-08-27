@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-REFLECTION Agent Schema",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["evaluate", "generate_critique", "refine"]
+    },
+    "trajectory": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "output": {
+      "type": "string"
+    },
+    "task_context": {
+      "type": "string"
+    }
+  },
+  "required": ["action", "output"]
+}

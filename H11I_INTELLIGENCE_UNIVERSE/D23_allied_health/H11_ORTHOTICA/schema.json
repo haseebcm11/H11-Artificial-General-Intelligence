@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ORTHOTICA",
+  "version": "1.0.0",
+  "layer": 23,
+  "layer_name": "Allied Health",
+  "description": "Orthotics and Prosthetics Engineering",
+  "category": "Prosthetics",
+  "inputs": [
+    {
+      "name": "point_cloud",
+      "type": "array",
+      "description": "3D scan of limb",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "device_cad",
+      "type": "object",
+      "description": "Mesh and alignment parameters"
+    }
+  ],
+  "config": {
+    "safety_factor": {
+      "type": "float",
+      "default": 1.5,
+      "description": "Material yield stress safety margin"
+    }
+  },
+  "state_schema": {
+    "socket_fits": {
+      "type": "object",
+      "description": "Historical fit metrics"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PHYSIOTHERAPIA"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["DeviceDesigned"],
+    "consumes": ["GaitAnalysisUpdated"]
+  },
+  "metrics": [
+    {
+      "name": "mesh_generation_ms",
+      "type": "histogram",
+      "description": "Time to compute CAD mesh"
+    }
+  ],
+  "capabilities": ["cad_generation", "biomechanical_alignment"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "H11-PREDICTIVA",
+  "description": "Agent for predictive analytics, forecasting, and supervised ML",
+  "version": "1.0",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "training_data": { "type": "string" },
+      "target_variable": { "type": "string" },
+      "prediction_type": { "type": "string", "enum": ["CLASSIFICATION", "REGRESSION", "FORECASTING"] },
+      "model_type": { "type": "string" },
+      "hyperparameters": { "type": "object" }
+    },
+    "required": ["training_data", "target_variable", "prediction_type"]
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "status": { "type": "string" },
+      "model_uri": { "type": "string" },
+      "performance_metrics": { "type": "object" },
+      "feature_importance": { "type": "object" }
+    }
+  }
+}

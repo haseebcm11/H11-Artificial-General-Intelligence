@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OPTOMETRIA",
+  "version": "1.0.0",
+  "layer": 23,
+  "layer_name": "Allied Health",
+  "description": "Optometry and Visual Science",
+  "category": "Optometry",
+  "inputs": [
+    {
+      "name": "refraction_data",
+      "type": "object",
+      "description": "Autorefractor or wavefront data",
+      "required": true
+    },
+    {
+      "name": "oct_scan",
+      "type": "object",
+      "description": "Retinal tomographic data",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "eyewear_rx",
+      "type": "object",
+      "description": "Optical prescription"
+    }
+  ],
+  "config": {
+    "myopia_control_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable atropine/ortho-k algorithms for pediatrics"
+    }
+  },
+  "state_schema": {
+    "axial_length_history": {
+      "type": "array",
+      "description": "Longitudinal myopia tracking"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ENDOCRINOLOGIA"],
+    "downstream": ["H11-NEURO"]
+  },
+  "events": {
+    "emits": ["PrescriptionIssued", "RetinalPathologyDetected"],
+    "consumes": ["VisionTestCompleted"]
+  },
+  "metrics": [
+    {
+      "name": "refraction_accuracy",
+      "type": "gauge",
+      "description": "Spherical equivalent prediction error"
+    }
+  ],
+  "capabilities": ["refraction", "retinal_analysis", "binocular_vision"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

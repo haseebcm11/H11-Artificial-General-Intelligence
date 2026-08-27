@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-FALLBACK",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Switches to a declared fallback pipeline when the primary fails.",
+  "category": "orchestrator",
+  "handler": "fallback",
+  "inputs": [
+    {
+      "name": "primary_ok",
+      "type": "Any"
+    },
+    {
+      "name": "fallback_id",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "pipeline_id",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-RETRY"
+    ],
+    "downstream": [
+      "H11C-PIPELINE-RUNNER"
+    ]
+  },
+  "capabilities": [
+    "fallback"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

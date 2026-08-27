@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-IMAGEGEN",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Synthesizes images from text prompts using latent diffusion architectures.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "prompt", "type": "str"}, {"name": "negative_prompt", "type": "str"}, {"name": "width", "type": "int"}, {"name": "height", "type": "int"}
+  ],
+  "outputs": [
+    {"name": "image_data", "type": "bytes"}, {"name": "seed", "type": "int"}, {"name": "clip_score", "type": "float"}
+  ]
+}

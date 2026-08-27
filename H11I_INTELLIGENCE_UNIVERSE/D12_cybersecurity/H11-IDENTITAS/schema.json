@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-IDENTITAS",
+  "version": "1.0.0",
+  "layer": 12,
+  "layer_name": "Cybersecurity",
+  "description": "Cryptographic identity and certificate management.",
+  "category": "Identity and Access Management",
+  "inputs": [
+    {
+      "name": "csr_payload",
+      "type": "bytes",
+      "description": "Certificate Signing Request.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "signed_cert",
+      "type": "bytes",
+      "description": "Issued certificate."
+    }
+  ],
+  "config": {
+    "cert_validity_hours": {
+      "type": "integer",
+      "default": 24,
+      "description": "Default TTL for workload identities."
+    }
+  },
+  "state_schema": {
+    "active_identities": {
+      "type": "integer",
+      "description": "Total valid certificates."
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-ZERO-TRUST"]
+  },
+  "events": {
+    "emits": ["IdentityIssued", "IdentityRevoked"],
+    "consumes": ["RevocationRequested"]
+  },
+  "metrics": [
+    {
+      "name": "certs_issued_total",
+      "type": "counter",
+      "description": "Total certificates signed."
+    }
+  ],
+  "capabilities": ["PKI", "SPIFFE", "Zero-Knowledge Auth"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

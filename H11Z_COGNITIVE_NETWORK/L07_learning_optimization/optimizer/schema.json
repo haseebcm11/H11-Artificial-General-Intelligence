@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OPTIMIZER",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Optimizer Core",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "gradients",
+      "type": "Dict[str, List[float]]",
+      "description": "gradients input",
+      "required": true
+    },
+    {
+      "name": "learning_rate",
+      "type": "float",
+      "description": "learning_rate input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "updated_weights",
+      "type": "Dict[str, List[float]]",
+      "description": "updated_weights output"
+    },
+    {
+      "name": "step_count",
+      "type": "int",
+      "description": "step_count output"
+    }
+  ],
+  "config": {
+    "optimizer_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "optimizer_completed"
+    ],
+    "consumes": [
+      "optimizer_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "optimizer_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_optimizer"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-COMPUTERVISION",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Perception & Actuation",
+  "description": "Processes visual streams for detection, segmentation, and 3D geometry.",
+  "category": "Perception",
+  "inputs": [
+    {
+      "name": "visual_stream",
+      "type": "string",
+      "description": "URI to video/image stream",
+      "required": true
+    },
+    {
+      "name": "task_type",
+      "type": "string",
+      "description": "SEGMENTATION, DETECTION, DEPTH, TRACKING",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "bounding_boxes",
+      "type": "array",
+      "description": "List of detected objects"
+    },
+    {
+      "name": "visual_embedding",
+      "type": "object",
+      "description": "Dense semantic vector"
+    }
+  ],
+  "config": {
+    "inference_precision": {
+      "type": "string",
+      "default": "INT8",
+      "description": "Quantization level for fast inference"
+    },
+    "enable_tracking": {
+      "type": "boolean",
+      "default": true,
+      "description": "Maintain object IDs across frames"
+    }
+  },
+  "state_schema": {
+    "tracked_objects": {
+      "type": "object",
+      "description": "Trajectories of active objects"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-EDGE"],
+    "downstream": ["H11-MULTIMODALIS", "H11-ROBOTICA"]
+  },
+  "events": {
+    "emits": ["object_detected", "scene_changed"],
+    "consumes": ["frame_captured"]
+  },
+  "metrics": [
+    {
+      "name": "processing_fps",
+      "type": "gauge",
+      "description": "Frames processed per second"
+    }
+  ],
+  "capabilities": ["object_detection", "panoptic_segmentation", "optical_flow"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

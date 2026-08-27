@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CLASSICA-MUS",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Classical music conventions and strict counterpoint.",
+  "category": "GenreSpecific",
+  "inputs": [
+    {
+      "name": "raw_score",
+      "type": "object",
+      "description": "Score to be stylized",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "stylized_score",
+      "type": "object",
+      "description": "Score with period-correct articulations"
+    }
+  ],
+  "config": {
+    "strict_counterpoint": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce strict Fuxian rules"
+    }
+  },
+  "state_schema": {
+    "active_period": {
+      "type": "string",
+      "description": "Current historical period"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPOSITIO"],
+    "downstream": ["H11-ORCHESTRATIO"]
+  },
+  "events": {
+    "emits": ["period_styling_applied"],
+    "consumes": ["apply_classical_rules"]
+  },
+  "metrics": [
+    {
+      "name": "rule_violations_fixed",
+      "type": "counter",
+      "description": "Counterpoint errors resolved automatically"
+    }
+  ],
+  "capabilities": ["counterpoint_checking", "ornament_realization"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

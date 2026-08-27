@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ENDODONTIA",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Dental Sciences",
+  "description": "Pulpal diagnosis and root canal therapy planning.",
+  "category": "Endodontics",
+  "inputs": [
+    {
+      "name": "vitality_tests",
+      "type": "object",
+      "description": "Responses to thermal and electrical stimuli",
+      "required": true
+    },
+    {
+      "name": "canal_anatomy_voxels",
+      "type": "array",
+      "description": "3D matrix representing root canal spaces",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "diagnoses",
+      "type": "object",
+      "description": "Pulpal and periapical diagnoses"
+    },
+    {
+      "name": "instrumentation_plan",
+      "type": "object",
+      "description": "Rotary file sequence and irrigation protocol"
+    }
+  ],
+  "config": {
+    "apical_constriction_offset_mm": {
+      "type": "number",
+      "default": 0.5,
+      "description": "Distance from radiographic apex to terminate prep"
+    }
+  },
+  "state_schema": {
+    "canal_states": {
+      "type": "object",
+      "description": "Tracking enlargement size and irrigant volume per canal"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DENTALIS"],
+    "downstream": ["H11-PROSTHODONTIA"]
+  },
+  "events": {
+    "emits": ["obturation_complete", "instrument_separated"],
+    "consumes": ["pulp_exposure_occurred"]
+  },
+  "metrics": [
+    {
+      "name": "complex_anatomy_detected",
+      "type": "counter",
+      "description": "Number of MB2 or multi-canal systems identified"
+    }
+  ],
+  "capabilities": ["pulp_diagnosis", "kinematic_file_simulation", "cbct_canal_tracing"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

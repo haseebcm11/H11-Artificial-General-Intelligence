@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DATAPARALLEL",
+  "layer": 8,
+  "layer_name": "Distributed Training Infrastructure",
+  "description": "Data parallel gradient sync manager",
+  "inputs": [{"name": "local_gradients", "type": "Dict[str, Tensor]"}],
+  "outputs": [{"name": "synced_gradients", "type": "Dict[str, Tensor]"}]
+}

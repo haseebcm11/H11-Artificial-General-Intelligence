@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SAMPLING",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Advanced token sampling techniques including mirostat and contrastive decoding.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "logits",
+      "type": "List[float]",
+      "desc": "Logits from model"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "sampled_token",
+      "type": "int",
+      "desc": "Chosen token ID"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "random_seed": {
+      "type": "int",
+      "description": "Seed for deterministic sampling"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

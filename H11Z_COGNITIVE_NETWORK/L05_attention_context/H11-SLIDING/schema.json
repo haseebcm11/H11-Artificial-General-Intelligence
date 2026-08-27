@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SLIDING",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Manages local sliding context windows (e.g., Mistral's SWA) to process infinite sequences with bounded memory footprint.",
+  "inputs": [{"name": "sequence", "type": "Any", "description": "Input sequence"}, {"name": "window_size", "type": "int", "description": "Local window bounds"}],
+  "outputs": [{"name": "windowed_context", "type": "Any", "description": "Sliding window output"}],
+  "state_schema": {"receptive_field": {"type": "int", "description": "Effective context size"}}
+}

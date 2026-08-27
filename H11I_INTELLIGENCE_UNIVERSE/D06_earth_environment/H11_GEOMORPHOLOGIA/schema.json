@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-GEOMORPHOLOGIA Agent Schema",
+  "type": "object",
+  "properties": {
+    "dem_data": {
+      "type": "array",
+      "items": { "type": "number" },
+      "description": "Digital Elevation Model grid data"
+    },
+    "resolution": {
+      "type": "number",
+      "description": "Spatial resolution in meters"
+    },
+    "analysis_type": {
+      "type": "string",
+      "enum": ["slope", "aspect", "curvature", "landform_classification"],
+      "description": "Type of geomorphological analysis to perform"
+    }
+  },
+  "required": ["dem_data", "resolution", "analysis_type"]
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PRIVATEEQUITY",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Models leveraged buyouts and PE funds.",
+  "category": "Finance",
+  "inputs": [{"name": "ebitda", "type": "number", "required": true}],
+  "outputs": [{"name": "moic", "type": "number"}],
+  "config": {"management_fee": {"type": "number", "default": 0.02}},
+  "state_schema": {"fund_metrics": {"type": "object"}},
+  "dependencies": {"upstream": ["H11-FINANCIA"], "downstream": ["H11-MA"]}
+}

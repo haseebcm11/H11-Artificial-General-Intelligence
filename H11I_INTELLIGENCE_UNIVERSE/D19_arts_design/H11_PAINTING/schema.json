@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PAINTING",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "Painting Synthesis and Analysis Agent",
+  "category": "Fine Arts",
+  "inputs": [
+    {
+      "name": "image_data",
+      "type": "bytes",
+      "description": "Initial canvas or reference image",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "synthesized_layers",
+      "type": "array of bytes",
+      "description": "Generated painting layers"
+    }
+  ],
+  "config": {
+    "resolution": {
+      "type": "integer",
+      "default": 1024,
+      "description": "Canvas resolution"
+    }
+  },
+  "state_schema": {
+    "active_layers": {
+      "type": "integer",
+      "description": "Number of active canvas layers"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COLORTHEORY"],
+    "downstream": ["H11-GALLERY"]
+  },
+  "events": {
+    "emits": ["stroke_applied", "layer_dried"],
+    "consumes": ["palette_changed"]
+  },
+  "metrics": [
+    {
+      "name": "stroke_count",
+      "type": "counter",
+      "description": "Number of simulated brushstrokes"
+    }
+  ],
+  "capabilities": ["fluid_dynamics", "color_mixing", "texture_synthesis"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

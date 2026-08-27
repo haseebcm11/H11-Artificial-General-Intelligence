@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HostInfectionCase",
+  "description": "Typed payload that crosses ANATOMIA → PARASITOLOGIA → PHYSIOLOGIA → LONGTERM → REASON → ALIGN.",
+  "type": "object",
+  "required": ["case_id", "patient_id", "travel_history", "symptoms"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "patient_id": {"type": "string"},
+    "travel_history": {"type": "array", "items": {"type": "string"}},
+    "symptoms": {"type": "array", "items": {"type": "string"}},
+    "blood_smear_density_per_ul": {"type": ["number", "null"]},
+    "stool_egg_count_epg": {"type": ["number", "null"]},
+    "entry_compartment": {"type": "string", "default": "skin"}
+  }
+}

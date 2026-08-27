@@ -1,0 +1,28 @@
+{
+  "name": "H11-BIGDATA",
+  "description": "Agent for big data processing and Spark operations",
+  "version": "1.0",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "job_name": { "type": "string" },
+      "data_source": { "type": "string" },
+      "transformations": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "target_sink": { "type": "string" },
+      "cluster_size": { "type": "integer" }
+    },
+    "required": ["job_name", "data_source", "target_sink"]
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "status": { "type": "string" },
+      "records_processed": { "type": "integer" },
+      "execution_time_ms": { "type": "integer" },
+      "output_path": { "type": "string" }
+    }
+  }
+}

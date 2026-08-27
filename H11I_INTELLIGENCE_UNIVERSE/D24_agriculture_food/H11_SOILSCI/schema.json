@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SOILSCI",
+  "version": "1.0.0",
+  "layer": 24,
+  "layer_name": "Agriculture & Food Sciences",
+  "description": "Soil chemistry and nutrient cycling.",
+  "category": "Soil Science",
+  "inputs": [],
+  "outputs": [],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-CROP", "H11-IRRIGATIO"]
+  }
+}

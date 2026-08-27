@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CRYPTOMATH",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Cryptographic Mathematics Agent",
+  "category": "Cryptography",
+  "inputs": [
+    {
+      "name": "algebraic_structure",
+      "type": "object",
+      "description": "Finite field or elliptic curve definition",
+      "required": true
+    },
+    {
+      "name": "protocol_params",
+      "type": "object",
+      "description": "Security parameters (e.g., bit length)",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "generators",
+      "type": "array[object]",
+      "description": "Primitive roots or curve base points"
+    },
+    {
+      "name": "security_proofs",
+      "type": "object",
+      "description": "Information theoretic bounds"
+    }
+  ],
+  "config": {
+    "curve_standard": {
+      "type": "string",
+      "default": "secp256k1",
+      "description": "Default elliptic curve parameters"
+    }
+  },
+  "state_schema": {
+    "computed_isogenies": {
+      "type": "array[object]",
+      "description": "Paths in isogeny graphs for post-quantum crypto"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-NUMBER", "H11-ALGEBRA"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["key_material_generated", "vulnerability_found"],
+    "consumes": ["entropy_collected"]
+  },
+  "metrics": [
+    {
+      "name": "point_multiplications",
+      "type": "counter",
+      "description": "Total elliptic curve scalar multiplications"
+    }
+  ],
+  "capabilities": ["elliptic_curves", "lattice_crypto", "homomorphic_encryption"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

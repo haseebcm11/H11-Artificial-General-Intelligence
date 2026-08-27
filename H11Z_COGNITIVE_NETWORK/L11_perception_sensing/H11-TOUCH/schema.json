@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TOUCH",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "domain": "Tactile and Haptic Processing",
+  "capabilities": [
+    "gelsight_processing",
+    "contact_force_estimation",
+    "slip_detection",
+    "texture_recognition"
+  ],
+  "inputs": {
+    "tactile_images": "tensor_h_w_3",
+    "impedance_arrays": "vector_n"
+  },
+  "outputs": {
+    "contact_profiles": "list_of_dict",
+    "grasp_stability": "float_0_1"
+  }
+}

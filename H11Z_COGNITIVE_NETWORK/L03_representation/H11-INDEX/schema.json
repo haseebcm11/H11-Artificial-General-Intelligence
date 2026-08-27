@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-INDEX",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Builds a brute-force cosine index over stored vectors and returns top-k neighbours.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "vectors",
+      "type": "Dict[str,List[float]]"
+    },
+    {
+      "name": "query",
+      "type": "List[float]"
+    },
+    {
+      "name": "k",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "neighbors",
+      "type": "List[Tuple[str,float]]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-VECTORDb",
+      "H11-EMBEDDER"
+    ],
+    "downstream": [
+      "H11-SIMILARITY"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "knn-cosine"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

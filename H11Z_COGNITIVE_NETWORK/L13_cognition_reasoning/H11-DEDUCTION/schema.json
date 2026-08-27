@@ -1,0 +1,36 @@
+{
+  "name": "H11-DEDUCTION",
+  "description": "Agent for deductive reasoning, formal proofs, and syllogisms.",
+  "version": "1.0.0",
+  "interfaces": {
+    "inputs": [
+      {
+        "name": "premises",
+        "type": "array",
+        "description": "List of assumed true statements."
+      },
+      {
+        "name": "conclusion",
+        "type": "string",
+        "description": "Target statement to deduce."
+      },
+      {
+        "name": "inference_rules",
+        "type": "array",
+        "description": "Allowed rules (e.g., ModusPonens, ModusTollens)."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "is_valid",
+        "type": "boolean",
+        "description": "Whether the conclusion validly follows from premises."
+      },
+      {
+        "name": "proof_steps",
+        "type": "array",
+        "description": "Annotated step-by-step derivation."
+      }
+    ]
+  }
+}

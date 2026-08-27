@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-BRIDGE Schema",
+  "type": "object",
+  "definitions": {
+    "PatternType": {
+      "type": "string",
+      "enum": ["SCATTER_GATHER", "ROUTING_SLIP", "ADAPTER", "ETL"]
+    },
+    "BridgeRoute": {
+      "type": "object",
+      "properties": {
+        "stepName": { "type": "string" },
+        "endpoint": { "type": "string" },
+        "protocol": { "type": "string" }
+      },
+      "required": ["stepName", "endpoint"]
+    }
+  },
+  "properties": {
+    "bridgeId": { "type": "string", "format": "uuid" },
+    "pattern": { "$ref": "#/definitions/PatternType" },
+    "routes": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/BridgeRoute" }
+    },
+    "dlqEnabled": { "type": "boolean", "default": true }
+  },
+  "required": ["bridgeId", "pattern", "routes"]
+}

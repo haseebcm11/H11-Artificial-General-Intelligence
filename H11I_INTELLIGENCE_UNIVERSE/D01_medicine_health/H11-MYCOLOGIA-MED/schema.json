@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MYCOLOGIA-MED",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Models fungal pathogenesis, dimorphism, and systemic mycoses.",
+  "category": "Infectious Disease",
+  "inputs": [
+    {"name": "fungal_strain", "type": "FungalSpecies"},
+    {"name": "host_immunity_state", "type": "ImmuneStatus"},
+    {"name": "environmental_temp", "type": "Float"}
+  ],
+  "outputs": [
+    {"name": "fungal_burden", "type": "Float"},
+    {"name": "tissue_invasion_depth", "type": "Float"},
+    {"name": "morphological_form", "type": "FungalForm"}
+  ],
+  "config": {
+    "dimorphism_enabled": true
+  },
+  "state_schema": {
+    "colonies": "List[FungalColony]"
+  },
+  "dependencies": {
+    "upstream": ["H11-PHYSIOLOGIA", "H11-IMMUNOLOGIA"],
+    "downstream": ["H11-PATHOLOGIA"]
+  },
+  "events": {
+    "emits": ["GranulomaTriggered", "InvasionDeepened"],
+    "consumes": ["NeutrophilAttack"]
+  },
+  "metrics": ["hyphal_length", "dimorphic_shifts"],
+  "capabilities": ["Spatial Expansion", "Thermal Dimorphism", "Immune Evasion"],
+  "scaling": {
+    "compute_intensive": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "H11-COMPOSITA",
+  "description": "Composites Engineering Agent for analyzing and designing composite materials.",
+  "version": "1.0.0",
+  "capabilities": [
+    "composite_property_analysis",
+    "layup_design",
+    "delamination_simulation",
+    "curing_cycle_optimization"
+  ]
+}

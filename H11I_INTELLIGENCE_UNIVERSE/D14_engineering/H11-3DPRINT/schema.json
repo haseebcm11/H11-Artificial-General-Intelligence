@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-3DPRINT State Schema",
+  "type": "object",
+  "properties": {
+    "agent_id": {
+      "type": "string"
+    },
+    "printers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "printer_id": { "type": "string" },
+          "technology": { "type": "string", "enum": ["FDM", "SLA", "SLS"] },
+          "status": { "type": "string", "enum": ["IDLE", "PRINTING", "PAUSED", "ERROR", "OFFLINE"] },
+          "current_job_id": { "type": ["string", "null"] },
+          "progress_percentage": { "type": "number", "minimum": 0, "maximum": 100 },
+          "hotend_temp": { "type": "number" },
+          "bed_temp": { "type": "number" }
+        },
+        "required": ["printer_id", "status"]
+      }
+    },
+    "job_queue": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["agent_id", "printers"]
+}

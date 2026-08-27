@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-EVENT-FUSION",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Merges event streams from multiple hops into a single ordered log.",
+  "category": "integrator",
+  "handler": "fuse_events",
+  "inputs": [
+    {
+      "name": "events",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "events",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-TRACE-JOINER"
+    ],
+    "downstream": [
+      "H11C-OBSERVABILITY-INTEGRATOR"
+    ]
+  },
+  "capabilities": [
+    "fuse_events"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

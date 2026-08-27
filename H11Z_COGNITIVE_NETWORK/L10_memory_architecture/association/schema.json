@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ASSOCIATION",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Content-addressable memory retrieval via pattern completion and spreading activation.",
+  "category": "Associative Memory",
+  "inputs": [
+    {"name": "partial_pattern", "type": "array", "items": {"type": "number"}, "description": "Degraded embedding vector", "required": true},
+    {"name": "semantic_cues", "type": "array", "items": {"type": "string"}, "description": "Symbolic cues for graph activation", "required": false},
+    {"name": "temperature", "type": "number", "description": "Softmax temperature", "required": false}
+  ],
+  "outputs": [
+    {"name": "completed_pattern", "type": "array", "items": {"type": "number"}, "description": "Converged memory pattern"},
+    {"name": "activated_nodes", "type": "object", "additionalProperties": {"type": "number"}, "description": "Graph activation levels"}
+  ],
+  "config": {
+    "beta_parameter": {"type": "number", "default": 1.0, "description": "Inverse temperature for Modern Hopfield"},
+    "decay_rate": {"type": "number", "default": 0.85, "description": "Decay factor for spreading activation"},
+    "capacity_limit": {"type": "integer", "default": 10000, "description": "Max stored patterns"}
+  },
+  "state_schema": {
+    "memory_patterns": {"type": "array", "description": "Stored dense patterns"},
+    "semantic_graph": {"type": "object", "description": "Adjacency matrix for semantic links"}
+  },
+  "dependencies": {
+    "upstream": ["H11-SEMANTIC-ROUTER", "H11-EMBEDDING-ENGINE"],
+    "downstream": ["H11-CONTEXT-MEM", "H11-REASONER"]
+  },
+  "events": {
+    "emits": ["attractor_converged", "spurious_state_detected"],
+    "consumes": ["new_memory_encoded"]
+  },
+  "metrics": [
+    {"name": "convergence_iterations_avg", "type": "histogram", "description": "Average iterations to fixed point"},
+    {"name": "energy_delta", "type": "gauge", "description": "Change in network energy"}
+  ],
+  "capabilities": ["pattern_completion", "content_addressable_retrieval", "semantic_activation"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

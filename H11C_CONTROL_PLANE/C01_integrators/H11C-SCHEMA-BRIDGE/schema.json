@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-SCHEMA-BRIDGE",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Maps one agent's output fields onto another's input contract.",
+  "category": "integrator",
+  "handler": "remap_fields",
+  "inputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    },
+    {
+      "name": "mapping",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "payload",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-CONTRACT-CHECKER"
+    ],
+    "downstream": [
+      "H11C-PIPELINE-COMPOSER"
+    ]
+  },
+  "capabilities": [
+    "remap_fields"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

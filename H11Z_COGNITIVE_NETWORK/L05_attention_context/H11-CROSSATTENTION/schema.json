@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CROSSATTENTION",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Aligns representations across different sequences or modalities (e.g., text-to-image, encoder-decoder).",
+  "inputs": [{"name": "target_query", "type": "Any", "description": "Target sequence queries"}, {"name": "source_kv", "type": "Any", "description": "Source sequence keys/values"}],
+  "outputs": [{"name": "aligned_output", "type": "Any", "description": "Cross-modal representations"}],
+  "state_schema": {"modality_gap": {"type": "float", "description": "Measured divergence between distributions"}}
+}

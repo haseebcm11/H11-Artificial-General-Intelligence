@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SELFCRITIQUE Schema",
+  "type": "object",
+  "properties": {
+    "CritiqueRequest": {
+      "type": "object",
+      "properties": {
+        "artifact_content": { "type": "string" },
+        "artifact_type": { "type": "string", "enum": ["code", "text", "plan"] },
+        "rubric_id": { "type": "string" }
+      },
+      "required": ["artifact_content", "artifact_type"]
+    },
+    "CritiqueResponse": {
+      "type": "object",
+      "properties": {
+        "overall_score": { "type": "number" },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        },
+        "violations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+              "description": { "type": "string" },
+              "span_start": { "type": "integer" },
+              "span_end": { "type": "integer" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

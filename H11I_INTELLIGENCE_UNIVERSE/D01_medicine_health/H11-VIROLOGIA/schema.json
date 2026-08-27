@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-VIROLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Simulates viral replication cycles, tropism, and pathogenesis.",
+  "category": "Infectious Disease",
+  "inputs": [
+    {"name": "viral_genome", "type": "ViralData"},
+    {"name": "host_cell", "type": "HostCellType"},
+    {"name": "multiplicity_of_infection", "type": "Float"}
+  ],
+  "outputs": [
+    {"name": "virion_yield", "type": "Integer"},
+    {"name": "cell_viability", "type": "Float"},
+    {"name": "mutations", "type": "List[Mutation]"}
+  ],
+  "config": {
+    "enable_viral_evolution": true
+  },
+  "state_schema": {
+    "active_infections": "Dict[str, InfectionPhase]",
+    "latent_reservoirs": "List[str]"
+  },
+  "dependencies": {
+    "upstream": ["H11-EPIDEMIOLOGIA"],
+    "downstream": ["H11-IMMUNOLOGIA", "H11-PATHOLOGIA"]
+  },
+  "events": {
+    "emits": ["VirionsReleased", "CellLysis"],
+    "consumes": ["InterferonSignaling"]
+  },
+  "metrics": ["viral_load", "mutation_rate"],
+  "capabilities": ["Replication Kinetics", "Tropism Matching", "Evolutionary Drift"],
+  "scaling": {
+    "compute_intensive": false
+  }
+}

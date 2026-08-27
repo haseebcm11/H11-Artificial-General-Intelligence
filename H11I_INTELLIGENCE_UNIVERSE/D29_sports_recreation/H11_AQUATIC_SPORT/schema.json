@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AQUATIC-SPORT",
+  "version": "1.0.0",
+  "layer": 29,
+  "layer_name": "Sports & Recreation",
+  "description": "Aquatic Sports Agent",
+  "category": "Hydrodynamics",
+  "inputs": [
+    {
+      "name": "stroke_data",
+      "type": "array",
+      "description": "IMU data during swimming",
+      "required": true
+    },
+    {
+      "name": "pool_length_m",
+      "type": "number",
+      "description": "Lap distance",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "stroke_index",
+      "type": "number",
+      "description": "Efficiency score"
+    },
+    {
+      "name": "drag_profile",
+      "type": "number",
+      "description": "Active drag coefficient"
+    }
+  ],
+  "config": {
+    "water_density_kg_m3": {
+      "type": "number",
+      "default": 997.0,
+      "description": "Density for fresh water at 25C"
+    }
+  },
+  "state_schema": {
+    "optimal_stroke_rate": {
+      "type": "number",
+      "description": "Calculated optimal SR"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ATHLETICA"],
+    "downstream": ["H11-COACHING"]
+  },
+  "events": {
+    "emits": ["turn_analyzed", "efficiency_drop_detected"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "fft_compute_latency",
+      "type": "histogram",
+      "description": "Signal processing time"
+    }
+  ],
+  "capabilities": ["active_drag_estimation", "intra_stroke_velocity_analysis"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

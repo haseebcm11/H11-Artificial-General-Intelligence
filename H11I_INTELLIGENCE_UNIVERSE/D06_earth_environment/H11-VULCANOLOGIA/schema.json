@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-VULCANOLOGIA Agent Schema",
+  "type": "object",
+  "properties": {
+    "volcano_id": {
+      "type": "string",
+      "description": "Unique identifier for the volcano."
+    },
+    "magma_composition": {
+      "type": "object",
+      "properties": {
+        "sio2_wt_percent": {
+          "type": "number"
+        },
+        "h2o_wt_percent": {
+          "type": "number"
+        },
+        "temperature_celsius": {
+          "type": "number"
+        }
+      },
+      "required": ["sio2_wt_percent", "temperature_celsius"]
+    },
+    "simulation_type": {
+      "type": "string",
+      "enum": ["LAVA_FLOW", "ASH_DISPERSION", "HAZARD_ASSESSMENT", "RHEOLOGY"]
+    }
+  },
+  "required": ["volcano_id", "simulation_type"]
+}

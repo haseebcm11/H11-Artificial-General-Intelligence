@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Bioinformatica Agent Schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "pipeline_type": {
+          "type": "string",
+          "enum": ["RNA-Seq", "DNA-Seq", "Phylogenetics"]
+        },
+        "threads": {
+          "type": "integer",
+          "default": 8
+        },
+        "reference_genome_path": {
+          "type": "string"
+        }
+      },
+      "required": ["pipeline_type"]
+    },
+    "state_schema": {
+      "type": "object",
+      "properties": {
+        "total_reads_processed": {
+          "type": "integer"
+        },
+        "variants_called": {
+          "type": "integer"
+        },
+        "active_jobs": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

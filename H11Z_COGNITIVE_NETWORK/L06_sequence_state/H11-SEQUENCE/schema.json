@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SEQUENCE",
+  "version": "1.0.0",
+  "layer": 6,
+  "layer_name": "Sequence & State-Space Engine",
+  "description": "Sequence modeling and packed sequence management.",
+  "category": "Fundamentals",
+  "inputs": [
+    {
+      "name": "raw_sequences",
+      "type": "List[List[int]]",
+      "description": "Token sequences",
+      "required": true
+    },
+    {
+      "name": "padding_strategy",
+      "type": "str",
+      "description": "Padding mode",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "tensor_data",
+      "type": "bytes",
+      "description": "Serialized packed/padded tensor"
+    },
+    {
+      "name": "attention_mask",
+      "type": "bytes",
+      "description": "Serialized mask"
+    }
+  ],
+  "config": {
+    "default_max_length": {
+      "type": "int",
+      "default": 2048,
+      "description": "Default truncation length"
+    }
+  },
+  "state_schema": {
+    "total_sequences_processed": {
+      "type": "int",
+      "description": "Throughput counter"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-TOKENIZER"
+    ],
+    "downstream": [
+      "H11-TEMPORAL",
+      "H11-SSM-CORE"
+    ]
+  },
+  "events": {
+    "emits": [
+      "SequenceBatchReady"
+    ],
+    "consumes": [
+      "TokensReady"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "padding_efficiency",
+      "type": "gauge",
+      "description": "Ratio of valid tokens to pad tokens"
+    }
+  ],
+  "capabilities": [
+    "Variable-length batching",
+    "Sequence packing"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CAUSAL-MODEL",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Builds a DAG by thresholding absolute Pearson correlation and directing edges from earlier to later indices.",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "columns",
+      "type": "List[List[float]]"
+    },
+    {
+      "name": "threshold",
+      "type": "float"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "edges",
+      "type": "List[Tuple[int,int,float]]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [],
+    "downstream": [
+      "H11-COUNTERFACTUAL-WORLD"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "corr-dag"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

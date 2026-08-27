@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-SECRET-VAULT",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Stores secrets by id. Process never returns the secret in the envelope.",
+  "category": "security",
+  "handler": "vault",
+  "inputs": [
+    {
+      "name": "op",
+      "type": "Any"
+    },
+    {
+      "name": "key",
+      "type": "Any"
+    },
+    {
+      "name": "value",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ok",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [],
+    "downstream": [
+      "H11C-OUTPUT-REDACTOR"
+    ]
+  },
+  "capabilities": [
+    "vault"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

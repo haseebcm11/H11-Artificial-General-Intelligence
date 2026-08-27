@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ROBOTICA",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Perception & Actuation",
+  "description": "Translates cognitive intent into physical motion via kinematics and MPC.",
+  "category": "Robotics",
+  "inputs": [
+    {
+      "name": "target_pose",
+      "type": "object",
+      "description": "Desired position and orientation",
+      "required": true
+    },
+    {
+      "name": "obstacle_map",
+      "type": "object",
+      "description": "Spatial occupancy map",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "trajectory",
+      "type": "array",
+      "description": "Planned path"
+    },
+    {
+      "name": "control_signals",
+      "type": "object",
+      "description": "Low-level motor commands"
+    }
+  ],
+  "config": {
+    "control_frequency_hz": {
+      "type": "integer",
+      "default": 500,
+      "description": "PID/MPC loop frequency"
+    },
+    "enable_cbf": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use Control Barrier Functions for safety"
+    }
+  },
+  "state_schema": {
+    "kinematic_chain": {
+      "type": "object",
+      "description": "Current robot joint states"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPUTERVISION", "H11-REINFORCEMENT"],
+    "downstream": ["H11-EDGE"]
+  },
+  "events": {
+    "emits": ["trajectory_planned", "cbf_intervention"],
+    "consumes": ["target_updated"]
+  },
+  "metrics": [
+    {
+      "name": "control_loop_latency_ms",
+      "type": "histogram",
+      "description": "Time to compute next motor command"
+    }
+  ],
+  "capabilities": ["inverse_kinematics", "model_predictive_control", "motion_planning"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

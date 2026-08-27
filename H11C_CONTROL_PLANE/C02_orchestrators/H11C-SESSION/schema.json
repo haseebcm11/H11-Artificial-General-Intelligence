@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-SESSION",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (orchestrator)",
+  "description": "Session-scoped blackboard that dies with the session token.",
+  "category": "orchestrator",
+  "handler": "blackboard",
+  "inputs": [
+    {
+      "name": "op",
+      "type": "Any"
+    },
+    {
+      "name": "key",
+      "type": "Any"
+    },
+    {
+      "name": "value",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "board",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-SESSION-BOUND"
+    ],
+    "downstream": [
+      "H11C-BLACKBOARD"
+    ]
+  },
+  "capabilities": [
+    "blackboard"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ORBITALIS",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Space & Astronomy",
+  "description": "Orbital dynamics and trajectory optimization",
+  "category": "Astrodynamics",
+  "inputs": [
+    {
+      "name": "initial_state",
+      "type": "object",
+      "description": "6D position and velocity state vector",
+      "required": true
+    },
+    {
+      "name": "target_state",
+      "type": "object",
+      "description": "Desired destination state vector",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "propagated_orbit",
+      "type": "object",
+      "description": "Future positions and velocities"
+    },
+    {
+      "name": "maneuver_plan",
+      "type": "array",
+      "description": "Delta-V required for transfers"
+    }
+  ],
+  "config": {
+    "integrator_type": {
+      "type": "string",
+      "default": "RungeKutta4",
+      "description": "Numerical integration method"
+    },
+    "gravity_degree_order": {
+      "type": "integer",
+      "default": 10,
+      "description": "Max degree for spherical harmonic gravity model"
+    }
+  },
+  "state_schema": {
+    "active_propagations": {
+      "type": "integer",
+      "description": "Number of orbits currently being tracked"
+    },
+    "total_delta_v_planned": {
+      "type": "number",
+      "description": "Cumulative Delta-V calculated in current session"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PLANETOLOGIA", "H11-HELIOPHYSICA"],
+    "downstream": ["H11-SPACECRAFT", "H11-SPACEDEBRIS"]
+  },
+  "events": {
+    "emits": ["TrajectoryCalculated", "ConjunctionPredicted"],
+    "consumes": ["ManeuverExecuted", "ObservationReceived"]
+  },
+  "metrics": [
+    {
+      "name": "propagation_latency_ms",
+      "type": "histogram",
+      "description": "Time taken to propagate an orbit"
+    }
+  ],
+  "capabilities": ["Orbit Propagation", "Transfer Optimization", "Ephemeris Generation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

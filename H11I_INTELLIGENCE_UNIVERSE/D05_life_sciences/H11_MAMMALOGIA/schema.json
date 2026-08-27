@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-MAMMALOGIA Schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "taxonomic_resolution": {
+          "type": "string",
+          "enum": ["order", "family", "genus", "species"],
+          "default": "species"
+        },
+        "simulation_steps": {
+          "type": "integer",
+          "default": 1000
+        }
+      }
+    },
+    "state_schema": {
+      "type": "object",
+      "properties": {
+        "active_populations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "extinction_risk_alerts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": ["taxonomy_mapping", "population_simulation", "behavior_analysis"]
+    }
+  }
+}

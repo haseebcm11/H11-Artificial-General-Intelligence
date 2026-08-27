@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-COMPUTABILITAS",
+  "version": "1.0.0",
+  "layer": 4,
+  "layer_name": "Theoretical Models",
+  "description": "Analyzes limits of computation, decidability, and halting guarantees.",
+  "category": "Theoretical Computer Science",
+  "inputs": [
+    {
+      "name": "computational_model",
+      "type": "string",
+      "description": "AST or Logic Formula",
+      "required": true
+    },
+    {
+      "name": "query_type",
+      "type": "string",
+      "description": "HALTING, EQUIVALENCE, REACHABILITY",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "decidability_status",
+      "type": "string",
+      "description": "DECIDABLE, UNDECIDABLE, UNKNOWN"
+    },
+    {
+      "name": "proof_artifact",
+      "type": "string",
+      "description": "Proof of termination or undecidability"
+    }
+  ],
+  "config": {
+    "smt_timeout_ms": {
+      "type": "integer",
+      "default": 10000,
+      "description": "Max time for theorem prover"
+    },
+    "enforce_total_functions": {
+      "type": "boolean",
+      "default": false,
+      "description": "Reject all potential non-terminating code"
+    }
+  },
+  "state_schema": {
+    "proved_theorems": {
+      "type": "integer",
+      "description": "Count of successful proofs"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ALGORITHMICA", "H11-AUTOMATA"],
+    "downstream": ["H11-COMPILER", "H11-TESTING"]
+  },
+  "events": {
+    "emits": ["termination_proved", "undecidable_halt"],
+    "consumes": ["complex_query_received"]
+  },
+  "metrics": [
+    {
+      "name": "smt_resolution_time",
+      "type": "histogram",
+      "description": "Time taken by Z3 solver"
+    }
+  ],
+  "capabilities": ["smt_solving", "termination_analysis", "formal_verification"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

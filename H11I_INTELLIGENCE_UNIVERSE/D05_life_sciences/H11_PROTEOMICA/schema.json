@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-PROTEOMICA Schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "ms_tolerance_da": { "type": "number", "default": 0.05 },
+        "cleavage_enzyme": { "type": "string", "default": "Trypsin" }
+      }
+    },
+    "state_schema": {
+      "type": "object",
+      "properties": {
+        "processed_spectra": { "type": "integer" },
+        "modeled_structures": { "type": "integer" }
+      }
+    }
+  }
+}

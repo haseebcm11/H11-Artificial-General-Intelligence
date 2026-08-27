@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OTOLARYNGOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Agent for ear, nose, throat physiology and pathology.",
+  "category": "Otolaryngology",
+  "inputs": [
+    {"name": "audiogram", "type": "AudiogramData"},
+    {"name": "vestibular_data", "type": "VNGTracing"},
+    {"name": "airway_geometry", "type": "AirwayMesh"}
+  ],
+  "outputs": [
+    {"name": "hearing_loss_profile", "type": "HearingAssessment"},
+    {"name": "vor_gain", "type": "number"},
+    {"name": "apnea_hypopnea_index_estimate", "type": "number"}
+  ],
+  "config": {
+    "reference_spl": 20e-6,
+    "endolymph_viscosity": 0.001
+  },
+  "state_schema": {
+    "middle_ear_pressure": "number",
+    "mucosal_edema_grade": "integer"
+  },
+  "dependencies": {
+    "upstream": ["H11-NEUROLOGIA", "H11-ALLERGOLOGIA"],
+    "downstream": ["H11-PULMONOLOGIA", "H11-PSYCHIATRIA"]
+  },
+  "events": {
+    "emits": ["VertigoAttack", "AirwayObstruction"],
+    "consumes": ["AllergicReaction", "AcousticTrauma"]
+  },
+  "metrics": ["pta_average", "air_bone_gap"],
+  "capabilities": ["cochlear_mechanics", "vestibular_dynamics", "airway_cfd"],
+  "scaling": {
+    "mode": "hybrid",
+    "concurrency_limit": 200
+  }
+}

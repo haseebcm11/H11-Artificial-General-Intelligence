@@ -1,0 +1,28 @@
+{
+  "name": "H11-ANALOGY",
+  "description": "Agent for analogical reasoning and structural mapping.",
+  "inputs": {
+    "source_domain": {
+      "entities": ["string"],
+      "relations": [
+        {
+          "name": "string",
+          "args": ["string"]
+        }
+      ]
+    },
+    "target_domain": {
+      "entities": ["string"],
+      "relations": [
+        {
+          "name": "string",
+          "args": ["string"]
+        }
+      ]
+    }
+  },
+  "outputs": {
+    "mapping": "object",
+    "structural_score": "number"
+  }
+}

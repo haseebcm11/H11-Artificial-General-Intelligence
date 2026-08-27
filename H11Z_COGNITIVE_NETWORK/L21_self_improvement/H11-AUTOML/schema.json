@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-AUTOML Schema",
+  "type": "object",
+  "properties": {
+    "AutoMLTask": {
+      "type": "object",
+      "properties": {
+        "dataset_uri": { "type": "string" },
+        "target_column": { "type": "string" },
+        "task_type": { "type": "string", "enum": ["classification", "regression", "time_series"] },
+        "evaluation_metric": { "type": "string" },
+        "time_budget_seconds": { "type": "integer" }
+      },
+      "required": ["dataset_uri", "target_column", "task_type"]
+    },
+    "PipelineDefinition": {
+      "type": "object",
+      "properties": {
+        "pipeline_id": { "type": "string" },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "node_id": { "type": "string" },
+              "operation_type": { "type": "string" },
+              "parameters": { "type": "object" }
+            }
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "estimated_performance": { "type": "number" }
+      },
+      "required": ["pipeline_id", "nodes", "edges"]
+    }
+  }
+}

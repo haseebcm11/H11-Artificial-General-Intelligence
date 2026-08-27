@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PALLIATIVA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Optimizes symptom management and comfort trajectories in palliative and end-of-life care.",
+  "category": "Clinical Support",
+  "inputs": [
+    {
+      "name": "esas_scores",
+      "type": "array",
+      "description": "Edmonton Symptom Assessment System scores"
+    },
+    {
+      "name": "medication_history",
+      "type": "object",
+      "description": "Recent analgesic and adjuvant administrations"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "comfort_index",
+      "type": "number",
+      "description": "Computed multidimensional comfort index"
+    },
+    {
+      "name": "intervention_plan",
+      "type": "object",
+      "description": "Recommended palliative interventions"
+    }
+  ],
+  "config": {
+    "trajectory_horizon_hours": 72
+  },
+  "state_schema": {
+    "patient_id": "string",
+    "symptom_transition_matrix": "array",
+    "last_assessment_timestamp": "string"
+  },
+  "dependencies": {
+    "upstream": ["H11-PHARMACOLOGIA", "H11-NEUROLOGIA"],
+    "downstream": ["H11-ANAESTHESIA"]
+  },
+  "events": {
+    "emits": ["comfort_threshold_breach", "trajectory_update"],
+    "consumes": ["vitals_change", "medication_administered"]
+  },
+  "metrics": ["symptom_volatility", "time_in_comfort_zone"],
+  "capabilities": ["symptom_trajectory_prediction", "multi_objective_comfort_optimization"],
+  "scaling": {
+    "mode": "horizontal",
+    "max_concurrent_patients": 500
+  }
+}

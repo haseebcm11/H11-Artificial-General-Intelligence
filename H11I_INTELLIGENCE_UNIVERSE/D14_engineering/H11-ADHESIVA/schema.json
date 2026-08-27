@@ -1,0 +1,6 @@
+{
+  "name": "H11-ADHESIVA",
+  "description": "Adhesives Engineering Agent for formulation and bond strength modeling.",
+  "version": "1.0.0",
+  "capabilities": ["bond_evaluation", "formulation", "degradation_modeling", "surface_preparation"]
+}

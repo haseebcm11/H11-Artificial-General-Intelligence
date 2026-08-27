@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-IMAGINATION",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Enumerates the Cartesian product of discrete constraint tokens into candidate scenarios.",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "options",
+      "type": "List[List[str]]"
+    },
+    {
+      "name": "cap",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "scenarios",
+      "type": "List[List[str]]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-WORLDMODEL"
+    ],
+    "downstream": [
+      "H11-MENTAL-SIM"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "cartesian-enumerate"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

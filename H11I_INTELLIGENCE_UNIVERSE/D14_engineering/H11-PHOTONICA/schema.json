@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-PHOTONICA Configuration",
+  "type": "object",
+  "properties": {
+    "wavelength_band_nm": {
+      "type": "array",
+      "items": { "type": "number" }
+    },
+    "simulation_mode": {
+      "type": "string",
+      "enum": ["RAY_TRACE", "FDTD", "BPM"]
+    },
+    "pdk_library_path": {
+      "type": "string"
+    }
+  },
+  "required": ["simulation_mode", "wavelength_band_nm"]
+}

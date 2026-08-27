@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RADIOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Performs medical image segmentation, volumetric rendering, and radiomic feature extraction.",
+  "category": "Medical Imaging",
+  "inputs": [
+    {
+      "name": "dicom_volume",
+      "type": "binary",
+      "description": "3D array of voxel intensities"
+    },
+    {
+      "name": "modality",
+      "type": "string",
+      "description": "CT, MRI, PET, US"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "segmentation_masks",
+      "type": "array",
+      "description": "Binary masks for organs and lesions"
+    },
+    {
+      "name": "radiomic_features",
+      "type": "object",
+      "description": "Quantitative imaging biomarkers"
+    }
+  ],
+  "config": {
+    "glcm_distances": [1, 2, 3],
+    "segmentation_threshold": 0.5
+  },
+  "state_schema": {
+    "processed_volumes_count": "number",
+    "last_calibration_time": "string"
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-CHIRURGIA", "H11-NUCLEARIS-MED"]
+  },
+  "events": {
+    "emits": ["lesion_detected", "processing_complete"],
+    "consumes": ["image_uploaded"]
+  },
+  "metrics": ["dice_coefficient", "inference_time_ms"],
+  "capabilities": ["3d_segmentation", "radiomics_extraction"],
+  "scaling": {
+    "mode": "horizontal",
+    "gpu_required": true
+  }
+}

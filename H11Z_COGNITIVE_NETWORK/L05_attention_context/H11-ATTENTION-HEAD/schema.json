@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ATTENTION-HEAD",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Manages parallel attention heads, including head pruning, importance routing, and heterogeneous head dimensioning.",
+  "inputs": [{"name": "q_states", "type": "Any", "description": "Queries"}, {"name": "k_states", "type": "Any", "description": "Keys"}, {"name": "v_states", "type": "Any", "description": "Values"}],
+  "outputs": [{"name": "concatenated_output", "type": "Any", "description": "Merged head outputs"}],
+  "state_schema": {"active_heads": {"type": "List[int]", "description": "Indices of active heads"}}
+}

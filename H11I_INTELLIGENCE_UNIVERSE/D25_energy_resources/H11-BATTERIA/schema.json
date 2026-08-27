@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-BATTERIA",
+  "version": "1.0.0",
+  "layer": 25,
+  "layer_name": "Energy & Resources",
+  "description": "Advanced Battery Storage Agent",
+  "category": "Energy Storage",
+  "inputs": [
+    {
+      "name": "power_demand",
+      "type": "float",
+      "description": "Requested power (MW)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "estimated_soc",
+      "type": "float",
+      "description": "State of Charge (%)"
+    }
+  ],
+  "config": {
+    "chemistry": {
+      "type": "string",
+      "default": "LFP",
+      "description": "Battery chemistry (LFP, NMC, etc)"
+    }
+  },
+  "state_schema": {
+    "state_of_health": {
+      "type": "float",
+      "description": "Remaining capacity percentage"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-GRID", "H11-SOLARIS"],
+    "downstream": ["H11-GRID"]
+  },
+  "events": {
+    "emits": ["batteria.thermal_warning"],
+    "consumes": ["grid.frequency_event"]
+  },
+  "metrics": [
+    {
+      "name": "cycle_count",
+      "type": "counter",
+      "description": "Equivalent full cycles"
+    }
+  ],
+  "capabilities": ["p2d_modeling", "frequency_regulation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

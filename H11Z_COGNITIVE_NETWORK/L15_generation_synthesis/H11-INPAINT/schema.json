@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-INPAINT",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Fills masked regions or out-paints boundaries with context-aware content.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "image", "type": "bytes"}, {"name": "mask", "type": "bytes"}, {"name": "prompt", "type": "str"}
+  ],
+  "outputs": [
+    {"name": "inpainted_image", "type": "bytes"}, {"name": "seamlessness_score", "type": "float"}
+  ]
+}

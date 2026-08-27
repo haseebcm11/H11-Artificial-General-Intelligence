@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-BACTERIOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Models bacterial growth, pathogenesis, biofilms, and the microbiome.",
+  "category": "Infectious Disease",
+  "inputs": [
+    {"name": "environment", "type": "MicroEnvironment"},
+    {"name": "bacterial_species", "type": "List[Bacterium]"},
+    {"name": "antibiotics", "type": "List[DrugState]"}
+  ],
+  "outputs": [
+    {"name": "population_delta", "type": "GrowthVector"},
+    {"name": "toxins_produced", "type": "ToxinLoad"},
+    {"name": "resistance_events", "type": "List[TransferEvent]"}
+  ],
+  "config": {
+    "simulate_microbiome": true
+  },
+  "state_schema": {
+    "populations": "Dict[str, PopulationStats]",
+    "biofilms": "List[Biofilm]"
+  },
+  "dependencies": {
+    "upstream": ["H11-PHYSIOLOGIA"],
+    "downstream": ["H11-IMMUNOLOGIA", "H11-PATHOLOGIA"]
+  },
+  "events": {
+    "emits": ["ToxinReleased", "BiofilmFormed", "SepsisTriggered"],
+    "consumes": ["AntibioticAdministered"]
+  },
+  "metrics": ["cfu_count", "resistance_genes"],
+  "capabilities": ["Logistic Growth", "Quorum Sensing", "Gene Transfer"],
+  "scaling": {
+    "memory_intensive": false
+  }
+}

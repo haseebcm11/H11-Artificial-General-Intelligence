@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SOCIALMEDIA",
+  "version": "1.0.0",
+  "layer": "4",
+  "layer_name": "Predictive Modeling",
+  "description": "Viral dynamics prediction, audience segmentation, and information contagion modeling.",
+  "category": "Social Dynamics",
+  "inputs": [
+    {
+      "name": "asset_metadata",
+      "type": "object",
+      "properties": {
+        "asset_id": {"type": "string"},
+        "format": {"type": "string", "enum": ["text", "image", "video_short", "video_long"]},
+        "semantic_tags": {"type": "array", "items": {"type": "string"}},
+        "duration_sec": {"type": "number"}
+      }
+    },
+    {
+      "name": "historical_graph",
+      "type": "object",
+      "properties": {
+        "active_trends": {"type": "array"},
+        "node_density": {"type": "number"}
+      }
+    },
+    {
+      "name": "target_kpi",
+      "type": "string",
+      "enum": ["reach", "engagement", "conversion"]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "virality_score",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    {
+      "name": "release_schedule",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "platform": {"type": "string"},
+          "post_time_utc": {"type": "string", "format": "date-time"},
+          "predicted_peak_utc": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    {
+      "name": "community_targets",
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  ],
+  "config": {
+    "contagion_threshold_r0": 1.2,
+    "trend_decay_half_life_hours": 48.0,
+    "max_simulation_steps": 1000
+  },
+  "state_schema": {
+    "platform_algorithm_state": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "watch_time_weight": {"type": "number"},
+          "share_weight": {"type": "number"},
+          "comment_weight": {"type": "number"}
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PODCAST", "H11-JOURNALISM", "H11-ADVERTISING"],
+    "downstream": ["H11-PUBLISHING"]
+  },
+  "events": {
+    "emits": ["viral_anomaly_detected", "trend_collapsed"],
+    "consumes": ["platform_api_update", "competitor_viral_event"]
+  },
+  "metrics": [
+    "prediction_accuracy_mae",
+    "simulation_fps",
+    "cluster_cohesion_score"
+  ],
+  "capabilities": [
+    "sir_contagion_modeling",
+    "umap_audience_segmentation",
+    "temporal_trend_forecasting"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

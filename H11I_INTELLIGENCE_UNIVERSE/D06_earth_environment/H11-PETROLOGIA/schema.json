@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-PETROLOGIA Agent Schema",
+  "type": "object",
+  "properties": {
+    "rock_type": {
+      "type": "string",
+      "enum": ["IGNEOUS", "METAMORPHIC", "SEDIMENTARY"]
+    },
+    "bulk_composition": {
+      "type": "object",
+      "description": "Major elements in wt%",
+      "properties": {
+        "sio2": { "type": "number" },
+        "al2o3": { "type": "number" },
+        "feo": { "type": "number" },
+        "mgo": { "type": "number" }
+      }
+    },
+    "analysis_type": {
+      "type": "string",
+      "enum": ["PHASE_EQUILIBRIA", "GEOTHERMOBAROMETRY", "MAGMATIC_MODELING"]
+    },
+    "pt_conditions": {
+      "type": "object",
+      "properties": {
+        "pressure_bar": { "type": "number" },
+        "temperature_celsius": { "type": "number" }
+      }
+    }
+  },
+  "required": ["analysis_type"]
+}

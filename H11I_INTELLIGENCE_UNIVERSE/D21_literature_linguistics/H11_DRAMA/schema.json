@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DRAMA",
+  "version": "1.0.0",
+  "layer": 21,
+  "layer_name": "Literature & Linguistics",
+  "description": "Agent for theatrical dialogue and dramatic structure.",
+  "category": "Literature",
+  "inputs": [
+    {
+      "name": "characters",
+      "type": "array",
+      "description": "Character profiles"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "script",
+      "type": "string",
+      "description": "Generated script"
+    }
+  ],
+  "config": {
+    "subtext_intensity": {
+      "type": "number",
+      "default": 0.5,
+      "description": "How strongly subtext diverges from explicit text"
+    }
+  },
+  "state_schema": {
+    "relationship_matrix": {
+      "type": "object",
+      "description": "Current affinities between characters"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-NARRATIO", "H11-PRAGMATICA"],
+    "downstream": []
+  },
+  "capabilities": ["dialogue-simulation", "tension-modeling"]
+}

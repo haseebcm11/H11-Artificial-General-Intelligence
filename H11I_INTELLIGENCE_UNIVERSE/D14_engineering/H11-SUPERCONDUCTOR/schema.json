@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SUPERCONDUCTOR Agent Schema",
+  "type": "object",
+  "properties": {
+    "material_type": {
+      "type": "string",
+      "enum": ["Type-I", "Type-II", "Cuprate", "Pnictide", "Hydride"]
+    },
+    "critical_properties": {
+      "type": "object",
+      "properties": {
+        "Tc_K": { "type": "number" },
+        "Hc2_Tesla": { "type": "number" },
+        "Jc_A_cm2": { "type": "number" }
+      }
+    },
+    "cryogenic_coolant": {
+      "type": "string",
+      "enum": ["LHe", "LN2", "Cryocooler_PulseTube"]
+    }
+  },
+  "required": ["material_type", "critical_properties"]
+}

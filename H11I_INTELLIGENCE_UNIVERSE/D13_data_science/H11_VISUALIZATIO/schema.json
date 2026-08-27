@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-VISUALIZATIO Input Schema",
+  "type": "object",
+  "properties": {
+    "chart_type": {
+      "type": "string",
+      "enum": ["bar", "line", "scatter", "pie", "heatmap"]
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "mapping": {
+      "type": "object",
+      "properties": {
+        "x": {"type": "string"},
+        "y": {"type": "string"},
+        "color": {"type": "string"}
+      }
+    }
+  },
+  "required": ["chart_type", "data", "mapping"]
+}

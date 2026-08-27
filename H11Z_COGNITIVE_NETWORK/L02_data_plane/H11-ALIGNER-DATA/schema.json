@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ALIGNER-DATA",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Multi-modal and cross-lingual data alignment engine",
+  "category": "Data Integration",
+  "inputs": [
+    {
+      "name": "primary_stream",
+      "type": "array",
+      "description": "The anchor modality sequence",
+      "required": true
+    },
+    {
+      "name": "secondary_stream",
+      "type": "array",
+      "description": "The target modality sequence to align",
+      "required": true
+    },
+    {
+      "name": "strategy",
+      "type": "string",
+      "description": "Alignment algorithm (GALE_CHURCH, FAST_DTW, CTC_FORCED)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "aligned_pairs",
+      "type": "array",
+      "description": "List of synchronized tuple pairs mapping primary to secondary indices"
+    },
+    {
+      "name": "alignment_density",
+      "type": "number",
+      "description": "Ratio of items successfully aligned vs total items"
+    }
+  ],
+  "config": {
+    "dtw_radius": {
+      "type": "integer",
+      "default": 10,
+      "description": "Sakoe-Chiba band radius for FastDTW"
+    },
+    "gale_church_threshold": {
+      "type": "number",
+      "default": -3.5,
+      "description": "Log-probability threshold for accepting sentence pairs"
+    }
+  },
+  "state_schema": {
+    "cache_hits": {
+      "type": "integer",
+      "description": "Number of neural embeddings retrieved from cache"
+    },
+    "failed_alignments": {
+      "type": "integer",
+      "description": "Count of completely failed alignment runs"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-INGEST", "H11-NORMALIZER"],
+    "downstream": ["H11-QUALITY", "H11-TRAINER"]
+  },
+  "events": {
+    "emits": ["alignment_job_completed", "alignment_failed"],
+    "consumes": ["raw_data_ready"]
+  },
+  "metrics": [
+    {
+      "name": "dtw_cost",
+      "type": "histogram",
+      "description": "Distribution of final DTW costs"
+    },
+    {
+      "name": "alignment_density",
+      "type": "gauge",
+      "description": "Real-time alignment density for health monitoring"
+    }
+  ],
+  "capabilities": ["multi-modal-pairing", "cross-lingual-registration", "forced-alignment"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPATIAL",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Perception & Sensing",
+  "type": "cognitive_agent",
+  "domain": "spatial_reasoning",
+  "capabilities": [
+    "3d_scene_graph_generation",
+    "occupancy_mapping",
+    "spatial_relationship_extraction",
+    "coordinate_transformation"
+  ],
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "point_cloud": {
+        "type": "array",
+        "description": "Nx3 or Nx6 (with RGB) point cloud"
+      },
+      "sensor_pose": {
+        "type": "object",
+        "description": "4x4 transformation matrix"
+      }
+    }
+  },
+  "outputs": {
+    "type": "object",
+    "properties": {
+      "scene_graph": {
+        "type": "object",
+        "properties": {
+          "nodes": { "type": "array" },
+          "edges": { "type": "array" }
+        }
+      },
+      "occupancy": {
+        "type": "object",
+        "description": "Serialized octree or dense grid"
+      }
+    }
+  }
+}

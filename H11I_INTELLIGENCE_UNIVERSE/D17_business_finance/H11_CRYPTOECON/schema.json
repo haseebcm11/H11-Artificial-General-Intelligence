@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CRYPTOECON",
+  "version": "1.0.0",
+  "layer": 17,
+  "layer_name": "Business, Finance & Economics",
+  "description": "Models tokenomics and consensus games.",
+  "category": "Economics",
+  "inputs": [{"name": "hash_rate", "type": "number", "required": true}],
+  "outputs": [{"name": "security_budget", "type": "number"}],
+  "config": {"block_reward": {"type": "number", "default": 6.25}},
+  "state_schema": {"chain_state": {"type": "object"}},
+  "dependencies": {"upstream": [], "downstream": ["H11-DEFI"]}
+}

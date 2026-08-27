@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ACCESSCTRL",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Security, Integrity & Resilience",
+  "description": "Authorization: RBAC (role-based), ABAC (attribute-based), ACL, OAuth 2",
+  "category": "Security",
+  "inputs": [
+    {
+      "name": "access_request",
+      "type": "AccessRequest",
+      "description": "Principal, action, and resource",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "access_decision",
+      "type": "AccessDecision",
+      "description": "Allow/deny with reasoning"
+    }
+  ],
+  "config": {
+    "strict_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enforce maximum security constraints"
+    }
+  },
+  "state_schema": {
+    "policy_cache": {
+      "type": "dict",
+      "desc": "Cached OPA policies"
+    },
+    "token_blacklist": {
+      "type": "set",
+      "desc": "Revoked JWTs"
+    }
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-ZEROTRUST"
+    ],
+    "downstream": [
+      "H11-THREAT"
+    ]
+  },
+  "events": {
+    "emits": [
+      "accessctrl_event"
+    ],
+    "consumes": [
+      "system_tick"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "accessctrl_ops_total",
+      "type": "counter",
+      "description": "Total operations processed"
+    }
+  ],
+  "capabilities": [
+    "secure_execution",
+    "audit_logging"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

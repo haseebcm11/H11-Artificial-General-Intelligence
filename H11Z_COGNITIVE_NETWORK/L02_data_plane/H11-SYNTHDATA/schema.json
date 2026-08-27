@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SYNTHDATA",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Privacy-preserving synthetic data and instruction-tuning generator",
+  "category": "Data Generation",
+  "inputs": [
+    {
+      "name": "seed_data",
+      "type": "array",
+      "description": "Organic data samples to bootstrap from",
+      "required": true
+    },
+    {
+      "name": "request",
+      "type": "object",
+      "description": "Target volume and privacy configuration",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "synthetic_batch",
+      "type": "array",
+      "description": "The generated artificial dataset"
+    },
+    {
+      "name": "epsilon_spent",
+      "type": "number",
+      "description": "Privacy budget consumed"
+    }
+  ],
+  "config": {
+    "temperature_schedule": {
+      "type": "object",
+      "default": {"start": 0.7, "end": 1.2},
+      "description": "Stochasticity curve for text generation"
+    },
+    "dp_epsilon": {
+      "type": "number",
+      "default": 1.0,
+      "description": "Target differential privacy bound"
+    }
+  },
+  "state_schema": {
+    "dp_accountant": {
+      "type": "object",
+      "description": "Running tally of privacy budget across models"
+    },
+    "mutation_graph": {
+      "type": "object",
+      "description": "DAG of instruction evolutions"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-FILTER", "H11-QUALITY"],
+    "downstream": ["H11-INGEST", "H11-TRAINER"]
+  },
+  "events": {
+    "emits": ["synthetic_data_ready", "privacy_budget_exhausted"],
+    "consumes": ["seed_data_available"]
+  },
+  "metrics": [
+    {
+      "name": "generation_throughput",
+      "type": "gauge",
+      "description": "Rows/tokens generated per second"
+    },
+    {
+      "name": "mode_collapse_warning",
+      "type": "counter",
+      "description": "Triggers when variance drops below threshold"
+    }
+  ],
+  "capabilities": ["evol-instruct", "ctgan", "differential-privacy", "latent-walk"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

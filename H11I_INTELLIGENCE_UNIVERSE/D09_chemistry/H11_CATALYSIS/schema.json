@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_CATALYSIS_Schema",
+  "type": "object",
+  "properties": {
+    "reactants": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "products": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "catalyst_type": {
+      "type": "string",
+      "enum": ["heterogeneous", "homogeneous", "enzymatic"]
+    },
+    "catalyst_composition": {
+      "type": "string",
+      "description": "Description of the catalyst (e.g., Pt/C, Wilkinson's catalyst)."
+    }
+  },
+  "required": ["reactants", "catalyst_type", "catalyst_composition"]
+}

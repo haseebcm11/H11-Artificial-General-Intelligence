@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-REGULARIZATION",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "L1/L2 and Weight Decay",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "weights",
+      "type": "Dict[str, List[float]]",
+      "description": "weights input",
+      "required": true
+    },
+    {
+      "name": "validation_metric",
+      "type": "float",
+      "description": "validation_metric input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "regularized_weights",
+      "type": "Dict[str, List[float]]",
+      "description": "regularized_weights output"
+    },
+    {
+      "name": "stop_training",
+      "type": "bool",
+      "description": "stop_training output"
+    }
+  ],
+  "config": {
+    "regularization_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "regularization_completed"
+    ],
+    "consumes": [
+      "regularization_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "regularization_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_regularization"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

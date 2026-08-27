@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GQA",
+  "version": "1.0.0",
+  "layer": 5,
+  "layer_name": "Attention & Context Engine",
+  "description": "Optimizes memory bandwidth by grouping multiple query heads to share a single key-value head, balancing quality and speed.",
+  "inputs": [{"name": "queries", "type": "Any", "description": "Query heads"}, {"name": "keys", "type": "Any", "description": "Key heads"}, {"name": "group_size", "type": "int", "description": "Queries per KV head"}],
+  "outputs": [{"name": "gqa_context", "type": "Any", "description": "Grouped attention output"}],
+  "state_schema": {"current_group_size": {"type": "int", "description": "Active G parameter"}}
+}

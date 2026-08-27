@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_VETCHIRURGIA_Schema",
+  "type": "object",
+  "properties": {
+    "SurgicalPlanningRequest": {
+      "type": "object",
+      "properties": {
+        "species": { "type": "string" },
+        "breed": { "type": "string" },
+        "weight_kg": { "type": "number" },
+        "procedure_type": { "type": "string", "enum": ["ORTHOPEDIC", "SOFT_TISSUE", "NEUROLOGIC", "ONCOLOGIC"] },
+        "specific_procedure": { "type": "string" },
+        "imaging_data_summary": { "type": "string" },
+        "comorbidities": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["species", "weight_kg", "procedure_type", "specific_procedure"]
+    },
+    "SurgicalPlanResponse": {
+      "type": "object",
+      "properties": {
+        "surgical_approach": { "type": "string" },
+        "biomechanical_considerations": { "type": "string" },
+        "implant_recommendations": { "type": "array", "items": { "type": "string" } },
+        "estimated_surgical_time_min": { "type": "integer" },
+        "risk_factors": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["surgical_approach", "risk_factors"]
+    },
+    "AnesthesiaProtocolRequest": {
+      "type": "object",
+      "properties": {
+        "patient_id": { "type": "string" },
+        "asa_status": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "current_medications": { "type": "array", "items": { "type": "string" } },
+        "planned_procedure_duration_min": { "type": "integer" }
+      },
+      "required": ["patient_id", "asa_status", "planned_procedure_duration_min"]
+    },
+    "AnesthesiaProtocolResponse": {
+      "type": "object",
+      "properties": {
+        "premedication": { "type": "string" },
+        "induction_agent": { "type": "string" },
+        "maintenance_agent": { "type": "string" },
+        "analgesia_cri": { "type": "string" },
+        "locoregional_block": { "type": "string" },
+        "monitoring_focus": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["premedication", "induction_agent", "maintenance_agent", "analgesia_cri"]
+    }
+  }
+}

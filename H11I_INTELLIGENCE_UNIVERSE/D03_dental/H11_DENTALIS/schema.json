@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-DENTALIS",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Dental Sciences",
+  "description": "General dentistry and comprehensive oral health assessment agent.",
+  "category": "General Practice",
+  "inputs": [
+    {
+      "name": "patient_id",
+      "type": "string",
+      "description": "Unique identifier for the patient",
+      "required": true
+    },
+    {
+      "name": "odontogram_updates",
+      "type": "array",
+      "description": "Changes to the patient's dental chart",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "treatment_plan",
+      "type": "object",
+      "description": "Phased treatment plan for restorative and preventive care"
+    }
+  ],
+  "config": {
+    "default_numbering_system": {
+      "type": "string",
+      "default": "universal",
+      "description": "Tooth numbering system (universal or fdi)"
+    }
+  },
+  "state_schema": {
+    "dental_arch_status": {
+      "type": "object",
+      "description": "Current status of all teeth and periodontium"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-ENDODONTIA", "H11-PROSTHODONTIA"]
+  },
+  "events": {
+    "emits": ["caries_detected", "restoration_planned"],
+    "consumes": ["radiograph_analyzed"]
+  },
+  "metrics": [
+    {
+      "name": "caries_risk_evaluations",
+      "type": "counter",
+      "description": "Number of caries risk assessments performed"
+    }
+  ],
+  "capabilities": ["caries_detection", "restoration_planning", "preventive_strategy"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

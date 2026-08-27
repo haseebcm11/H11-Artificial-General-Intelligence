@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AQUACULTURA",
+  "version": "1.0.0",
+  "layer": 24,
+  "layer_name": "Agriculture & Food Sciences",
+  "description": "Aquaculture system and water chemistry management.",
+  "category": "Aquaculture",
+  "inputs": [
+    {
+      "name": "water_quality",
+      "type": "WaterMetrics",
+      "description": "DO, temp, nitrogen compounds"
+    },
+    {
+      "name": "stock_data",
+      "type": "BiomassInfo",
+      "description": "Fish size and population"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "feed_schedule",
+      "type": "FeedCommand",
+      "description": "Feeding instructions"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": ["H11-FOODSCI"],
+    "downstream": ["H11-FOODTECH"]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-PHARMACOLOGIA Data Schema",
+  "type": "object",
+  "properties": {
+    "ligand": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "kd": { "type": "number", "description": "Dissociation constant in M" },
+        "emax": { "type": "number", "description": "Maximal effect" },
+        "hill_coefficient": { "type": "number", "default": 1.0 },
+        "is_agonist": { "type": "boolean" }
+      },
+      "required": ["id", "kd", "emax"]
+    },
+    "pk_parameters": {
+      "type": "object",
+      "properties": {
+        "dose": { "type": "number" },
+        "volume_distribution": { "type": "number" },
+        "clearance": { "type": "number" },
+        "bioavailability": { "type": "number", "default": 1.0 }
+      },
+      "required": ["dose", "volume_distribution", "clearance"]
+    }
+  },
+  "required": ["ligand", "pk_parameters"]
+}

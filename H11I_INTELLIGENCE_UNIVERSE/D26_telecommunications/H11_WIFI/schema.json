@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-WIFI",
+  "version": "1.0.0",
+  "layer": 3,
+  "layer_name": "Telecommunications",
+  "description": "WLAN/Wi-Fi contention and propagation modeling.",
+  "category": "WLAN",
+  "inputs": [
+    {
+      "name": "client_count",
+      "type": "integer",
+      "description": "Connected STAs",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "collision_rate",
+      "type": "number",
+      "description": "Frame collision probability"
+    }
+  ],
+  "config": {
+    "enable_mlo": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable Multi-Link Operation (Wi-Fi 7)"
+    }
+  },
+  "state_schema": {
+    "active_bssids": {
+      "type": "integer",
+      "description": "Number of active BSSs"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SPECTRUM"],
+    "downstream": ["H11-NETWORKING"]
+  },
+  "events": {
+    "emits": ["ChannelCongested"],
+    "consumes": ["InterferenceSpike"]
+  },
+  "metrics": [
+    {
+      "name": "airtime_utilization",
+      "type": "gauge",
+      "description": "Percentage of channel busy time"
+    }
+  ],
+  "capabilities": ["csma_ca_sim", "ofdma_alloc"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

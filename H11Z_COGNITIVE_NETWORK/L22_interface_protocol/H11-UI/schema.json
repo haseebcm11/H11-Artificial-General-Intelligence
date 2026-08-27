@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-UI Agent Schema",
+  "type": "object",
+  "properties": {
+    "component_request": {
+      "type": "object",
+      "properties": {
+        "framework": { "type": "string", "enum": ["react", "vue", "svelte", "vanilla"] },
+        "component_type": { "type": "string" },
+        "props": { "type": "object", "additionalProperties": true },
+        "children": { "type": "array", "items": { "type": "object" } }
+      },
+      "required": ["framework", "component_type"]
+    },
+    "ui_state_update": {
+      "type": "object",
+      "properties": {
+        "component_id": { "type": "string" },
+        "delta": { "type": "object" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["component_id", "delta"]
+    }
+  }
+}

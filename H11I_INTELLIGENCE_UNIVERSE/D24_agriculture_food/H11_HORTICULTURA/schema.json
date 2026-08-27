@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-HORTICULTURA",
+  "version": "1.0.0",
+  "layer": 24,
+  "layer_name": "Agriculture & Food Sciences",
+  "description": "Greenhouse microclimate and specialty crop quality optimization.",
+  "category": "Horticulture",
+  "inputs": [
+    {
+      "name": "indoor_climate",
+      "type": "MicroclimateReadings",
+      "description": "Sensor readings for the greenhouse",
+      "required": true
+    },
+    {
+      "name": "nutrient_solution",
+      "type": "HydroponicState",
+      "description": "Reservoir pH and EC",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "climate_setpoints",
+      "type": "HVACCommands",
+      "description": "Control outputs for greenhouse actuators"
+    }
+  ],
+  "config": {
+    "target_dli_mol_m2_d": {
+      "type": "float",
+      "default": 25.0,
+      "description": "Target Daily Light Integral"
+    }
+  },
+  "state_schema": {
+    "daily_cumulative_dli": {
+      "type": "float",
+      "description": "Accumulated light for the day"
+    },
+    "vpd_history": {
+      "type": "array",
+      "description": "Rolling window of VPD values"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-PRECISIONAG", "H11-IRRIGATIO"],
+    "downstream": ["H11-FOODTECH"]
+  },
+  "events": {
+    "emits": ["hvac_adjusted", "fertigation_triggered"],
+    "consumes": ["sensor_telemetry"]
+  },
+  "metrics": [
+    {
+      "name": "vpd_deviation_integral",
+      "type": "histogram",
+      "description": "Time spent outside optimal VPD range"
+    }
+  ],
+  "capabilities": ["microclimate_control", "hydroponic_dosing"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

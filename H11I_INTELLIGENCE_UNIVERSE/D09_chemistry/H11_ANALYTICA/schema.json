@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ANALYTICA",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Chemistry",
+  "description": "Spectroscopy and chromatographic data analysis.",
+  "category": "Analysis",
+  "inputs": [
+    {
+      "name": "spectrum_type",
+      "type": "string",
+      "description": "Type of analytical technique",
+      "required": true
+    },
+    {
+      "name": "raw_data",
+      "type": "array",
+      "description": "Raw intensity values",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "peaks",
+      "type": "array",
+      "description": "List of deconvoluted peaks"
+    }
+  ],
+  "config": {
+    "snr_threshold": {
+      "type": "number",
+      "default": 3.0,
+      "description": "Signal to noise ratio cutoff for peak picking"
+    }
+  },
+  "state_schema": {
+    "active_calibrations": {
+      "type": "object",
+      "description": "Current standard curves in memory"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ORGANICA"],
+    "downstream": ["H11-FOODCHEMIA", "H11-PETROCHEMIA"]
+  },
+  "events": {
+    "emits": ["structure_elucidated", "concentration_calculated"],
+    "consumes": ["sample_analyzed"]
+  },
+  "metrics": [
+    {
+      "name": "spectra_processed",
+      "type": "counter",
+      "description": "Number of data files processed"
+    }
+  ],
+  "capabilities": ["peak_picking", "baseline_correction", "structure_elucidation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

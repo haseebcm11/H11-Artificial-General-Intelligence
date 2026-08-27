@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CROP",
+  "version": "1.0.0",
+  "layer": 24,
+  "layer_name": "Agriculture & Food Sciences",
+  "description": "Agronomic yield optimization and phenological modeling.",
+  "category": "Agronomy",
+  "inputs": [
+    {
+      "name": "field_data",
+      "type": "FieldTopography",
+      "description": "Field area and topology",
+      "required": true
+    },
+    {
+      "name": "cultivar_params",
+      "type": "CultivarPhenotype",
+      "description": "Genetic coefficients of the crop",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "yield_forecast",
+      "type": "BiomassEstimate",
+      "description": "Predicted crop yield"
+    }
+  ],
+  "config": {
+    "simulation_timestep_hours": {
+      "type": "integer",
+      "default": 24,
+      "description": "Timestep for crop growth simulation"
+    }
+  },
+  "state_schema": {
+    "accumulated_gdd": {
+      "type": "float",
+      "description": "Growing Degree Days accumulated"
+    },
+    "current_lai": {
+      "type": "float",
+      "description": "Leaf Area Index"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SOILSCI", "H11-IRRIGATIO"],
+    "downstream": ["H11-PRECISIONAG"]
+  },
+  "events": {
+    "emits": ["crop_stage_advanced", "yield_forecast_updated"],
+    "consumes": ["weather_updated", "irrigation_applied"]
+  },
+  "metrics": [
+    {
+      "name": "simulation_convergence_rate",
+      "type": "gauge",
+      "description": "Rate at which biomass allocation converges"
+    }
+  ],
+  "capabilities": ["phenological_modeling", "yield_prediction"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

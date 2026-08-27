@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-TOPP",
+  "version": "1.0.0",
+  "layer": 9,
+  "layer_name": "Inference & Serving Engine",
+  "description": "Top-p (nucleus) sampling based on cumulative probability mass.",
+  "category": "Inference",
+  "inputs": [
+    {
+      "name": "probs",
+      "type": "List[float]",
+      "desc": "Token probabilities"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "filtered_probs",
+      "type": "List[float]",
+      "desc": "Probs restricted to top-p mass"
+    }
+  ],
+  "config": {},
+  "state_schema": {
+    "last_p": {
+      "type": "float",
+      "description": "Last p threshold used"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

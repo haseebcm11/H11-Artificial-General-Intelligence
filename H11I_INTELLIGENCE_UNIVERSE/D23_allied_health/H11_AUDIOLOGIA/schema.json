@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AUDIOLOGIA",
+  "version": "1.0.0",
+  "layer": 23,
+  "layer_name": "Allied Health",
+  "description": "Clinical Audiology and Vestibular Assessment",
+  "category": "Audiology",
+  "inputs": [
+    {
+      "name": "pure_tone_thresholds",
+      "type": "object",
+      "description": "Air and bone conduction dB HL",
+      "required": true
+    },
+    {
+      "name": "abr_data",
+      "type": "array",
+      "description": "Brainstem potentials",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "audiogram_diagnosis",
+      "type": "string",
+      "description": "Type and degree of hearing loss"
+    },
+    {
+      "name": "hearing_aid_prescription",
+      "type": "object",
+      "description": "Gain matrix per frequency band"
+    }
+  ],
+  "config": {
+    "prescription_formula": {
+      "type": "string",
+      "default": "NAL-NL2",
+      "description": "Target gain formula"
+    }
+  },
+  "state_schema": {
+    "tinnitus_profile": {
+      "type": "object",
+      "description": "Pitch and loudness match"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ENT", "H11-NEURO"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["AudiogramGenerated"],
+    "consumes": ["AudioTestCompleted"]
+  },
+  "metrics": [
+    {
+      "name": "wave_v_latency_ms",
+      "type": "gauge",
+      "description": "Primary diagnostic marker for retrocochlear pathology"
+    }
+  ],
+  "capabilities": ["audiometry", "vestibular_testing"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

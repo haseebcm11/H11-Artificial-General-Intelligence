@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SEMICONDUCTOR Agent Schema",
+  "type": "object",
+  "properties": {
+    "fabrication_node": {
+      "type": "string",
+      "description": "Technology node, e.g., '3nm', '5nm', '14nm'"
+    },
+    "wafer_size_mm": {
+      "type": "integer",
+      "enum": [200, 300, 450]
+    },
+    "implant_parameters": {
+      "type": "object",
+      "properties": {
+        "ion_species": { "enum": ["B", "P", "As", "BF2"] },
+        "energy_kev": { "type": "number" },
+        "dose_cm2": { "type": "number" }
+      }
+    }
+  },
+  "required": ["fabrication_node", "wafer_size_mm"]
+}

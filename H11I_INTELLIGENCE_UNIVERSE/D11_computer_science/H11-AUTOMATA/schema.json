@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-AUTOMATA",
+  "version": "1.0.0",
+  "layer": 4,
+  "layer_name": "Theoretical Models",
+  "description": "Synthesizes and evaluates finite state machines, regex, and formal languages.",
+  "category": "Theoretical Computer Science",
+  "inputs": [
+    {
+      "name": "grammar_def",
+      "type": "string",
+      "description": "Regex, EBNF, or State Transition Table",
+      "required": true
+    },
+    {
+      "name": "automata_type",
+      "type": "string",
+      "description": "DFA, PDA, CELLULAR_AUTOMATA",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "compiled_automata",
+      "type": "object",
+      "description": "Minimized state transition graph"
+    },
+    {
+      "name": "validation_result",
+      "type": "boolean",
+      "description": "Did stream reach an accept state?"
+    }
+  ],
+  "config": {
+    "max_states": {
+      "type": "integer",
+      "default": 100000,
+      "description": "Prevention against state explosion"
+    },
+    "minimize_dfa": {
+      "type": "boolean",
+      "default": true,
+      "description": "Apply Hopcroft's algorithm"
+    }
+  },
+  "state_schema": {
+    "active_dfas": {
+      "type": "integer",
+      "description": "Number of active compiled automata"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ALGORITHMICA", "H11-COMPILER"],
+    "downstream": ["H11-NLP", "H11-REINFORCEMENT"]
+  },
+  "events": {
+    "emits": ["automata_compiled", "state_explosion_prevented"],
+    "consumes": ["rule_enforced"]
+  },
+  "metrics": [
+    {
+      "name": "compilation_latency_ms",
+      "type": "histogram",
+      "description": "Time to convert NFA to minimized DFA"
+    }
+  ],
+  "capabilities": ["regex_compilation", "state_machine_validation", "parser_generation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

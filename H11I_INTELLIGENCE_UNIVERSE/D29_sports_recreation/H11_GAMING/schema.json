@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GAMING",
+  "version": "1.0.0",
+  "layer": 29,
+  "layer_name": "Sports & Recreation",
+  "description": "Esports and Gaming Performance Agent",
+  "category": "Esports",
+  "inputs": [
+    {
+      "name": "event_stream",
+      "type": "array",
+      "description": "Input telemetry",
+      "required": true
+    },
+    {
+      "name": "game_state",
+      "type": "object",
+      "description": "State matrix of the game",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "apm_effective",
+      "type": "number",
+      "description": "EAPM metric"
+    },
+    {
+      "name": "cognitive_load",
+      "type": "number",
+      "description": "Mental strain estimate"
+    }
+  ],
+  "config": {
+    "fitts_law_constants": {
+      "type": "object",
+      "default": {"a": 0.2, "b": 0.1},
+      "description": "Constants for targeting difficulty"
+    }
+  },
+  "state_schema": {
+    "session_fatigue": {
+      "type": "number",
+      "description": "Cumulative fatigue over session"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SPORTSCI"],
+    "downstream": ["H11-COACHING"]
+  },
+  "events": {
+    "emits": ["tilt_detected", "performance_peak"],
+    "consumes": ["match_started", "match_ended"]
+  },
+  "metrics": [
+    {
+      "name": "event_parse_latency",
+      "type": "histogram",
+      "description": "Latency in parsing telemetry"
+    }
+  ],
+  "capabilities": ["apm_analysis", "fitts_targeting_eval"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

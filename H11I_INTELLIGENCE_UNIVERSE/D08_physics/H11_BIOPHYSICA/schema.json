@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-BIOPHYSICA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Biological physics and molecular dynamics agent",
+  "category": "Interdisciplinary Physics",
+  "inputs": [
+    {
+      "name": "structure",
+      "type": "MolecularStructure",
+      "description": "Target macromolecular structure",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "folding_free_energy",
+      "type": "float",
+      "description": "Gibbs free energy of folding in kJ/mol"
+    }
+  ],
+  "config": {
+    "dielectric_water": {
+      "type": "float",
+      "default": 78.4,
+      "description": "Relative permittivity of aqueous environment"
+    }
+  },
+  "state_schema": {
+    "atp_consumed": {
+      "type": "int",
+      "description": "Total ATP molecules hydrolyzed during simulation"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-THERMODYNAMICA", "H11-FLUIDA"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["protein_folded", "membrane_depolarized"],
+    "consumes": ["ion_channel_opened"]
+  },
+  "metrics": [
+    {
+      "name": "brownian_steps_computed",
+      "type": "counter",
+      "description": "Langevin dynamics steps evaluated"
+    }
+  ],
+  "capabilities": ["electrostatics_poisson_boltzmann", "langevin_dynamics"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

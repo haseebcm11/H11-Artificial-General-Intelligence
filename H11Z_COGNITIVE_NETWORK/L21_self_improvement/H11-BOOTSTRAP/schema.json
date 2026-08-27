@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-BOOTSTRAP Schema",
+  "type": "object",
+  "properties": {
+    "BootstrapRequest": {
+      "type": "object",
+      "properties": {
+        "target_capability": { "type": "string" },
+        "seed_examples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "input": { "type": "string" },
+              "output": { "type": "string" }
+            }
+          }
+        },
+        "target_dataset_size": { "type": "integer", "default": 1000 }
+      },
+      "required": ["target_capability", "seed_examples"]
+    },
+    "BootstrapResponse": {
+      "type": "object",
+      "properties": {
+        "dataset_uri": { "type": "string" },
+        "diversity_score": { "type": "number" },
+        "estimated_capability_gain": { "type": "number" }
+      }
+    }
+  }
+}

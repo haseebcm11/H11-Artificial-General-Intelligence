@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PODCAST",
+  "version": "1.0.0",
+  "layer": "2",
+  "layer_name": "Content Curation",
+  "description": "Podcast thematic analysis, conversation flow optimization, and highlight extraction.",
+  "category": "Audio Curation",
+  "inputs": [
+    {
+      "name": "raw_transcripts",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "speaker_id": {"type": "string"},
+          "text": {"type": "string"},
+          "start_time_sec": {"type": "number"},
+          "end_time_sec": {"type": "number"}
+        }
+      }
+    },
+    {
+      "name": "acoustic_features",
+      "type": "object",
+      "properties": {
+        "silence_intervals": {"type": "array"},
+        "energy_peaks": {"type": "array"}
+      }
+    },
+    {
+      "name": "target_length_sec",
+      "type": "number"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "edit_decision_list",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action": {"type": "string", "enum": ["CUT", "KEEP"]},
+          "start_sec": {"type": "number"},
+          "end_sec": {"type": "number"},
+          "reason": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "thematic_summary",
+      "type": "string"
+    },
+    {
+      "name": "promo_clips",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "start_sec": {"type": "number"},
+          "end_sec": {"type": "number"},
+          "viral_potential": {"type": "number"}
+        }
+      }
+    }
+  ],
+  "config": {
+    "max_tangent_length_sec": 300,
+    "silence_removal_threshold_sec": 3.0,
+    "clip_duration_target_sec": 45
+  },
+  "state_schema": {
+    "episodic_memory_bank": {
+      "type": "object",
+      "properties": {
+        "recurring_themes": {"type": "array"},
+        "guest_roster": {"type": "object"}
+      }
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-AUDIO-PROC", "H11-AUDIENCE"],
+    "downstream": ["H11-PUBLISHING", "H11-SOCIALMEDIA"]
+  },
+  "events": {
+    "emits": ["episode_ready_for_publish", "clip_extracted"],
+    "consumes": ["raw_audio_uploaded"]
+  },
+  "metrics": [
+    "processing_time_per_hour",
+    "dead_air_removed_sec",
+    "clip_conversion_rate"
+  ],
+  "capabilities": [
+    "conversational_turn_analysis",
+    "highlight_extraction",
+    "seo_chapter_generation"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

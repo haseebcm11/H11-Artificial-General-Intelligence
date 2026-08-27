@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-SPINE-REGISTRAR",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Registers named spines (host_infection, \u2026) as callable pipelines.",
+  "category": "integrator",
+  "handler": "register_spine",
+  "inputs": [
+    {
+      "name": "spine_id",
+      "type": "Any"
+    },
+    {
+      "name": "hops",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "registry",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [],
+    "downstream": [
+      "H11C-PIPELINE-COMPOSER"
+    ]
+  },
+  "capabilities": [
+    "register_spine"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

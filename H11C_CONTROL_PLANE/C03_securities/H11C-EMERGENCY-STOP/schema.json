@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-EMERGENCY-STOP",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Immediate halt plus kill-switch latch.",
+  "category": "security",
+  "handler": "halt",
+  "inputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-KILL-SWITCH"
+    ],
+    "downstream": [
+      "H11C-HALT"
+    ]
+  },
+  "capabilities": [
+    "halt"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

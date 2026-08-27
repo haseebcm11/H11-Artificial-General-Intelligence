@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PHYSIOLOGIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Agent simulating human physiological systems and homeostatic regulation.",
+  "category": "Dynamic Modeling",
+  "inputs": [
+    {"name": "systemic_state", "type": "SystemState"},
+    {"name": "perturbation", "type": "StressorEvent"},
+    {"name": "duration", "type": "Float"}
+  ],
+  "outputs": [
+    {"name": "future_state", "type": "SystemState"},
+    {"name": "homeostatic_shifts", "type": "List[Shift]"}
+  ],
+  "config": {
+    "solver_method": "RK45",
+    "time_step": 0.1
+  },
+  "state_schema": {
+    "homeostasis_vector": "HomeostasisVector",
+    "feedback_controllers": "List[FeedbackController]"
+  },
+  "dependencies": {
+    "upstream": ["H11-ANATOMIA", "H11-PARASITOLOGIA"],
+    "downstream": ["H11-PATHOLOGIA", "H11-IMMUNOLOGIA"]
+  },
+  "events": {
+    "emits": ["VitalsChanged", "HomeostasisBreached"],
+    "consumes": ["OrganDamageReported"]
+  },
+  "metrics": ["simulation_ticks_per_sec", "parameter_stability"],
+  "capabilities": ["ODE Simulation", "Feedback Regulation", "Pharmacokinetics"],
+  "scaling": {
+    "cpu_intensive": true
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NUTRITION-SPORT",
+  "version": "1.0.0",
+  "layer": 29,
+  "layer_name": "Sports & Recreation",
+  "description": "Sports Nutrition Agent",
+  "category": "Nutrition",
+  "inputs": [
+    {
+      "name": "dietary_intake",
+      "type": "array",
+      "description": "Meals logged",
+      "required": true
+    },
+    {
+      "name": "expenditure_kcals",
+      "type": "number",
+      "description": "Calories burned",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "glycogen_status",
+      "type": "number",
+      "description": "Estimated glycogen %"
+    },
+    {
+      "name": "prescription",
+      "type": "object",
+      "description": "Recommended macros"
+    }
+  ],
+  "config": {
+    "max_carb_absorption_g_hr": {
+      "type": "number",
+      "default": 90.0,
+      "description": "Upper limit for dual-transport carbs"
+    }
+  },
+  "state_schema": {
+    "circulating_amino_acids": {
+      "type": "number",
+      "description": "Proxy for MPS potential"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-SPORTSCI"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["refueling_required", "hydration_alert"],
+    "consumes": ["workout_completed"]
+  },
+  "metrics": [
+    {
+      "name": "nutrition_rx_generated",
+      "type": "counter",
+      "description": "Prescriptions made"
+    }
+  ],
+  "capabilities": ["glycogen_modeling", "gastric_emptying_estimation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

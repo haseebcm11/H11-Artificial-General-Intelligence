@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-METALEARNING",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Machine Learning",
+  "description": "Optimizes the learning process itself using MAML and learned optimizers.",
+  "category": "Artificial Intelligence",
+  "inputs": [
+    {
+      "name": "task_batch",
+      "type": "array",
+      "description": "Set of diverse tasks for the outer loop",
+      "required": true
+    },
+    {
+      "name": "meta_objective",
+      "type": "string",
+      "description": "The metric to optimize (e.g., few-shot accuracy)",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "meta_parameters",
+      "type": "string",
+      "description": "URI to the optimized initialization weights"
+    },
+    {
+      "name": "learned_optimizer",
+      "type": "string",
+      "description": "URI to the neural optimizer network"
+    }
+  ],
+  "config": {
+    "first_order_approximation": {
+      "type": "boolean",
+      "default": true,
+      "description": "Drop second derivatives for speed (FOMAML)"
+    },
+    "inner_steps": {
+      "type": "integer",
+      "default": 5,
+      "description": "Gradient steps in the inner loop"
+    }
+  },
+  "state_schema": {
+    "task_manifold": {
+      "type": "object",
+      "description": "Vector database mapping task properties"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-DEEPLEARNING", "H11-TRANSFERLEARNING"],
+    "downstream": ["H11-MACHINA-DISCENS", "H11-GENERATIVA"]
+  },
+  "events": {
+    "emits": ["meta_parameters_updated", "optimizer_synthesized"],
+    "consumes": ["task_completed"]
+  },
+  "metrics": [
+    {
+      "name": "few_shot_accuracy",
+      "type": "gauge",
+      "description": "Accuracy on unseen tasks after K steps"
+    }
+  ],
+  "capabilities": ["maml", "learned_optimizers", "few_shot_learning"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "extreme"
+  }
+}

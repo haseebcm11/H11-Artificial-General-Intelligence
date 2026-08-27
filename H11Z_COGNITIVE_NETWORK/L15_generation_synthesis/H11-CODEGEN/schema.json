@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CODEGEN",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Generation & Synthesis",
+  "description": "Synthesizes code snippets, entire functions, and full classes from natural language.",
+  "category": "Generation",
+  "inputs": [
+    {"name": "instruction", "type": "str"}, {"name": "context", "type": "str"}, {"name": "language", "type": "str"}
+  ],
+  "outputs": [
+    {"name": "code", "type": "str"}, {"name": "ast_valid", "type": "bool"}, {"name": "dependencies", "type": "List[str]"}
+  ]
+}

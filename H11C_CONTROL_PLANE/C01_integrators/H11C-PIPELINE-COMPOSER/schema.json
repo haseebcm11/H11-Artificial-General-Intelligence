@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-PIPELINE-COMPOSER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Compiles a hop list from a goal and the capability map.",
+  "category": "integrator",
+  "handler": "compose_pipeline",
+  "inputs": [
+    {
+      "name": "goal",
+      "type": "Any"
+    },
+    {
+      "name": "capabilities",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "pipeline",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-CAPABILITY-MAPPER",
+      "H11C-DEPENDENCY-RESOLVER"
+    ],
+    "downstream": [
+      "H11C-WORKFLOW-ENGINE"
+    ]
+  },
+  "capabilities": [
+    "compose_pipeline"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

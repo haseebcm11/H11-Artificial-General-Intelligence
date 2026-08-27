@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SMALLANIMAL",
+  "version": "1.0.0",
+  "layer": 4,
+  "layer_name": "Veterinary Sciences",
+  "description": "Expert system for canine and feline clinical medicine.",
+  "category": "Companion Animal",
+  "inputs": [
+    {
+      "name": "patient_signalment",
+      "type": "SignalmentData",
+      "description": "Patient demographic data",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "differentials",
+      "type": "List[Differential]",
+      "description": "Ranked differential diagnoses"
+    }
+  ],
+  "config": {
+    "regional_disease_prevalence": {
+      "type": "string",
+      "default": "global",
+      "description": "Adjusts priors based on geographic location"
+    }
+  },
+  "state_schema": {
+    "active_cases": {
+      "type": "dict",
+      "description": "Currently managed patient profiles"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-VETPHARMACOLOGIA", "H11-VETPATHOLOGIA"],
+    "downstream": ["H11-VETCHIRURGIA"]
+  },
+  "events": {
+    "emits": ["DiagnosisGenerated", "CriticalCareAlert"],
+    "consumes": ["LabResultsReceived"]
+  },
+  "metrics": [
+    {
+      "name": "diagnostic_accuracy",
+      "type": "gauge",
+      "description": "Accuracy of top differential"
+    }
+  ],
+  "capabilities": ["internal_medicine", "emergency_triage", "preventive_care"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

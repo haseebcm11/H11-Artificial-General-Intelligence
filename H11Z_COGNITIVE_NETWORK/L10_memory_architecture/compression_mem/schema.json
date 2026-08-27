@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-COMPRESSION-MEM",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Summarization and context distillation for token budget management.",
+  "category": "Compression",
+  "inputs": [
+    {"name": "raw_text_blocks", "type": "array", "description": "Blocks to compress", "required": true},
+    {"name": "target_token_budget", "type": "integer", "description": "Max allowed tokens", "required": true}
+  ],
+  "outputs": [
+    {"name": "compressed_context", "type": "string", "description": "Distilled context"},
+    {"name": "compression_ratio", "type": "number", "description": "Efficiency metric"}
+  ],
+  "config": {
+    "algorithm": {"type": "string", "default": "hybrid", "description": "extractive, abstractive, or hybrid"},
+    "attention_sink_size": {"type": "integer", "default": 4, "description": "Tokens to keep at start"}
+  },
+  "state_schema": {
+    "block_history": {"type": "object", "description": "Cache of compressions"}
+  },
+  "dependencies": {"upstream": ["H11-EPISODIC-MEM", "H11-WORKING-MEM"], "downstream": ["H11-ROUTER"]},
+  "capabilities": ["llmlingua", "attention-sinks", "abstractive-summarization"],
+  "scaling": {"horizontal": true, "gpu_required": true, "memory_class": "medium"}
+}

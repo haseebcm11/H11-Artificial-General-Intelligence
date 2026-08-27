@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-BAYES",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Conjugate Beta-Binomial update: posterior = Beta(\u03b1+successes, \u03b2+failures).",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "alpha",
+      "type": "float"
+    },
+    {
+      "name": "beta",
+      "type": "float"
+    },
+    {
+      "name": "successes",
+      "type": "int"
+    },
+    {
+      "name": "failures",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "alpha",
+      "type": "float"
+    },
+    {
+      "name": "beta",
+      "type": "float"
+    },
+    {
+      "name": "mean",
+      "type": "float"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-UNCERTAINTY"
+    ],
+    "downstream": [
+      "H11-MONTECARLO"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "beta-binomial"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

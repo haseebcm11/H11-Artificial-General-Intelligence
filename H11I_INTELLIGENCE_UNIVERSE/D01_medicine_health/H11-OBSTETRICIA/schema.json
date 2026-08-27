@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OBSTETRICIA",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Agent for maternal-fetal surveillance, antenatal risk stratification, intrapartum CTG monitoring, and obstetric complications management.",
+  "category": "Obstetrics & Maternal-Fetal Medicine",
+  "inputs": [
+    {
+      "name": "gestational_profile",
+      "type": "GestationalProfile",
+      "description": "LMP, dating ultrasound biometry, gestational age, parity, gravidity"
+    },
+    {
+      "name": "fetal_biometry",
+      "type": "FetalBiometry",
+      "description": "BPD, HC, AC, FL in mm, AFI in cm, and Doppler pulsatility indices"
+    },
+    {
+      "name": "ctg_features",
+      "type": "CTGFeatures",
+      "description": "Baseline FHR, variability, accelerations, decelerations, and contraction rate"
+    },
+    {
+      "name": "maternal_vitals_biomarkers",
+      "type": "MaternalVitalsBiomarkers",
+      "description": "Blood pressure, MAP, sFlt-1/PlGF ratio, proteinuria, platelets, AST, ALT"
+    },
+    {
+      "name": "cervical_assessment",
+      "type": "CervicalAssessment",
+      "description": "Dilation, effacement, station, consistency, position for Bishop score"
+    },
+    {
+      "name": "pph_risk_factors",
+      "type": "PPHRiskProfile",
+      "description": "Uterine overdistension, prior PPH, prolonged labor, coagulation status"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "fetal_growth_analysis",
+      "type": "FetalGrowthAssessment",
+      "description": "Hadlock EFW (grams), percentile, and FGR/LGA classification"
+    },
+    {
+      "name": "ctg_interpretation",
+      "type": "CTGClassification",
+      "description": "NICHD Category I/II/III classification, clinical severity, and urgent interventions"
+    },
+    {
+      "name": "preeclampsia_evaluation",
+      "type": "PreeclampsiaRiskResult",
+      "description": "Hypertensive disorder tier, angiogenic status, and severe features"
+    },
+    {
+      "name": "labor_induction_readiness",
+      "type": "LaborInductionEvaluation",
+      "description": "Modified Bishop score, cervical ripeness, and ripening recommendations"
+    },
+    {
+      "name": "pph_risk_stratification",
+      "type": "PPHRiskStratification",
+      "description": "4T assessment, cumulative risk tier, and prevention protocol recommendations"
+    }
+  ],
+  "config": {
+    "growth_reference_standard": "Hadlock4",
+    "ctg_standard": "NICHD_2008",
+    "sflt_plgf_cutoff_rule_out": 38.0,
+    "sflt_plgf_cutoff_rule_in": 85.0,
+    "fgr_percentile_cutoff": 10.0,
+    "severe_fgr_percentile_cutoff": 3.0,
+    "hypertension_sbp_threshold": 140,
+    "hypertension_dbp_threshold": 90,
+    "severe_hypertension_sbp_threshold": 160,
+    "severe_hypertension_dbp_threshold": 110
+  },
+  "state_schema": {
+    "gestational_age_days": "number",
+    "serial_efw_grams": "array<number>",
+    "serial_growth_percentiles": "array<number>",
+    "amniotic_fluid_trajectory": "array<number>",
+    "mean_arterial_pressure_trajectory": "array<number>",
+    "labor_stage": "string",
+    "cervical_dilation_cm": "number"
+  },
+  "dependencies": {
+    "upstream": [
+      "H11-GYNAECOLOGIA",
+      "H11-RADIOLOGIA",
+      "H11-GENETICA-MED",
+      "H11-ENDOCRINOLOGIA",
+      "H11-CARDIOLOGIA"
+    ],
+    "downstream": [
+      "H11-NEONATOLOGIA",
+      "H11-ANAESTHESIA",
+      "H11-CHIRURGIA",
+      "H11-HEMATOLOGIA"
+    ]
+  },
+  "events": {
+    "emits": [
+      "CategoryIIICTGFetalDistress",
+      "SeverePreeclampsiaDetected",
+      "EclampticSeizureRiskAlert",
+      "FetalGrowthRestrictionDiagnosed",
+      "ActivePostpartumHemorrhageTriggered"
+    ],
+    "consumes": [
+      "PregnancyConfirmed",
+      "BiometryMeasurementUpdate",
+      "CTGTelemetryUpdate",
+      "LaborOnset",
+      "DeliveryInitiated"
+    ]
+  },
+  "metrics": [
+    "fgr_detection_sensitivity",
+    "preeclampsia_rule_out_npv",
+    "ctg_category_classification_latency_ms",
+    "bishop_score_accuracy",
+    "pph_early_warning_lead_time_minutes"
+  ],
+  "capabilities": [
+    "hadlock_fetal_growth_biometry",
+    "nichd_intrapartum_ctg_categorization",
+    "preeclampsia_angiogenic_biomarker_stratification",
+    "modified_bishop_score_labor_evaluation",
+    "four_ts_postpartum_hemorrhage_risk_engine",
+    "biophysical_profile_scoring"
+  ],
+  "scaling": {
+    "mode": "stateful_simulation",
+    "concurrency_limit": 500
+  }
+}

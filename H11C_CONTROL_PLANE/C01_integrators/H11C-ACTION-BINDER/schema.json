@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-ACTION-BINDER",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (integrator)",
+  "description": "Binds L14 agency outputs to licensed tools.",
+  "category": "integrator",
+  "handler": "bind_role",
+  "inputs": [
+    {
+      "name": "case",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "bindings",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-ACTION-LICENSE"
+    ],
+    "downstream": [
+      "H11C-TOOL-INTEGRATOR"
+    ]
+  },
+  "capabilities": [
+    "bind_role"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

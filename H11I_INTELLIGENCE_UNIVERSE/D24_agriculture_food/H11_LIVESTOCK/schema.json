@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-LIVESTOCK",
+  "version": "1.0.0",
+  "layer": 24,
+  "layer_name": "Agriculture & Food Sciences",
+  "description": "Animal husbandry, health monitoring, and feed formulation.",
+  "category": "Livestock",
+  "inputs": [
+    {
+      "name": "biometrics",
+      "type": "array",
+      "description": "Telemetry from animal wearables",
+      "required": true
+    },
+    {
+      "name": "feed_inventory",
+      "type": "NutritionalProfile",
+      "description": "Available feedstuffs",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ration_formula",
+      "type": "RationMix",
+      "description": "Optimized feed mix"
+    },
+    {
+      "name": "health_alerts",
+      "type": "array",
+      "description": "Anomalies detected in behavior or biometrics"
+    }
+  ],
+  "config": {
+    "thi_threshold": {
+      "type": "integer",
+      "default": 72,
+      "description": "Temperature Humidity Index stress threshold"
+    }
+  },
+  "state_schema": {
+    "animal_baselines": {
+      "type": "object",
+      "description": "Rolling averages of behavior per animal"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-CROP"],
+    "downstream": ["H11-PRECISIONAG", "H11-FOODSCI"]
+  },
+  "events": {
+    "emits": ["health_alert_raised", "ration_updated"],
+    "consumes": ["tag_telemetry", "weather_updated"]
+  },
+  "metrics": [
+    {
+      "name": "herd_rumination_average",
+      "type": "gauge",
+      "description": "Average rumination minutes per day"
+    }
+  ],
+  "capabilities": ["behavior_classification", "ration_formulation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

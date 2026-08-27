@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_POLYMERICA_Schema",
+  "type": "object",
+  "properties": {
+    "monomers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of monomer SMILES or names."
+    },
+    "polymerization_type": {
+      "type": "string",
+      "enum": ["step_growth", "chain_growth", "living"],
+      "description": "Mechanism of polymerization."
+    },
+    "conditions": {
+      "type": "object",
+      "properties": {
+        "temperature": { "type": "number" },
+        "time": { "type": "number" }
+      }
+    }
+  },
+  "required": ["monomers", "polymerization_type"]
+}

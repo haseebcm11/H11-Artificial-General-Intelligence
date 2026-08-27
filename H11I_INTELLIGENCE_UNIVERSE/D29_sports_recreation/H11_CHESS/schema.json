@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CHESS",
+  "version": "1.0.0",
+  "layer": 29,
+  "layer_name": "Sports & Recreation",
+  "description": "Strategy and Board Games Agent",
+  "category": "Strategy Games",
+  "inputs": [
+    {
+      "name": "fen_string",
+      "type": "string",
+      "description": "FEN board representation",
+      "required": true
+    },
+    {
+      "name": "player_elo",
+      "type": "integer",
+      "description": "Player rating",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "complexity_score",
+      "type": "number",
+      "description": "Positional sharpness"
+    },
+    {
+      "name": "predicted_blunder_prob",
+      "type": "number",
+      "description": "Likelihood of human mistake"
+    }
+  ],
+  "config": {
+    "search_depth_limit": {
+      "type": "integer",
+      "default": 15,
+      "description": "Max ply depth for conceptual search"
+    }
+  },
+  "state_schema": {
+    "transposition_table_size": {
+      "type": "integer",
+      "description": "Number of cached positions"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-COACHING"]
+  },
+  "events": {
+    "emits": ["critical_position_reached", "blunder_predicted"],
+    "consumes": []
+  },
+  "metrics": [
+    {
+      "name": "nodes_evaluated",
+      "type": "counter",
+      "description": "Number of search tree nodes visited"
+    }
+  ],
+  "capabilities": ["fen_parsing", "elo_based_prediction"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

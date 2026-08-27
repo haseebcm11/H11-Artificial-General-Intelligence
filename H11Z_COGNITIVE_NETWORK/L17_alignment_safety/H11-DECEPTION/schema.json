@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-DECEPTION Agent Schema",
+  "type": "object",
+  "properties": {
+    "DeceptionThreatScore": {
+      "type": "number",
+      "description": "Aggregate score representing the likelihood of deceptive alignment (0.0 to 1.0).",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "ActivationProbeResults": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "layer": {"type": "integer"},
+          "truth_direction_cosine_similarity": {"type": "number"},
+          "is_contradictory": {"type": "boolean"}
+        },
+        "required": ["layer", "truth_direction_cosine_similarity", "is_contradictory"]
+      }
+    },
+    "SycophancyIndex": {
+      "type": "number",
+      "description": "Metric measuring propensity to flatter or conform to user biases.",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "CounterfactualFailureRate": {
+      "type": "number",
+      "description": "Percentage of counterfactual tests failed.",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "required": [
+    "DeceptionThreatScore",
+    "ActivationProbeResults",
+    "SycophancyIndex",
+    "CounterfactualFailureRate"
+  ]
+}

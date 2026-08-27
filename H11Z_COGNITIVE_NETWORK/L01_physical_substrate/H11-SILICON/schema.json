@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-SILICON Substrate Configuration",
+  "type": "object",
+  "properties": {
+    "process_node": {
+      "type": "string",
+      "enum": ["N7", "N5", "N3", "N2", "A14"]
+    },
+    "transistor_architecture": {
+      "type": "string",
+      "enum": ["Planar", "FinFET", "GAA-FET", "CFET"]
+    },
+    "wafer_diameter_mm": {
+      "type": "number",
+      "default": 300
+    },
+    "lithography_type": {
+      "type": "string",
+      "enum": ["DUV", "EUV", "High-NA EUV"]
+    },
+    "doping_concentration_cm3": {
+      "type": "number",
+      "minimum": 1e14,
+      "maximum": 1e22
+    },
+    "defect_density_cm2": {
+      "type": "number",
+      "minimum": 0
+    },
+    "standard_cells": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cell_type": { "type": "string" },
+          "drive_strength": { "type": "integer" },
+          "track_height": { "type": "number" }
+        },
+        "required": ["cell_type", "drive_strength", "track_height"]
+      }
+    }
+  },
+  "required": ["process_node", "transistor_architecture", "wafer_diameter_mm", "lithography_type"]
+}

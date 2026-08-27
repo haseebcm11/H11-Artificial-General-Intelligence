@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GEOTECHNICA",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Architecture & Construction",
+  "description": "Geotechnical engineering and soil mechanics.",
+  "category": "Structural/Civil",
+  "inputs": [],
+  "outputs": [],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": [], "downstream": ["H11-BIM"]},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": true, "gpu_required": true, "memory_class": "high"}
+}

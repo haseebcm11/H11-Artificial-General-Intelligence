@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-ELECTROMAGNETICA",
+  "version": "1.0.0",
+  "layer": 8,
+  "layer_name": "Physics",
+  "description": "Maxwell field FDTD simulation agent",
+  "category": "Classical Physics",
+  "inputs": [
+    {
+      "name": "grid",
+      "type": "Grid3D",
+      "description": "3D spatial grid parameters",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "total_energy_e",
+      "type": "float",
+      "description": "Total stored electric energy"
+    }
+  ],
+  "config": {
+    "cfl_number": {
+      "type": "float",
+      "default": 0.9,
+      "description": "Courant-Friedrichs-Lewy stability factor"
+    }
+  },
+  "state_schema": {
+    "current_step": {
+      "type": "int",
+      "description": "Current time step in FDTD loop"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-PARTICULA", "H11-OPTICA"]
+  },
+  "events": {
+    "emits": ["field_updated"],
+    "consumes": ["source_injected"]
+  },
+  "metrics": [
+    {
+      "name": "grid_updates_per_sec",
+      "type": "histogram",
+      "description": "FDTD cell update latency"
+    }
+  ],
+  "capabilities": ["fdtd_solver", "poynting_flux"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

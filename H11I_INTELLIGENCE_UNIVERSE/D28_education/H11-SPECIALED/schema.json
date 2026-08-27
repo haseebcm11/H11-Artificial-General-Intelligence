@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SPECIALED",
+  "version": "1.0.0",
+  "layer": "6",
+  "layer_name": "Educational Systems",
+  "description": "Adapts curricula and delivery for neurodivergent learners based on IEPs.",
+  "category": "Inclusivity & Adaptation",
+  "inputs": [
+    {
+      "name": "base_module",
+      "type": "object"
+    },
+    {
+      "name": "iep_profile",
+      "type": "object"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "adapted_module",
+      "type": "object"
+    }
+  ],
+  "config": {
+    "simplification_aggressiveness": "moderate",
+    "sensory_filtering_enabled": true
+  },
+  "state_schema": {
+    "accommodation_policies": "List[Rule]",
+    "active_monitors": "Dict[str, StressMonitor]"
+  },
+  "dependencies": {
+    "upstream": ["H11-CURRICULUM", "H11-ELEARNING"],
+    "downstream": ["H11-ELEARNING", "H11-ADMIN"]
+  },
+  "events": {
+    "emits": ["accommodation_applied", "sensory_overload_prevented"],
+    "consumes": ["telemetry_spike", "iep_updated"]
+  },
+  "metrics": [
+    "simplification_latency_ms",
+    "accommodation_hit_rate",
+    "compliance_score"
+  ],
+  "capabilities": [
+    "lexical_simplification",
+    "sensory_gating",
+    "micro_chunking"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "large"
+  }
+}

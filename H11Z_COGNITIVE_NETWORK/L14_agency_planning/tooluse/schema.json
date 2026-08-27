@@ -1,0 +1,17 @@
+{
+  "agent_id": "H11-TOOLUSE",
+  "domain": "L14_agency_planning",
+  "version": "1.0.0",
+  "interfaces": {
+    "inputs": {
+      "query": "string",
+      "available_tools": "list[dict]",
+      "context": "dict"
+    },
+    "outputs": {
+      "selected_tools": "list[dict]",
+      "execution_plan": "dict",
+      "results": "list[dict]"
+    }
+  }
+}

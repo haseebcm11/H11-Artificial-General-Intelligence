@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11_Cache_Config",
+  "type": "object",
+  "properties": {
+    "l1_size_kb": {
+      "type": "integer",
+      "description": "L1 Cache size per core in Kilobytes."
+    },
+    "l2_size_mb": {
+      "type": "number",
+      "description": "L2 Cache size per core or cluster in Megabytes."
+    },
+    "l3_size_mb": {
+      "type": "number",
+      "description": "Total shared L3/LLC cache size in Megabytes."
+    },
+    "associativity": {
+      "type": "integer",
+      "enum": [4, 8, 12, 16, 24, 32],
+      "description": "Way-associativity of the caches."
+    },
+    "replacement_policy": {
+      "type": "string",
+      "enum": ["LRU", "FIFO", "Pseudo-LRU", "BIP", "RRIP"],
+      "description": "Cache block replacement algorithm."
+    },
+    "coherence_protocol": {
+      "type": "string",
+      "enum": ["MESI", "MOESI", "Directory-based"],
+      "description": "Cache coherence protocol."
+    }
+  },
+  "required": ["l1_size_kb", "l2_size_mb", "l3_size_mb", "associativity", "replacement_policy"]
+}

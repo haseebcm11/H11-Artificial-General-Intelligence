@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SEMANTIC-EMB",
+  "version": "1.1.0",
+  "layer": 3,
+  "layer_name": "Representation & Embedding",
+  "description": "Builds a co-occurrence matrix from token windows and returns a distributional vector for a target type.",
+  "category": "representation",
+  "inputs": [
+    {
+      "name": "tokens",
+      "type": "List[str]"
+    },
+    {
+      "name": "target",
+      "type": "str"
+    },
+    {
+      "name": "window",
+      "type": "int"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "vector",
+      "type": "List[float]"
+    },
+    {
+      "name": "vocab",
+      "type": "List[str]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-TOKENIZER"
+    ],
+    "downstream": [
+      "H11-EMBEDDER"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "cooccurrence"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

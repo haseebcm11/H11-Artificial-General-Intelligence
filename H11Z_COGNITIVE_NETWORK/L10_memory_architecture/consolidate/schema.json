@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CONSOLIDATE",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Transfers STM to LTM via prioritized experience replay and spaced repetition.",
+  "category": "Consolidation",
+  "inputs": [
+    {"name": "buffer_items", "type": "array", "description": "STM memories", "required": true}
+  ],
+  "outputs": [
+    {"name": "consolidated_items", "type": "array", "description": "LTM memories"}
+  ],
+  "config": {
+    "replay_batch_size": {"type": "integer", "default": "32", "description": "Items per sleep cycle"},
+    "retention_target": {"type": "number", "default": "0.85", "description": "SM-2 target retention"}
+  },
+  "state_schema": {
+    "replay_buffer": {"type": "array", "description": "Pending consolidations"},
+    "spaced_intervals": {"type": "object", "description": "SM-2 tracking data"}
+  },
+  "dependencies": {"upstream": ["H11-WORKING", "H11-EPISODIC"], "downstream": ["H11-SEMANTIC"]},
+  "events": {"emits": ["consolidation_cycle_complete"], "consumes": ["agent_idle_state"]},
+  "metrics": [{"name": "consolidation_ratio", "type": "gauge", "description": "STM to LTM transfer rate"}],
+  "capabilities": ["experience_replay", "spaced_repetition_scheduling"],
+  "scaling": {"horizontal": false, "gpu_required": true, "memory_class": "high"}
+}

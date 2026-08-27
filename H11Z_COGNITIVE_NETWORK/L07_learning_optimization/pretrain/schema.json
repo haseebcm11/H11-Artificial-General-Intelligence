@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PRETRAIN",
+  "version": "1.0.0",
+  "layer": 7,
+  "layer_name": "Learning & Optimization",
+  "description": "Pretraining",
+  "category": "Optimization",
+  "inputs": [
+    {
+      "name": "massive_corpus",
+      "type": "List[str]",
+      "description": "massive_corpus input",
+      "required": true
+    },
+    {
+      "name": "compute_budget_flops",
+      "type": "float",
+      "description": "compute_budget_flops input",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "pretrained_base_model",
+      "type": "Dict[str, List[float]]",
+      "description": "pretrained_base_model output"
+    },
+    {
+      "name": "perplexity",
+      "type": "float",
+      "description": "perplexity output"
+    }
+  ],
+  "config": {
+    "pretrain_tolerance": {
+      "type": "float",
+      "default": 1e-05,
+      "description": "Numerical tolerance"
+    }
+  },
+  "state_schema": {
+    "processed_count": {
+      "type": "integer",
+      "description": "Number of items processed"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": [
+      "pretrain_completed"
+    ],
+    "consumes": [
+      "pretrain_requested"
+    ]
+  },
+  "metrics": [
+    {
+      "name": "pretrain_latency",
+      "type": "histogram",
+      "description": "Processing latency"
+    }
+  ],
+  "capabilities": [
+    "perform_pretrain"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

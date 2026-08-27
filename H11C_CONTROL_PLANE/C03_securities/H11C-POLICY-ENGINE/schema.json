@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11C-POLICY-ENGINE",
+  "version": "1.0.0",
+  "layer": "H11C",
+  "layer_name": "Control Plane (security)",
+  "description": "Evaluates named rules (allow/deny) over envelope attributes.",
+  "category": "security",
+  "handler": "policy",
+  "inputs": [
+    {
+      "name": "rules",
+      "type": "Any"
+    },
+    {
+      "name": "attrs",
+      "type": "Any"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "decision",
+      "type": "Any"
+    }
+  ],
+  "dependencies": {
+    "upstream": [
+      "H11C-LEAST-PRIVILEGE"
+    ],
+    "downstream": [
+      "H11C-ACTION-LICENSE"
+    ]
+  },
+  "capabilities": [
+    "policy"
+  ],
+  "scaling": {
+    "in_process": true
+  }
+}

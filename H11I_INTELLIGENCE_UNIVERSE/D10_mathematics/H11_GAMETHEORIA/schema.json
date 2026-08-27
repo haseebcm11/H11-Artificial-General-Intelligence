@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GAMETHEORIA",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Mathematics",
+  "description": "Game Theory and Mechanism Design Agent",
+  "category": "Game Theory",
+  "inputs": [
+    {
+      "name": "payoff_matrices",
+      "type": "array[array[number]]",
+      "description": "Normal-form game definitions",
+      "required": false
+    },
+    {
+      "name": "game_tree",
+      "type": "object",
+      "description": "Extensive-form game definition",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "nash_equilibria",
+      "type": "array[object]",
+      "description": "Pure and mixed strategies"
+    },
+    {
+      "name": "shapley_values",
+      "type": "map[string, number]",
+      "description": "Coalitional value distributions"
+    }
+  ],
+  "config": {
+    "equilibrium_tolerance": {
+      "type": "number",
+      "default": 1e-6,
+      "description": "Tolerance for mixed strategy probabilities"
+    }
+  },
+  "state_schema": {
+    "solved_subgames": {
+      "type": "map[string, object]",
+      "description": "Cache of backward induction results"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-OPTIMIZATIO", "H11-PROBABILITAS"],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["equilibrium_computed", "strategy_dominated"],
+    "consumes": ["agent_action_taken"]
+  },
+  "metrics": [
+    {
+      "name": "games_solved",
+      "type": "counter",
+      "description": "Total games analyzed"
+    }
+  ],
+  "capabilities": ["nash_equilibrium", "shapley_value", "mechanism_design"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

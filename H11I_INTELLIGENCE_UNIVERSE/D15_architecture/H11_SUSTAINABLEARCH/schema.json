@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-SUSTAINABLEARCH",
+  "version": "1.0.0",
+  "layer": 15,
+  "layer_name": "Architecture & Construction",
+  "description": "Building energy modeling and sustainability analysis.",
+  "category": "Sustainability",
+  "inputs": [],
+  "outputs": [],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {"upstream": ["H11-BIM"], "downstream": ["H11-SMARTBUILDING"]},
+  "events": {"emits": [], "consumes": []},
+  "metrics": [],
+  "capabilities": [],
+  "scaling": {"horizontal": true, "gpu_required": false, "memory_class": "high"}
+}

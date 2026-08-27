@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-TRANSCRIPTOMICA Schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "normalization_method": { "type": "string", "enum": ["TPM", "FPKM", "CPM"] },
+        "dispersion_trend": { "type": "boolean", "default": true }
+      }
+    },
+    "state_schema": {
+      "type": "object",
+      "properties": {
+        "num_genes": { "type": "integer" },
+        "num_samples": { "type": "integer" }
+      }
+    }
+  }
+}

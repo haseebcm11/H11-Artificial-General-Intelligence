@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RETRIEVAL",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Hybrid RAG engine and re-ranker.",
+  "category": "Recall Engine",
+  "inputs": [
+    {"name": "query", "type": "string", "description": "Search query", "required": true},
+    {"name": "multi_hop", "type": "boolean", "description": "Iterative graph traversal", "required": false}
+  ],
+  "outputs": [
+    {"name": "chunks", "type": "array", "description": "Retrieved and ranked passages"}
+  ],
+  "config": {
+    "hybrid_alpha": {"type": "number", "default": "0.7", "description": "Dense weight"},
+    "top_k": {"type": "integer", "default": "5", "description": "Chunks to return"}
+  },
+  "state_schema": {
+    "cache_hits": {"type": "integer", "description": "Count of cache hits for queries"}
+  },
+  "dependencies": {"upstream": ["H11-EMBEDDING", "H11-SEMANTIC"], "downstream": ["H11-SYNTHESIS"]},
+  "events": {"emits": ["retrieval_complete"], "consumes": ["memory_indexed"]},
+  "metrics": [{"name": "mrr", "type": "gauge", "description": "Mean Reciprocal Rank"}],
+  "capabilities": ["hybrid_search", "cross_encoder_rerank"],
+  "scaling": {"horizontal": true, "gpu_required": true, "memory_class": "high"}
+}

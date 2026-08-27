@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EXISTENTIA",
+  "version": "1.0.0",
+  "layer": 22,
+  "layer_name": "Humanities & Social Sciences",
+  "description": "Models subjective phenomenology and existential drift.",
+  "category": "Philosophy",
+  "inputs": [
+    {
+      "name": "entity_id",
+      "type": "string",
+      "description": "Target entity identifier",
+      "required": true
+    },
+    {
+      "name": "experiential_log",
+      "type": "array",
+      "description": "Sequential experience vectors",
+      "required": true
+    },
+    {
+      "name": "ontological_anchor",
+      "type": "object",
+      "description": "Core structural definition",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "authenticity_index",
+      "type": "number",
+      "description": "Measure of structural fidelity"
+    },
+    {
+      "name": "alienation_score",
+      "type": "number",
+      "description": "Measure of dislocation"
+    },
+    {
+      "name": "existential_drift",
+      "type": "array",
+      "description": "Vector describing shift"
+    }
+  ],
+  "config": {
+    "drift_tolerance": {
+      "type": "number",
+      "default": 0.5,
+      "description": "Threshold before anchor snap is triggered"
+    }
+  },
+  "state_schema": {
+    "active_trajectories": {
+      "type": "integer",
+      "description": "Number of tracked entity paths"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ONTOLOGIA", "H11-COGNITIVA"],
+    "downstream": ["H11-PSYCHOLOGIA", "H11-CULTURAL"]
+  },
+  "events": {
+    "emits": ["existential_crisis_detected"],
+    "consumes": ["experience_logged"]
+  },
+  "metrics": [
+    {
+      "name": "mean_alienation",
+      "type": "histogram",
+      "description": "Distribution of alienation scores"
+    }
+  ],
+  "capabilities": ["phenomenological_mapping", "drift_integration"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

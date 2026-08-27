@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-RHYTHMUS",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Rhythmic generation and timing analysis.",
+  "category": "Rhythm",
+  "inputs": [
+    {
+      "name": "events",
+      "type": "array",
+      "description": "Quantized musical events",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "grooved_events",
+      "type": "array",
+      "description": "Humanized and grooved events"
+    }
+  ],
+  "config": {
+    "swing_amount": {
+      "type": "number",
+      "default": 0.0,
+      "description": "Amount of swing applied"
+    }
+  },
+  "state_schema": {
+    "current_bpm": {
+      "type": "number",
+      "description": "Tempo in Beats Per Minute"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-COMPOSITIO"],
+    "downstream": ["H11-MUSICPROD"]
+  },
+  "events": {
+    "emits": ["tempo_change", "groove_applied"],
+    "consumes": ["apply_groove"]
+  },
+  "metrics": [
+    {
+      "name": "syncopation_index",
+      "type": "gauge",
+      "description": "Measure of rhythmic syncopation"
+    }
+  ],
+  "capabilities": ["microtiming", "swing_generation", "polyrhythm"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "low"
+  }
+}

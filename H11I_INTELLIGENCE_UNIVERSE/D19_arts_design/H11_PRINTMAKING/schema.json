@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PRINTMAKING",
+  "version": "1.0.0",
+  "layer": 19,
+  "layer_name": "Arts, Design & Creativity",
+  "description": "Printmaking and Etching Simulation Agent",
+  "category": "Fine Arts",
+  "inputs": [
+    {
+      "name": "design_data",
+      "type": "bytes",
+      "description": "Original vector or raster design",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "final_print_data",
+      "type": "bytes",
+      "description": "Simulated print output"
+    }
+  ],
+  "config": {
+    "resolution_dpi": {
+      "type": "integer",
+      "default": 600,
+      "description": "Output DPI"
+    }
+  },
+  "state_schema": {
+    "plate_integrity": {
+      "type": "float",
+      "description": "Remaining plate health (0.0 to 1.0)"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-VECTORGRAPHICS"],
+    "downstream": ["H11-GALLERY"]
+  },
+  "events": {
+    "emits": ["plate_degraded", "print_pulled"],
+    "consumes": ["ink_mixed"]
+  },
+  "metrics": [
+    {
+      "name": "editions_printed",
+      "type": "counter",
+      "description": "Number of prints pulled from current plate"
+    }
+  ],
+  "capabilities": ["pressure_simulation", "ink_transfer", "halftone_generation"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

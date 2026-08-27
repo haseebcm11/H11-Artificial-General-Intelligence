@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-NUTRITIO",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Models macronutrient metabolism, dynamic energy balance, and glycemic responses.",
+  "category": "Nutrition Science",
+  "inputs": [
+    {
+      "name": "meal_composition",
+      "type": "object",
+      "description": "Macros, micros, glycemic index, fiber"
+    },
+    {
+      "name": "cgms_data",
+      "type": "array",
+      "description": "Continuous glucose monitor timeseries"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "glucose_excursion",
+      "type": "object",
+      "description": "Predicted postprandial glucose curve"
+    },
+    {
+      "name": "energy_balance",
+      "type": "object",
+      "description": "Dynamic TDEE adjustments and fat oxidation"
+    }
+  ],
+  "config": {
+    "metabolism_model": "hall_dynamic",
+    "gastric_emptying_rate_default": 0.5
+  },
+  "state_schema": {
+    "glycogen_stores": "object",
+    "metabolic_adaptation_factor": "number"
+  },
+  "dependencies": {
+    "upstream": ["H11-ENDOCRINOLOGIA"],
+    "downstream": ["H11-SPORTMEDICINA"]
+  },
+  "events": {
+    "emits": ["hypoglycemia_predicted", "caloric_target_updated"],
+    "consumes": ["meal_logged", "workout_completed"]
+  },
+  "metrics": ["time_in_range", "prediction_error_auc"],
+  "capabilities": ["glycemic_prediction", "dynamic_energy_modeling"],
+  "scaling": {
+    "mode": "stateful",
+    "max_concurrent_users": 1000
+  }
+}

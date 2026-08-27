@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-EPISODIC",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Autobiographical memory for temporal context binding and experience replay.",
+  "category": "Context Store",
+  "inputs": [
+    {"name": "state_snapshot", "type": "object", "description": "Current system state", "required": true},
+    {"name": "prediction_error", "type": "number", "description": "Surprise metric", "required": true},
+    {"name": "context_metadata", "type": "object", "description": "Time/Space/Emotion data", "required": true}
+  ],
+  "outputs": [
+    {"name": "episode_summary", "type": "string", "description": "Abstracted summary"},
+    {"name": "replayed_states", "type": "array", "description": "Sequence of states"},
+    {"name": "boundary_detected", "type": "boolean", "description": "Segmentation trigger"}
+  ],
+  "config": {
+    "base_boundary_threshold": {"type": "number", "default": 0.8, "description": "Prediction error threshold"},
+    "ewma_alpha": {"type": "number", "default": 0.1, "description": "Moving average decay factor"}
+  },
+  "state_schema": {
+    "active_episode": {"type": "array", "description": "Current unfolding event"},
+    "episode_ledger": {"type": "array", "description": "Chronological stored episodes"}
+  },
+  "dependencies": {
+    "upstream": ["H11-SHORTTERM", "H11-PREDICTION"],
+    "downstream": ["H11-WORKING", "H11-SEMANTIC"]
+  },
+  "events": {
+    "emits": ["episode_completed", "replay_started"],
+    "consumes": ["state_update"]
+  },
+  "metrics": [
+    {"name": "episode_length_mean", "type": "gauge", "description": "Average frames per episode"},
+    {"name": "boundaries_detected", "type": "counter", "description": "Total event splits"}
+  ],
+  "capabilities": ["mental-time-travel", "event-segmentation", "pattern-completion"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "large"
+  }
+}

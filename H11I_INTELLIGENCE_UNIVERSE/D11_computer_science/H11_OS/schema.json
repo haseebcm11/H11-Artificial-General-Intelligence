@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-OS",
+  "version": "1.0.0",
+  "layer": 11,
+  "layer_name": "Computer Science",
+  "description": "Kernel level process, memory, and file system management",
+  "category": "Systems",
+  "inputs": [
+    {
+      "name": "syscall",
+      "type": "object",
+      "description": "System call payload",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "return_code",
+      "type": "integer",
+      "description": "Syscall status"
+    }
+  ],
+  "config": {
+    "page_size_kb": {
+      "type": "integer",
+      "default": 4,
+      "description": "Size of virtual memory page"
+    }
+  },
+  "state_schema": {
+    "uptime_seconds": {
+      "type": "number",
+      "description": "OS uptime"
+    }
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": []
+  },
+  "events": {
+    "emits": ["process_forked", "oom_killed"],
+    "consumes": ["hardware_interrupt"]
+  },
+  "metrics": [
+    {
+      "name": "context_switches",
+      "type": "counter",
+      "description": "Number of CPU context switches"
+    }
+  ],
+  "capabilities": ["process_scheduling", "virtual_memory"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": false,
+    "memory_class": "medium"
+  }
+}

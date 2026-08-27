@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-MUSICPROD",
+  "version": "1.0.0",
+  "layer": 20,
+  "layer_name": "Music & Audio",
+  "description": "Music production and mixing strategies.",
+  "category": "Production",
+  "inputs": [
+    {
+      "name": "multitrack",
+      "type": "array",
+      "description": "Raw stems",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "mix_bus",
+      "type": "object",
+      "description": "Mixed audio parameters"
+    }
+  ],
+  "config": {
+    "target_lufs": {
+      "type": "number",
+      "default": -14.0,
+      "description": "Target loudness"
+    }
+  },
+  "state_schema": {
+    "dsp_graph": {
+      "type": "object",
+      "description": "Current DSP routing"
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-ORCHESTRATIO"],
+    "downstream": ["H11-AUDIOENG"]
+  },
+  "events": {
+    "emits": ["mix_completed"],
+    "consumes": ["start_mixing"]
+  },
+  "metrics": [
+    {
+      "name": "gain_reduction_db",
+      "type": "histogram",
+      "description": "Compression stats"
+    }
+  ],
+  "capabilities": ["eq_matching", "dynamic_processing", "spatialization"],
+  "scaling": {
+    "horizontal": false,
+    "gpu_required": true,
+    "memory_class": "high"
+  }
+}

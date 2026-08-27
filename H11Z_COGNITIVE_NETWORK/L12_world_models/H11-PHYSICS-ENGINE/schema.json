@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-PHYSICS-ENGINE",
+  "version": "1.1.0",
+  "layer": 12,
+  "layer_name": "World Models & Simulation",
+  "description": "Semi-implicit Euler integration of point masses: v += a*dt, x += v*dt.",
+  "category": "world-model",
+  "inputs": [
+    {
+      "name": "bodies",
+      "type": "List[dict]"
+    },
+    {
+      "name": "dt",
+      "type": "float"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "bodies",
+      "type": "List[dict]"
+    }
+  ],
+  "config": {},
+  "state_schema": {},
+  "dependencies": {
+    "upstream": [
+      "H11-SIMULATE"
+    ],
+    "downstream": [
+      "H11-DYNAMICS"
+    ]
+  },
+  "events": {
+    "emits": [],
+    "consumes": []
+  },
+  "metrics": [],
+  "capabilities": [
+    "euler-integrate"
+  ],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "small"
+  }
+}

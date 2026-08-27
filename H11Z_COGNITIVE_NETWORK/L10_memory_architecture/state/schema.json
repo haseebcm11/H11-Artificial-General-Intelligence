@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-STATE",
+  "version": "1.0.0",
+  "layer": 10,
+  "layer_name": "Memory Architecture",
+  "description": "Transactional, ACID-compliant state manager with MVCC.",
+  "category": "State Management",
+  "inputs": [
+    {"name": "agent_id", "type": "string", "description": "Caller ID", "required": true},
+    {"name": "transaction_payload", "type": "object", "description": "State mutations", "required": true},
+    {"name": "expected_version", "type": "integer", "description": "Optimistic lock version", "required": true},
+    {"name": "durability", "type": "string", "enum": ["SYNC", "ASYNC", "VOLATILE"], "required": true}
+  ],
+  "outputs": [
+    {"name": "transaction_id", "type": "string", "description": "Commit UUID"},
+    {"name": "new_version", "type": "integer", "description": "Committed version"},
+    {"name": "commit_timestamp", "type": "number", "description": "Epoch time"}
+  ],
+  "config": {
+    "compaction_interval_ms": {"type": "integer", "default": 60000, "description": "Time between WAL compactions"},
+    "max_retries": {"type": "integer", "default": 3, "description": "Retries on optimistic lock failure"}
+  },
+  "state_schema": {
+    "wal_offset": {"type": "integer", "description": "Current head of the log"},
+    "merkle_root": {"type": "string", "description": "Hash of materialized state"}
+  },
+  "dependencies": {
+    "upstream": ["H11-WORKFLOW"],
+    "downstream": ["H11-SESSION", "H11-RECOVERY"]
+  },
+  "events": {
+    "emits": ["state_committed", "compaction_completed"],
+    "consumes": ["shutdown_signal"]
+  },
+  "metrics": [
+    {"name": "tps", "type": "gauge", "description": "Transactions per second"},
+    {"name": "lock_contention_rate", "type": "counter", "description": "Failed OCC checks"}
+  ],
+  "capabilities": ["acid_transactions", "mvcc", "snapshotting"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

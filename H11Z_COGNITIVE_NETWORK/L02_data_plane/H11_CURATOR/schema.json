@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-CURATOR",
+  "version": "1.0.0",
+  "layer": 2,
+  "layer_name": "Data Plane & Ingestion",
+  "description": "Applies DSIR, domain mixing, and decontamination to curate pretraining datasets.",
+  "category": "Dataset Selection",
+  "inputs": [
+    {
+      "name": "target_distribution_refs",
+      "type": "array",
+      "description": "High-quality reference datasets.",
+      "required": true
+    },
+    {
+      "name": "source_pools",
+      "type": "array",
+      "description": "Large uncurated data pools.",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "curated_manifest",
+      "type": "object",
+      "description": "Final ordered list of selected data."
+    },
+    {
+      "name": "mixing_ratios",
+      "type": "object",
+      "description": "Computed sampling weights."
+    }
+  ],
+  "config": {
+    "decontamination_ngram_size": {
+      "type": "integer",
+      "default": 13,
+      "description": "N-gram size for benchmark decontamination overlap detection."
+    },
+    "dsir_num_buckets": {
+      "type": "integer",
+      "default": 10000,
+      "description": "Number of hash buckets for lightweight DSIR language models."
+    }
+  },
+  "state_schema": {
+    "bloom_filters_loaded": {
+      "type": "boolean",
+      "description": "Whether benchmark n-grams are loaded into Bloom filters."
+    }
+  },
+  "dependencies": {
+    "upstream": ["H11-CORPUS"],
+    "downstream": ["H11-SHARDER"]
+  },
+  "events": {
+    "emits": ["curation_completed", "decontamination_alert"],
+    "consumes": ["corpus_ready"]
+  },
+  "metrics": [
+    {
+      "name": "tokens_dropped_decontamination",
+      "type": "counter",
+      "description": "Number of tokens dropped due to benchmark overlap."
+    },
+    {
+      "name": "dsir_kl_divergence",
+      "type": "gauge",
+      "description": "KL divergence between source subset and target distribution."
+    }
+  ],
+  "capabilities": ["dsir_selection", "ngram_decontamination", "curriculum_scheduling"],
+  "scaling": {
+    "horizontal": true,
+    "gpu_required": false,
+    "memory_class": "high"
+  }
+}

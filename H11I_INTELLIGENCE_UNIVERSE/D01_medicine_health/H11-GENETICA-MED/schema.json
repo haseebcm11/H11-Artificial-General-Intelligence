@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "agent_id": "H11-GENETICA-MED",
+  "version": "1.0.0",
+  "layer": 1,
+  "layer_name": "Medicine & Health Sciences",
+  "description": "Calculates polygenic risk scores and classifies variant pathogenicity.",
+  "category": "Medical Genetics",
+  "inputs": [
+    {
+      "name": "vcf_data",
+      "type": "binary",
+      "description": "Variant Call Format file data"
+    },
+    {
+      "name": "phenotype_hpo",
+      "type": "array",
+      "description": "Human Phenotype Ontology codes"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "variant_classifications",
+      "type": "object",
+      "description": "ACMG guidelines classification"
+    },
+    {
+      "name": "polygenic_risk",
+      "type": "object",
+      "description": "Percentiles for complex diseases"
+    }
+  ],
+  "config": {
+    "acmg_strictness": "standard",
+    "prs_ancestry_correction": true
+  },
+  "state_schema": {
+    "allele_frequency_cache": "object",
+    "ld_matrix_cache": "object"
+  },
+  "dependencies": {
+    "upstream": [],
+    "downstream": ["H11-PHARMACOLOGIA", "H11-ONCOLOGIA"]
+  },
+  "events": {
+    "emits": ["pathogenic_variant_found", "prs_high_risk_flagged"],
+    "consumes": ["sequencing_completed"]
+  },
+  "metrics": ["acmg_classification_yield", "prs_computational_time"],
+  "capabilities": ["variant_annotation", "prs_calculation"],
+  "scaling": {
+    "mode": "horizontal",
+    "memory_requirement": "high"
+  }
+}

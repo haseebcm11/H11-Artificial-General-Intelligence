@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Quantum Substrate Configuration",
+  "type": "object",
+  "properties": {
+    "qubit_topology": {
+      "type": "string",
+      "enum": ["heavy_hex", "square_lattice", "all_to_all", "ring"]
+    },
+    "error_correction": {
+      "type": "object",
+      "properties": {
+        "scheme": { "type": "string", "enum": ["surface", "color", "bacon_shor"] },
+        "distance": { "type": "integer", "minimum": 3 }
+      },
+      "required": ["scheme", "distance"]
+    },
+    "coherence_times": {
+      "type": "object",
+      "properties": {
+        "t1_us": { "type": "number", "minimum": 0 },
+        "t2_us": { "type": "number", "minimum": 0 }
+      },
+      "required": ["t1_us", "t2_us"]
+    },
+    "gates": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["qubit_topology", "error_correction", "coherence_times"]
+}

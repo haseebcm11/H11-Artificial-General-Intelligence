@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "H11-GNN Configuration",
+  "type": "object",
+  "properties": {
+    "layer_type": { "type": "string", "enum": ["gcn", "gat", "mpnn", "egnn"] },
+    "num_layers": { "type": "integer" },
+    "in_dim": { "type": "integer" },
+    "hidden_dim": { "type": "integer" },
+    "out_dim": { "type": "integer" },
+    "mitigate_oversmoothing": { "type": "boolean" }
+  },
+  "required": ["layer_type", "in_dim", "hidden_dim"]
+}
