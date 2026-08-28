@@ -9,7 +9,10 @@ import urllib.robotparser
 from dataclasses import dataclass, field
 from typing import AsyncGenerator, Dict, List, Optional, Set, Tuple
 
-import aiohttp
+try:
+    import aiohttp
+except ImportError:
+    aiohttp = None
 
 logger = logging.getLogger(__name__)
 

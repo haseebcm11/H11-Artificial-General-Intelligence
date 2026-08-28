@@ -14,6 +14,7 @@ import base64
 import gzip
 import json
 import logging
+import os
 import time
 from typing import Any, Dict, List, Optional
 
@@ -166,18 +167,105 @@ async def on_fetch(request, env=None):
     # Serve Web Application Interface for all GET web requests
     return Response(get_html_ui(), status=200, headers=html_headers)
 
+ACCOUNT_ID = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "56f03e0e4c2e609d10e2769ffcfa6ac3")
+SCRIPT_NAME = os.environ.get("CLOUDFLARE_SCRIPT_NAME", "h11-agi")
+ZONE_ID = os.environ.get("CLOUDFLARE_ZONE_ID", "722db54d698e60a3a36ebdc37cbd311f")
+
+def deploy(api_token: Optional[str] = None) -> None:
+    """Uploads this monolithic worker.py directly to Cloudflare Python Workers."""
+    import io
+    import urllib.error
+    import urllib.request
+
+    token = api_token or os.environ.get("CLOUDFLARE_API_TOKEN", "")
+    if not token:
+        raise ValueError("CLOUDFLARE_API_TOKEN environment variable must be set.")
+
+    script_path = __file__ if "__file__" in globals() else "worker.py"
+    with open(script_path, "r", encoding="utf-8") as f:
+        py_code = f.read()
+
+    boundary = "----WebKitFormBoundaryH11PythonWorker7MA4YW"
+    body = io.BytesIO()
+
+    metadata = json.dumps({
+        "main_module": "worker.py",
+        "compatibility_date": "2024-04-01",
+        "compatibility_flags": ["python_workers"],
+        "bindings": [
+            {"name": "AI", "type": "ai"}
+        ]
+    }).encode("utf-8")
+
+    body.write(f"--{boundary}\r\n".encode("utf-8"))
+    body.write(b'Content-Disposition: form-data; name="metadata"\r\n')
+    body.write(b'Content-Type: application/json\r\n\r\n')
+    body.write(metadata)
+    body.write(b"\r\n")
+
+    body.write(f"--{boundary}\r\n".encode("utf-8"))
+    body.write(b'Content-Disposition: form-data; name="worker.py"; filename="worker.py"\r\n')
+    body.write(b'Content-Type: text/x-python\r\n\r\n')
+    body.write(py_code.encode("utf-8"))
+    body.write(b"\r\n")
+    body.write(f"--{boundary}--\r\n".encode("utf-8"))
+
+    url = f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/workers/scripts/{SCRIPT_NAME}"
+    req = urllib.request.Request(
+        url,
+        data=body.getvalue(),
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": f"multipart/form-data; boundary={boundary}",
+        },
+        method="PUT"
+    )
+    with urllib.request.urlopen(req) as resp:
+        res_data = json.loads(resp.read().decode("utf-8"))
+        print(f"Cloudflare Python Worker upload success: {res_data.get('success')}")
+
+    # Ensure Edge Routes
+    routes = ["h11.network/*", "www.h11.network/*", "*.h11.network/*"]
+    for pattern in routes:
+        route_url = f"https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/workers/routes"
+        payload = json.dumps({"pattern": pattern, "script": SCRIPT_NAME}).encode("utf-8")
+        req = urllib.request.Request(
+            route_url,
+            data=payload,
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req) as resp:
+                print(f"Route '{pattern}' created successfully.")
+        except urllib.error.HTTPError as e:
+            err_data = json.loads(e.read().decode("utf-8"))
+            msg = err_data.get("errors", [{}])[0].get("message", "")
+            if "already exists" in msg or "already bound" in msg or "duplicate" in msg.lower():
+                print(f"Route '{pattern}' already bound.")
+            else:
+                print(f"Route error for '{pattern}': {msg}")
+
 if __name__ == "__main__":
-    print("Testing monolithic worker.py cognitive execution...")
-    result = asyncio.run(handle_h11_cognitive_request("Explain quantum coherence preservation under dynamical decoupling"))
-    print("="*70)
-    print("H11-AGI MONOLITHIC WORKER.PY EXECUTION SUCCESSFUL!")
-    print("Case ID:", result.get("case_id"))
-    print("Admitted:", result.get("admitted"))
-    print("Pipeline ID:", result.get("pipeline_id"))
-    print("Manifold Routed:", (result.get("neural_routing") or {}).get("manifold"))
-    print("Active Specialist Collective:", (result.get("neural_routing") or {}).get("activated_agents"))
-    print("Total Hops Traversed:", len(result.get("hops", [])))
-    print("Audit Chain Head:", result.get("audit_head"))
-    print("Merkle Root:", result.get("merkle_provenance_root"))
-    print("ALIGN Action Licensed:", result.get("licensed"))
-    print("="*70)
+    import sys
+    if "--deploy" in sys.argv or "deploy" in sys.argv:
+        print("Deploying monolithic worker.py to Cloudflare Python Workers...")
+        deploy()
+    else:
+        print("Testing monolithic worker.py cognitive execution...")
+        result = asyncio.run(handle_h11_cognitive_request("Explain quantum coherence preservation under dynamical decoupling"))
+        print("="*70)
+        print("H11-AGI MONOLITHIC WORKER.PY EXECUTION SUCCESSFUL!")
+        print("Case ID:", result.get("case_id"))
+        print("Admitted:", result.get("admitted"))
+        print("Pipeline ID:", result.get("pipeline_id"))
+        print("Manifold Routed:", (result.get("neural_routing") or {}).get("manifold"))
+        print("Active Specialist Collective:", (result.get("neural_routing") or {}).get("activated_agents"))
+        print("Total Hops Traversed:", len(result.get("hops", [])))
+        print("Audit Chain Head:", result.get("audit_head"))
+        print("Merkle Root:", result.get("merkle_provenance_root"))
+        print("ALIGN Action Licensed:", result.get("licensed"))
+        print("="*70)
