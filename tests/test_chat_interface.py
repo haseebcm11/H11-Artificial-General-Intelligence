@@ -12,13 +12,30 @@ import asyncio
 import unittest
 
 from h11_runtime.server import ChatResponse, ConversationalReasoner, ReasoningStep
+from h11_runtime.server.model_provider import ProviderError, SynthesisResponse
+
+
+class RecordingProvider:
+    def __init__(self, text: str = "A model-grounded answer citing the available evidence [1].") -> None:
+        self.text = text
+        self.requests = []
+
+    async def synthesize(self, request):
+        self.requests.append(request)
+        return SynthesisResponse(text=self.text, provider="test-provider", model="test-model")
+
+
+class FailingProvider:
+    async def synthesize(self, request):
+        raise ProviderError("provider unavailable")
 
 
 class TestConversationalReasoner(unittest.IsolatedAsyncioTestCase):
     """Test the conversational reasoning orchestrator."""
 
     async def asyncSetUp(self) -> None:
-        self.reasoner = ConversationalReasoner()
+        self.provider = RecordingProvider()
+        self.reasoner = ConversationalReasoner(reasoning_provider=self.provider)
         await self.reasoner.initialize()
 
     async def test_streaming_reasoning_pipeline(self) -> None:
@@ -42,7 +59,9 @@ class TestConversationalReasoner(unittest.IsolatedAsyncioTestCase):
 
         # Verify final synthesized answer
         self.assertIsNotNone(answer)
-        self.assertIn("Artemether", answer["response_text"])
+        self.assertIn("model-grounded answer", answer["response_text"])
+        self.assertEqual(answer["reasoning_provider"], "test-provider")
+        self.assertEqual(self.provider.requests[-1].query, query)
         self.assertTrue(answer["align_verified"])
         self.assertTrue(answer["action_licensed"])
         self.assertIsNotNone(answer["merkle_root"])
@@ -53,7 +72,8 @@ class TestConversationalReasoner(unittest.IsolatedAsyncioTestCase):
         resp: ChatResponse = await self.reasoner.reason(query)
 
         self.assertIsInstance(resp, ChatResponse)
-        self.assertIn("Hamiltonian", resp.response_text)
+        self.assertIn("model-grounded answer", resp.response_text)
+        self.assertEqual(resp.reasoning_provider, "test-provider")
         self.assertTrue(resp.align_verified)
         self.assertIsNotNone(resp.audit_head)
         self.assertGreaterEqual(len(resp.reasoning_trace), 4)
@@ -63,8 +83,26 @@ class TestConversationalReasoner(unittest.IsolatedAsyncioTestCase):
         resp: ChatResponse = await self.reasoner.reason(query)
 
         self.assertIsInstance(resp, ChatResponse)
-        self.assertIn("Cheeger", resp.response_text)
+        self.assertIn("model-grounded answer", resp.response_text)
         self.assertTrue(resp.align_verified)
+
+    async def test_general_question_is_sent_to_provider_without_keyword_template(self) -> None:
+        query = "What are the strongest arguments for and against moral realism?"
+        resp = await self.reasoner.reason(query)
+        self.assertEqual(self.provider.requests[-1].query, query)
+        self.assertNotIn("Bayesian integration", resp.response_text)
+
+    async def test_provider_failure_uses_honest_grounded_fallback(self) -> None:
+        reasoner = ConversationalReasoner(reasoning_provider=FailingProvider())
+        await reasoner.initialize()
+        resp = await reasoner.reason("Explain a topic absent from the local rules")
+        self.assertEqual(resp.reasoning_provider, "deterministic-grounded")
+        self.assertIn("could not establish a supported answer", resp.response_text)
+
+    async def test_conversation_history_is_bounded(self) -> None:
+        for index in range(10):
+            await self.reasoner.reason(f"Question number {index}")
+        self.assertLessEqual(len(self.reasoner.conversation_history), 16)
 
 
 class TestFastAPIServerEndpoints(unittest.IsolatedAsyncioTestCase):

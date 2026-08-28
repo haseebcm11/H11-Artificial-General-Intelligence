@@ -1,4 +1,4 @@
-# H11-AGI: Governed Cognitive Operating Architecture
+# H11-AGI: 1,000 Multi-Agent Artificial General Intelligence Operating System
 
 <div align="center">
 
@@ -10,14 +10,14 @@
 [![Knowledge: H11--LSE v3.0 Ultra--Omniscient](https://img.shields.io/badge/Knowledge-H11--LSE%20v3.0%20Ultra--Omniscient-00C7B7?style=for-the-badge&logo=duckduckgo&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Learning: Continuous H11--LEARN](https://img.shields.io/badge/Learning-H11--LEARN%20Continuous%20Pipeline-FF5722?style=for-the-badge&logo=pytorch&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Agents: 1,000 / 1,000](https://img.shields.io/badge/Agents-1%2C000%20%2F%201%2C000%20(100%25)-0070F3?style=for-the-badge&logo=probot&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
-[![Tests: 137/137 Passing](https://img.shields.io/badge/Tests-137%2F137%20Passing%20(100%25)-00C781?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
+[![Tests: 159/159 Passing](https://img.shields.io/badge/Tests-159%2F159%20Passing%20(100%25)-00C781?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Governance: Sovereign Zero--Trust](https://img.shields.io/badge/Governance-Zero--Trust%20Hard%20Gate-FF4154?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![Evolution: HAEP v5.0](https://img.shields.io/badge/Evolution-HAEP%20v5.0%20Self--Optimizing-FF8A00?style=for-the-badge&logo=atom&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence)
 [![License: View--Only Research](https://img.shields.io/badge/License-Source--Available%20View--Only-black?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/haseebcm11/H11-Artificial-General-Intelligence/blob/main/LICENSE)
 
 <p align="center">
-  <b>A Governed 1,000-Agent Cognitive Operating System Spanning 23 Substrate Layers, 30 Universal Intelligence Domains, and 3 Sovereign Control Families — Powered by 1,000-Agent Neural MoE Clustering, the H11-LSE v3.0 Ultra-Omniscient Web Superintelligence, and the H11-LEARN Continuous Distillation Pipeline.</b>
+  <b>A Governed 1,000 Multi-Agent Artificial General Intelligence Operating System spanning 23 substrate layers, 30 universal intelligence domains, and 3 sovereign control families.</b>
 </p>
 
 </div>
@@ -45,7 +45,12 @@
 
 # 1. Executive Summary
 
-**H11-AGI** is not a monolithic language model, nor is it an unstructured swarm of chat prompts. It is a **governed cognitive operating architecture** in which 1,000 typed, domain-specific specialist agents are dynamically scheduled, bound, and executed within a case-specific cognitive DAG.
+**H11-AGI** is a **1,000 Multi-Agent Artificial General Intelligence Operating System**. It is not a monolithic language model or an unstructured swarm of prompts: 1,000 typed, domain-specific specialists are dynamically routed, bound, executed, deliberated, verified, and governed within case-specific cognitive DAGs.
+
+> **Research status:** This name states the system's engineering objective and
+> operating-system architecture. Passing the repository's conformance suite
+> does not by itself constitute scientific proof of human-level general
+> intelligence; that requires independent, held-out generalization evidence.
 
 The system enforces a fundamental separation between:
 * **How intelligence computes** (Cognitive Substrate)
@@ -497,7 +502,8 @@ h11_runtime/
 ├── memory/                    # MemoryService (Working, Episodic, Semantic, Procedural)
 ├── evidence/                  # EvidenceLedger and EvidenceItem provenance
 ├── telemetry/                 # EventBus (H11C-EVENT-BUS) and RuntimeEvent
-├── execution/                 # GraphExecutor and ExecutionDAG
+├── execution/                 # DAG execution, real specialists, and schema-aware contract compilation
+├── tools/                     # Allowlisted observe-act-recover loop with budgets and task evaluation
 ├── evolution/                 # EvolutionRuntimeBridge (Telemetry to H11-OPT / H11-EVO)
 └── haep/                      # Full HAEP v5.0 Self-Optimization Engine (22 modules)
 ```
@@ -507,8 +513,55 @@ h11_runtime/
 # 13. Quickstart, Validation & Verification
 
 ### Prerequisites
-* Python 3.10, 3.11, 3.12, 3.13, or 3.14
-* Standard library only (Zero external dependencies required)
+* Python 3.11, 3.12, 3.13, or 3.14
+
+Install the reproducible core runtime and API dependencies:
+
+```bash
+python -m pip install -e .
+```
+
+For the optional local search and training stacks:
+
+```bash
+python -m pip install -e ".[search,training]"
+```
+
+### Model-backed reasoning
+
+The chat runtime is model-vendor neutral. Point it at any local or hosted
+OpenAI-compatible chat-completions endpoint:
+
+```bash
+export H11_MODEL_BASE_URL="http://localhost:11434/v1"
+export H11_MODEL_NAME="your-model-name"
+export H11_MODEL_API_KEY="optional-provider-key"
+```
+
+On PowerShell, use `$env:H11_MODEL_BASE_URL = "..."` and the equivalent form
+for the other variables.
+
+When these variables are absent—or when the endpoint fails—the runtime uses a
+deterministic grounded fallback. The fallback reports only conclusions and
+evidence actually produced by the governed kernel; it does not fabricate a
+general answer. Model output is released only after admission, ALIGN, and
+action-licensing checks have passed.
+
+### Governed autonomous tool tasks
+
+Cases may include a structured `tool_plan` and `tool_expectations`. The runtime
+executes only registered, side-effect-free tools; resolves references to prior
+observations; enforces time and call budgets; retries only declared transient
+failures; records every observation in the world model and evidence ledger; and
+denies final release when the evaluated goal is not satisfied. Unknown tools,
+including shell and network execution, fail closed.
+
+With `auto_tools: true`, supported natural-language arithmetic goals or an
+`objective_expression` are compiled into typed candidate DAGs through a safe
+AST. Candidates are statically critiqued for unknown capabilities, unsafe side
+effects, unresolved or forward references, missing arguments, and step-budget
+violations. The highest-scoring valid plan is selected; if none survives,
+final release and action licensing are denied.
 
 ### 1. Run the Master 1,000-Agent Structural Audit
 Verifies all 1,000 agents across H11Z, H11I, and H11C for syntax correctness, domain-specific implementations, and zero placeholders:
@@ -543,7 +596,7 @@ python -m h11_runtime.server
 Navigate your browser to: **`http://localhost:8000`** (or deployed at **`https://h11.network`**).
 
 ### 3. Run the Full Test Discovery Suite
-Executes all 137 test suites covering unit contracts, the six execution graphs, state progression, memory recall, governance gates, 1,000-agent Neural MoE clustering, H11-LSE v3.0 Ultra-Omniscient search engine (quantization, Graph-RAG, swarm crawler, Merkle provenance, stream bursts, cross-lingual), H11-LEARN continuous pipeline, conversational reasoning chat interface, and end-to-end live cognitive loops:
+Executes all 159 tests covering unit contracts, the six execution graphs, state progression, memory recall, governance gates, 1,000-agent Neural MoE clustering, schema-aware specialist execution, typed autonomous planning, bounded tool use and recovery, agent contribution and ablation, cross-domain reasoning, H11-LSE v3.0 search engine (quantization, Graph-RAG, swarm crawler, Merkle provenance, stream bursts, cross-lingual), H11-LEARN continuous pipeline, provider-backed conversational reasoning, and end-to-end cognitive loops:
 
 ```bash
 python -m unittest discover tests
@@ -552,7 +605,7 @@ python -m unittest discover tests
 **Test Output:**
 ```text
 ----------------------------------------------------------------------
-Ran 137 tests in 49.517s
+159 passed
 
 OK
 ```

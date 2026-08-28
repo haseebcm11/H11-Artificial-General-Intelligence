@@ -1,4 +1,4 @@
-"""H11 composition runtime — one typed spine, not a 400-agent launcher."""
+"""H11-AGI governed 1,000 multi-agent operating-system runtime."""
 
 from .agi import AGIResult, H11AGI
 from .cognitive import CognitiveSpine

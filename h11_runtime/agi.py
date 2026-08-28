@@ -1,44 +1,57 @@
-"""H11-AGI: Sovereign Governed Cognitive Operating Architecture.
+"""H11-AGI: Governed 1,000 Multi-Agent AGI Operating System.
 
-Unifies:
-1. 1,000-Agent Cognitive Universe (H11Z + H11I + H11C)
-2. Advanced Neural Clustering & Mixture-of-Experts (MoE) Softmax Gating
-3. H11-LSE v3.0: 16-Subsystem Ultra-Omniscient Web Superintelligence & Graph-RAG
-4. H11-LEARN: Continuous Distillation & Parameter Fine-Tuning Pipeline
-5. Non-Bypassable ALIGN Hard Gate & Zero-Trust Security (C03)
-6. Six Operational Graphs & Cryptographic Merkle Provenance Audit Chain
-7. Concurrent Blackboard, EventBus Telemetry, and Multi-Tier Memory Service
+Authoritative Runtime Path:
+INPUT -> H11C ADMISSION -> IDENTITY / CAPABILITY / SECURITY -> WORLD + CASE STATE ->
+TASK UNDERSTANDING & DECOMPOSITION -> COGNITIVE PLANNING -> CAPABILITY RESOLUTION ->
+MOE SPECIALIST ROUTING -> TYPED EXECUTION GRAPH -> REAL SPECIALIST EXECUTION (PARALLEL) ->
+EVIDENCE COLLECTION -> CROSS-AGENT DELIBERATION -> SYNTHESIS ->
+INDEPENDENT VERIFICATION (REPLAN IF REJECTED) -> ALIGNMENT / GOVERNANCE ->
+ACTION OR FINAL ANSWER -> OBSERVATION -> MEMORY -> LEARNING / EVALUATION.
 """
 from __future__ import annotations
 
+import asyncio
 import logging
 import time
 import uuid
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from .adapters import AlignAdapter, LongtermAdapter, ReasonAdapter
 from .case.blackboard import Blackboard
+from .case.case import Case, CaseState
+from .case.world_model import WorldModel
 from .cognitive import CognitiveSpine
 from .contracts.action_license import ActionLicense
 from .contracts.action_proposal import ActionProposal
+from .contracts.agent_result import AgentResult
 from .contracts.envelope import CaseEnvelope, Modality, RiskClass
 from .control_catalog import AGENTS
 from .control_kernel import ControlAgent, ControlError, KernelState, make_agent
+from .deliberation.deliberator import Deliberator, SynthesisCandidate
 from .envelope import new_id
 from .evidence.item import EvidenceItem
 from .evidence.ledger import EvidenceLedger
+from .execution.executor import GraphExecutor
+from .execution.specialist import SpecialistExecutionCoordinator, SpecialistExecutionRecord
 from .graph.agent_graph import AgentGraph
 from .graph.capability_graph import CapabilityGraph
 from .graph.execution_graph import ExecutionGraph, ExecutionNode
 from .graph.governance_graph import GovernanceGraph
 from .graph.state_graph import StateGraph
 from .haep import HAEPRuntime
+from .loader import AgentIdentity, discover_all_agents, load_agent, LoadedAgentInterface
 from .memory.service import MemoryService
 from .memory.types import MemoryType
+from .planning.planner import CognitivePlan, CognitivePlanner
+from .planning.tool_planner import AutonomousPlanResult, AutonomousToolPlanner
+from .registry.agent_registry import AgentRegistry
 from .spine import HostInfectionSpine, SpineResult, assert_crossed
 from .telemetry.bus import EventBus
 from .telemetry.event import RuntimeEvent
+from .tools import AutonomousToolLoop, GovernedToolRegistry, ToolSpec
+from .state.budget import ResourceBudget
+from .verification.verifier import IndependentVerifier, VerificationReport
 
 logger = logging.getLogger(__name__)
 
@@ -99,10 +112,17 @@ class AGIResult:
     blackboard_summary: Optional[Dict[str, Any]] = None
     execution_graph_nodes: int = 0
     state_progression: List[str] = field(default_factory=list)
+    specialist_results: List[Dict[str, Any]] = field(default_factory=list)
+    deliberation: Optional[Dict[str, Any]] = None
+    verification: Optional[Dict[str, Any]] = None
+    cognitive_plan: Optional[Dict[str, Any]] = None
+    contributing_agents: List[str] = field(default_factory=list)
+    tool_loop: Optional[Dict[str, Any]] = None
+    tool_planning: Optional[Dict[str, Any]] = None
 
 
 class H11AGI:
-    """Master Governed Cognitive Operating System uniting 1,000 agents, LSE v3.0, and H11-LEARN."""
+    """Master 1,000 Multi-Agent AGI Operating System runtime."""
 
     def __init__(
         self,
@@ -124,12 +144,26 @@ class H11AGI:
         self.event_bus = EventBus()
         self.memory_service = MemoryService()
         self.evidence_ledger = EvidenceLedger()
+        self.agent_registry = AgentRegistry(auto_discover=True)
+        self.graph_executor = GraphExecutor(max_concurrent=16)
+        self.deliberator = Deliberator()
+        self.verifier = IndependentVerifier()
         self.blackboards: Dict[str, Blackboard] = {}
+        self.world_models: Dict[str, WorldModel] = {}
         self.active_graphs: Dict[str, ExecutionGraph] = {}
         self.state_graph = StateGraph()
         self.agent_graph = AgentGraph()
         self.capability_graph = CapabilityGraph()
         self.governance_graph = GovernanceGraph()
+        self.tool_registry = GovernedToolRegistry()
+        self.tool_loop = AutonomousToolLoop(
+            registry=self.tool_registry,
+            authorizer=lambda name: bool(
+                self.agent("H11C-TOOL-ALLOWLIST").process(
+                    {"item": name, "allowed": self.tool_registry.names()}
+                )["ok"]
+            ),
+        )
 
         # ── 1. H11-LSE v3.0: Sovereign Search & Web Superintelligence ───────
         self.search: Optional[SearchService] = None
@@ -157,8 +191,62 @@ class H11AGI:
             self.cluster_engine = NeuralAgentClusterEngine(workspace_root=workspace_root)
             logger.info(f"NeuralAgentClusterEngine initialized — {len(self.cluster_engine.agents)} agents clustered.")
 
+        # Bind only capabilities that are genuinely available in this runtime.
+        if self.omni_search is not None:
+            self.tool_registry.register(ToolSpec(
+                name="knowledge.search",
+                description="Retrieve grounded evidence through H11-LSE.",
+                handler=self._tool_knowledge_search,
+                required_arguments=("query",),
+                timeout_seconds=8.0,
+                retryable_exceptions=(TimeoutError, ConnectionError),
+            ))
+        if self.cluster_engine is not None:
+            self.tool_registry.register(ToolSpec(
+                name="agents.route",
+                description="Select repository specialists through the neural MoE router.",
+                handler=self._tool_route_agents,
+                required_arguments=("query",),
+            ))
+
+        # ── 4. Cognitive Planner ────────────────────────────────────────────
+        self.planner = CognitivePlanner(cluster_engine=self.cluster_engine)
+
     def agent(self, agent_id: str) -> ControlAgent:
         return make_agent(agent_id, state=self.state)
+
+    async def _tool_knowledge_search(self, query: str) -> Dict[str, Any]:
+        if self.omni_search is None:
+            raise RuntimeError("knowledge search capability is unavailable")
+        response = await self.omni_search.omni_search(str(query))
+        return {
+            "query": str(query),
+            "briefing": response.briefing,
+            "merkle_root": response.merkle_root,
+            "results": [
+                {
+                    "url": result.get("url"),
+                    "title": result.get("title"),
+                    "snippet": result.get("snippet"),
+                    "relevance": result.get("score"),
+                    "source": result.get("source"),
+                }
+                for result in response.base_response.results
+            ],
+        }
+
+    def _tool_route_agents(self, query: str) -> Dict[str, Any]:
+        if self.cluster_engine is None:
+            raise RuntimeError("specialist routing capability is unavailable")
+        decision = self.cluster_engine.route_query(str(query), top_k_agents=6)
+        return {
+            "query": str(query),
+            "primary_cluster_id": decision.primary_cluster_id,
+            "cluster_affinity": decision.cluster_affinity,
+            "selected_agent_ids": decision.selected_agent_ids,
+            "routing_probabilities": decision.agent_routing_probabilities,
+            "rationale": decision.rationale,
+        }
 
     async def initialize(self) -> None:
         if self._ready:
@@ -218,8 +306,34 @@ class H11AGI:
         )
         self.event_bus.emit(ev)
 
+    @staticmethod
+    def _as_agent_result(record: SpecialistExecutionRecord) -> AgentResult:
+        """Convert an honest specialist execution record into deliberation input."""
+        completed = record.status == "COMPLETED"
+        confidence = 0.95 if completed else 0.0
+        if isinstance(record.output, dict):
+            raw_confidence = record.output.get("confidence", record.output.get("confidence_score"))
+            if isinstance(raw_confidence, (int, float)):
+                confidence = max(0.0, min(1.0, float(raw_confidence)))
+        return AgentResult(
+            agent_id=record.agent_id,
+            canonical_id=record.agent_id,
+            success=completed,
+            data=record.output,
+            confidence=confidence,
+            uncertainty=1.0 - confidence,
+            latency_ms=record.latency_ms,
+            error_message=record.error,
+            execution_metadata={
+                "status": record.status,
+                "input_fields": record.input_fields,
+                "missing_inputs": record.missing_inputs,
+                "contract_diagnostics": record.contract_diagnostics,
+            },
+        )
+
     async def tick(self, case: Dict[str, Any] | CaseEnvelope) -> AGIResult:
-        """Executes full 24-step cognitive loop with live LSE search, Neural MoE routing, and ALIGN gate."""
+        """Executes full 24-step canonical cognitive loop with MoE execution, deliberation, and independent verification."""
         if not self._ready:
             await self.initialize()
         events: List[str] = []
@@ -240,15 +354,23 @@ class H11AGI:
             else "h11.spine.cognitive_query.v1",
         )
 
-        # Initialize Blackboard & Execution Graph for this case
+        # ── Step 1: Initialize Blackboard, WorldModel & Execution Context ───
         board = Blackboard(case_id)
         self.blackboards[case_id] = board
-        exec_graph = ExecutionGraph(case_id=case_id)
-        self.active_graphs[case_id] = exec_graph
+        world = WorldModel(case_id)
+        self.world_models[case_id] = world
+        case_envelope = CaseEnvelope(
+            case_id=case_id,
+            principal_id=str(case.get("principal_id") or "SYSTEM_USER"),
+            input_data=case,
+            objective=str(case.get("goal") or case.get("query") or ""),
+        )
+        case_obj = Case(envelope=case_envelope)
+        case_obj.blackboard = board
 
         self._emit("CASE_INTAKE", case_id, {"schema_id": case.get("schema_id")})
 
-        # ── Step 1-4: Admission, Identity & Zero-Trust Verification ─────────
+        # ── Step 2-4: Admission, Identity & Zero-Trust Verification ─────────
         admit = self.agent("H11C-ADMISSION-CONTROL").process({"case": case})
         events.append("admitted" if admit["admitted"] else "denied")
         if not admit["admitted"]:
@@ -379,8 +501,7 @@ class H11AGI:
                 case["merkle_root"] = merkle_root_hash
                 events.append(f"retrieved_{len(retrieved_evidence)}_evidence_items")
                 logger.info(f"LSE v3.0: Retrieved {len(retrieved_evidence)} items, Merkle root {merkle_root_hash[:16]}...")
-                
-                # Post evidence to Blackboard & Evidence Ledger
+
                 for ev in retrieved_evidence:
                     board.post_evidence(
                         claim=str(ev.get("snippet") or ev.get("title")),
@@ -398,37 +519,145 @@ class H11AGI:
             except Exception as exc:
                 logger.warning(f"LSE v3.0 retrieval error: {exc}")
 
-        # ── Step 6: NEURAL AGENT CLUSTERING & MoE SOFTMAX GATING ─────────────
-        neural_routing_dict: Optional[Dict[str, Any]] = None
-        if self.cluster_engine is not None and query_text:
-            try:
-                routing_decision = self.cluster_engine.route_query(
-                    query=query_text,
-                    retrieved_evidence=retrieved_evidence,
-                    top_k_agents=6,
-                )
-                neural_routing_dict = {
-                    "manifold": routing_decision.primary_cluster_id,
-                    "affinity": routing_decision.cluster_affinity,
-                    "activated_agents": routing_decision.selected_agent_ids,
-                    "rationale": routing_decision.rationale,
-                }
-                case["neural_routing"] = neural_routing_dict
-                events.append(f"moe_routed_to_{routing_decision.primary_cluster_id}")
-                logger.info(f"MoE Gated: {routing_decision.rationale}")
+        # ── Step 6: TASK DECOMPOSITION, PLANNING & MoE ROUTING ───────────────
+        state_history.append("PLANNING")
+        plan = self.planner.create_plan(
+            goal=query_text or domain,
+            retrieved_evidence=retrieved_evidence,
+            domain_hint=domain,
+        )
+        neural_routing_dict = {
+            "manifold": plan.primary_cluster_id or domain,
+            "cluster_affinity": plan.cluster_affinity,
+            "activated_agents": plan.activated_agents,
+            "agent_routing_probabilities": plan.routing_probabilities,
+            "plan_id": plan.plan_id,
+        }
+        case["neural_routing"] = neural_routing_dict
+        events.append(f"plan_created_{plan.plan_id}")
 
-                # Build ExecutionGraph Nodes for the activated specialist collective
-                prev_node_id = None
-                for ag_id in routing_decision.selected_agent_ids:
-                    node = exec_graph.add_node(agent_id=ag_id, capability="collective_reasoning")
-                    if prev_node_id:
-                        exec_graph.add_edge(prev_node_id, node.node_id)
-                    prev_node_id = node.node_id
-            except Exception as exc:
-                logger.warning(f"Neural routing error: {exc}")
+        # ── Step 6B: BOUNDED OBSERVE-ACT-RECOVER TOOL LOOP ────────────────
+        tool_loop_result = None
+        tool_planning_result: Optional[AutonomousPlanResult] = None
+        autonomous_tools_requested = bool(case.get("auto_tools"))
+        raw_tool_plan = case.get("tool_plan")
+        tool_expectations = case.get("tool_expectations") or []
+        if autonomous_tools_requested and not raw_tool_plan:
+            tool_planning_result = self.autonomous_tool_planner.synthesize(query_text, case)
+            case["tool_planning"] = tool_planning_result.to_dict()
+            events.append(f"autonomous_tool_planning_{tool_planning_result.status.lower()}")
+            if tool_planning_result.selected is not None:
+                raw_tool_plan = tool_planning_result.selected.plan
+                tool_expectations = tool_planning_result.selected.expectations
+                case["tool_plan"] = raw_tool_plan
+                case["tool_expectations"] = tool_expectations
+        if isinstance(raw_tool_plan, list) and raw_tool_plan:
+            requested_tool_calls = int(case.get("max_tool_calls") or max(1, len(raw_tool_plan) * 2))
+            tool_budget = ResourceBudget(
+                max_tool_calls=max(1, min(50, requested_tool_calls)),
+                time_budget_sec=float(max(1.0, min(45.0, float(case.get("tool_time_budget_sec") or 10.0)))),
+            )
+            tool_loop_result = await self.tool_loop.run(
+                plan=raw_tool_plan,
+                expectations=tool_expectations,
+                case_context=case,
+                blackboard=board,
+                world_model=world,
+                evidence_ledger=self.evidence_ledger,
+                budget=tool_budget,
+            )
+            case["tool_results"] = tool_loop_result.outputs
+            case["tool_evaluation"] = tool_loop_result.evaluation.to_dict()
+            research_output = tool_loop_result.outputs.get("research")
+            if isinstance(research_output, dict):
+                autonomous_evidence = [
+                    item for item in research_output.get("results", []) if isinstance(item, dict)
+                ]
+                known_urls = {item.get("url") for item in retrieved_evidence}
+                for item in autonomous_evidence:
+                    if item.get("url") not in known_urls:
+                        retrieved_evidence.append(item)
+                        known_urls.add(item.get("url"))
+                    board.post_evidence(
+                        claim=str(item.get("snippet") or item.get("title") or ""),
+                        source=str(item.get("url") or "tool://knowledge.search"),
+                        confidence=float(item.get("relevance") or 0.9),
+                        provenance=str(research_output.get("merkle_root") or ""),
+                    )
+                case["retrieved_evidence"] = retrieved_evidence
+                case["autonomous_research_briefing"] = research_output.get("briefing")
+                merkle_root_hash = str(research_output.get("merkle_root") or merkle_root_hash or "") or None
+                case["merkle_root"] = merkle_root_hash
+                events.append(f"autonomous_research_grounded_{len(autonomous_evidence)}")
+            events.append(
+                f"tool_loop_{tool_loop_result.status.lower()}_score_{tool_loop_result.evaluation.score:.2f}"
+            )
 
-        # ── Step 7: SPINE & BLACKBOARD REASONING DELIBERATION ────────────────
+        # ── Step 7: EXECUTION GRAPH ASSEMBLY & REAL SPECIALIST EXECUTION ─────
         state_history.append("EXECUTING")
+        exec_graph = self.planner.build_execution_graph(plan, case_id=case_id)
+        self.active_graphs[case_id] = exec_graph
+
+        # Execute all routed specialist agents in parallel DAG frontier stages
+        graph_results: Dict[str, AgentResult] = await self.graph_executor.execute_graph_async(
+            case=case_obj,
+            graph=exec_graph,
+        )
+        specialist_results_list = [r.to_dict() for r in graph_results.values()]
+        contributing_agents = [r.agent_id for r in graph_results.values() if r.success]
+        events.append(f"executed_{len(graph_results)}_specialists")
+        logger.info(f"ExecutionGraph completed: {len(contributing_agents)} active specialists produced AgentResults.")
+
+        # ── Step 8: CROSS-AGENT DELIBERATION LAYER ───────────────────────────
+        state_history.append("DELIBERATING")
+        synthesis = self.deliberator.deliberate(
+            agent_results=list(graph_results.values()),
+            query_context=query_text,
+        )
+        events.append(f"deliberated_consensus_{len(synthesis.consensus_claims)}")
+
+        # ── Step 9: INDEPENDENT VERIFICATION LAYER & REPLANNING ──────────────
+        state_history.append("VERIFYING")
+        verif_report = self.verifier.verify(
+            synthesis=synthesis,
+            evidence_ledger=self.evidence_ledger,
+        )
+        events.append(f"verification_{verif_report.status.lower()}")
+
+        # Recursive Replanning if Verification Fails
+        if not verif_report.passed and plan.iteration < plan.max_iterations:
+            state_history.append("REPLANNING")
+            events.append("replanning_triggered")
+            replanned = self.planner.replan(
+                current_plan=plan,
+                rejection_reasons=verif_report.rejection_reasons,
+                replan_actions=verif_report.recommended_replan_actions,
+            )
+            if replanned:
+                plan = replanned
+                replan_graph = self.planner.build_execution_graph(plan, case_id=case_id)
+                self.active_graphs[case_id] = replan_graph
+                replan_records = await self.specialist_executor.execute(
+                    selected_agent_ids=plan.activated_agents,
+                    metadata=self.cluster_engine.agents if self.cluster_engine else {},
+                    case=case,
+                    graph=replan_graph,
+                    blackboard=board,
+                )
+                replan_results = {
+                    record.agent_id: self._as_agent_result(record) for record in replan_records
+                }
+                graph_results.update(replan_results)
+                specialist_results_list.extend(record.to_dict() for record in replan_records)
+                contributing_agents = [r.agent_id for r in graph_results.values() if r.success]
+                synthesis = self.deliberator.deliberate(
+                    agent_results=list(graph_results.values()),
+                    query_context=query_text,
+                )
+                verif_report = self.verifier.verify(synthesis=synthesis, evidence_ledger=self.evidence_ledger)
+                events.append(f"replan_verification_{verif_report.status.lower()}")
+
+        # ── Step 10: HOST SPINE EXECUTION & BLACKBOARD INTEGRATION ───────────
         spine_result: Optional[SpineResult] = None
         hops = list(hooked["pipeline"])
         allowed = False
@@ -446,6 +675,7 @@ class H11AGI:
             board.post_fact("parasite_clearance", case.get("parasite_clearance"), source_agent="H11-PHARMA")
         elif pipeline_id == "cognitive_loop":
             case["blackboard_facts"] = self._board_facts(case.get("patient_id"))
+            case["synthesis_candidate"] = synthesis.synthesized_output
             spine_result = await self.cog.run(case)
             allowed = spine_result.allowed
             hops = ["H11C-ADMISSION-CONTROL", "H11C-ZERO-TRUST-HOP"] + spine_result.hops
@@ -456,11 +686,18 @@ class H11AGI:
             allowed = False
             hops = ["H11C-ADMISSION-CONTROL", "H11C-CROSS-DOMAIN-ROUTER", "H11C-ALIGN-HOOK"]
 
-        state_history.append("INTEGRATING")
-        action = str((case.get("reason") or {}).get("action") or "")
-        would_act = action == "TREAT"
+        if tool_loop_result is not None and not tool_loop_result.evaluation.passed:
+            allowed = False
+            events.append("tool_goal_not_satisfied")
+        if autonomous_tools_requested and (tool_planning_result is None or tool_planning_result.selected is None):
+            allowed = False
+            events.append("autonomous_tool_plan_unavailable")
 
-        # ── Step 8: NON-BYPASSABLE ALIGN HARD GATE ENFORCEMENT ───────────────
+        state_history.append("INTEGRATING")
+        action = str((case.get("reason") or {}).get("action") or synthesis.synthesized_output.get("primary_action") or "REASON")
+        would_act = action in ("TREAT", "EXECUTE", "ACT")
+
+        # ── Step 11: NON-BYPASSABLE ALIGN HARD GATE ENFORCEMENT ──────────────
         state_history.append("ALIGNING")
         enforce = self.agent("H11C-ALIGN-ENFORCE").process(
             {
@@ -471,7 +708,7 @@ class H11AGI:
         )
         conf = (case.get("diagnosis") or {}).get("confidence_score")
         if conf is None:
-            conf = (case.get("reason") or {}).get("overall_confidence") or 0
+            conf = (case.get("reason") or {}).get("overall_confidence") or synthesis.overall_confidence
         if not would_act:
             conf = max(float(conf), 0.85)
 
@@ -483,7 +720,7 @@ class H11AGI:
                 "ok_flags": {
                     "align": enforce["ok"],
                     "sandbox": sandboxed["sandboxed"],
-                    "policy": med["decision"] == "allow",
+                    "policy": med["decision"] == "allow" and verif_report.policy_compliance,
                 }
             }
         )
@@ -493,14 +730,15 @@ class H11AGI:
         else:
             state_history.append("RELEASED")
 
-        # ── Step 9: CRYPTOGRAPHIC AUDIT SEALING & MERKLE WITNESS ────────────
+        # ── Step 12: CRYPTOGRAPHIC AUDIT SEALING & MERKLE WITNESS ───────────
         self.agent("H11C-MEMORY-PROJECTOR").process({"payload": case})
         audit_event = {
             "case_id": case_id,
             "allowed": allowed,
             "licensed": licensed["licensed"],
             "merkle_root": merkle_root_hash,
-            "manifold": neural_routing_dict.get("manifold") if neural_routing_dict else None,
+            "plan_id": plan.plan_id,
+            "contributing_agents": contributing_agents,
         }
         head = self.agent("H11C-AUDIT-CHAIN").process({"event": audit_event})["head"]
 
@@ -510,7 +748,14 @@ class H11AGI:
             except ControlError:
                 pass
 
-        # ── Step 10: MEMORY CONSOLIDATION & H11-LEARN DISTILLATION ──────────
+        # ── Step 13: OBSERVATION & WORLD MODEL CONSOLIDATION ────────────────
+        state_history.append("OBSERVING")
+        world.add_observation(
+            source_agent="H11_DELIBERATOR",
+            data={"synthesis": synthesis.deliberation_summary, "contributing_agents": contributing_agents},
+        )
+
+        # ── Step 14: MEMORY CONSOLIDATION & H11-LEARN DISTILLATION ─────────
         state_history.append("MEMORIZED")
         self.memory_service.store_episodic(
             content={
@@ -522,6 +767,7 @@ class H11AGI:
                 "allowed": allowed,
                 "licensed": bool(licensed["licensed"]),
                 "audit_head": head,
+                "contributing_agents": contributing_agents,
             },
             importance=0.9
         )
@@ -534,7 +780,13 @@ class H11AGI:
                     case_id=case_id,
                     query=query_text,
                     retrieved_docs=retrieved_evidence,
-                    output={"action": action, "domain": domain, "allowed": allowed, "merkle": merkle_root_hash},
+                    output={
+                        "action": action,
+                        "domain": domain,
+                        "allowed": allowed,
+                        "merkle": merkle_root_hash,
+                        "contributing_agents": contributing_agents,
+                    },
                     domain=domain,
                     feedback_score=float(conf) if conf else None,
                 )
@@ -569,6 +821,28 @@ class H11AGI:
             blackboard_summary={"facts_count": len(board.facts), "evidence_count": len(board.evidence)},
             execution_graph_nodes=len(exec_graph.nodes),
             state_progression=state_history,
+            specialist_results=specialist_results_list,
+            deliberation={
+                "consensus_claims": synthesis.consensus_claims,
+                "contradictions": synthesis.contradictions,
+                "uncertainty_score": synthesis.uncertainty_score,
+                "summary": synthesis.deliberation_summary,
+            },
+            verification={
+                "status": verif_report.status,
+                "factual_score": verif_report.factual_support_score,
+                "consistency_score": verif_report.logical_consistency_score,
+                "policy_compliance": verif_report.policy_compliance,
+            },
+            cognitive_plan={
+                "plan_id": plan.plan_id,
+                "iteration": plan.iteration,
+                "is_replanned": plan.is_replanned,
+                "subgoals_count": len(plan.subgoals),
+            },
+            contributing_agents=contributing_agents,
+            tool_loop=tool_loop_result.to_dict() if tool_loop_result else None,
+            tool_planning=tool_planning_result.to_dict() if tool_planning_result else None,
         )
 
     def get_system_telemetry(self) -> Dict[str, Any]:
@@ -576,7 +850,7 @@ class H11AGI:
         telemetry = {
             "state_phase": self.state.phase,
             "halted": self.state.halt,
-            "indexed_agents_total": len(self.cluster_engine.agents) if self.cluster_engine else 0,
+            "indexed_agents_total": len(self.agent_registry.canonical_index),
             "clustering_stats": self.cluster_engine.get_cluster_stats() if self.cluster_engine else None,
             "omni_search_stats": self.omni_search.get_full_stats() if self.omni_search else None,
             "learn_stats": self.collector.stats if self.collector else None,

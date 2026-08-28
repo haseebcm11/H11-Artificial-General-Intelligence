@@ -31,8 +31,8 @@ logger = logging.getLogger(__name__)
 
 # Initialize FastAPI App
 app = FastAPI(
-    title="H11-AGI Sovereign Reasoning Interface",
-    description="Conversational Reasoning & Cognitive Operating System Interface for h11.network",
+    title="H11-AGI Multi-Agent Operating System",
+    description="Interface for the governed 1,000 Multi-Agent Artificial General Intelligence Operating System",
     version="4.0.0",
 )
 
@@ -74,7 +74,7 @@ async def get_index() -> HTMLResponse:
         <html>
             <head><title>H11-AGI</title></head>
             <body style='font-family:sans-serif;background:#0f172a;color:#fff;padding:40px;'>
-                <h1>H11-AGI Cognitive Operating System</h1>
+                <h1>H11-AGI 1,000 Multi-Agent AGI Operating System</h1>
                 <p>Chat engine running. Connect via <code>/ws/chat</code> or <code>POST /api/chat</code>.</p>
             </body>
         </html>
@@ -105,6 +105,7 @@ async def post_chat(req: ChatRequest) -> Dict[str, Any]:
             "audit_head": resp.audit_head,
             "case_id": resp.case_id,
             "execution_time_ms": resp.execution_time_ms,
+            "reasoning_provider": resp.reasoning_provider,
             "reasoning_trace": [
                 {"phase": step.phase, "title": step.title, "detail": step.detail}
                 for step in resp.reasoning_trace
@@ -160,7 +161,7 @@ async def get_health() -> Dict[str, Any]:
     telemetry = reasoner.agi.get_system_telemetry()
     return {
         "status": "HEALTHY",
-        "system": "H11-AGI Sovereign Cognitive Operating System",
+        "system": "H11-AGI 1,000 Multi-Agent Artificial General Intelligence Operating System",
         "domain": "h11.network",
         "telemetry": telemetry,
     }

@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Run Conformance & Test Discovery Suite (137 Suites)
+    name: Run Conformance & Test Discovery Suite (159 Tests)
     runs-on: ubuntu-latest
 
     steps:
@@ -37,7 +37,7 @@ jobs:
         assert len(agents) == 1000, f'Expected 1000 agents, found {len(agents)}'
         "
 
-    - name: Run Full Test Suite (137 Tests)
+    - name: Run Full Test Suite (159 Tests)
       run: |
         python -m unittest discover tests -v
 

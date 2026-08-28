@@ -42,6 +42,7 @@ class AgentMetadata:
     layer_or_domain: str
     relative_path: str
     capabilities: List[str] = field(default_factory=list)
+    lexical_terms: Set[str] = field(default_factory=set)
     embedding: List[float] = field(default_factory=list)
     assigned_cluster: str = "CLUST_NEURAL_COGNITION"
 
@@ -117,7 +118,7 @@ class NeuralAgentClusterEngine:
             "name": "Socio-Economic & Legal Governance Manifold",
             "desc": "Algorithmic economics, statutory precedent, sentencing guidelines, and game theory.",
             "domains": ["D17", "D18", "D22"],
-            "keywords": ["finance", "economics", "law", "statute", "sentencing", "game_theory", "market", "portfolio", "arbitrage", "legal", "statutory", "precedent", "macroeconomics"],
+            "keywords": ["finance", "economics", "law", "statute", "sentencing", "game_theory", "market", "portfolio", "arbitrage", "legal", "statutory", "precedent", "macroeconomics", "ethics", "moral", "philosophy", "society"],
         },
         "CLUST_CREATIVE_LINGUISTIC": {
             "name": "Cross-Lingual & Creative Arts Manifold",
@@ -238,8 +239,23 @@ class NeuralAgentClusterEngine:
         layer_clean = layer_or_domain.split("_", 1)[-1].upper()
         capabilities.append(layer_clean)
 
-        signature = f"{agent_id} {pillar} {layer_or_domain} {' '.join(capabilities)}"
+        source_path = Path(self.workspace_root) / rel_path
+        spec_path = source_path.parent / "SPEC.md"
+        schema_path = source_path.parent / "schema.json"
+        descriptive_text = ""
+        for path in (spec_path, schema_path):
+            try:
+                descriptive_text += " " + path.read_text(encoding="utf-8", errors="replace")[:6000]
+            except OSError:
+                continue
+
+        signature = f"{agent_id} {pillar} {layer_or_domain} {' '.join(capabilities)} {descriptive_text}"
         embedding = self._compute_text_embedding(signature)
+        lexical_terms = {
+            token.lower()
+            for token in re.findall(r"[A-Za-z][A-Za-z0-9_]+", signature)
+            if len(token) > 2
+        }
 
         return AgentMetadata(
             agent_id=agent_id,
@@ -248,6 +264,7 @@ class NeuralAgentClusterEngine:
             layer_or_domain=layer_or_domain,
             relative_path=rel_path,
             capabilities=capabilities,
+            lexical_terms=lexical_terms,
             embedding=embedding,
         )
 
@@ -326,11 +343,20 @@ class NeuralAgentClusterEngine:
 
         # 2. Agent Softmax Gating
         agent_scores: List[Tuple[str, float]] = []
-        for aid, meta in self.agents.items():
+        primary_agents = set(self.clusters[best_cluster_id].agent_ids)
+        candidate_pool = [
+            (aid, meta) for aid, meta in self.agents.items()
+            if aid in primary_agents
+        ]
+        for aid, meta in candidate_pool:
             sim = self._cosine_similarity(input_vec, meta.embedding)
-            # Boost agents in the primary cluster
-            boost = 1.35 if meta.assigned_cluster == best_cluster_id else 0.85
-            agent_scores.append((aid, sim * boost))
+            lexical_matches = len(query_words & meta.lexical_terms)
+            normalized_id = set(re.findall(r"[a-z0-9]+", meta.agent_id.lower()))
+            id_matches = len(query_words & normalized_id)
+            # Specifications and exact agent names are materially stronger
+            # routing evidence than the deterministic dense fallback.
+            score = (sim * 0.25) + (lexical_matches * 0.35) + (id_matches * 1.5)
+            agent_scores.append((aid, score))
 
         agent_scores.sort(key=lambda x: x[1], reverse=True)
         top_candidates = agent_scores[:top_k_agents]

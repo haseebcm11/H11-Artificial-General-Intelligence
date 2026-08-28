@@ -16,9 +16,10 @@ from .state import CaseState
 @dataclass
 class Case:
     """The central case object driving the cognitive trajectory (v3.0 Section 6)."""
-    envelope: CaseEnvelope
+    envelope: Optional[CaseEnvelope] = None
     state: CaseState = CaseState.NEW
-    blackboard: Blackboard = field(init=False)
+    blackboard: Blackboard = field(default=None)  # type: ignore
+    payload: Dict[str, Any] = field(default_factory=dict)
     active_agents: List[str] = field(default_factory=list)
     action_proposals: List[ActionProposal] = field(default_factory=list)
     action_licenses: List[ActionLicense] = field(default_factory=list)
@@ -27,14 +28,35 @@ class Case:
     state_history: List[Dict[str, Any]] = field(default_factory=list)
     created_at: float = field(default_factory=time.time)
     closed_at: Optional[float] = None
+    _custom_case_id: Optional[str] = None
 
-    def __post_init__(self) -> None:
-        self.blackboard = Blackboard(case_id=self.envelope.case_id)
+    def __init__(
+        self,
+        envelope: Optional[CaseEnvelope] = None,
+        case_id: Optional[str] = None,
+        payload: Optional[Dict[str, Any]] = None,
+        blackboard: Optional[Blackboard] = None,
+        state: CaseState = CaseState.NEW,
+    ) -> None:
+        self.payload = payload or {}
+        cid = case_id or (envelope.case_id if envelope else f"case-{uuid.uuid4().hex[:12]}")
+        self._custom_case_id = cid
+        self.envelope = envelope or CaseEnvelope(case_id=cid, input_data=self.payload)
+        self.state = state
+        self.blackboard = blackboard or Blackboard(case_id=cid)
+        self.active_agents = []
+        self.action_proposals = []
+        self.action_licenses = []
+        self.final_output = None
+        self.halt_reason = None
+        self.state_history = []
+        self.created_at = time.time()
+        self.closed_at = None
         self.transition_to(CaseState.NEW, "Initialized case instance")
 
     @property
     def case_id(self) -> str:
-        return self.envelope.case_id
+        return self._custom_case_id or (self.envelope.case_id if self.envelope else "")
 
     def transition_to(self, new_state: CaseState, reason: str = "") -> bool:
         """Transitions case state with transition logging and invariant checks."""
