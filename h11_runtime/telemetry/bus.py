@@ -13,6 +13,10 @@ class EventBus:
         self.subscribers: Dict[str, List[Callable[[RuntimeEvent], None]]] = {}
         self.event_history: List[RuntimeEvent] = []
 
+    @property
+    def handlers(self) -> Dict[str, List[Callable[[RuntimeEvent], None]]]:
+        return self.subscribers
+
     def subscribe(self, topic_or_event_name: str, handler: Callable[[RuntimeEvent], None]) -> None:
         if topic_or_event_name not in self.subscribers:
             self.subscribers[topic_or_event_name] = []

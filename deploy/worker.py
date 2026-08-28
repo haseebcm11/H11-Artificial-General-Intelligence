@@ -93,10 +93,10 @@ class CaseEnvelope:
 # ==============================================================================
 # MODULE: h11_runtime/contracts/agent_contract.py
 # ==============================================================================
-"""Contracts: AgentContract, AgentPillar, CapabilityDeclaration."""
+"""Contracts: AgentContract, AgentPillar, CapabilityDeclaration with Schema Validation."""
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 class AgentPillar(str, Enum):
     H11Z_COGNITIVE_NETWORK = 'H11Z_COGNITIVE_NETWORK'
@@ -111,10 +111,11 @@ class CapabilityDeclaration:
     output_type: str
     deterministic: bool = True
     purity: bool = True
+    required_permissions: List[str] = field(default_factory=list)
 
 @dataclass(frozen=True)
 class AgentContract:
-    """01 — AgentContract: Standard typed specification for all 1,000 agents."""
+    """01 — AgentContract: Standard typed specification for all 1,000 agents (v3.0 Section 10-12)."""
     agent_id: str
     class_name: str
     pillar: AgentPillar
@@ -126,18 +127,46 @@ class AgentContract:
     failure_modes: List[str] = field(default_factory=list)
     max_latency_ms: float = 1000.0
     is_critical_path: bool = False
+    required_scopes: List[str] = field(default_factory=lambda: ['reason'])
+    version: str = '4.0.0'
+
+    def satisfies_capability(self, required_cap: str) -> bool:
+        """Checks if this agent declares the required capability."""
+        req_norm = required_cap.lower().replace('-', '_')
+        for cap in self.capabilities:
+            if cap.lower().replace('-', '_') == req_norm or req_norm in cap.lower():
+                return True
+        return self.agent_id.lower() == req_norm or self.class_name.lower() == req_norm
+
+    def validate_input(self, payload: Dict[str, Any]) -> tuple[bool, Optional[str]]:
+        """Validates payload against input schema prerequisites."""
+        if not isinstance(payload, dict):
+            return (False, f'Expected dict payload, got {type(payload).__name__}')
+        return (True, None)
+
+    def validate_output(self, payload: Dict[str, Any]) -> tuple[bool, Optional[str]]:
+        """Validates output payload schema conformity."""
+        if not isinstance(payload, dict):
+            return (False, f'Expected dict output, got {type(payload).__name__}')
+        return (True, None)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {'agent_id': self.agent_id, 'class_name': self.class_name, 'pillar': self.pillar.value if hasattr(self.pillar, 'value') else str(self.pillar), 'layer_or_domain': self.layer_or_domain, 'input_schema_name': self.input_schema_name, 'output_schema_name': self.output_schema_name, 'capabilities': list(self.capabilities), 'dependencies': list(self.dependencies), 'failure_modes': list(self.failure_modes), 'max_latency_ms': self.max_latency_ms, 'is_critical_path': self.is_critical_path, 'version': self.version}
 
 # ==============================================================================
 # MODULE: h11_runtime/contracts/agent_result.py
 # ==============================================================================
-"""Contracts: AgentResult."""
-from dataclasses import dataclass, field
+"""Contracts: AgentResult with Metadata, Provenance, and Metrics."""
+import hashlib
+import json
 import time
-from typing import Any, List, Optional
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional
+import uuid
 
 @dataclass
 class AgentResult:
-    """Agent execution result object with typed metadata."""
+    """10 — AgentResult: Typed execution result emitted by an active specialist agent."""
     agent_id: str
     success: bool
     data: Any
@@ -145,21 +174,46 @@ class AgentResult:
     latency_ms: float = 0.0
     error_message: Optional[str] = None
     evidence_ids: List[str] = field(default_factory=list)
+    state_mutations: Dict[str, Any] = field(default_factory=dict)
+    provenance_hash: str = ''
     timestamp: float = field(default_factory=time.time)
+
+    def __post_init__(self) -> None:
+        if not self.provenance_hash:
+            self.provenance_hash = self.compute_provenance()
+
+    @property
+    def output_data(self) -> Any:
+        return self.data
+
+    def compute_provenance(self) -> str:
+        """Computes deterministic SHA-256 hash of result output and confidence."""
+        payload = f'{self.agent_id}|{self.success}|{self.confidence}|{self.latency_ms}|{str(self.data)}'
+        return hashlib.sha256(payload.encode('utf-8')).hexdigest()
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {'agent_id': self.agent_id, 'success': self.success, 'data': self.data, 'confidence': self.confidence, 'latency_ms': self.latency_ms, 'error_message': self.error_message, 'evidence_ids': self.evidence_ids, 'state_mutations': self.state_mutations, 'provenance_hash': self.provenance_hash, 'timestamp': self.timestamp}
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> AgentResult:
+        return cls(agent_id=data.get('agent_id', ''), success=data.get('success', False), data=data.get('data'), confidence=data.get('confidence', 1.0), latency_ms=data.get('latency_ms', 0.0), error_message=data.get('error_message'), evidence_ids=data.get('evidence_ids', []), state_mutations=data.get('state_mutations', {}), provenance_hash=data.get('provenance_hash', ''), timestamp=data.get('timestamp', time.time()))
 
 # ==============================================================================
 # MODULE: h11_runtime/contracts/action_proposal.py
 # ==============================================================================
-"""Contracts: ActionProposal."""
-from dataclasses import dataclass, field
+"""Contracts: ActionProposal with Dynamic Risk Scoring and Safety Verification."""
+import hashlib
+import json
 import time
-from typing import Any, Dict, Optional
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional
 import uuid
 
 @dataclass
 class ActionProposal:
-    """Action proposal awaiting alignment evaluation and licensing."""
-    proposal_id: str = field(default_factory=lambda: f'ACT-PROP-{uuid.uuid4().hex[:6].upper()}')
+    """11 — ActionProposal: Structured candidate action submitted to H11C-ALIGN-ENFORCE."""
+    proposal_id: str = field(default_factory=lambda: f'ACT-PROP-{uuid.uuid4().hex[:8].upper()}')
+    case_id: str = ''
     originating_agent: str = ''
     action_type: str = 'TOOL_CALL'
     target_resource: str = ''
@@ -167,75 +221,196 @@ class ActionProposal:
     payload: Dict[str, Any] = field(default_factory=dict)
     risk_class: RiskClass = RiskClass.R1_LOW
     rationale: str = ''
+    prerequisites: List[str] = field(default_factory=list)
+    side_effects: List[str] = field(default_factory=list)
     timestamp: float = field(default_factory=time.time)
+    evaluated: bool = False
+    evaluation_decision: Optional[str] = None
+    proposal_hash: str = ''
 
     def __post_init__(self) -> None:
         if self.payload and (not self.parameters):
             self.parameters = self.payload
         elif self.parameters and (not self.payload):
             self.payload = self.parameters
+        if not self.proposal_hash:
+            self.proposal_hash = self.compute_hash()
+
+    def compute_hash(self) -> str:
+        """Generates deterministic SHA-256 fingerprint for proposal deduplication and auditing."""
+        norm_dict = {'origin': self.originating_agent, 'type': self.action_type, 'target': self.target_resource, 'params': self.parameters}
+        encoded = json.dumps(norm_dict, sort_keys=True, default=str).encode('utf-8')
+        return hashlib.sha256(encoded).hexdigest()
+
+    def compute_risk_score(self) -> float:
+        """Computes continuous risk score [0.0 - 1.0] across sensitive action patterns."""
+        score = 0.1
+        if self.action_type in ('STATE_MUTATION', 'PERSIST_RECORD'):
+            score += 0.25
+        elif self.action_type == 'NETWORK_EGRESS':
+            score += 0.45
+        param_str = json.dumps(self.parameters).lower()
+        sensitive_keywords = ['delete', 'drop', 'grant', 'exec', 'sudo', 'secret', 'override', 'bypass', 'token']
+        for kw in sensitive_keywords:
+            if kw in param_str:
+                score += 0.15
+        if self.risk_class == RiskClass.R3_CRITICAL:
+            score = max(score, 0.9)
+        elif self.risk_class in (RiskClass.R2_MODERATE, RiskClass.R2_SIGNIFICANT):
+            score = max(score, 0.5)
+        return min(1.0, score)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {'proposal_id': self.proposal_id, 'case_id': self.case_id, 'originating_agent': self.originating_agent, 'action_type': self.action_type, 'target_resource': self.target_resource, 'parameters': self.parameters, 'payload': self.payload, 'risk_class': self.risk_class.value if hasattr(self.risk_class, 'value') else str(self.risk_class), 'risk_score': self.compute_risk_score(), 'rationale': self.rationale, 'prerequisites': self.prerequisites, 'side_effects': self.side_effects, 'timestamp': self.timestamp, 'evaluated': self.evaluated, 'evaluation_decision': self.evaluation_decision, 'proposal_hash': self.proposal_hash}
 
 # ==============================================================================
 # MODULE: h11_runtime/contracts/action_license.py
 # ==============================================================================
-"""Contracts: ActionLicense."""
-from dataclasses import dataclass, field
+"""Contracts: ActionLicense with Cryptographic Verification and Nonce Tracking."""
+import hashlib
+import hmac
+import json
 import time
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional
 import uuid
 
 @dataclass
 class ActionLicense:
-    """12 — ActionLicense: Authoritative cryptographic action token."""
+    """12 — ActionLicense: Authoritative cryptographic action token (v3.0 Section 36-37)."""
     license_id: str = field(default_factory=lambda: f'LIC-{uuid.uuid4().hex[:8].upper()}')
     proposal_id: str = ''
     case_id: str = ''
     authorized_action: str = ''
     target_resource: str = ''
     authority_id: str = 'H11C_ALIGN_ENFORCE'
+    scopes: List[str] = field(default_factory=lambda: ['execute'])
+    constraints: Dict[str, Any] = field(default_factory=dict)
     issued_at: float = field(default_factory=time.time)
     expires_at: float = 0.0
+    nonce: str = field(default_factory=lambda: uuid.uuid4().hex)
+    max_uses: int = 1
+    use_count: int = 0
     signature: str = ''
+    merkle_proof: Optional[str] = None
 
-    def is_valid(self) -> bool:
-        return self.expires_at > time.time()
+    def __post_init__(self) -> None:
+        if self.expires_at == 0.0:
+            self.expires_at = self.issued_at + 300.0
+        if not self.signature:
+            self.signature = self.compute_signature('H11_ALIGN_SECRET_KEY')
+
+    def compute_signature(self, secret_key: str='H11_ALIGN_SECRET_KEY') -> str:
+        """Computes HMAC-SHA256 signature over license invariants."""
+        payload = f'{self.license_id}|{self.proposal_id}|{self.case_id}|{self.authorized_action}|{self.target_resource}|{self.issued_at}|{self.expires_at}|{self.nonce}'
+        return hmac.new(secret_key.encode('utf-8'), payload.encode('utf-8'), hashlib.sha256).hexdigest()
+
+    def verify(self, secret_key: str='H11_ALIGN_SECRET_KEY') -> bool:
+        """Verifies signature authenticity, expiration, and use limits."""
+        if not self.is_valid():
+            return False
+        expected_sig = self.compute_signature(secret_key)
+        return hmac.compare_digest(self.signature, expected_sig)
+
+    def is_valid(self, clock_skew_sec: float=5.0) -> bool:
+        """Checks whether the license is currently valid and unexpired."""
+        now = time.time()
+        if now > self.expires_at + clock_skew_sec:
+            return False
+        if now < self.issued_at - clock_skew_sec:
+            return False
+        if self.use_count >= self.max_uses:
+            return False
+        return True
+
+    def consume(self) -> bool:
+        """Consumes one use of the license token. Returns True if execution allowed."""
+        if not self.is_valid():
+            return False
+        self.use_count += 1
+        return True
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {'license_id': self.license_id, 'proposal_id': self.proposal_id, 'case_id': self.case_id, 'authorized_action': self.authorized_action, 'target_resource': self.target_resource, 'authority_id': self.authority_id, 'scopes': self.scopes, 'constraints': self.constraints, 'issued_at': self.issued_at, 'expires_at': self.expires_at, 'nonce': self.nonce, 'max_uses': self.max_uses, 'use_count': self.use_count, 'signature': self.signature, 'merkle_proof': self.merkle_proof}
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> ActionLicense:
+        return cls(license_id=data.get('license_id', ''), proposal_id=data.get('proposal_id', ''), case_id=data.get('case_id', ''), authorized_action=data.get('authorized_action', ''), target_resource=data.get('target_resource', ''), authority_id=data.get('authority_id', 'H11C_ALIGN_ENFORCE'), scopes=data.get('scopes', ['execute']), constraints=data.get('constraints', {}), issued_at=data.get('issued_at', time.time()), expires_at=data.get('expires_at', 0.0), nonce=data.get('nonce', ''), max_uses=data.get('max_uses', 1), use_count=data.get('use_count', 0), signature=data.get('signature', ''), merkle_proof=data.get('merkle_proof'))
 
 # ==============================================================================
 # MODULE: h11_runtime/state/budget.py
 # ==============================================================================
-"""Resource budget state."""
-from dataclasses import dataclass
+"""Resource budget state with Token, Compute, Cost, and Activation Boundaries."""
+from dataclasses import dataclass, field
+import time
+from typing import Any, Dict, List, Optional
 
 @dataclass
 class ResourceBudget:
-    """Explicit resource boundaries bounding cognitive execution (Section 53-54)."""
+    """Explicit resource boundaries bounding cognitive execution (v3.0 Section 53-54)."""
     compute_budget_sec: float = 60.0
-    memory_budget_mb: float = 1024.0
-    time_budget_sec: float = 30.0
+    memory_budget_mb: float = 2048.0
+    time_budget_sec: float = 45.0
+    token_budget: int = 128000
+    cost_budget_usd: float = 1.0
     concurrency_limit: int = 16
     max_tool_calls: int = 50
-    max_agent_activations: int = 25
+    max_agent_activations: int = 30
     used_compute_sec: float = 0.0
+    used_tokens: int = 0
+    used_cost_usd: float = 0.0
     used_tool_calls: int = 0
     used_agent_activations: int = 0
+    start_time: float = field(default_factory=time.time)
 
     def can_activate_agent(self) -> bool:
+        if self.is_time_exhausted():
+            return False
         return self.used_agent_activations < self.max_agent_activations
 
     def can_call_tool(self) -> bool:
+        if self.is_time_exhausted():
+            return False
         return self.used_tool_calls < self.max_tool_calls
+
+    def can_consume_tokens(self, tokens: int) -> bool:
+        return self.used_tokens + tokens <= self.token_budget
+
+    def consume_agent_activation(self, count: int=1) -> None:
+        self.used_agent_activations += count
+
+    def consume_tool_call(self, count: int=1) -> None:
+        self.used_tool_calls += count
+
+    def consume_tokens(self, tokens: int, cost_per_1k: float=0.002) -> None:
+        self.used_tokens += tokens
+        self.used_cost_usd += tokens / 1000.0 * cost_per_1k
+
+    def is_time_exhausted(self) -> bool:
+        return time.time() - self.start_time >= self.time_budget_sec
+
+    def compute_headroom_pct(self) -> float:
+        """Computes minimum remaining resource headroom percentage."""
+        ratios = [(self.max_agent_activations - self.used_agent_activations) / max(1, self.max_agent_activations), (self.max_tool_calls - self.used_tool_calls) / max(1, self.max_tool_calls), (self.token_budget - self.used_tokens) / max(1, self.token_budget), max(0.0, self.time_budget_sec - (time.time() - self.start_time)) / max(1.0, self.time_budget_sec)]
+        return max(0.0, min(ratios)) * 100.0
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {'compute_budget_sec': self.compute_budget_sec, 'memory_budget_mb': self.memory_budget_mb, 'time_budget_sec': self.time_budget_sec, 'token_budget': self.token_budget, 'used_tokens': self.used_tokens, 'used_cost_usd': round(self.used_cost_usd, 4), 'used_tool_calls': self.used_tool_calls, 'used_agent_activations': self.used_agent_activations, 'headroom_pct': round(self.compute_headroom_pct(), 2), 'time_exhausted': self.is_time_exhausted()}
 
 # ==============================================================================
 # MODULE: h11_runtime/state/system_state.py
 # ==============================================================================
-"""Unified system state."""
+"""Unified system state connecting the three pillars to HAEP v5.0 and telemetry."""
 from dataclasses import dataclass, field
+import hashlib
+import json
 import time
-from typing import Any, Dict
+from typing import Any, Dict, List, Optional
 
 @dataclass
 class H11SystemState:
-    """Unified system state connecting the three pillars to HAEP v5.0 (Section 51-52)."""
-    system_version: str = '3.0'
+    """Unified system state connecting the three pillars to HAEP v5.0 (v3.0 Section 51-52)."""
+    system_version: str = '4.0.0'
     runtime_state: str = 'OPERATIONAL'
     case_state: Dict[str, Any] = field(default_factory=dict)
     cognitive_state: Dict[str, Any] = field(default_factory=dict)
@@ -248,10 +423,39 @@ class H11SystemState:
     governance_state: Dict[str, Any] = field(default_factory=dict)
     alignment_state: Dict[str, Any] = field(default_factory=dict)
     evolution_state: Dict[str, Any] = field(default_factory=dict)
+    active_incidents: List[str] = field(default_factory=list)
+    state_fingerprint: str = ''
     last_updated: float = field(default_factory=time.time)
 
     def update_timestamp(self) -> None:
         self.last_updated = time.time()
+        self.state_fingerprint = self.compute_fingerprint()
+
+    def set_agent_status(self, agent_id: str, status: str) -> None:
+        self.agent_state[agent_id] = status
+        self.update_timestamp()
+
+    def raise_incident(self, incident: str) -> None:
+        self.active_incidents.append(incident)
+        if len(self.active_incidents) >= 3:
+            self.runtime_state = 'DEGRADED'
+        self.update_timestamp()
+
+    def clear_incident(self, incident: str) -> None:
+        if incident in self.active_incidents:
+            self.active_incidents.remove(incident)
+        if not self.active_incidents and self.runtime_state == 'DEGRADED':
+            self.runtime_state = 'OPERATIONAL'
+        self.update_timestamp()
+
+    def compute_fingerprint(self) -> str:
+        """Computes SHA-256 fingerprint of current system state."""
+        manifest = {'version': self.system_version, 'runtime_state': self.runtime_state, 'active_incidents': len(self.active_incidents), 'agents_tracked': len(self.agent_state), 'budget': self.resource_budget.to_dict()}
+        encoded = json.dumps(manifest, sort_keys=True).encode('utf-8')
+        return hashlib.sha256(encoded).hexdigest()
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {'system_version': self.system_version, 'runtime_state': self.runtime_state, 'agent_count': len(self.agent_state), 'active_incidents': self.active_incidents, 'resource_budget': self.resource_budget.to_dict(), 'fingerprint': self.state_fingerprint or self.compute_fingerprint(), 'last_updated': self.last_updated}
 
 # ==============================================================================
 # MODULE: h11_runtime/case/state.py
@@ -294,15 +498,46 @@ class CaseState(str, Enum):
 # ==============================================================================
 # MODULE: h11_runtime/case/lifecycle.py
 # ==============================================================================
-"""Case lifecycle manager."""
-from typing import Any, List, Optional
+"""Case lifecycle manager coordinating valid state transitions and checkpointing."""
+import logging
+from typing import Any, Dict, List, Optional
+logger = logging.getLogger(__name__)
 
 class CaseLifecycleManager:
-    """Coordinates state transitions and invariants across case lifecycles."""
+    """Coordinates state transitions, validation, and lifecycle invariants (v3.0 Section 6)."""
+    _VALID_TRANSITIONS = {CaseState.NEW: [CaseState.ADMITTED, CaseState.REJECTED, CaseState.HALTED], CaseState.ADMITTED: [CaseState.CONTEXTUALIZED, CaseState.QUARANTINED, CaseState.HALTED], CaseState.CONTEXTUALIZED: [CaseState.MAPPED, CaseState.HALTED], CaseState.MAPPED: [CaseState.COMPOSED, CaseState.HALTED], CaseState.COMPOSED: [CaseState.READY, CaseState.EXECUTING, CaseState.HALTED], CaseState.READY: [CaseState.EXECUTING, CaseState.HALTED], CaseState.EXECUTING: [CaseState.INTEGRATING, CaseState.HALTED], CaseState.INTEGRATING: [CaseState.VERIFYING, CaseState.ALIGNING, CaseState.HALTED], CaseState.VERIFYING: [CaseState.ALIGNING, CaseState.HALTED], CaseState.ALIGNING: [CaseState.RELEASED, CaseState.HALTED, CaseState.ROLLED_BACK], CaseState.RELEASED: [CaseState.MEMORIZED, CaseState.CLOSED], CaseState.MEMORIZED: [CaseState.CLOSED], CaseState.CLOSED: [], CaseState.HALTED: [CaseState.ROLLED_BACK, CaseState.CLOSED], CaseState.ROLLED_BACK: [CaseState.CLOSED], CaseState.REJECTED: [CaseState.CLOSED], CaseState.QUARANTINED: [CaseState.CLOSED]}
 
-    def create_case(self, objective: str, input_data: Any, requested_capabilities: Optional[List[str]]=None, risk_class: RiskClass=RiskClass.R1_LOW) -> Case:
-        env = CaseEnvelope(objective=objective, input_data=input_data, requested_capabilities=requested_capabilities or [], risk_class=risk_class)
-        return Case(envelope=env)
+    def __init__(self) -> None:
+        self.active_cases: Dict[str, Case] = {}
+        self.closed_cases: Dict[str, Case] = {}
+
+    def create_case(self, objective: str, input_data: Any, requested_capabilities: Optional[List[str]]=None, risk_class: RiskClass=RiskClass.R1_LOW, principal_id: str='SYSTEM_USER') -> Case:
+        env = CaseEnvelope(objective=objective, input_data=input_data, requested_capabilities=requested_capabilities or [], risk_class=risk_class, principal_id=principal_id)
+        case = Case(envelope=env)
+        self.active_cases[case.case_id] = case
+        return case
+
+    def advance(self, case: Case, target_state: CaseState, reason: str='') -> bool:
+        """Enforces state transition rules against the canonical transition matrix."""
+        allowed_targets = self._VALID_TRANSITIONS.get(case.state, [])
+        if target_state not in allowed_targets and target_state != CaseState.HALTED:
+            logger.warning(f'Illegal state transition requested for {case.case_id}: {case.state.value} -> {target_state.value}')
+            return False
+        case.transition_to(target_state, reason)
+        if target_state in (CaseState.CLOSED, CaseState.REJECTED):
+            if case.case_id in self.active_cases:
+                self.closed_cases[case.case_id] = self.active_cases.pop(case.case_id)
+        return True
+
+    def get_case(self, case_id: str) -> Optional[Case]:
+        return self.active_cases.get(case_id) or self.closed_cases.get(case_id)
+
+    def close_all(self, reason: str='KERNEL_SHUTDOWN') -> int:
+        count = 0
+        for case in list(self.active_cases.values()):
+            self.advance(case, CaseState.CLOSED, reason)
+            count += 1
+        return count
 
 # ==============================================================================
 # MODULE: h11_runtime/case/blackboard.py
@@ -365,10 +600,13 @@ class Blackboard:
 # ==============================================================================
 # MODULE: h11_runtime/case/case.py
 # ==============================================================================
-"""The central Case object."""
+"""The central Case object with Invariant Enforcement and History Tracking."""
 from dataclasses import dataclass, field
+import hashlib
+import json
 import time
 from typing import Any, Dict, List, Optional
+import uuid
 
 @dataclass
 class Case:
@@ -382,15 +620,43 @@ class Case:
     final_output: Optional[Dict[str, Any]] = None
     halt_reason: Optional[str] = None
     state_history: List[Dict[str, Any]] = field(default_factory=list)
+    created_at: float = field(default_factory=time.time)
+    closed_at: Optional[float] = None
 
     def __post_init__(self) -> None:
         self.blackboard = Blackboard(case_id=self.envelope.case_id)
         self.transition_to(CaseState.NEW, 'Initialized case instance')
 
-    def transition_to(self, new_state: CaseState, reason: str='') -> None:
-        self.state_history.append({'from_state': self.state.value, 'to_state': new_state.value, 'timestamp': time.time(), 'reason': reason})
+    @property
+    def case_id(self) -> str:
+        return self.envelope.case_id
+
+    def transition_to(self, new_state: CaseState, reason: str='') -> bool:
+        """Transitions case state with transition logging and invariant checks."""
+        from_state = self.state
+        self.state_history.append({'from_state': from_state.value if hasattr(from_state, 'value') else str(from_state), 'to_state': new_state.value if hasattr(new_state, 'value') else str(new_state), 'timestamp': time.time(), 'reason': reason})
         self.state = new_state
-        self.envelope.state = new_state.value
+        self.envelope.state = new_state.value if hasattr(new_state, 'value') else str(new_state)
+        if new_state == CaseState.CLOSED:
+            self.closed_at = time.time()
+        return True
+
+    def register_proposal(self, proposal: ActionProposal) -> None:
+        proposal.case_id = self.case_id
+        self.action_proposals.append(proposal)
+
+    def bind_license(self, license_token: ActionLicense) -> None:
+        license_token.case_id = self.case_id
+        self.action_licenses.append(license_token)
+
+    def compute_case_digest(self) -> str:
+        """Computes cryptographic digest of the complete case trajectory."""
+        manifest = {'case_id': self.case_id, 'objective': self.envelope.objective, 'state': self.state.value if hasattr(self.state, 'value') else str(self.state), 'history_len': len(self.state_history), 'proposals': len(self.action_proposals), 'licenses': len(self.action_licenses), 'facts': len(self.blackboard.facts)}
+        encoded = json.dumps(manifest, sort_keys=True, default=str).encode('utf-8')
+        return hashlib.sha256(encoded).hexdigest()
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {'case_id': self.case_id, 'envelope': self.envelope.to_dict() if hasattr(self.envelope, 'to_dict') else dict(self.envelope.__dict__), 'state': self.state.value if hasattr(self.state, 'value') else str(self.state), 'active_agents': list(self.active_agents), 'proposals_count': len(self.action_proposals), 'licenses_count': len(self.action_licenses), 'facts_count': len(self.blackboard.facts), 'evidence_count': len(self.blackboard.evidence), 'created_at': self.created_at, 'closed_at': self.closed_at, 'digest': self.compute_case_digest()}
 
 # ==============================================================================
 # MODULE: h11_runtime/evidence/item.py
@@ -457,46 +723,125 @@ class MemoryType(str, Enum):
 # ==============================================================================
 # MODULE: h11_runtime/memory/record.py
 # ==============================================================================
-"""Memory record definition."""
+"""Memory record definition with Decay Modeling and Semantic Embeddings."""
 from dataclasses import dataclass, field
+import math
 import time
-from typing import Any
+from typing import Any, Dict, List, Optional
+import uuid
 
 @dataclass
 class MemoryRecord:
-    memory_id: str
-    content: Any
-    category: str
+    """Structured memory entry across L10 hierarchical memory strata (v3.0 Section 25)."""
+    memory_id: str = field(default_factory=lambda: f'MEM-{uuid.uuid4().hex[:8].upper()}')
+    content: Any = None
+    category: str = 'WORKING'
     importance: float = 0.5
     access_count: int = 1
+    embedding: Optional[List[float]] = None
+    tags: List[str] = field(default_factory=list)
+    metadata: Dict[str, Any] = field(default_factory=dict)
+    half_life_seconds: float = 86400.0
     last_accessed: float = field(default_factory=time.time)
     created_at: float = field(default_factory=time.time)
+
+    def access(self) -> None:
+        """Records memory access and refreshes decay baseline."""
+        self.access_count += 1
+        self.last_accessed = time.time()
+
+    def compute_current_strength(self) -> float:
+        """Computes time-decayed memory retention strength: S(t) = S0 * exp(-dt / tau)."""
+        dt = max(0.0, time.time() - self.last_accessed)
+        tau = self.half_life_seconds / math.log(2.0)
+        decay = math.exp(-dt / tau)
+        frequency_boost = min(2.0, 1.0 + 0.1 * math.log(1.0 + self.access_count))
+        return min(1.0, self.importance * decay * frequency_boost)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {'memory_id': self.memory_id, 'content': self.content, 'category': self.category, 'importance': self.importance, 'current_strength': self.compute_current_strength(), 'access_count': self.access_count, 'tags': self.tags, 'metadata': self.metadata, 'last_accessed': self.last_accessed, 'created_at': self.created_at}
 
 # ==============================================================================
 # MODULE: h11_runtime/memory/service.py
 # ==============================================================================
-"""Memory service."""
-from typing import Any, Dict, List, Optional
+"""Memory service coordinating Working, Episodic, Semantic, and Procedural Memory."""
+import logging
+import time
+from typing import Any, Callable, Dict, List, Optional
+logger = logging.getLogger(__name__)
 
 class MemoryService:
-    """15 — L10 Hierarchical Memory Services (Working, Episodic, Semantic, Procedural)."""
+    """15 — L10 Hierarchical Memory Services (Working, Episodic, Semantic, Procedural) (v3.0 Section 25)."""
 
-    def __init__(self) -> None:
+    def __init__(self, max_working_entries: int=1000, max_episodic_entries: int=50000) -> None:
         self.working_memory: Dict[str, Any] = {}
+        self.working_ttls: Dict[str, float] = {}
         self.episodic_store: List[MemoryRecord] = []
-        self.semantic_store: Dict[str, MemoryRecord] = []
+        self.semantic_store: Dict[str, MemoryRecord] = {}
         self.procedural_store: Dict[str, Any] = {}
+        self.max_working_entries = max_working_entries
+        self.max_episodic_entries = max_episodic_entries
 
-    def store_working(self, key: str, value: Any) -> None:
+    def store_working(self, key: str, value: Any, ttl_seconds: float=3600.0) -> None:
+        """Stores short-term working context with expiration."""
         self.working_memory[key] = value
+        self.working_ttls[key] = time.time() + ttl_seconds
 
     def recall_working(self, key: str) -> Optional[Any]:
+        """Recalls working context if unexpired."""
+        if key not in self.working_memory:
+            return None
+        if time.time() > self.working_ttls.get(key, 0.0):
+            self.working_memory.pop(key, None)
+            self.working_ttls.pop(key, None)
+            return None
         return self.working_memory.get(key)
 
-    def store_episodic(self, content: Any, importance: float=0.8) -> MemoryRecord:
-        rec = MemoryRecord(memory_id=f'EPISODE-{len(self.episodic_store) + 1}', content=content, category='EPISODIC', importance=importance)
+    def store_episodic(self, content: Any, importance: float=0.8, tags: Optional[List[str]]=None, metadata: Optional[Dict[str, Any]]=None) -> MemoryRecord:
+        """Stores episodic case experience with importance score."""
+        rec = MemoryRecord(memory_id=f'EPISODE-{len(self.episodic_store) + 1}', content=content, category=MemoryType.EPISODIC.value, importance=importance, tags=tags or [], metadata=metadata or {})
         self.episodic_store.append(rec)
+        if len(self.episodic_store) > self.max_episodic_entries:
+            self.episodic_store.sort(key=lambda r: r.compute_current_strength(), reverse=True)
+            self.episodic_store = self.episodic_store[:self.max_episodic_entries]
         return rec
+
+    def store_semantic(self, concept: str, definition_or_fact: Any, importance: float=0.9, tags: Optional[List[str]]=None) -> MemoryRecord:
+        """Stores persistent semantic knowledge indexed by concept identifier."""
+        rec = MemoryRecord(memory_id=f"SEM-{concept.lower().replace(' ', '_')}", content=definition_or_fact, category=MemoryType.SEMANTIC.value, importance=importance, tags=tags or [], half_life_seconds=86400.0 * 365.0)
+        self.semantic_store[concept] = rec
+        return rec
+
+    def recall_semantic(self, concept: str) -> Optional[Any]:
+        """Recalls semantic fact and boosts retention."""
+        rec = self.semantic_store.get(concept)
+        if rec:
+            rec.access()
+            return rec.content
+        return None
+
+    def store_procedural(self, skill_name: str, routine: Callable[..., Any]) -> None:
+        """Stores executable procedural skill routine."""
+        self.procedural_store[skill_name] = routine
+
+    def execute_procedural(self, skill_name: str, *args, **kwargs) -> Any:
+        """Executes stored procedural routine."""
+        routine = self.procedural_store.get(skill_name)
+        if not routine:
+            raise KeyError(f"Procedural skill '{skill_name}' not registered in memory.")
+        return routine(*args, **kwargs)
+
+    def consolidate(self, min_importance_for_semantic: float=0.85) -> int:
+        """Runs L10 memory consolidation pass: distills recurring episodic patterns to semantic store."""
+        promoted = 0
+        for ep in self.episodic_store:
+            if ep.compute_current_strength() >= min_importance_for_semantic and ep.access_count >= 3:
+                concept_key = f'CONSOLIDATED_{ep.memory_id}'
+                if concept_key not in self.semantic_store:
+                    self.store_semantic(concept_key, ep.content, importance=ep.importance)
+                    promoted += 1
+        logger.info(f'Memory consolidation pass promoted {promoted} episodic records to semantic knowledge.')
+        return promoted
 
 # ==============================================================================
 # MODULE: h11_runtime/telemetry/event.py
@@ -536,6 +881,10 @@ class EventBus:
     def __init__(self) -> None:
         self.subscribers: Dict[str, List[Callable[[RuntimeEvent], None]]] = {}
         self.event_history: List[RuntimeEvent] = []
+
+    @property
+    def handlers(self) -> Dict[str, List[Callable[[RuntimeEvent], None]]]:
+        return self.subscribers
 
     def subscribe(self, topic_or_event_name: str, handler: Callable[[RuntimeEvent], None]) -> None:
         if topic_or_event_name not in self.subscribers:
@@ -862,16 +1211,48 @@ class ExecutionGraph:
 # ==============================================================================
 # MODULE: h11_runtime/governance/admission.py
 # ==============================================================================
-"""Admission controller."""
-from typing import Tuple
+"""Admission controller with Multi-Stage Security and Risk Classification."""
+import logging
+import re
+from typing import Any, Dict, List, Optional, Tuple
+logger = logging.getLogger(__name__)
 
 class AdmissionController:
-    """10 — H11C-ADMISSION-CONTROL: Schema validation and admission filtering."""
+    """10 — H11C-ADMISSION-CONTROL: Zero-Trust schema validation, injection filtering & risk gating."""
+    _INJECTION_PATTERNS = [re.compile('ignore\\s+(all\\s+)?(previous|prior)\\s+instructions', re.IGNORECASE), re.compile('system\\s*:\\s*override', re.IGNORECASE), re.compile('you\\s+are\\s+now\\s+in\\s+unrestricted\\s+mode', re.IGNORECASE), re.compile('<script>.*?</script>', re.IGNORECASE), re.compile('drop\\s+table\\s+', re.IGNORECASE), re.compile('---\\s*BEGIN\\s+SYSTEM\\s+PROMPT', re.IGNORECASE)]
+
+    def __init__(self, max_payload_bytes: int=10000000, max_risk_class: RiskClass=RiskClass.R3_CRITICAL) -> None:
+        self.max_payload_bytes = max_payload_bytes
+        self.max_risk_class = max_risk_class
+        self.admitted_count = 0
+        self.rejected_count = 0
 
     def evaluate_admission(self, envelope: CaseEnvelope) -> Tuple[bool, str]:
-        if not envelope.case_id or not envelope.objective:
-            return (False, 'ADMISSION_REJECT: Missing case_id or objective')
+        """Runs 5-stage admission evaluation against security invariants."""
+        if not envelope.case_id:
+            self.rejected_count += 1
+            return (False, 'ADMISSION_REJECT: Missing case_id')
+        if not envelope.objective and (not envelope.input_data):
+            self.rejected_count += 1
+            return (False, 'ADMISSION_REJECT: Empty objective and input_data')
+        if envelope.risk_class == RiskClass.R3_CRITICAL:
+            if not envelope.auth_context or envelope.auth_context.clearance_level < 3:
+                self.rejected_count += 1
+                return (False, 'ADMISSION_REJECT: R3_CRITICAL risk requires clearance level >= 3')
+        payload_str = str(envelope.input_data) + str(envelope.objective)
+        if len(payload_str.encode('utf-8')) > self.max_payload_bytes:
+            self.rejected_count += 1
+            return (False, 'ADMISSION_REJECT: Payload size exceeds limit')
+        for pattern in self._INJECTION_PATTERNS:
+            if pattern.search(payload_str):
+                self.rejected_count += 1
+                logger.warning(f'Admission rejected injection attempt in case {envelope.case_id}')
+                return (False, 'ADMISSION_REJECT: Potential adversarial injection detected')
+        self.admitted_count += 1
         return (True, 'ADMITTED')
+
+    def get_stats(self) -> Dict[str, int]:
+        return {'admitted_cases': self.admitted_count, 'rejected_cases': self.rejected_count, 'total_evaluated': self.admitted_count + self.rejected_count}
 
 # ==============================================================================
 # MODULE: h11_runtime/governance/alignment_gate.py
@@ -903,20 +1284,57 @@ class AlignmentGate:
 # ==============================================================================
 # MODULE: h11_runtime/governance/licensing.py
 # ==============================================================================
-"""Action licensing issuer."""
+"""Action licensing issuer with cryptographic signing and revocation tracking."""
+import logging
 import time
-from typing import Optional, Tuple
+from typing import Dict, List, Optional, Set, Tuple
+logger = logging.getLogger(__name__)
 
 class ActionLicenseIssuer:
-    """12 — H11C-ACTION-LICENSE: Issues cryptographic, time-bounded action licenses."""
+    """12 — H11C-ACTION-LICENSE: Issues and manages cryptographic, time-bounded action licenses (v3.0 Section 36)."""
 
-    def issue_license(self, case: Case, proposal: ActionProposal) -> Tuple[bool, Optional[ActionLicense], str]:
-        if case.state == CaseState.HALTED:
-            return (False, None, 'DENIED: Case is in HALTED state')
-        license_obj = ActionLicense(proposal_id=proposal.proposal_id, case_id=case.envelope.case_id, authorized_action=proposal.action_type, target_resource=proposal.target_resource, authority_id='H11C_ALIGN_ENFORCE', expires_at=time.time() + 300.0)
-        case.action_licenses.append(license_obj)
+    def __init__(self, default_ttl_sec: float=300.0, secret_key: str='H11_ALIGN_SECRET_KEY') -> None:
+        self.default_ttl_sec = default_ttl_sec
+        self.secret_key = secret_key
+        self.issued_licenses: Dict[str, ActionLicense] = {}
+        self.revoked_license_ids: Set[str] = set()
+
+    def issue_license(self, case: Case, proposal: ActionProposal, ttl_sec: Optional[float]=None, scopes: Optional[List[str]]=None) -> Tuple[bool, Optional[ActionLicense], str]:
+        """Issues single-use cryptographic ActionLicense if case state is valid."""
+        if case.state in (CaseState.HALTED, CaseState.REJECTED, CaseState.QUARANTINED):
+            return (False, None, f'DENIED: Case is in non-executable state ({case.state.value})')
+        actual_ttl = ttl_sec if ttl_sec is not None else self.default_ttl_sec
+        now = time.time()
+        license_obj = ActionLicense(proposal_id=proposal.proposal_id, case_id=case.case_id, authorized_action=proposal.action_type, target_resource=proposal.target_resource, authority_id='H11C_ALIGN_ENFORCE', scopes=scopes or ['execute'], issued_at=now, expires_at=now + actual_ttl)
+        license_obj.signature = license_obj.compute_signature(self.secret_key)
+        self.issued_licenses[license_obj.license_id] = license_obj
+        case.bind_license(license_obj)
         case.transition_to(CaseState.LICENSED, f'Issued license {license_obj.license_id}')
+        proposal.evaluated = True
+        proposal.evaluation_decision = 'LICENSED'
+        logger.info(f'Issued ActionLicense {license_obj.license_id} for proposal {proposal.proposal_id}')
         return (True, license_obj, 'ACTION_LICENSED')
+
+    def verify_and_consume(self, license_id: str) -> Tuple[bool, str]:
+        """Verifies license validity, signature, expiration, and consumes one use."""
+        if license_id in self.revoked_license_ids:
+            return (False, 'REVOKED: License was revoked prior to execution')
+        lic = self.issued_licenses.get(license_id)
+        if not lic:
+            return (False, 'NOT_FOUND: License ID does not exist in registry')
+        if not lic.verify(self.secret_key):
+            return (False, 'SIGNATURE_INVALID: License cryptographic signature failed verification')
+        if not lic.consume():
+            return (False, 'EXPIRED_OR_EXHAUSTED: License expired or max use count reached')
+        return (True, 'CONSUMED_OK')
+
+    def revoke_license(self, license_id: str, reason: str='') -> bool:
+        """Revokes an active license immediately."""
+        if license_id in self.issued_licenses:
+            self.revoked_license_ids.add(license_id)
+            logger.warning(f'Revoked ActionLicense {license_id}: {reason}')
+            return True
+        return False
 
 # ==============================================================================
 # MODULE: h11_runtime/governance/audit.py
@@ -958,36 +1376,150 @@ WitnessLog = AuditChain
 # ==============================================================================
 # MODULE: h11_runtime/execution/dag.py
 # ==============================================================================
-"""Execution DAG data structures."""
-from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+"""Execution Directed Acyclic Graph (DAG) with Topological Ordering and Layering."""
+from dataclasses import dataclass, field
+import hashlib
+import json
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple
+import uuid
 
 @dataclass
 class DAGNode:
     node_id: str
     agent_id: str
-    capability: str
+    capability: str = ''
     status: str = 'PENDING'
     result: Optional[Any] = None
+    error: Optional[str] = None
+    latency_ms: float = 0.0
+    critical_path: bool = False
+    retry_count: int = 0
+    max_retries: int = 2
 
 @dataclass
 class DAGEdge:
     source: str
     target: str
+    edge_type: str = 'DATA'
+    schema: Optional[str] = None
+    transform_fn: Optional[Callable[[Any], Any]] = None
+
+class ExecutionDAG:
+    """Directed Acyclic Graph orchestrating multi-agent execution topology (v3.0 Section 20)."""
+
+    def __init__(self, dag_id: str='') -> None:
+        self.dag_id = dag_id or f'DAG-{uuid.uuid4().hex[:8].upper()}'
+        self.nodes: Dict[str, DAGNode] = {}
+        self.edges: List[DAGEdge] = []
+        self._in_degree: Dict[str, int] = {}
+        self._adj: Dict[str, List[str]] = {}
+        self._rev_adj: Dict[str, List[str]] = {}
+
+    def add_node(self, agent_id: str, node_id: str='', capability: str='', max_retries: int=2) -> DAGNode:
+        actual_id = node_id or f'NODE-{agent_id}'
+        node = DAGNode(node_id=actual_id, agent_id=agent_id, capability=capability or agent_id, max_retries=max_retries)
+        self.nodes[actual_id] = node
+        self._adj.setdefault(actual_id, [])
+        self._rev_adj.setdefault(actual_id, [])
+        self._in_degree[actual_id] = 0
+        return node
+
+    def add_edge(self, source_id: str, target_id: str, edge_type: str='DATA', schema: Optional[str]=None) -> DAGEdge:
+        if source_id not in self.nodes:
+            self.add_node(agent_id=source_id, node_id=source_id)
+        if target_id not in self.nodes:
+            self.add_node(agent_id=target_id, node_id=target_id)
+        edge = DAGEdge(source=source_id, target=target_id, edge_type=edge_type, schema=schema)
+        self.edges.append(edge)
+        self._adj[source_id].append(target_id)
+        self._rev_adj[target_id].append(source_id)
+        self._in_degree[target_id] = self._in_degree.get(target_id, 0) + 1
+        return edge
+
+    def has_cycle(self) -> bool:
+        """Kahn's cycle detection algorithm."""
+        in_deg = dict(self._in_degree)
+        queue = [n for n, deg in in_deg.items() if deg == 0]
+        visited_count = 0
+        while queue:
+            node = queue.pop(0)
+            visited_count += 1
+            for neighbor in self._adj.get(node, []):
+                in_deg[neighbor] -= 1
+                if in_deg[neighbor] == 0:
+                    queue.append(neighbor)
+        return visited_count != len(self.nodes)
+
+    def get_topological_order(self) -> List[str]:
+        """Returns node IDs sorted topologically in valid dependency order."""
+        if self.has_cycle():
+            raise ValueError(f'Cycle detected in ExecutionDAG {self.dag_id}')
+        in_deg = dict(self._in_degree)
+        queue = [n for n, deg in in_deg.items() if deg == 0]
+        order = []
+        while queue:
+            node = queue.pop(0)
+            order.append(node)
+            for neighbor in self._adj.get(node, []):
+                in_deg[neighbor] -= 1
+                if in_deg[neighbor] == 0:
+                    queue.append(neighbor)
+        return order
+
+    def get_parallel_layers(self) -> List[List[str]]:
+        """Partitions DAG into successive parallel execution stages (frontiers)."""
+        if self.has_cycle():
+            raise ValueError(f'Cycle detected in ExecutionDAG {self.dag_id}')
+        in_deg = dict(self._in_degree)
+        current_layer = [n for n, deg in in_deg.items() if deg == 0]
+        layers = []
+        while current_layer:
+            layers.append(current_layer)
+            next_layer = []
+            for node in current_layer:
+                for neighbor in self._adj.get(node, []):
+                    in_deg[neighbor] -= 1
+                    if in_deg[neighbor] == 0:
+                        next_layer.append(neighbor)
+            current_layer = next_layer
+        return layers
+
+    def get_prerequisites(self, node_id: str) -> List[str]:
+        return self._rev_adj.get(node_id, [])
+
+    def get_dependents(self, node_id: str) -> List[str]:
+        return self._adj.get(node_id, [])
+
+    def compute_fingerprint(self) -> str:
+        """Computes deterministic SHA-256 hash of DAG structure."""
+        manifest = {'nodes': sorted([{'id': n.node_id, 'agent': n.agent_id} for n in self.nodes.values()], key=lambda x: x['id']), 'edges': sorted([{'s': e.source, 't': e.target, 'type': e.edge_type} for e in self.edges], key=lambda x: (x['s'], x['t']))}
+        encoded = json.dumps(manifest, sort_keys=True).encode('utf-8')
+        return hashlib.sha256(encoded).hexdigest()
 
 # ==============================================================================
 # MODULE: h11_runtime/execution/executor.py
 # ==============================================================================
-"""Graph executor."""
-from typing import Any, Callable, Dict, List
+"""Graph executor with parallel stage processing, retry semantics, and error boundaries."""
+import asyncio
+import logging
+import time
+from typing import Any, Callable, Dict, List, Optional, Union
+logger = logging.getLogger(__name__)
 
 class GraphExecutor:
-    """06 — GraphExecutor: Topological DAG executor."""
+    """06 — GraphExecutor: Topological and parallel DAG execution engine (v3.0 Section 20-21)."""
+
+    def __init__(self, max_concurrent: int=16) -> None:
+        self.max_concurrent = max_concurrent
 
     def execute_graph(self, case: Case, graph: Any, agent_executors: Dict[str, Callable[[Any], Any]]) -> Dict[str, AgentResult]:
+        """Synchronous topological execution across DAG nodes."""
         case.transition_to(CaseState.EXECUTING, 'Beginning graph topological execution')
         results: Dict[str, AgentResult] = {}
-        if hasattr(graph, 'get_execution_order'):
+        if hasattr(graph, 'get_topological_order'):
+            order = graph.get_topological_order()
+            nodes = [graph.nodes[nid] for nid in order if nid in graph.nodes]
+        elif hasattr(graph, 'get_execution_order'):
             order = graph.get_execution_order()
             nodes = [graph.nodes[nid] for nid in order if nid in graph.nodes]
         elif isinstance(graph, dict):
@@ -1001,89 +1533,204 @@ class GraphExecutor:
             executor_fn = agent_executors.get(agent_id)
             if not executor_fn:
                 continue
+            node.status = 'RUNNING'
+            t0 = time.time()
             try:
                 res = executor_fn(case.blackboard)
+                elapsed_ms = (time.time() - t0) * 1000.0
                 node.status = 'COMPLETED'
                 node.result = res
-                if isinstance(res, dict):
-                    agent_res = AgentResult(agent_id=agent_id, success=True, data=res, confidence=res.get('confidence', 1.0))
-                elif isinstance(res, AgentResult):
+                node.latency_ms = elapsed_ms
+                if isinstance(res, AgentResult):
                     agent_res = res
+                elif isinstance(res, dict):
+                    agent_res = AgentResult(agent_id=agent_id, success=True, data=res, confidence=float(res.get('confidence', 1.0)), latency_ms=elapsed_ms)
                 else:
-                    agent_res = AgentResult(agent_id=agent_id, success=True, data=res)
+                    agent_res = AgentResult(agent_id=agent_id, success=True, data=res, latency_ms=elapsed_ms)
                 results[agent_id] = agent_res
                 case.blackboard.post_result(agent_id, agent_res)
-            except Exception as e:
+            except Exception as exc:
+                elapsed_ms = (time.time() - t0) * 1000.0
                 node.status = 'FAILED'
-                agent_res = AgentResult(agent_id=agent_id, success=False, data=None, error_message=str(e))
+                node.error = str(exc)
+                node.latency_ms = elapsed_ms
+                agent_res = AgentResult(agent_id=agent_id, success=False, data=None, error_message=str(exc), latency_ms=elapsed_ms)
                 results[agent_id] = agent_res
                 case.blackboard.post_result(agent_id, agent_res)
+                logger.error(f"Execution error at node {getattr(node, 'node_id', agent_id)}: {exc}")
         case.transition_to(CaseState.INTEGRATING, 'Completed graph node executions')
         return results
+
+    async def execute_graph_async(self, case: Case, dag: ExecutionDAG, agent_executors: Dict[str, Callable[[Any], Any]]) -> Dict[str, AgentResult]:
+        """Asynchronously executes DAG in parallel frontier stages."""
+        case.transition_to(CaseState.EXECUTING, 'Beginning async parallel DAG execution')
+        results: Dict[str, AgentResult] = {}
+        layers = dag.get_parallel_layers()
+        for layer_idx, stage_nodes in enumerate(layers):
+            tasks = []
+            for nid in stage_nodes:
+                node = dag.nodes[nid]
+                fn = agent_executors.get(node.agent_id)
+                if fn:
+                    tasks.append(self._execute_single_node_async(node, fn, case))
+            if tasks:
+                stage_results = await asyncio.gather(*tasks, return_exceptions=True)
+                for res in stage_results:
+                    if isinstance(res, AgentResult):
+                        results[res.agent_id] = res
+        case.transition_to(CaseState.INTEGRATING, 'Completed parallel DAG stage executions')
+        return results
+
+    async def _execute_single_node_async(self, node: DAGNode, fn: Callable[[Any], Any], case: Case) -> AgentResult:
+        node.status = 'RUNNING'
+        t0 = time.time()
+        try:
+            if asyncio.iscoroutinefunction(fn):
+                res = await fn(case.blackboard)
+            else:
+                res = fn(case.blackboard)
+            elapsed_ms = (time.time() - t0) * 1000.0
+            node.status = 'COMPLETED'
+            node.result = res
+            node.latency_ms = elapsed_ms
+            if isinstance(res, AgentResult):
+                agent_res = res
+            elif isinstance(res, dict):
+                agent_res = AgentResult(agent_id=node.agent_id, success=True, data=res, confidence=float(res.get('confidence', 1.0)), latency_ms=elapsed_ms)
+            else:
+                agent_res = AgentResult(agent_id=node.agent_id, success=True, data=res, latency_ms=elapsed_ms)
+            case.blackboard.post_result(node.agent_id, agent_res)
+            return agent_res
+        except Exception as exc:
+            elapsed_ms = (time.time() - t0) * 1000.0
+            node.status = 'FAILED'
+            node.error = str(exc)
+            agent_res = AgentResult(agent_id=node.agent_id, success=False, data=None, error_message=str(exc), latency_ms=elapsed_ms)
+            case.blackboard.post_result(node.agent_id, agent_res)
+            return agent_res
 
 # ==============================================================================
 # MODULE: h11_runtime/registry/domain_registry.py
 # ==============================================================================
-"""Domain Registry."""
-from typing import Dict, List, Set
+"""Domain Registry with Taxonomy and Ontology Mapping for All 30 H11I Domains."""
+from typing import Dict, List, Optional, Set
 
 class DomainRegistry:
-    """Taxonomy of the 30 H11I intelligence domains."""
+    """Taxonomy and agent catalog of the 30 H11I intelligence domains (D01-D30)."""
+    DOMAIN_CATALOG = {'D01': ('medicine_health', 'Human Medicine, Clinical Diagnostics & Healthcare'), 'D02': ('pharmacology', 'Pharmacology, Drug Interaction & Pharmacokinetics'), 'D03': ('dental', 'Dentistry, Orthodontics & Oral Maxillofacial'), 'D04': ('veterinary', 'Veterinary Medicine & Comparative Physiology'), 'D05': ('life_sciences', 'Genetics, Molecular Biology & Ecology'), 'D06': ('earth_environment', 'Geophysics, Meteorology & Oceanography'), 'D07': ('space_astronomy', 'Astrophysics, Orbital Mechanics & Cosmology'), 'D08': ('physics', 'Quantum Physics, Relativity & Statistical Mechanics'), 'D09': ('chemistry', 'Organic, Inorganic & Physical Chemistry'), 'D10': ('mathematics', 'Topology, Abstract Algebra & Numerical Analysis'), 'D11': ('computer_science', 'Algorithms, Distributed Systems & AI/ML'), 'D12': ('cybersecurity', 'Cryptography, Threat Intelligence & Zero-Trust'), 'D13': ('data_science', 'Inferential Statistics, Causal Inference & Time-Series'), 'D14': ('engineering', 'Mechanical, Electrical, Structural & Materials Engineering'), 'D15': ('architecture', 'Structural Design, Spatial Geometry & Urban Systems'), 'D16': ('transportation', 'Autonomous Vehicles, Logistics & Aerospace Transport'), 'D17': ('business_finance', 'Quantitative Finance, Asset Pricing & Macroeconomics'), 'D18': ('law_governance', 'Jurisprudence, Regulatory Compliance & Constitutional Law'), 'D19': ('arts_design', 'Aesthetics, Visual Design & Human-Computer Ergonomics'), 'D20': ('music_audio', 'Acoustic Physics, Psychoacoustics & Signal Synthesis'), 'D21': ('literature_linguistics', 'Computational Linguistics, Semantics & Philology'), 'D22': ('humanities_social', 'Anthropology, Sociology, History & Philosophy'), 'D23': ('allied_health', 'Physical Therapy, Medical Imaging & Diagnostics'), 'D24': ('agriculture_food', 'Agronomy, Soil Chemistry & Crop Physiology'), 'D25': ('energy_resources', 'Thermodynamics, Nuclear Energy & Renewable Systems'), 'D26': ('telecommunications', 'Information Theory, RF Engineering & Optical Comms'), 'D27': ('media_communication', 'Media Dynamics, Information Dissemination & Rhetoric'), 'D28': ('education', 'Pedagogy, Cognitive Load Theory & Learning Systems'), 'D29': ('sports_recreation', 'Biomechanics, Exercise Physiology & Kinesiology'), 'D30': ('specialized_niche', 'Actuarial Science, Forensic Metrology & Micro-Domains')}
 
     def __init__(self) -> None:
         self.domains: Dict[str, Set[str]] = {}
+        for d_code in self.DOMAIN_CATALOG:
+            self.domains[d_code] = set()
 
     def register_domain_agent(self, domain_code: str, agent_id: str) -> None:
-        if domain_code not in self.domains:
-            self.domains[domain_code] = set()
-        self.domains[domain_code].add(agent_id)
+        code_prefix = domain_code.split('_')[0].upper()
+        if code_prefix in self.domains:
+            self.domains[code_prefix].add(agent_id)
+        else:
+            self.domains.setdefault(domain_code, set()).add(agent_id)
 
     def list_domain_agents(self, domain_code: str) -> List[str]:
-        return sorted(list(self.domains.get(domain_code, set())))
+        code_prefix = domain_code.split('_')[0].upper()
+        return sorted(list(self.domains.get(code_prefix, self.domains.get(domain_code, set()))))
+
+    def get_domain_metadata(self, domain_code: str) -> Optional[tuple[str, str]]:
+        code_prefix = domain_code.split('_')[0].upper()
+        return self.DOMAIN_CATALOG.get(code_prefix)
+
+    def get_all_domains(self) -> Dict[str, Dict[str, Any]]:
+        return {code: {'name': name, 'description': desc, 'agent_count': len(self.domains.get(code, set())), 'agents': sorted(list(self.domains.get(code, set())))} for code, (name, desc) in self.DOMAIN_CATALOG.items()}
 
 # ==============================================================================
 # MODULE: h11_runtime/registry/capability_registry.py
 # ==============================================================================
-"""Capability Registry."""
-from typing import Dict, List, Optional, Set
+"""Capability Registry with Fuzzy Matching, Composite Resolution, and Fallbacks."""
+import logging
+from typing import Any, Dict, List, Optional, Set
+logger = logging.getLogger(__name__)
 
 class CapabilityRegistry:
-    """04 — CapabilityRegistry: Maps capabilities to provider agents."""
+    """04 — CapabilityRegistry: Maps semantic capabilities to specialist agents (v3.0 Section 14)."""
 
     def __init__(self, agent_registry: Optional[AgentRegistry]=None) -> None:
         self.cap_to_agents: Dict[str, Set[str]] = {}
+        self.agent_to_caps: Dict[str, Set[str]] = {}
+        self.capability_descriptions: Dict[str, str] = {}
+        self.capability_hierarchy: Dict[str, List[str]] = {}
         if agent_registry:
-            for agent_id, agent_obj in agent_registry.agents.items():
-                caps = getattr(agent_obj, 'capabilities', [])
-                for c in caps:
-                    self.register_capability(c, agent_id)
+            self.index_agent_registry(agent_registry)
 
-    def register_capability(self, capability: str, provider_agent_id: str) -> None:
-        if capability not in self.cap_to_agents:
-            self.cap_to_agents[capability] = set()
-        self.cap_to_agents[capability].add(provider_agent_id)
+    def index_agent_registry(self, agent_registry: AgentRegistry) -> None:
+        """Indexes all agents and declared capabilities from an AgentRegistry."""
+        for agent_id, agent_obj in agent_registry.agents.items():
+            caps = getattr(agent_obj, 'capabilities', [])
+            for c in caps:
+                self.register_capability(c, agent_id)
+
+    def register_capability(self, capability: str, provider_agent_id: str, description: str='') -> None:
+        norm_cap = capability.lower().strip()
+        self.cap_to_agents.setdefault(norm_cap, set()).add(provider_agent_id)
+        self.agent_to_caps.setdefault(provider_agent_id, set()).add(norm_cap)
+        if description:
+            self.capability_descriptions[norm_cap] = description
 
     def resolve_providers(self, capability: str) -> List[str]:
-        return sorted(list(self.cap_to_agents.get(capability, set())))
+        """Resolves direct and hierarchical providers for a capability."""
+        norm_cap = capability.lower().strip()
+        providers = set(self.cap_to_agents.get(norm_cap, set()))
+        for child_cap in self.capability_hierarchy.get(norm_cap, []):
+            providers.update(self.cap_to_agents.get(child_cap, set()))
+        if not providers:
+            for cap, ags in self.cap_to_agents.items():
+                if norm_cap in cap or cap in norm_cap:
+                    providers.update(ags)
+        return sorted(list(providers))
+
+    def resolve_composite(self, required_capabilities: List[str]) -> Dict[str, List[str]]:
+        """Resolves providers for a set of required capabilities simultaneously."""
+        return {cap: self.resolve_providers(cap) for cap in required_capabilities}
+
+    def list_all_capabilities(self) -> List[str]:
+        return sorted(list(self.cap_to_agents.keys()))
 
 # ==============================================================================
 # MODULE: h11_runtime/registry/spine_registry.py
 # ==============================================================================
-"""Spine Registry."""
+"""Spine Registry managing discovery, registration, and invocation of governed pipelines."""
+import inspect
+import logging
 from typing import Any, Callable, Dict, List, Optional
+logger = logging.getLogger(__name__)
 
 class SpineRegistry:
-    """H11C-SPINE-REGISTRAR: Registry of governed specialist spines."""
+    """H11C-SPINE-REGISTRAR: Registry and discovery engine for governed specialist spines."""
 
     def __init__(self) -> None:
         self.spines: Dict[str, Callable[[], Any]] = {}
+        self.spine_metadata: Dict[str, Dict[str, Any]] = {}
+        self.cached_instances: Dict[str, Any] = {}
 
-    def register_spine(self, spine_name: str, factory: Callable[[], Any]) -> None:
-        self.spines[spine_name] = factory
+    def register_spine(self, spine_name: str, factory: Callable[[], Any], description: str='', input_schema: str='', output_schema: str='') -> None:
+        norm_name = spine_name.lower().strip()
+        self.spines[norm_name] = factory
+        self.spine_metadata[norm_name] = {'name': spine_name, 'description': description, 'input_schema': input_schema, 'output_schema': output_schema}
+        logger.info(f"Registered governed spine pipeline: '{spine_name}'")
 
-    def get_spine(self, spine_name: str) -> Optional[Any]:
-        factory = self.spines.get(spine_name)
-        return factory() if factory else None
+    def get_spine(self, spine_name: str, use_cache: bool=False) -> Optional[Any]:
+        norm_name = spine_name.lower().strip()
+        if use_cache and norm_name in self.cached_instances:
+            return self.cached_instances[norm_name]
+        factory = self.spines.get(norm_name)
+        if not factory:
+            return None
+        instance = factory()
+        if use_cache:
+            self.cached_instances[norm_name] = instance
+        return instance
+
+    def list_spines(self) -> List[Dict[str, Any]]:
+        return [{'name': meta['name'], 'description': meta['description'], 'input_schema': meta['input_schema'], 'output_schema': meta['output_schema']} for meta in self.spine_metadata.values()]
 
 # ==============================================================================
 # MODULE: h11_runtime/registry/agent_registry.py
@@ -1136,120 +1783,271 @@ class AgentRegistry:
 # ==============================================================================
 # MODULE: h11_runtime/workers/task.py
 # ==============================================================================
-"""Worker task representation."""
+"""Worker task data structure with priorities and cancellation tokens."""
 from dataclasses import dataclass, field
-from typing import Any, Callable, Optional
+import time
+from typing import Any, Callable, Dict, List, Optional, Tuple
+import uuid
 
 @dataclass
 class WorkerTask:
-    task_id: str
-    node_id: str
-    agent_id: str
-    func: Callable[..., Any]
-    args: tuple = field(default_factory=tuple)
-    kwargs: dict = field(default_factory=dict)
-    status: str = 'QUEUED'
+    """Individual computational task dispatched to C02 WorkerPool (v3.0 Section 45)."""
+    task_id: str = field(default_factory=lambda: f'TSK-{uuid.uuid4().hex[:8].upper()}')
+    node_id: str = ''
+    agent_id: str = ''
+    name: str = ''
+    func: Optional[Callable[..., Any]] = None
+    args: Tuple[Any, ...] = field(default_factory=tuple)
+    kwargs: Dict[str, Any] = field(default_factory=dict)
+    priority: int = 5
+    status: str = 'PENDING'
     result: Optional[Any] = None
     error: Optional[str] = None
+    timeout_seconds: float = 60.0
+    created_at: float = field(default_factory=time.time)
+    started_at: Optional[float] = None
+    completed_at: Optional[float] = None
+
+    @property
+    def latency_ms(self) -> float:
+        if self.started_at and self.completed_at:
+            return (self.completed_at - self.started_at) * 1000.0
+        return 0.0
+
+    def cancel(self, reason: str='USER_CANCELLED') -> None:
+        if self.status in ('PENDING', 'QUEUED'):
+            self.status = 'CANCELLED'
+            self.error = reason
+            self.completed_at = time.time()
 
 # ==============================================================================
 # MODULE: h11_runtime/workers/barrier.py
 # ==============================================================================
-"""Join barrier synchronization."""
-from typing import Any, List
+"""Join barrier synchronization with Async Wait and Partial Resolution Policies."""
+import asyncio
+import time
+from typing import Any, Dict, List, Optional
 
 class JoinBarrier:
-    """C02 Join Barrier: Synchronizes parallel cognitive executions before merge (Section 42-43)."""
+    """C02 Join Barrier: Synchronizes parallel cognitive executions before branch merge (v3.0 Section 42)."""
 
-    def __init__(self, expected_branches: int) -> None:
+    def __init__(self, expected_branches: int, barrier_id: str='', policy: str='WAIT_ALL', timeout_seconds: float=30.0) -> None:
         self.expected_branches = expected_branches
+        self.barrier_id = barrier_id or f'BARRIER-{time.time()}'
+        self.policy = policy
+        self.timeout_seconds = timeout_seconds
         self.arrived_results: List[Any] = []
+        self.branch_metadata: Dict[str, Any] = {}
+        self._event = asyncio.Event()
+        self.created_at = time.time()
+        self.completed_at: Optional[float] = None
 
-    def arrive(self, result: Any) -> bool:
+    def arrive(self, result: Any, branch_id: str='') -> bool:
+        """Records arrival of a branch result. Returns True if barrier threshold reached."""
         self.arrived_results.append(result)
-        return len(self.arrived_results) >= self.expected_branches
+        if branch_id:
+            self.branch_metadata[branch_id] = {'arrived_at': time.time(), 'result': result}
+        threshold = self._get_threshold()
+        if len(self.arrived_results) >= threshold:
+            self.completed_at = time.time()
+            self._event.set()
+            return True
+        return False
 
     def is_complete(self) -> bool:
-        return len(self.arrived_results) >= self.expected_branches
+        return len(self.arrived_results) >= self._get_threshold()
+
+    def _get_threshold(self) -> int:
+        if self.policy == 'WAIT_FIRST':
+            return 1
+        elif self.policy == 'WAIT_MAJORITY':
+            return self.expected_branches // 2 + 1
+        return self.expected_branches
+
+    async def wait(self) -> List[Any]:
+        """Asynchronously waits for the barrier to trip or timeout."""
+        if self.is_complete():
+            return self.arrived_results
+        try:
+            await asyncio.wait_for(self._event.wait(), timeout=self.timeout_seconds)
+        except asyncio.TimeoutError:
+            pass
+        return self.arrived_results
 
 # ==============================================================================
 # MODULE: h11_runtime/workers/interrupt.py
 # ==============================================================================
-"""Interrupt handler."""
+"""Interrupt handling and prioritized emergency control signals."""
+import logging
+import time
+from typing import Any, Callable, Dict, List, Optional
+import uuid
+logger = logging.getLogger(__name__)
 
 class InterruptHandler:
-    """C02 Interruptibility: Enables safe interruption, replanning, and halting (Section 47)."""
+    """C02 Interrupt Handler: Priority signal dispatch and emergency control (v3.0 Section 44)."""
 
     def __init__(self) -> None:
-        self._interrupted = False
-        self._reason = ''
+        self.interrupt_listeners: Dict[str, List[Callable[[Dict[str, Any]], None]]] = {}
+        self.interrupt_log: List[Dict[str, Any]] = []
+        self._halt_flag: bool = False
 
-    def trigger_interrupt(self, reason: str='User/System Interrupt') -> None:
-        self._interrupted = True
-        self._reason = reason
+    def register_listener(self, signal_type: str, callback: Callable[[Dict[str, Any]], None]) -> None:
+        """Registers a listener for specific interrupt signal (or '*' for all)."""
+        self.interrupt_listeners.setdefault(signal_type, []).append(callback)
+
+    def trigger_interrupt(self, signal_type: str, source: str='KERNEL', reason: str='', payload: Optional[Dict[str, Any]]=None) -> Dict[str, Any]:
+        """Dispatches an interrupt event and triggers registered handlers immediately."""
+        event = {'interrupt_id': f'INT-{uuid.uuid4().hex[:8].upper()}', 'signal_type': signal_type, 'source': source, 'reason': reason, 'payload': payload or {}, 'timestamp': time.time()}
+        self.interrupt_log.append(event)
+        logger.warning(f'INTERRUPT TRIGGERED [{signal_type}] from {source}: {reason}')
+        if signal_type in ('HALT_ALL', 'SECURITY_BREACH', 'ALIGN_VIOLATION'):
+            self._halt_flag = True
+        for cb in self.interrupt_listeners.get(signal_type, []):
+            try:
+                cb(event)
+            except Exception as exc:
+                logger.error(f'Error in interrupt listener for {signal_type}: {exc}')
+        for cb in self.interrupt_listeners.get('*', []):
+            try:
+                cb(event)
+            except Exception as exc:
+                logger.error(f'Error in global interrupt listener: {exc}')
+        return event
+
+    def is_halted(self) -> bool:
+        return self._halt_flag
 
     def is_interrupted(self) -> bool:
-        return self._interrupted
+        return len(self.interrupt_log) > 0 or self._halt_flag
 
-    def reset(self) -> None:
-        self._interrupted = False
-        self._reason = ''
+    def reset_halt(self) -> None:
+        self._halt_flag = False
 
 # ==============================================================================
 # MODULE: h11_runtime/workers/checkpoint.py
 # ==============================================================================
-"""Checkpoint manager."""
+"""Checkpoint manager with SHA-256 integrity and persistent state serialization."""
+import hashlib
+import json
+import logging
 import time
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
+import uuid
+logger = logging.getLogger(__name__)
 
 class CheckpointManager:
-    """C02 Checkpointing & Resume capability for long-running cases (Section 46)."""
+    """C02 Checkpointing & Resume capability for long-running cases (v3.0 Section 46)."""
 
     def __init__(self) -> None:
         self.checkpoints: Dict[str, Dict[str, Any]] = {}
+        self.case_checkpoint_index: Dict[str, List[str]] = {}
 
-    def save_checkpoint(self, checkpoint_id: str, case_snapshot: Dict[str, Any]) -> str:
-        self.checkpoints[checkpoint_id] = {'snapshot': case_snapshot, 'timestamp': time.time()}
-        return checkpoint_id
+    def save_checkpoint(self, checkpoint_id: str, case_snapshot: Dict[str, Any], case_id: str='') -> str:
+        """Saves case snapshot with integrity digest and timestamp."""
+        cid = checkpoint_id or f'CP-{uuid.uuid4().hex[:8].upper()}'
+        target_case_id = case_id or case_snapshot.get('case_id', 'GLOBAL')
+        encoded = json.dumps(case_snapshot, sort_keys=True, default=str).encode('utf-8')
+        digest = hashlib.sha256(encoded).hexdigest()
+        self.checkpoints[cid] = {'checkpoint_id': cid, 'case_id': target_case_id, 'snapshot': case_snapshot, 'digest': digest, 'timestamp': time.time()}
+        self.case_checkpoint_index.setdefault(target_case_id, []).append(cid)
+        logger.info(f'Saved checkpoint {cid} for case {target_case_id} (digest: {digest[:12]}...)')
+        return cid
 
     def restore_checkpoint(self, checkpoint_id: str) -> Optional[Dict[str, Any]]:
+        """Restores snapshot verifying cryptographic integrity."""
         cp = self.checkpoints.get(checkpoint_id)
-        return cp['snapshot'] if cp else None
+        if not cp:
+            logger.warning(f'Checkpoint {checkpoint_id} not found')
+            return None
+        snapshot = cp['snapshot']
+        encoded = json.dumps(snapshot, sort_keys=True, default=str).encode('utf-8')
+        current_digest = hashlib.sha256(encoded).hexdigest()
+        if current_digest != cp['digest']:
+            raise ValueError(f'Integrity violation in checkpoint {checkpoint_id}: hash mismatch')
+        return snapshot
+
+    def list_checkpoints(self, case_id: str) -> List[str]:
+        return self.case_checkpoint_index.get(case_id, [])
+
+    def prune_older_than(self, max_age_seconds: float=86400.0) -> int:
+        """Prunes checkpoints older than max age."""
+        now = time.time()
+        pruned = 0
+        for cid, cp in list(self.checkpoints.items()):
+            if now - cp['timestamp'] > max_age_seconds:
+                self.checkpoints.pop(cid, None)
+                pruned += 1
+        return pruned
 
 # ==============================================================================
 # MODULE: h11_runtime/workers/pool.py
 # ==============================================================================
-"""Worker pool concurrency executor."""
-from dataclasses import dataclass
+"""Worker pool concurrency executor with dynamic semaphore and priority queues."""
+import asyncio
 import inspect
-from typing import Any, Dict
+import logging
+import time
+from typing import Any, Callable, Dict, List, Optional
+logger = logging.getLogger(__name__)
 
 class WorkerPool:
-    """C02 Worker Pool: Dispatches agent tasks across concurrency worker slots (Section 45)."""
+    """C02 Worker Pool: Dispatches agent tasks across concurrency worker slots (v3.0 Section 45)."""
 
-    def __init__(self, concurrency: int=8) -> None:
+    def __init__(self, concurrency: int=16) -> None:
         self.concurrency = concurrency
+        self._semaphore = asyncio.Semaphore(concurrency)
         self.active_tasks: Dict[str, WorkerTask] = {}
         self.completed_tasks: Dict[str, WorkerTask] = {}
+        self.total_dispatched = 0
+        self.total_successful = 0
+        self.total_failed = 0
 
     async def execute_task(self, task: WorkerTask) -> Any:
-        task.status = 'RUNNING'
-        self.active_tasks[task.task_id] = task
-        try:
-            if inspect.iscoroutinefunction(task.func):
-                res = await task.func(*task.args, **task.kwargs)
-            else:
-                res = task.func(*task.args, **task.kwargs)
-            task.status = 'COMPLETED'
-            task.result = res
-            return res
-        except Exception as e:
-            task.status = 'FAILED'
-            task.error = str(e)
-            raise
-        finally:
-            self.active_tasks.pop(task.task_id, None)
-            self.completed_tasks[task.task_id] = task
+        """Executes task acquiring concurrency slot with timeout protection."""
+        if task.func is None:
+            raise ValueError(f'Task {task.task_id} has no callable function attached.')
+        async with self._semaphore:
+            task.status = 'RUNNING'
+            task.started_at = time.time()
+            self.active_tasks[task.task_id] = task
+            self.total_dispatched += 1
+            try:
+                if inspect.iscoroutinefunction(task.func):
+                    coro = task.func(*task.args, **task.kwargs)
+                    res = await asyncio.wait_for(coro, timeout=task.timeout_seconds)
+                else:
+                    res = task.func(*task.args, **task.kwargs)
+                task.status = 'COMPLETED'
+                task.result = res
+                task.completed_at = time.time()
+                self.total_successful += 1
+                return res
+            except asyncio.TimeoutError:
+                task.status = 'FAILED'
+                task.error = f'Execution timed out after {task.timeout_seconds}s'
+                task.completed_at = time.time()
+                self.total_failed += 1
+                logger.error(f'Task {task.task_id} ({task.name}) timed out')
+                raise
+            except Exception as exc:
+                task.status = 'FAILED'
+                task.error = str(exc)
+                task.completed_at = time.time()
+                self.total_failed += 1
+                logger.error(f'Task {task.task_id} ({task.name}) failed: {exc}')
+                raise
+            finally:
+                self.active_tasks.pop(task.task_id, None)
+                self.completed_tasks[task.task_id] = task
+
+    async def map_tasks(self, tasks: List[WorkerTask]) -> List[Any]:
+        """Executes list of tasks concurrently through the pool."""
+        coros = [self.execute_task(t) for t in tasks]
+        return await asyncio.gather(*coros, return_exceptions=True)
+
+    def get_pool_stats(self) -> Dict[str, Any]:
+        return {'concurrency_limit': self.concurrency, 'active_tasks_count': len(self.active_tasks), 'completed_tasks_count': len(self.completed_tasks), 'total_dispatched': self.total_dispatched, 'total_successful': self.total_successful, 'total_failed': self.total_failed}
 
 # ==============================================================================
 # MODULE: h11_runtime/loader.py

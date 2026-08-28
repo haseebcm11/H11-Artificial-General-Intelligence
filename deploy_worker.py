@@ -1,86 +1,78 @@
-"""Deploy H11-AGI to Cloudflare Workers for h11.network."""
-import json
 import os
-import urllib.error
+import json
 import urllib.request
-from pathlib import Path
+from io import BytesIO
 
-CF_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 ACCOUNT_ID = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "56f03e0e4c2e609d10e2769ffcfa6ac3")
+SCRIPT_NAME = "h11-agi"
 ZONE_ID = os.environ.get("CLOUDFLARE_ZONE_ID", "722db54d698e60a3a36ebdc37cbd311f")
-SCRIPT_NAME = "h11-network-agi"
+API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 
-# Load the HTML and template
-html_content = Path("h11_runtime/server/static/index.html").read_text(encoding="utf-8")
-worker_template = Path("deploy/worker_template.js").read_text(encoding="utf-8")
+def deploy():
+    if not API_TOKEN:
+        raise ValueError("CLOUDFLARE_API_TOKEN environment variable must be set.")
 
-# Replace placeholder with properly encoded JSON string of the HTML
-worker_code = worker_template.replace("HTML_PAGE_PLACEHOLDER", json.dumps(html_content))
+    with open("deploy/worker_template.js", "r", encoding="utf-8") as f:
+        worker_code = f.read()
 
-boundary = "----CloudflareWorkerBoundary"
-metadata = {
-    "main_module": "index.js",
-    "compatibility_date": "2026-08-01",
-    "compatibility_flags": ["nodejs_compat"],
-    "bindings": [
-        {"type": "ai", "name": "AI"},
-        {"type": "plain_text", "name": "CF_AI_TOKEN", "text": CF_TOKEN},
-    ],
-}
+    # Build multipart form data for Cloudflare ES module worker
+    boundary = "----WebKitFormBoundaryH11WorkerBoundary7MA4YWxkTrZu0gW"
+    body = BytesIO()
+    
+    # 1. metadata part
+    metadata = json.dumps({"main_module": "worker.js", "compatibility_date": "2024-04-01"}).encode("utf-8")
+    body.write(f"--{boundary}\r\n".encode("utf-8"))
+    body.write(b'Content-Disposition: form-data; name="metadata"\r\n')
+    body.write(b'Content-Type: application/json\r\n\r\n')
+    body.write(metadata)
+    body.write(b"\r\n")
 
-body_parts = [
-    f"--{boundary}\r\n".encode(),
-    b'Content-Disposition: form-data; name="metadata"; filename="blob"\r\n',
-    b'Content-Type: application/json\r\n\r\n',
-    json.dumps(metadata).encode(),
-    b"\r\n",
-    f"--{boundary}\r\n".encode(),
-    b'Content-Disposition: form-data; name="index.js"; filename="index.js"\r\n',
-    b'Content-Type: application/javascript+module\r\n\r\n',
-    worker_code.encode("utf-8"),
-    b"\r\n",
-    f"--{boundary}--\r\n".encode(),
-]
-body = b"".join(body_parts)
+    # 2. worker script part
+    body.write(f"--{boundary}\r\n".encode("utf-8"))
+    body.write(b'Content-Disposition: form-data; name="worker.js"; filename="worker.js"\r\n')
+    body.write(b'Content-Type: application/javascript+module\r\n\r\n')
+    body.write(worker_code.encode("utf-8"))
+    body.write(b"\r\n")
+    body.write(f"--{boundary}--\r\n".encode("utf-8"))
 
-url = f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/workers/scripts/{SCRIPT_NAME}"
-req = urllib.request.Request(
-    url,
-    data=body,
-    method="PUT",
-    headers={
-        "Authorization": f"Bearer {CF_TOKEN}",
-        "Content-Type": f"multipart/form-data; boundary={boundary}",
-    },
-)
-
-try:
-    with urllib.request.urlopen(req) as resp:
-        res_data = json.loads(resp.read().decode())
-        print("Worker script upload success:", res_data.get("success"))
-except urllib.error.HTTPError as exc:
-    print("Worker upload failed:", exc.code, exc.read().decode())
-
-# Bind routes: h11.network/*, www.h11.network/*, *.h11.network/*
-routes_to_bind = ["h11.network/*", "www.h11.network/*", "*.h11.network/*"]
-for pattern in routes_to_bind:
-    route_url = f"https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/workers/routes"
-    route_data = json.dumps({"pattern": pattern, "script": SCRIPT_NAME}).encode()
-    r_req = urllib.request.Request(
-        route_url,
-        data=route_data,
-        method="POST",
+    url = f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/workers/scripts/{SCRIPT_NAME}"
+    req = urllib.request.Request(
+        url,
+        data=body.getvalue(),
         headers={
-            "Authorization": f"Bearer {CF_TOKEN}",
-            "Content-Type": "application/json",
+            "Authorization": f"Bearer {API_TOKEN}",
+            "Content-Type": f"multipart/form-data; boundary={boundary}",
         },
+        method="PUT",
     )
-    try:
-        with urllib.request.urlopen(r_req) as resp:
-            print(f"Bound route '{pattern}':", json.loads(resp.read().decode()).get("success"))
-    except urllib.error.HTTPError as exc:
-        err_msg = exc.read().decode()
-        if "already exists" in err_msg:
-            print(f"Route '{pattern}' already bound.")
-        else:
-            print(f"Route binding '{pattern}' response:", exc.code, err_msg)
+    with urllib.request.urlopen(req) as resp:
+        res_data = json.loads(resp.read().decode("utf-8"))
+        print(f"Worker script upload success: {res_data.get('success')}")
+
+    # Ensure Routes
+    routes = ["h11.network/*", "www.h11.network/*", "*.h11.network/*"]
+    for pattern in routes:
+        route_url = f"https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/workers/routes"
+        payload = json.dumps({"pattern": pattern, "script": SCRIPT_NAME}).encode("utf-8")
+        req = urllib.request.Request(
+            route_url,
+            data=payload,
+            headers={
+                "Authorization": f"Bearer {API_TOKEN}",
+                "Content-Type": "application/json",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req) as resp:
+                print(f"Route '{pattern}' created successfully.")
+        except urllib.error.HTTPError as e:
+            err_data = json.loads(e.read().decode("utf-8"))
+            msg = err_data.get("errors", [{}])[0].get("message", "")
+            if "already exists" in msg or "already bound" in msg or "duplicate" in msg.lower():
+                print(f"Route '{pattern}' already bound.")
+            else:
+                print(f"Route error for '{pattern}': {msg}")
+
+if __name__ == "__main__":
+    deploy()
