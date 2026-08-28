@@ -184,6 +184,7 @@ class H11AGI:
         else:
             case = dict(case)
         case.setdefault("case_id", new_id("case"))
+        case.setdefault("patient_id", f"PAT-{case['case_id']}")
         case.setdefault(
             "schema_id",
             "h11.spine.host_infection_case.v1"

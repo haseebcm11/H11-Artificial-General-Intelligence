@@ -9416,6 +9416,7 @@ class H11AGI:
         else:
             case = dict(case)
         case.setdefault('case_id', new_id('case'))
+        case.setdefault('patient_id', f"PAT-{case['case_id']}")
         case.setdefault('schema_id', 'h11.spine.host_infection_case.v1' if case.get('symptoms') or case.get('blood_smear_density_per_ul') else 'h11.spine.cognitive_query.v1')
         admit = self.agent('H11C-ADMISSION-CONTROL').process({'case': case})
         events.append('admitted' if admit['admitted'] else 'denied')
