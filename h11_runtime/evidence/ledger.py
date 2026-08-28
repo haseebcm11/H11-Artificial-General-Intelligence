@@ -32,3 +32,7 @@ class EvidenceLedger:
 
     def get_evidence(self, evidence_id: str) -> Optional[EvidenceItem]:
         return self.items.get(evidence_id)
+
+    def append(self, item: EvidenceItem) -> EvidenceItem:
+        self.items[item.evidence_id] = item
+        return item

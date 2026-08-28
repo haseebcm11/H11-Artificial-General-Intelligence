@@ -48,3 +48,14 @@ class EventBus:
         for h in self.subscribers.get("*", []):
             h(evt)
         return evt
+
+    def emit(self, event: RuntimeEvent) -> RuntimeEvent:
+        """Alias for publish using a pre-constructed RuntimeEvent."""
+        self.event_history.append(event)
+        for h in self.subscribers.get(event.event_name, []):
+            h(event)
+        for h in self.subscribers.get(event.topic, []):
+            h(event)
+        for h in self.subscribers.get("*", []):
+            h(event)
+        return event

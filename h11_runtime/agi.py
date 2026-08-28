@@ -7,19 +7,38 @@ Unifies:
 4. H11-LEARN: Continuous Distillation & Parameter Fine-Tuning Pipeline
 5. Non-Bypassable ALIGN Hard Gate & Zero-Trust Security (C03)
 6. Six Operational Graphs & Cryptographic Merkle Provenance Audit Chain
+7. Concurrent Blackboard, EventBus Telemetry, and Multi-Tier Memory Service
 """
 from __future__ import annotations
 
 import logging
+import time
+import uuid
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 from .adapters import AlignAdapter, LongtermAdapter, ReasonAdapter
+from .case.blackboard import Blackboard
 from .cognitive import CognitiveSpine
+from .contracts.action_license import ActionLicense
+from .contracts.action_proposal import ActionProposal
+from .contracts.envelope import CaseEnvelope, Modality, RiskClass
+from .control_catalog import AGENTS
 from .control_kernel import ControlAgent, ControlError, KernelState, make_agent
 from .envelope import new_id
+from .evidence.item import EvidenceItem
+from .evidence.ledger import EvidenceLedger
+from .graph.agent_graph import AgentGraph
+from .graph.capability_graph import CapabilityGraph
+from .graph.execution_graph import ExecutionGraph, ExecutionNode
+from .graph.governance_graph import GovernanceGraph
+from .graph.state_graph import StateGraph
 from .haep import HAEPRuntime
+from .memory.service import MemoryService
+from .memory.types import MemoryType
 from .spine import HostInfectionSpine, SpineResult, assert_crossed
+from .telemetry.bus import EventBus
+from .telemetry.event import RuntimeEvent
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +96,9 @@ class AGIResult:
     learning_recorded: bool = False
     neural_routing: Optional[Dict[str, Any]] = None
     merkle_provenance_root: Optional[str] = None
+    blackboard_summary: Optional[Dict[str, Any]] = None
+    execution_graph_nodes: int = 0
+    state_progression: List[str] = field(default_factory=list)
 
 
 class H11AGI:
@@ -97,6 +119,17 @@ class H11AGI:
         self.cog = CognitiveSpine(longterm=self.longterm, reason=self.reason, align=self.align)
         self.haep = HAEPRuntime()
         self._ready = False
+
+        # ── Core Integration Subsystems ─────────────────────────────────────
+        self.event_bus = EventBus()
+        self.memory_service = MemoryService()
+        self.evidence_ledger = EvidenceLedger()
+        self.blackboards: Dict[str, Blackboard] = {}
+        self.active_graphs: Dict[str, ExecutionGraph] = {}
+        self.state_graph = StateGraph()
+        self.agent_graph = AgentGraph()
+        self.capability_graph = CapabilityGraph()
+        self.governance_graph = GovernanceGraph()
 
         # ── 1. H11-LSE v3.0: Sovereign Search & Web Superintelligence ───────
         self.search: Optional[SearchService] = None
@@ -172,19 +205,34 @@ class H11AGI:
             }
         )
 
-    async def tick(self, case: Dict[str, Any]) -> AGIResult:
+    def _emit(self, event_type: str, case_id: str, payload: Dict[str, Any]) -> None:
+        """Emits telemetry event on EventBus."""
+        ev = RuntimeEvent(
+            event_id=f"EVT-{uuid.uuid4().hex[:8].upper()}",
+            event_name=event_type,
+            topic="CASE",
+            case_id=case_id,
+            source="H11AGI_KERNEL",
+            payload=payload,
+            timestamp=time.time(),
+        )
+        self.event_bus.emit(ev)
+
+    async def tick(self, case: Dict[str, Any] | CaseEnvelope) -> AGIResult:
         """Executes full 24-step cognitive loop with live LSE search, Neural MoE routing, and ALIGN gate."""
         if not self._ready:
             await self.initialize()
         events: List[str] = []
+        state_history: List[str] = ["NEW"]
+
         if hasattr(case, "input_data") and isinstance(case.input_data, dict):
             case = dict(case.input_data)
         elif hasattr(case, "__dict__") and not isinstance(case, dict):
             case = dict(case.__dict__)
         else:
             case = dict(case)
-        case.setdefault("case_id", new_id("case"))
-        case.setdefault("patient_id", f"PAT-{case['case_id']}")
+        case_id = case.setdefault("case_id", new_id("case"))
+        case.setdefault("patient_id", f"PAT-{case_id}")
         case.setdefault(
             "schema_id",
             "h11.spine.host_infection_case.v1"
@@ -192,12 +240,22 @@ class H11AGI:
             else "h11.spine.cognitive_query.v1",
         )
 
+        # Initialize Blackboard & Execution Graph for this case
+        board = Blackboard(case_id)
+        self.blackboards[case_id] = board
+        exec_graph = ExecutionGraph(case_id=case_id)
+        self.active_graphs[case_id] = exec_graph
+
+        self._emit("CASE_INTAKE", case_id, {"schema_id": case.get("schema_id")})
+
         # ── Step 1-4: Admission, Identity & Zero-Trust Verification ─────────
         admit = self.agent("H11C-ADMISSION-CONTROL").process({"case": case})
         events.append("admitted" if admit["admitted"] else "denied")
         if not admit["admitted"]:
+            state_history.append("REJECTED")
+            self._emit("ADMISSION_DENIED", case_id, {"reason": "risk_threshold_exceeded"})
             return AGIResult(
-                case_id=case["case_id"],
+                case_id=case_id,
                 admitted=False,
                 domain="",
                 pipeline_id="",
@@ -209,9 +267,11 @@ class H11AGI:
                 audit_head=self.agent("H11C-AUDIT-CHAIN").process({"event": "deny"})["head"],
                 payload=case,
                 error="not_admitted",
+                state_progression=state_history,
             )
 
-        ident = self.agent("H11C-IDENTITY").process({"name": case.get("patient_id") or case["case_id"]})
+        state_history.append("ADMITTED")
+        ident = self.agent("H11C-IDENTITY").process({"name": case.get("patient_id") or case_id})
         token = self.agent("H11C-CAPABILITY-TOKEN").process(
             {"identity": ident["identity"], "scopes": ["read", "reason", "align"]}
         )
@@ -226,9 +286,11 @@ class H11AGI:
         )
         inj = self.agent("H11C-INJECTION-GATE").process({"text": inj_text})
         if inj["dirty"]:
+            state_history.append("QUARANTINED")
             self.agent("H11C-QUARANTINE").process({})
+            self._emit("INJECTION_DETECTED", case_id, {"text": inj_text})
             return AGIResult(
-                case_id=case["case_id"],
+                case_id=case_id,
                 admitted=True,
                 domain="",
                 pipeline_id="",
@@ -240,6 +302,7 @@ class H11AGI:
                 audit_head=self.agent("H11C-AUDIT-CHAIN").process({"event": "quarantine"})["head"],
                 payload=case,
                 error="injection",
+                state_progression=state_history,
             )
 
         zt = self.agent("H11C-ZERO-TRUST-HOP").process(
@@ -253,6 +316,7 @@ class H11AGI:
         if not zt["ok"]:
             raise ControlError("zero-trust hop failed")
 
+        state_history.append("CONTEXTUALIZED")
         routed = self.agent("H11C-CROSS-DOMAIN-ROUTER").process({"case": case})
         domain = routed["domain"]
         pipeline_id = routed["pipeline_id"]
@@ -260,8 +324,9 @@ class H11AGI:
         comp = self.agent("H11C-COMPARTMENT").process({"label": label["label"], "sink": domain})
         if not comp["ok"]:
             self.agent("H11C-HALT").process({})
+            state_history.append("HALTED")
             return AGIResult(
-                case_id=case["case_id"],
+                case_id=case_id,
                 admitted=True,
                 domain=domain,
                 pipeline_id=pipeline_id,
@@ -273,8 +338,10 @@ class H11AGI:
                 audit_head=self.agent("H11C-AUDIT-CHAIN").process({"event": "compartment_fail"})["head"],
                 payload=case,
                 error="compartment",
+                state_progression=state_history,
             )
 
+        state_history.append("MAPPED")
         caps = self.agent("H11C-CAPABILITY-MAPPER").process({"goal": domain})
         composed = self.agent("H11C-PIPELINE-COMPOSER").process(
             {"goal": domain, "capabilities": caps["capabilities"]}
@@ -282,6 +349,7 @@ class H11AGI:
         hooked = self.agent("H11C-ALIGN-HOOK").process({"pipeline": composed["pipeline"]})
         self.state.phase = "PERCEIVE"
         self.agent("H11C-COGNITIVE-LOOP").process({"align_allowed": False})
+        state_history.append("COMPOSED")
 
         # ── Step 5: H11-LSE v3.0 ULTRA-OMNISCIENT KNOWLEDGE RETRIEVAL ────────
         retrieved_evidence: List[Dict[str, Any]] = []
@@ -311,6 +379,22 @@ class H11AGI:
                 case["merkle_root"] = merkle_root_hash
                 events.append(f"retrieved_{len(retrieved_evidence)}_evidence_items")
                 logger.info(f"LSE v3.0: Retrieved {len(retrieved_evidence)} items, Merkle root {merkle_root_hash[:16]}...")
+                
+                # Post evidence to Blackboard & Evidence Ledger
+                for ev in retrieved_evidence:
+                    board.post_evidence(
+                        claim=str(ev.get("snippet") or ev.get("title")),
+                        source=str(ev.get("url") or "LSE_v3"),
+                        confidence=float(ev.get("relevance") or 0.95),
+                        provenance=merkle_root_hash or ""
+                    )
+                    self.evidence_ledger.append(EvidenceItem(
+                        claim=str(ev.get("snippet") or ev.get("title")),
+                        source=str(ev.get("url") or "LSE_v3"),
+                        provenance=merkle_root_hash or "",
+                        confidence=float(ev.get("relevance") or 0.95),
+                        metadata={"case_id": case_id}
+                    ))
             except Exception as exc:
                 logger.warning(f"LSE v3.0 retrieval error: {exc}")
 
@@ -332,10 +416,19 @@ class H11AGI:
                 case["neural_routing"] = neural_routing_dict
                 events.append(f"moe_routed_to_{routing_decision.primary_cluster_id}")
                 logger.info(f"MoE Gated: {routing_decision.rationale}")
+
+                # Build ExecutionGraph Nodes for the activated specialist collective
+                prev_node_id = None
+                for ag_id in routing_decision.selected_agent_ids:
+                    node = exec_graph.add_node(agent_id=ag_id, capability="collective_reasoning")
+                    if prev_node_id:
+                        exec_graph.add_edge(prev_node_id, node.node_id)
+                    prev_node_id = node.node_id
             except Exception as exc:
                 logger.warning(f"Neural routing error: {exc}")
 
         # ── Step 7: SPINE & BLACKBOARD REASONING DELIBERATION ────────────────
+        state_history.append("EXECUTING")
         spine_result: Optional[SpineResult] = None
         hops = list(hooked["pipeline"])
         allowed = False
@@ -349,6 +442,8 @@ class H11AGI:
             case = dict(spine_result.payload)
             events.extend(spine_result.events)
             self._remember_case(case)
+            board.post_fact("diagnosis", case.get("diagnosis"), source_agent="H11-PATHOLOGIA")
+            board.post_fact("parasite_clearance", case.get("parasite_clearance"), source_agent="H11-PHARMA")
         elif pipeline_id == "cognitive_loop":
             case["blackboard_facts"] = self._board_facts(case.get("patient_id"))
             spine_result = await self.cog.run(case)
@@ -356,14 +451,17 @@ class H11AGI:
             hops = ["H11C-ADMISSION-CONTROL", "H11C-ZERO-TRUST-HOP"] + spine_result.hops
             case = dict(spine_result.payload)
             events.extend(spine_result.events)
+            board.post_fact("reasoning_synthesis", case.get("reason"), source_agent="H11-REASON")
         else:
             allowed = False
             hops = ["H11C-ADMISSION-CONTROL", "H11C-CROSS-DOMAIN-ROUTER", "H11C-ALIGN-HOOK"]
 
+        state_history.append("INTEGRATING")
         action = str((case.get("reason") or {}).get("action") or "")
         would_act = action == "TREAT"
 
         # ── Step 8: NON-BYPASSABLE ALIGN HARD GATE ENFORCEMENT ───────────────
+        state_history.append("ALIGNING")
         enforce = self.agent("H11C-ALIGN-ENFORCE").process(
             {
                 "trace_id": case.get("case_id"),
@@ -391,11 +489,14 @@ class H11AGI:
         )
         if not enforce["ok"] or not licensed["licensed"]:
             self.agent("H11C-HALT").process({})
+            state_history.append("HALTED")
+        else:
+            state_history.append("RELEASED")
 
         # ── Step 9: CRYPTOGRAPHIC AUDIT SEALING & MERKLE WITNESS ────────────
         self.agent("H11C-MEMORY-PROJECTOR").process({"payload": case})
         audit_event = {
-            "case_id": case["case_id"],
+            "case_id": case_id,
             "allowed": allowed,
             "licensed": licensed["licensed"],
             "merkle_root": merkle_root_hash,
@@ -409,13 +510,28 @@ class H11AGI:
             except ControlError:
                 pass
 
-        # ── Step 10: H11-LEARN CONTINUOUS RECORDING & DISTILLATION ──────────
+        # ── Step 10: MEMORY CONSOLIDATION & H11-LEARN DISTILLATION ──────────
+        state_history.append("MEMORIZED")
+        self.memory_service.store_episodic(
+            content={
+                "case_id": case_id,
+                "query": query_text,
+                "domain": domain,
+                "action": action,
+                "merkle": merkle_root_hash,
+                "allowed": allowed,
+                "licensed": bool(licensed["licensed"]),
+                "audit_head": head,
+            },
+            importance=0.9
+        )
+
         learning_recorded = False
         if self.collector is not None and allowed:
             try:
                 self.collector.record(
                     agent_id=f"H11C-{pipeline_id.upper()}",
-                    case_id=case["case_id"],
+                    case_id=case_id,
                     query=query_text,
                     retrieved_docs=retrieved_evidence,
                     output={"action": action, "domain": domain, "allowed": allowed, "merkle": merkle_root_hash},
@@ -424,12 +540,15 @@ class H11AGI:
                 )
                 learning_recorded = True
                 events.append("learning_recorded")
-                logger.info(f"H11-LEARN: Experience recorded for case {case['case_id']}")
+                logger.info(f"H11-LEARN: Experience recorded for case {case_id}")
             except Exception as exc:
                 logger.warning(f"H11-LEARN recording error: {exc}")
 
+        state_history.append("CLOSED")
+        self._emit("CASE_CLOSED", case_id, {"status": "SUCCESS" if allowed else "HALTED"})
+
         return AGIResult(
-            case_id=case["case_id"],
+            case_id=case_id,
             admitted=True,
             domain=domain,
             pipeline_id=pipeline_id,
@@ -447,6 +566,9 @@ class H11AGI:
             learning_recorded=learning_recorded,
             neural_routing=neural_routing_dict,
             merkle_provenance_root=merkle_root_hash,
+            blackboard_summary={"facts_count": len(board.facts), "evidence_count": len(board.evidence)},
+            execution_graph_nodes=len(exec_graph.nodes),
+            state_progression=state_history,
         )
 
     def get_system_telemetry(self) -> Dict[str, Any]:
@@ -458,5 +580,8 @@ class H11AGI:
             "clustering_stats": self.cluster_engine.get_cluster_stats() if self.cluster_engine else None,
             "omni_search_stats": self.omni_search.get_full_stats() if self.omni_search else None,
             "learn_stats": self.collector.stats if self.collector else None,
+            "event_bus_handlers": len(self.event_bus.handlers),
+            "evidence_ledger_size": len(self.evidence_ledger.items),
+            "episodic_memory_count": len(self.memory_service.episodic_store),
         }
         return telemetry
