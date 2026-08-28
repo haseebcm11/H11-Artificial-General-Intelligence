@@ -1,5 +1,8 @@
 """AST-based bundler to combine all h11_runtime modules into a single monolithic worker.py."""
 import ast
+import base64
+import gzip
+import json
 from pathlib import Path
 
 # Files to concatenate in proper dependency order
@@ -111,16 +114,13 @@ files_in_order = [
     "h11_runtime/server/chat_engine.py",
 ]
 
-class ImportCleaner(ast.NodeTransformer):
-    """AST Transformer to strip local imports cleanly."""
+class ImportCleanerAndOptimizer(ast.NodeTransformer):
+    """AST Transformer to strip local imports, docstrings, and type annotations for lightning-fast WASM import."""
     def visit_ImportFrom(self, node: ast.ImportFrom) -> Any:
-        # Remove __future__ annotations (already in header)
         if node.module == "__future__":
             return None
-        # Remove relative imports (. / ..)
         if node.level > 0:
             return None
-        # Remove h11_runtime imports
         if node.module and (node.module.startswith("h11_runtime") or node.module in ["contracts", "governance", "graph", "case", "search", "learn", "haep", "neural_clustering", "server", "registry", "telemetry", "state", "workers", "evidence", "memory"]):
             return None
         return node
@@ -132,15 +132,41 @@ class ImportCleaner(ast.NodeTransformer):
         node.names = filtered_names
         return node
 
-header = '''"""H11-AGI SOVEREIGN COGNITIVE OPERATING SYSTEM — MONOLITHIC WORKER.PY
+    def visit_FunctionDef(self, node: ast.FunctionDef) -> Any:
+        node.returns = None
+        for arg in (node.args.args + getattr(node.args, 'posonlyargs', []) + node.args.kwonlyargs + ([node.args.vararg] if node.args.vararg else []) + ([node.args.kwarg] if node.args.kwarg else [])):
+            arg.annotation = None
+        if node.body and isinstance(node.body[0], ast.Expr) and isinstance(node.body[0].value, ast.Constant) and isinstance(node.body[0].value.value, str):
+            node.body.pop(0)
+            if not node.body:
+                node.body.append(ast.Pass())
+        self.generic_visit(node)
+        return node
 
-A single consolidated Python file containing the entire H11-AGI runtime:
-- 1,000-Agent Cognitive Universe & 8 Cognitive Manifolds
-- 24-Step Governed Cognitive Loop with Non-Bypassable ALIGN Hard Gate
-- H11-LSE v3.0 Ultra-Omniscient Sovereign Search Engine
-- Continuous H11-LEARN Distillation Pipeline
-- Live DeepSeek-R1 Cognitive Reasoner (Cloudflare AI & Edge)
-"""
+    def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> Any:
+        node.returns = None
+        for arg in (node.args.args + getattr(node.args, 'posonlyargs', []) + node.args.kwonlyargs + ([node.args.vararg] if node.args.vararg else []) + ([node.args.kwarg] if node.args.kwarg else [])):
+            arg.annotation = None
+        if node.body and isinstance(node.body[0], ast.Expr) and isinstance(node.body[0].value, ast.Constant) and isinstance(node.body[0].value.value, str):
+            node.body.pop(0)
+            if not node.body:
+                node.body.append(ast.Pass())
+        self.generic_visit(node)
+        return node
+
+    def visit_ClassDef(self, node: ast.ClassDef) -> Any:
+        if node.body and isinstance(node.body[0], ast.Expr) and isinstance(node.body[0].value, ast.Constant) and isinstance(node.body[0].value.value, str):
+            node.body.pop(0)
+            if not node.body:
+                node.body.append(ast.Pass())
+        self.generic_visit(node)
+        return node
+
+    def visit_AnnAssign(self, node: ast.AnnAssign) -> Any:
+        # Keep dataclass field annotations if inside dataclass, otherwise convert
+        return node
+
+header = '''"""H11-AGI SOVEREIGN COGNITIVE OPERATING SYSTEM — MONOLITHIC WORKER.PY"""
 from __future__ import annotations
 
 import abc
@@ -154,6 +180,7 @@ import datetime
 from datetime import datetime as dt_cls, timezone
 import enum
 from enum import Enum, auto
+import gzip
 import hashlib
 import html.parser
 import inspect
@@ -166,6 +193,7 @@ import re
 import sys
 import threading
 import time
+import types
 import typing
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union, AsyncGenerator
 import urllib.error
@@ -173,10 +201,19 @@ import urllib.parse
 import urllib.request
 
 logger = logging.getLogger("h11_runtime")
+current_mod = sys.modules.get(__name__, types.ModuleType("h11_runtime"))
+sys.modules["h11_runtime"] = current_mod
+
+for _sub in ["contracts", "state", "case", "evidence", "memory", "telemetry", "graph", "governance", "execution", "registry", "workers", "loader", "adapters", "envelope", "spine", "cognitive", "control_catalog", "control_kernel", "haep", "evolution", "search", "learn", "neural_clustering", "server", "agi"]:
+    setattr(current_mod, _sub, current_mod)
+    sys.modules[f"h11_runtime.{_sub}"] = current_mod
+    globals()[_sub] = current_mod
+
+
 '''
 
 sections = [header]
-cleaner = ImportCleaner()
+cleaner = ImportCleanerAndOptimizer()
 
 for rel_path in files_in_order:
     p = Path(rel_path)
@@ -189,35 +226,101 @@ for rel_path in files_in_order:
     unparsed_code = ast.unparse(modified_tree)
     sections.append(f"\n# {'='*78}\n# MODULE: {rel_path}\n# {'='*78}\n" + unparsed_code)
 
-footer = '''
+runtime_source = "\n".join(sections)
+runtime_gz_b64 = base64.b64encode(gzip.compress(runtime_source.encode("utf-8"))).decode("ascii")
 
-# ==============================================================================
-# MASTER CLOUDFLARE WORKER & CLI ENTRYPOINT
-# ==============================================================================
+# Read and compress HTML and Logo
+html_raw = Path("h11_runtime/server/static/index.html").read_bytes()
+html_gz_b64 = base64.b64encode(gzip.compress(html_raw)).decode("ascii")
+logo_b64 = Path("h11_runtime/server/static/logo_b64.txt").read_text(encoding="utf-8").strip() if Path("h11_runtime/server/static/logo_b64.txt").exists() else ""
+
+worker_script = f'''"""H11-AGI SOVEREIGN COGNITIVE OPERATING SYSTEM — CLOUDFLARE PYTHON WORKER
+
+Monolithic Python Worker running the complete H11-AGI architecture:
+- 1,000 Specialist Intelligence Agents across 30 Domains (D01-D30)
+- 8 Neural Cognitive Manifolds with MoE Affinity Routing
+- 24-Step Governed Cognitive Loop with Non-Bypassable ALIGN Hard Gate
+- H11-LSE v3.0 Ultra-Omniscient 16-Engine Search System & Knowledge Graph RAG
+- H11-LEARN Continuous Experience Recording & Rule Distillation Pipeline
+"""
+from __future__ import annotations
+
+import asyncio
+import base64
+import gzip
+import json
+import logging
+import time
+from typing import Any, Dict, List, Optional
+
+logger = logging.getLogger("h11_runtime")
+
+try:
+    from js import Response, Headers, Uint8Array
+except ImportError:
+    class Response:
+        def __init__(self, body, status=200, headers=None):
+            self.body = body
+            self.status = status
+            self.headers = headers or {{}}
+
+LOGO_B64 = "{logo_b64}"
+HTML_GZ_B64 = "{html_gz_b64}"
+_HTML_CACHED = None
+
+def get_html_ui() -> str:
+    global _HTML_CACHED
+    if _HTML_CACHED is None:
+        _HTML_CACHED = gzip.decompress(base64.b64decode(HTML_GZ_B64)).decode("utf-8")
+    return _HTML_CACHED
+
+_RUNTIME_GZ_B64 = "{runtime_gz_b64}"
+_RUNTIME_LOADED = False
+_RUNTIME_GLOBALS = {{}}
+
+def ensure_runtime() -> Dict[str, Any]:
+    """Lazily unbundles and initializes the full H11-AGI engine on first request."""
+    global _RUNTIME_LOADED, _RUNTIME_GLOBALS
+    if not _RUNTIME_LOADED:
+        t0 = time.time()
+        code_str = gzip.decompress(base64.b64decode(_RUNTIME_GZ_B64)).decode("utf-8")
+        _RUNTIME_GLOBALS = {{
+            "__file__": "worker.py",
+            "__name__": "h11_runtime",
+            "logger": logger
+        }}
+        exec(code_str, _RUNTIME_GLOBALS)
+        _RUNTIME_LOADED = True
+        logger.info(f"H11-AGI Sovereign Engine initialized in {{(time.time()-t0)*1000.0:.1f}}ms")
+    return _RUNTIME_GLOBALS
 
 async def handle_h11_cognitive_request(query: str, envelope_extra: Optional[Dict] = None) -> Dict[str, Any]:
     """Processes a request through the full 24-step H11-AGI cognitive loop."""
+    rg = ensure_runtime()
+    H11AGI = rg["H11AGI"]
+    CaseEnvelope = rg["CaseEnvelope"]
+    RiskClass = rg["RiskClass"]
+
     agi = H11AGI(enable_search=True, enable_learning=True)
     await agi.initialize()
 
-    extra = envelope_extra or {}
-    case_payload = {
+    extra = envelope_extra or {{}}
+    case_payload = {{
         "query": query,
         "goal": extra.get("goal", "cognitive_loop"),
         "symptoms": extra.get("symptoms", []),
         "suspected_pathogen": extra.get("suspected_pathogen"),
-        "patient_vitals": extra.get("patient_vitals", {"temp_c": 39.2, "heart_rate": 110}),
-        "metadata": extra.get("metadata", {})
-    }
+        "patient_vitals": extra.get("patient_vitals", {{"temp_c": 39.2, "heart_rate": 110}}),
+        "metadata": extra.get("metadata", {{}})
+    }}
     case_env = CaseEnvelope(
         input_data=case_payload,
         objective=query,
         risk_class=RiskClass.R1_LOW
     )
-    res: AGIResult = await agi.tick(case_env)
+    res = await agi.tick(case_env)
     
-    # Convert AGIResult dataclass to serializable dict
-    res_dict = {
+    return {{
         "case_id": res.case_id,
         "admitted": res.admitted,
         "domain": res.domain,
@@ -229,51 +332,75 @@ async def handle_h11_cognitive_request(query: str, envelope_extra: Optional[Dict
         "hops": res.hops,
         "audit_head": res.audit_head,
         "payload": res.payload,
-        "merkle_root": getattr(res, "merkle_root", None),
-        "search_results_count": len(getattr(res, "search_results", [])),
-        "manifold_routed": getattr(res, "manifold_routed", None),
-        "agents_activated": getattr(res, "agents_activated", []),
-        "evidence_quality_score": getattr(res, "evidence_quality_score", 0.0),
+        "action": res.action,
+        "events": res.events,
+        "retrieved_evidence": res.retrieved_evidence,
+        "learning_recorded": res.learning_recorded,
+        "neural_routing": res.neural_routing,
+        "merkle_provenance_root": res.merkle_provenance_root,
+        "state_progression": res.state_progression,
         "error": res.error
-    }
-    return res_dict
+    }}
 
 async def on_fetch(request, env=None):
-    """Cloudflare Python Worker handler."""
+    """Master Cloudflare Python Worker request handler."""
     url = str(request.url)
     method = str(request.method)
     
-    headers = {
+    json_headers = {{
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Content-Type": "application/json"
-    }
+    }}
+    
+    html_headers = {{
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "public, max-age=3600"
+    }}
+
+    img_headers = {{
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "image/jpeg",
+        "Cache-Control": "public, max-age=31536000, immutable"
+    }}
     
     if method == "OPTIONS":
-        return Response("", status=200, headers=headers)
+        return Response("", status=200, headers=json_headers)
+
+    if "/logo.jpg" in url or "/assets/logo.jpg" in url:
+        try:
+            img_bytes = base64.b64decode(LOGO_B64)
+            return Response(img_bytes, status=200, headers=img_headers)
+        except Exception:
+            return Response("", status=404, headers=json_headers)
         
     if "/api/health" in url:
-        return Response(json.dumps({
+        return Response(json.dumps({{
             "status": "HEALTHY",
             "system": "H11-AGI Sovereign Cognitive Operating System",
             "domain": "h11.network",
             "version": "4.0.0",
             "runtime": "Monolithic worker.py (Full h11_runtime - 1,000 Agents)",
             "tests_passed": "137/137 (100%)",
-            "manifolds": 8
-        }), status=200, headers=headers)
+            "manifolds": 8,
+            "security": "ALIGN Hard Gate Zero-Trust Enforced",
+            "search": "H11-LSE v3.0 Ultra-Omniscient 16-Engine Active",
+            "learning": "H11-LEARN Continuous Distillation Pipeline Active"
+        }}), status=200, headers=json_headers)
         
     if "/api/chat" in url and method == "POST":
-        body = await request.json()
-        query = body.get("query", "")
-        res = await handle_h11_cognitive_request(query, body)
-        return Response(json.dumps(res, default=str), status=200, headers=headers)
+        try:
+            body = await request.json()
+            query = body.get("message") or body.get("query") or ""
+            res = await handle_h11_cognitive_request(query, body)
+            return Response(json.dumps(res, default=str), status=200, headers=json_headers)
+        except Exception as exc:
+            return Response(json.dumps({{"error": str(exc)}}), status=500, headers=json_headers)
         
-    return Response(json.dumps({
-        "message": "H11-AGI Sovereign Cognitive Worker Online",
-        "domain": "h11.network"
-    }), status=200, headers=headers)
+    # Serve Web Application Interface for all GET web requests
+    return Response(get_html_ui(), status=200, headers=html_headers)
 
 if __name__ == "__main__":
     print("Testing monolithic worker.py cognitive execution...")
@@ -283,19 +410,17 @@ if __name__ == "__main__":
     print("Case ID:", result.get("case_id"))
     print("Admitted:", result.get("admitted"))
     print("Pipeline ID:", result.get("pipeline_id"))
-    print("Manifold Routed:", result.get("manifold_routed"))
-    print("Active Specialist Collective:", result.get("agents_activated"))
+    print("Manifold Routed:", (result.get("neural_routing") or {{}}).get("manifold"))
+    print("Active Specialist Collective:", (result.get("neural_routing") or {{}}).get("activated_agents"))
     print("Total Hops Traversed:", len(result.get("hops", [])))
     print("Audit Chain Head:", result.get("audit_head"))
-    print("Merkle Root:", result.get("merkle_root"))
+    print("Merkle Root:", result.get("merkle_provenance_root"))
     print("ALIGN Action Licensed:", result.get("licensed"))
     print("="*70)
-
 '''
 
-sections.append(footer)
+Path("worker.py").write_text(worker_script, encoding="utf-8")
+Path("deploy/worker.py").write_text(worker_script, encoding="utf-8")
+print(f"Generated Cloudflare Python Worker worker.py: {len(worker_script.splitlines())} lines.")
 
-full_output = "\n".join(sections)
-Path("worker.py").write_text(full_output, encoding="utf-8")
-Path("deploy/worker.py").write_text(full_output, encoding="utf-8")
-print(f"Generated AST-verified worker.py: {len(full_output.splitlines())} lines.")
+

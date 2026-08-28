@@ -1,10 +1,13 @@
+"""Cloudflare Python Worker Deployment Script for H11-AGI (worker.py)."""
+from __future__ import annotations
+
 import os
 import json
 import urllib.request
 from io import BytesIO
 
 ACCOUNT_ID = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "56f03e0e4c2e609d10e2769ffcfa6ac3")
-SCRIPT_NAME = "h11-agi"
+SCRIPT_NAME = os.environ.get("CLOUDFLARE_SCRIPT_NAME", "h11-agi")
 ZONE_ID = os.environ.get("CLOUDFLARE_ZONE_ID", "722db54d698e60a3a36ebdc37cbd311f")
 API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 
@@ -12,26 +15,31 @@ def deploy():
     if not API_TOKEN:
         raise ValueError("CLOUDFLARE_API_TOKEN environment variable must be set.")
 
-    with open("deploy/worker_template.js", "r", encoding="utf-8") as f:
-        worker_code = f.read()
+    with open("worker.py", "r", encoding="utf-8") as f:
+        py_code = f.read()
 
-    # Build multipart form data for Cloudflare ES module worker
-    boundary = "----WebKitFormBoundaryH11WorkerBoundary7MA4YWxkTrZu0gW"
+    boundary = "----WebKitFormBoundaryH11PythonWorker7MA4YW"
     body = BytesIO()
-    
-    # 1. metadata part
-    metadata = json.dumps({"main_module": "worker.js", "compatibility_date": "2024-04-01"}).encode("utf-8")
+
+    metadata = json.dumps({
+        "main_module": "worker.py",
+        "compatibility_date": "2024-04-01",
+        "compatibility_flags": ["python_workers"],
+        "bindings": [
+            {"name": "AI", "type": "ai"}
+        ]
+    }).encode("utf-8")
+
     body.write(f"--{boundary}\r\n".encode("utf-8"))
     body.write(b'Content-Disposition: form-data; name="metadata"\r\n')
     body.write(b'Content-Type: application/json\r\n\r\n')
     body.write(metadata)
     body.write(b"\r\n")
 
-    # 2. worker script part
     body.write(f"--{boundary}\r\n".encode("utf-8"))
-    body.write(b'Content-Disposition: form-data; name="worker.js"; filename="worker.js"\r\n')
-    body.write(b'Content-Type: application/javascript+module\r\n\r\n')
-    body.write(worker_code.encode("utf-8"))
+    body.write(b'Content-Disposition: form-data; name="worker.py"; filename="worker.py"\r\n')
+    body.write(b'Content-Type: text/x-python\r\n\r\n')
+    body.write(py_code.encode("utf-8"))
     body.write(b"\r\n")
     body.write(f"--{boundary}--\r\n".encode("utf-8"))
 
@@ -43,13 +51,13 @@ def deploy():
             "Authorization": f"Bearer {API_TOKEN}",
             "Content-Type": f"multipart/form-data; boundary={boundary}",
         },
-        method="PUT",
+        method="PUT"
     )
     with urllib.request.urlopen(req) as resp:
         res_data = json.loads(resp.read().decode("utf-8"))
-        print(f"Worker script upload success: {res_data.get('success')}")
+        print(f"Cloudflare Python Worker upload success: {res_data.get('success')}")
 
-    # Ensure Routes
+    # Ensure Edge Routes
     routes = ["h11.network/*", "www.h11.network/*", "*.h11.network/*"]
     for pattern in routes:
         route_url = f"https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/workers/routes"
