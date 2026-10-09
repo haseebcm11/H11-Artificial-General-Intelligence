@@ -29,6 +29,8 @@ class Settings:
     model_api_key: str | None = None
     request_timeout_seconds: int = 120
     body_size_limit_bytes: int = 5_000_000
+    rate_limit_per_minute: int = 20
+    rate_limit_window_seconds: int = 60
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -50,6 +52,16 @@ class Settings:
         except ValueError:
             body_limit = 5_000_000
 
+        try:
+            rate_limit = int(os.getenv("H11_RATE_LIMIT_PER_MINUTE", "20"))
+        except ValueError:
+            rate_limit = 20
+
+        try:
+            window = int(os.getenv("H11_RATE_LIMIT_WINDOW_SECONDS", "60"))
+        except ValueError:
+            window = 60
+
         return cls(
             env=env,
             host=os.getenv("HOST", os.getenv("H11_HOST", "0.0.0.0")),
@@ -62,6 +74,8 @@ class Settings:
             model_api_key=os.getenv("H11_MODEL_API_KEY"),
             request_timeout_seconds=timeout,
             body_size_limit_bytes=body_limit,
+            rate_limit_per_minute=rate_limit,
+            rate_limit_window_seconds=window,
         )
 
 
