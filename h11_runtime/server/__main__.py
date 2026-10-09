@@ -1,28 +1,42 @@
-"""Launcher for the H11-AGI Conversational Reasoning Chat Server.
-
-Run with:
-    python -m h11_runtime.server
-"""
 from __future__ import annotations
 
+import logging
 import os
 import sys
 
-try:
-    import uvicorn
-except ImportError:
-    print("uvicorn is required to run the H11-AGI server. Install with: pip install uvicorn")
-    sys.exit(1)
+import uvicorn
+
+from .config import get_settings
+
+
+logger = logging.getLogger("h11_runtime.server")
+
 
 def main() -> None:
-    port = int(os.environ.get("PORT", 8000))
-    host = os.environ.get("HOST", "0.0.0.0")
-    print(f"================================================================")
-    print(f"   H11-AGI Sovereign Conversational Reasoning Interface        ")
+    settings = get_settings()
+    port = settings.port
+    host = settings.host
+    log_level = settings.log_level.lower()
+
+    print("================================================================")
+    print("   H11-AGI Sovereign Conversational Reasoning Interface        ")
+    print(f"   Environment: {settings.env:<30}")
     print(f"   Target Domain: h11.network                                   ")
-    print(f"   Serving locally at: http://localhost:{port}                 ")
-    print(f"================================================================")
-    uvicorn.run("h11_runtime.server.app:app", host=host, port=port, reload=False)
+    print(f"   Serving locally at: http://{host}:{port}                 ")
+    print("================================================================")
+
+    uvicorn.run(
+        "h11_runtime.server.app:app",
+        host=host,
+        port=port,
+        reload=settings.debug,
+        log_level=log_level,
+    )
+
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        logger.info("Shutdown requested by user.")
+        sys.exit(0)
