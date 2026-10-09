@@ -11,39 +11,45 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 try:
-    from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+    from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
     from fastapi.middleware.cors import CORSMiddleware
     from fastapi.responses import HTMLResponse, JSONResponse
-    from fastapi.staticfiles import StaticFiles
     from pydantic import BaseModel, Field
+
     _fastapi_available = True
 except ImportError:
     _fastapi_available = False
 
 from .chat_engine import ChatResponse, ConversationalReasoner
+from .config import get_settings
 
+settings = get_settings()
+logging.basicConfig(
+    level=getattr(logging, settings.log_level.upper(), logging.INFO),
+    format="%(asctime)s %(levelname)s %(name)s %(message)s",
+)
 logger = logging.getLogger(__name__)
 
-# Initialize FastAPI App
-app = FastAPI(
-    title="H11-AGI Multi-Agent Operating System",
-    description="Interface for the governed 1,000 Multi-Agent Artificial General Intelligence Operating System",
-    version="4.0.0",
-)
-
 if _fastapi_available:
+    app = FastAPI(
+        title="H11-AGI Multi-Agent Operating System",
+        description="Interface for the governed 1,000 Multi-Agent Artificial General Intelligence Operating System",
+        version="4.0.1",
+    )
+    app.state.settings = settings
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=list(settings.allowed_origins),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
+else:
+    app = None  # type: ignore[assignment]
 
 STATIC_DIR = Path(__file__).parent / "static"
 reasoner: Optional[ConversationalReasoner] = None
@@ -54,13 +60,54 @@ class ChatRequest(BaseModel):
     conversation_id: Optional[str] = Field(None, description="Optional conversation session ID.")
 
 
+@app.middleware("http")
+async def limit_request_size(request: Request, call_next):
+    if request.method in {"POST", "PUT", "PATCH"}:
+        content_length = request.headers.get("content-length")
+        if content_length is not None:
+            try:
+                size = int(content_length)
+            except ValueError:
+                size = 0
+            if size > settings.body_size_limit_bytes:
+                return JSONResponse(
+                    status_code=413,
+                    content={
+                        "detail": (
+                            f"Request body exceeds the configured maximum of {settings.body_size_limit_bytes} bytes."
+                        )
+                    },
+                )
+    return await call_next(request)
+
+
 @app.on_event("startup")
 async def startup_event() -> None:
     global reasoner
     logger.info("Initializing H11-AGI Conversational Reasoner...")
-    reasoner = ConversationalReasoner()
-    await reasoner.initialize()
-    logger.info("H11-AGI Conversational Reasoner online and ready.")
+    try:
+        reasoner = ConversationalReasoner()
+        await reasoner.initialize()
+        logger.info("H11-AGI Conversational Reasoner online and ready.")
+    except Exception:
+        logger.exception("H11-AGI startup failed")
+        raise
+
+
+@app.get("/healthz")
+async def healthz() -> Dict[str, Any]:
+    return {
+        "status": "ok",
+        "service": "h11-agi",
+        "environment": settings.env,
+    }
+
+
+@app.get("/readyz")
+async def readyz() -> Dict[str, Any]:
+    if reasoner is None:
+        return JSONResponse(status_code=503, content={"status": "not_ready", "reason": "reasoner_not_initialized"})
+    return {"status": "ready", "service": "h11-agi"}
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -136,7 +183,6 @@ async def websocket_chat(websocket: WebSocket) -> None:
                 await websocket.send_json({"type": "error", "message": "Query cannot be empty."})
                 continue
 
-            # Stream reasoning thoughts & final answer
             async for step in reasoner.stream_reason(query, conversation_id=conv_id):
                 await websocket.send_json(step)
 
@@ -163,6 +209,7 @@ async def get_health() -> Dict[str, Any]:
         "status": "HEALTHY",
         "system": "H11-AGI 1,000 Multi-Agent Artificial General Intelligence Operating System",
         "domain": "h11.network",
+        "environment": settings.env,
         "telemetry": telemetry,
     }
 
